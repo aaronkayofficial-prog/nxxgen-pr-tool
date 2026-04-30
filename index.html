@@ -1,0 +1,1919 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>NxxGen Studios -- PR Outreach Tool</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --black:#0a0a0a;
+  --white:#ffffff;
+  --off:#f8f7f5;
+  --border:#e8e4df;
+  --gold:#c2185b;
+  --gold-light:#fce4ec;
+  --text:#1a1a1a;
+  --muted:#888;
+  --success:#2d6a4f;
+  --success-bg:#d8f3dc;
+  --error:#c1121f;
+  --error-bg:#fff0f0;
+  --radius:8px;
+  --shadow:0 1px 3px rgba(0,0,0,0.08),0 4px 16px rgba(0,0,0,0.06);
+}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--text);min-height:100vh;font-size:15px;line-height:1.6;}
+.header{border-bottom:1px solid var(--border);padding:1.25rem 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--white);z-index:100;}
+.logo{font-family:'Playfair Display',serif;font-size:18px;font-weight:600;color:var(--black);}
+.logo span{color:var(--gold);}
+.progress-bar{display:flex;align-items:center;gap:5px;}
+.progress-step{width:28px;height:4px;border-radius:2px;background:var(--border);transition:background 0.3s;}
+.progress-step.done{background:var(--gold);}
+.progress-step.active{background:var(--black);}
+.wrap{max-width:720px;margin:0 auto;padding:3rem 2rem 6rem;}
+.screen{display:none;animation:fadeUp 0.3s ease;}
+.screen.active{display:block;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+.eyebrow{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);font-weight:500;margin-bottom:8px;}
+.page-title{font-family:'Playfair Display',serif;font-size:38px;line-height:1.15;font-weight:500;letter-spacing:-0.5px;margin-bottom:10px;color:var(--black);}
+.page-title span{color:var(--gold);}
+.page-sub{font-size:15px;color:var(--muted);max-width:500px;line-height:1.7;margin-bottom:2.5rem;}
+.sec-title{font-family:'Playfair Display',serif;font-size:26px;font-weight:500;letter-spacing:-0.3px;color:var(--black);margin-bottom:6px;}
+.sec-sub{font-size:14px;color:var(--muted);margin-bottom:1.75rem;line-height:1.6;}
+.back-link{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--muted);cursor:pointer;margin-bottom:1.75rem;transition:color 0.15s;}
+.back-link:hover{color:var(--text);}
+label{font-size:11px;font-weight:500;letter-spacing:0.5px;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:5px;margin-top:12px;}
+input[type=text],textarea{width:100%;font-family:'DM Sans',sans-serif;font-size:14px;padding:10px 13px;border:1.5px solid var(--border);border-radius:var(--radius);background:var(--white);color:var(--text);outline:none;transition:border-color 0.2s;}
+input[type=text]:focus,textarea:focus{border-color:var(--gold);}
+textarea{resize:vertical;line-height:1.6;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.full{grid-column:1/-1;}
+.chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:6px;}
+.chip{padding:5px 13px;border-radius:20px;border:1.5px solid var(--border);font-size:12px;cursor:pointer;background:var(--white);color:var(--text);transition:all 0.15s;font-family:'DM Sans',sans-serif;user-select:none;}
+.chip:hover{border-color:var(--gold);}
+.chip.on{background:var(--black);color:var(--white);border-color:var(--black);}
+.path-cards{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-bottom:1.5rem;}
+.path-card{border:1.5px solid var(--border);border-radius:12px;padding:1.75rem 1.5rem;cursor:pointer;transition:all 0.2s;background:var(--white);position:relative;overflow:hidden;}
+.path-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--border);transition:background 0.2s;}
+.path-card:hover{border-color:var(--gold);box-shadow:var(--shadow);}
+.path-card:hover::before,.path-card.on::before{background:var(--gold);}
+.path-card.on{border-color:var(--gold);background:var(--gold-light);}
+.path-icon{font-size:26px;margin-bottom:12px;}
+.path-title{font-family:'Playfair Display',serif;font-size:17px;font-weight:500;margin-bottom:7px;color:var(--black);}
+.path-desc{font-size:13px;color:var(--muted);line-height:1.6;}
+.path-tag{display:inline-block;margin-top:12px;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);font-weight:500;}
+.divider{border:none;border-top:1px solid var(--border);margin:1.75rem 0;}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:11px 22px;border-radius:var(--radius);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;border:1.5px solid transparent;transition:all 0.2s;}
+.btn-primary{background:var(--black);color:var(--white);border-color:var(--black);}
+.btn-primary:hover{background:#333;}
+.btn-gold{background:var(--gold);color:var(--white);border-color:var(--gold);}
+.btn-gold:hover{background:#ad1457;}
+.btn-outline{background:var(--white);color:var(--text);border-color:var(--border);}
+.btn-outline:hover{border-color:var(--text);}
+.btn-sm{padding:7px 15px;font-size:13px;}
+.btn-success{background:#2d6a4f;color:var(--white);border-color:#2d6a4f;}
+.btn-row{display:flex;gap:10px;margin-top:1.75rem;flex-wrap:wrap;align-items:center;}
+.notice{padding:11px 15px;border-radius:var(--radius);font-size:13px;line-height:1.6;margin-top:12px;}
+.notice-gold{background:var(--gold-light);border:1px solid #f48fb1;color:#880e4f;}
+.notice-success{background:var(--success-bg);border:1px solid #95d5b2;color:var(--success);}
+.notice-error{background:var(--error-bg);border:1px solid #ffb3b3;color:var(--error);}
+.pr-box{background:var(--off);border:1.5px solid var(--border);border-radius:12px;padding:1.75rem;font-size:14px;line-height:1.9;white-space:pre-wrap;color:var(--text);max-height:500px;overflow-y:auto;font-family:'DM Sans',sans-serif;}
+.plat-list{border:1.5px solid var(--border);border-radius:12px;overflow:hidden;max-height:420px;overflow-y:auto;}
+.plat-item{display:flex;align-items:center;gap:12px;padding:11px 15px;border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.1s;}
+.plat-item:last-child{border-bottom:none;}
+.plat-item:hover{background:var(--off);}
+.plat-item.sel{background:var(--gold-light);border-left:3px solid var(--gold);}
+.plat-name{font-size:13px;font-weight:500;}
+.plat-url{font-size:11px;color:var(--muted);}
+.plat-email{font-size:11px;color:#2d6a9f;}
+.stars{color:var(--gold);font-size:12px;}
+.tag-free{background:#d8f3dc;color:#2d6a4f;font-size:10px;padding:2px 7px;border-radius:3px;font-weight:500;}
+.tag-paid{background:#fff3cd;color:#856404;font-size:10px;padding:2px 7px;border-radius:3px;font-weight:500;}
+.tag-match{background:#e8f4e8;color:#2d6a4f;font-size:10px;padding:2px 7px;border-radius:3px;font-weight:500;margin-left:6px;}
+.sel-pill{display:inline-flex;align-items:center;gap:8px;background:var(--gold-light);border:1px solid var(--gold);border-radius:var(--radius);padding:5px 13px;font-size:12px;color:#880e4f;margin-top:10px;}
+.pitch-cards{display:flex;flex-direction:column;gap:11px;margin-top:14px;}
+.pitch-card{border:1.5px solid var(--border);border-radius:12px;padding:1.25rem 1.5rem;background:var(--white);transition:border-color 0.2s;}
+.pitch-card:hover{border-color:var(--gold);}
+.pitch-card.sel{border-color:var(--gold);background:var(--gold-light);}
+.pitch-badge{display:inline-block;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);background:var(--gold-light);border:1px solid var(--gold);border-radius:3px;padding:2px 8px;margin-bottom:8px;}
+.pitch-headline{font-size:15px;font-weight:500;margin-bottom:6px;color:var(--black);}
+.pitch-body{font-size:13px;color:var(--muted);line-height:1.7;}
+.pitch-use{margin-top:10px;padding:7px 15px;font-size:12px;font-weight:500;border:1.5px solid var(--gold);border-radius:var(--radius);background:var(--white);color:var(--gold);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.15s;}
+.pitch-use:hover{background:var(--gold);color:var(--white);}
+.pitch-use.used{background:var(--black);color:var(--white);border-color:var(--black);}
+.email-preview{border:1.5px solid var(--border);border-radius:12px;padding:1.75rem;background:var(--white);font-size:14px;line-height:1.9;white-space:pre-wrap;color:var(--text);max-height:500px;overflow-y:auto;font-family:Georgia,serif;}
+.email-preview.copied{outline:2px solid var(--success);outline-offset:3px;}
+.upload-zone{border:2px dashed var(--border);border-radius:12px;padding:2.25rem;text-align:center;cursor:pointer;transition:all 0.2s;background:var(--off);}
+.upload-zone:hover,.upload-zone.drag{border-color:var(--gold);background:var(--gold-light);}
+.upload-zone.done{border-color:var(--success);background:var(--success-bg);border-style:solid;}
+.gen-row{display:flex;align-items:center;gap:10px;padding:1rem 0;color:var(--muted);font-size:13px;}
+.spinner{width:16px;height:16px;border-radius:50%;border:2px solid var(--border);border-top-color:var(--gold);animation:spin 0.7s linear infinite;flex-shrink:0;}
+@keyframes spin{to{transform:rotate(360deg);}}
+@media(max-width:600px){.path-cards,.g2{grid-template-columns:1fr;}.page-title{font-size:28px;}.wrap{padding:2rem 1.25rem 5rem;}}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="logo">NxxGen <span>Studios</span></div>
+  <div class="progress-bar" id="progress-bar"></div>
+</header>
+
+<div class="wrap">
+
+<!-- SCREEN 0: ENTRY -->
+<div class="screen active" id="s0">
+  <div class="eyebrow">PR Outreach Tool</div>
+  <h1 class="page-title">What do you want<br>to do <span>today?</span></h1>
+  <p class="page-sub">Choose your path. The tool guides you through every step from crafting your message to finding the right people to send it to.</p>
+  <div class="path-cards" style="grid-template-columns:1fr;max-width:580px;">
+    <div class="path-card" id="card-a" onclick="selectPath('A')">
+      <div style="display:flex;align-items:flex-start;gap:14px;">
+        <div class="path-icon" style="flex-shrink:0;">&#128240;</div>
+        <div>
+          <div class="path-title">Send a press release to the press</div>
+          <div class="path-desc">Generate a professional press release, find the right outlets, and send a focused outreach email with the release attached.</div>
+          <div class="path-tag">Press Release Outreach &rarr;</div>
+        </div>
+      </div>
+    </div>
+    <div class="path-card" id="card-b" onclick="selectPath('B')">
+      <div style="display:flex;align-items:flex-start;gap:14px;">
+        <div class="path-icon" style="flex-shrink:0;">&#128161;</div>
+        <div>
+          <div class="path-title">Pitch a content idea to the press</div>
+          <div class="path-desc">Do you have something newsworthy to get covered as a story? Tell us what you want to pitch and we will generate the outreach to contact the media.</div>
+          <div class="path-tag">Editorial Pitch &rarr;</div>
+        </div>
+      </div>
+    </div>
+    <div class="path-card" id="card-c" onclick="selectPath('C')">
+      <div style="display:flex;align-items:flex-start;gap:14px;">
+        <div class="path-icon" style="flex-shrink:0;">&#127911;</div>
+        <div>
+          <div class="path-title">Pitch a podcast or collaboration</div>
+          <div class="path-desc">Want to appear as a guest on a podcast or propose a content collaboration? We will help you craft a compelling pitch to the right shows and creators.</div>
+          <div class="path-tag">Podcast & Collaboration Pitch &rarr;</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="path-notice" style="display:none;" class="notice notice-gold"></div>
+  <div class="btn-row">
+    <button class="btn btn-primary" id="entry-btn" onclick="showScreen('s1')" style="display:none;">Continue &rarr;</button>
+  </div>
+  <div style="margin-top:2rem;padding-top:1.5rem;border-top:1px solid var(--border);">
+    <p style="font-size:12px;color:var(--muted);margin-bottom:10px;">&#9881; Testing mode -- jump directly to a step</p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <button class="btn btn-outline btn-sm" onclick="testJump('s2c')">Test Step 3 (Targeting)</button>
+      <button class="btn btn-outline btn-sm" onclick="testJump('s3')">Test Step 4 (PR Platforms)</button>
+      <button class="btn btn-outline btn-sm" onclick="testJump('s3pod')">Test Step 4 (Podcasts)</button>
+      <button class="btn btn-outline btn-sm" onclick="testJump('s5')">Test Step 5 (Email)</button>
+    </div>
+  </div>
+</div>
+
+<!-- SCREEN 1: PROFILE -->
+<div class="screen" id="s1">
+  <div class="back-link" onclick="showScreen('s0')">&#8592; Back</div>
+  <div class="eyebrow">Step 1 of 5</div>
+  <h2 class="sec-title">Tell us about yourself</h2>
+  <p class="sec-sub">This information personalises every piece of content the tool generates. Fill it in once and it carries through the whole workflow.</p>
+  <div class="g2">
+    <div><label>Your name</label><input type="text" id="f-name" placeholder="e.g. Aaron Kay"/></div>
+    <div><label>Your position</label><input type="text" id="f-pos" placeholder="e.g. Founder &amp; Creative Director"/></div>
+    <div><label>Company name</label><input type="text" id="f-co" placeholder="e.g. NxxGen Studios"/></div>
+    <div><label>Company website</label><input type="text" id="f-web" placeholder="e.g. nxxgenstudio.com"/></div>
+    <div class="full"><label>Contact email</label><input type="text" id="f-email" placeholder="e.g. hello@nxxgenstudio.com"/></div>
+    <div class="full"><label>What your company does</label><input type="text" id="f-what" placeholder="e.g. AI-powered fashion photography content studio for campaign and e-commerce content"/></div>
+    <div class="full"><label>Your unique angle</label><textarea id="f-angle" style="min-height:80px;" placeholder="e.g. We use proprietary AI workflows to create photorealistic fashion imagery at a fraction of traditional shoot costs..."></textarea></div>
+    <div class="full"><label>Additional info <span style="font-size:10px;font-weight:400;text-transform:none;">(optional)</span></label><textarea id="f-extra" style="min-height:60px;" placeholder="Recent milestones, notable clients, awards, launch dates..."></textarea></div>
+  </div>
+  <div class="btn-row">
+    <button class="btn btn-primary" onclick="submitProfile()">Continue &rarr;</button>
+    <button class="btn btn-outline" onclick="showScreen('s0')">&#8592; Back</button>
+  </div>
+</div>
+
+<!-- SCREEN 2A: PATH A - GENERATE PRESS RELEASE -->
+<div class="screen" id="s2a">
+  <div class="back-link" onclick="showScreen('s1')">&#8592; Back</div>
+  <div class="eyebrow">Step 2 of 5 -- Press Release</div>
+  <h2 class="sec-title">Generate your press release</h2>
+  <p class="sec-sub">Add the key points you want covered. Fill in as many or as few as you like -- you do not need all five. Then hit <strong>Generate press release</strong>, review it, request any changes, and approve it before moving on.</p>
+
+  <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:1.5rem;">
+    <div>
+      <label>Key point 1 -- News hook or main announcement <span style="font-size:10px;font-weight:400;text-transform:none;">(recommended)</span></label>
+      <textarea id="pr-point-1" style="min-height:70px;" placeholder="e.g. NxxGen Studios launches AI-powered fashion photography platform that replaces $10,000 photo shoots at a fraction of the cost"></textarea>
+    </div>
+    <div>
+      <label>Key point 2 -- Why it matters / the problem it solves</label>
+      <textarea id="pr-point-2" style="min-height:70px;" placeholder="e.g. Australian fashion brands are spending tens of thousands per season on traditional shoots that take weeks to deliver -- NxxGen cuts that to days"></textarea>
+    </div>
+    <div>
+      <label>Key point 3 -- How it works / what makes it unique</label>
+      <textarea id="pr-point-3" style="min-height:70px;" placeholder="e.g. Proprietary AI workflows and premium generation models produce photorealistic campaign imagery and video assets at scale with minimal friction"></textarea>
+    </div>
+    <div>
+      <label>Key point 4 -- Supporting detail, milestone, or stat</label>
+      <textarea id="pr-point-4" style="min-height:70px;" placeholder="e.g. Already working with 12 Australian apparel brands, delivering content 10x faster than traditional production timelines"></textarea>
+    </div>
+    <div>
+      <label>Key point 5 -- Call to action or what happens next</label>
+      <textarea id="pr-point-5" style="min-height:70px;" placeholder="e.g. NxxGen Studios is now open to new brand partnerships -- visit nxxgenstudio.com or contact hello@nxxgenstudio.com to get started"></textarea>
+    </div>
+  </div>
+
+  <div>
+    <label>Your key quote <span style="font-size:10px;font-weight:400;text-transform:none;">(optional but recommended)</span></label>
+    <textarea id="pr-quote" style="min-height:60px;" placeholder="e.g. Fast moving fashion brands need faster moving content -- and that is exactly what we built NxxGen Studios to deliver."></textarea>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn btn-gold" id="gen-pr-btn" onclick="generatePR()">Generate press release &rarr;</button>
+    <button class="btn btn-outline" onclick="showScreen('s1')">&#8592; Back</button>
+  </div>
+
+  <div id="pr-gen-area" style="display:none;margin-top:2rem;">
+    <div class="gen-row" id="pr-spinner"><div class="spinner"></div> Generating your press release -- this takes about 15 seconds...</div>
+    <div id="pr-result-wrap" style="display:none;">
+      <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Your press release -- review and approve</div>
+      <div class="pr-box" id="pr-result"></div>
+      <div style="margin-top:1.25rem;">
+        <label>Request changes <span style="font-size:10px;font-weight:400;text-transform:none;">(describe what to change and hit Regenerate)</span></label>
+        <textarea id="pr-feedback" style="min-height:65px;" placeholder="e.g. Make the tone more urgent, add our Sydney launch, shorten paragraph two, add more detail about pricing..."></textarea>
+        <div class="btn-row" style="margin-top:10px;">
+          <button class="btn btn-outline btn-sm" id="regen-btn" onclick="regenPR()">Regenerate with these changes</button>
+          <button class="btn btn-gold" id="approve-btn" onclick="approvePR()">&#10003; Approve and continue &rarr;</button>
+        </div>
+      </div>
+      <div class="notice notice-success" id="pr-approved-msg" style="display:none;">&#10003; Press release approved -- moving to the next step...</div>
+    </div>
+  </div>
+</div>
+
+<!-- SCREEN 2B: PATH B - PITCH A STORY -->
+<div class="screen" id="s2b">
+  <div class="back-link" onclick="showScreen('s1')">&#8592; Back</div>
+  <div class="eyebrow">Step 2 of 5 -- Pitch Your Story</div>
+  <h2 class="sec-title">Pitch a story to an outlet</h2>
+  <p class="sec-sub">Do you have something interesting and newsworthy you would like to get covered as a story in the press? Tell us what you would like to pitch and we will generate the outreach message to contact the media.</p>
+
+  <!-- PROPOSED STORY HEADLINE -->
+  <div style="background:var(--gold-light);border:1.5px solid var(--gold);border-radius:12px;padding:1.25rem 1.5rem;margin-bottom:1.5rem;">
+    <label style="color:var(--gold);">Proposed story headline you would like to pitch</label>
+    <textarea id="pitch-headline" style="min-height:80px;font-size:15px;font-weight:500;" placeholder="e.g. How AI is replacing the $10,000 fashion photo shoot -- and what it means for Australian brands"></textarea>
+    <div style="font-size:11px;color:var(--muted);margin-top:6px;">Make it punchy and editorial -- write it like a journalist would write the headline of the story.</div>
+  </div>
+
+  <!-- NEWS HOOKS -->
+  <div style="margin-bottom:1.5rem;">
+    <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:12px;font-weight:500;">News hooks -- tell us what you want to pitch</div>
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div>
+        <label>News hook 1 -- What is the core story or announcement?</label>
+        <textarea id="b-hook-1" style="min-height:85px;" placeholder="e.g. NxxGen Studios has developed an AI platform that produces campaign-quality fashion photography in 48 hours for under $500 -- compared to $10,000+ for a traditional shoot"></textarea>
+      </div>
+      <div>
+        <label>News hook 2 -- Why does this matter right now?</label>
+        <textarea id="b-hook-2" style="min-height:85px;" placeholder="e.g. Australian fashion brands are under pressure to produce more content faster as social media demands increase, but budgets are tightening post-pandemic"></textarea>
+      </div>
+      <div>
+        <label>News hook 3 -- What is the bigger industry trend or problem this connects to?</label>
+        <textarea id="b-hook-3" style="min-height:85px;" placeholder="e.g. AI is reshaping every part of the creative industry -- fashion photography is the latest frontier, with major studios already losing work to platforms like ours"></textarea>
+      </div>
+      <div>
+        <label>News hook 4 -- Any data, stats, or proof points?</label>
+        <textarea id="b-hook-4" style="min-height:85px;" placeholder="e.g. We have reduced content production costs by 90% for 12 Australian fashion brands, with delivery times dropping from 3 weeks to 48 hours"></textarea>
+      </div>
+      <div>
+        <label>News hook 5 -- Any human interest angle, quote, or personal story?</label>
+        <textarea id="b-hook-5" style="min-height:85px;" placeholder="e.g. Our founder Aaron Kay spent 15 years as a fashion photographer before building the tool that made his own job obsolete -- that tension is at the heart of the story"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- KEY QUOTE -->
+  <div style="margin-bottom:1.5rem;">
+    <label>Your key quote <span style="font-size:10px;font-weight:400;text-transform:none;">(the line you want the journalist to use)</span></label>
+    <textarea id="b-quote" style="min-height:75px;" placeholder="e.g. The $10,000 photo shoot is not coming back. Brands that adapt to AI-powered content now will own the next decade of fashion marketing."></textarea>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- UPLOAD OPTION -->
+  <div style="margin-bottom:1rem;">
+    <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;font-weight:500;">Have an existing press release? <span style="font-weight:400;text-transform:none;letter-spacing:0;">(optional -- upload it and we will use it alongside your hooks)</span></div>
+    <div class="upload-zone" id="upload-zone" onclick="document.getElementById('upload-file').click()" ondragover="event.preventDefault();this.classList.add('drag')" ondragleave="this.classList.remove('drag')" ondrop="handleDrop(event)">
+      <div style="font-size:24px;margin-bottom:8px;">&#128196;</div>
+      <div style="font-size:13px;color:var(--muted);">Click to upload or drag and drop your press release</div>
+      <div style="font-size:11px;color:var(--muted);margin-top:4px;opacity:0.7;">Accepts .pdf, .docx, .txt -- optional</div>
+      <input type="file" id="upload-file" style="display:none;" accept=".txt,.pdf,.docx,.doc" onchange="handleFileUpload(this)"/>
+    </div>
+    <div class="gen-row" id="upload-spinner" style="display:none;"><div class="spinner"></div> Extracting text from file...</div>
+    <div class="notice notice-success" id="upload-ok" style="display:none;"></div>
+    <div class="notice notice-error" id="upload-err" style="display:none;"></div>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn btn-primary" onclick="continuePitchStory()">Continue &rarr;</button>
+    <button class="btn btn-outline" onclick="showScreen('s1')">&#8592; Back</button>
+  </div>
+</div>
+
+<!-- SCREEN 2C-POD: PATH C - PODCAST PITCH -->
+<div class="screen" id="s2pod">
+  <div class="back-link" onclick="showScreen('s1')">&#8592; Back</div>
+  <div class="eyebrow">Step 2 of 5 -- Podcast Pitch</div>
+  <h2 class="sec-title">Pitch a podcast or collaboration</h2>
+  <p class="sec-sub">Want to appear as a guest, sponsor a show, or propose a content collaboration? Tell us about yourself, what you want to talk about, and why you would make a great guest or partner. We will craft the outreach for you.</p>
+
+  <!-- PITCH TYPE -->
+  <div style="margin-bottom:1.5rem;">
+    <label>What type of outreach is this?</label>
+    <div class="chips" style="margin-top:8px;">
+      <div class="chip on" id="pod-type-guest" onclick="setPodType('guest',this)">Guest appearance</div>
+      <div class="chip" id="pod-type-collab" onclick="setPodType('collab',this)">Content collaboration</div>
+      <div class="chip" id="pod-type-sponsor" onclick="setPodType('sponsor',this)">Sponsorship or partnership</div>
+    </div>
+  </div>
+
+  <!-- PROPOSED EPISODE / COLLAB TITLE -->
+  <div style="background:var(--gold-light);border:1.5px solid var(--gold);border-radius:12px;padding:1.25rem 1.5rem;margin-bottom:1.5rem;">
+    <label style="color:var(--gold);">Proposed episode title or collaboration concept</label>
+    <textarea id="pod-title" style="min-height:75px;font-size:15px;font-weight:500;" placeholder="e.g. How AI is replacing the fashion photo shoot -- and what it means for brands in 2025"></textarea>
+    <div style="font-size:11px;color:var(--muted);margin-top:6px;">Write it like a podcast episode title -- punchy, specific, and interesting to the show's audience.</div>
+  </div>
+
+  <!-- PITCH HOOKS -->
+  <div style="margin-bottom:1.5rem;">
+    <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:12px;font-weight:500;">Tell us about your pitch</div>
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div>
+        <label>What is the core topic or story you want to discuss?</label>
+        <textarea id="pod-hook-1" style="min-height:85px;" placeholder="e.g. I want to talk about how AI is fundamentally disrupting fashion photography -- cutting shoot costs from $10,000 to under $500 -- and what this means for brands, photographers and the industry"></textarea>
+      </div>
+      <div>
+        <label>Why are you the right person to speak on this? What is your authority or experience?</label>
+        <textarea id="pod-hook-2" style="min-height:85px;" placeholder="e.g. I spent 15 years as a fashion photographer before building NxxGen Studios -- I have seen this shift from both sides and can speak to the human and business impact with real credibility"></textarea>
+      </div>
+      <div>
+        <label>What will the audience take away? What will they learn or gain?</label>
+        <textarea id="pod-hook-3" style="min-height:85px;" placeholder="e.g. Listeners will understand exactly how AI content tools work, what they cost, how to evaluate them, and how to future-proof their brand's content strategy before competitors do"></textarea>
+      </div>
+      <div>
+        <label>Why does this topic matter right now? What is the timely angle?</label>
+        <textarea id="pod-hook-4" style="min-height:85px;" placeholder="e.g. The AI content wave is accelerating in 2025 -- brands that do not adapt now will be outpaced by competitors producing 10x the content at a fraction of the cost"></textarea>
+      </div>
+      <div>
+        <label>Any previous podcast appearances, speaking experience, or media coverage? <span style="font-size:10px;font-weight:400;text-transform:none;">(optional)</span></label>
+        <textarea id="pod-hook-5" style="min-height:75px;" placeholder="e.g. Previously appeared on The Business of Fashion Podcast, Future Commerce, and was featured in Vogue Business and The Australian Financial Review"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- KEY TALKING POINTS -->
+  <div style="margin-bottom:1.5rem;">
+    <label>Your key quote or soundbite <span style="font-size:10px;font-weight:400;text-transform:none;">(the line that sums up your point of view)</span></label>
+    <textarea id="pod-quote" style="min-height:75px;" placeholder="e.g. The brands winning in 2025 are not the ones with the biggest budgets -- they are the ones moving fastest. AI is the great equaliser."></textarea>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- OPTIONAL MEDIA KIT UPLOAD -->
+  <div style="margin-bottom:1rem;">
+    <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;font-weight:500;">Media kit or speaker bio <span style="font-weight:400;text-transform:none;letter-spacing:0;">(optional -- upload to add more context)</span></div>
+    <div class="upload-zone" id="pod-upload-zone" onclick="document.getElementById('pod-upload-file').click()" ondragover="event.preventDefault();this.classList.add('drag')" ondragleave="this.classList.remove('drag')" ondrop="handlePodDrop(event)">
+      <div style="font-size:24px;margin-bottom:8px;">&#128196;</div>
+      <div style="font-size:13px;color:var(--muted);">Click to upload or drag and drop your media kit or speaker bio</div>
+      <div style="font-size:11px;color:var(--muted);margin-top:4px;opacity:0.7;">Accepts .pdf, .docx, .txt -- optional</div>
+      <input type="file" id="pod-upload-file" style="display:none;" accept=".txt,.pdf,.docx,.doc" onchange="handlePodUpload(this)"/>
+    </div>
+    <div class="gen-row" id="pod-upload-spinner" style="display:none;"><div class="spinner"></div> Extracting text from file...</div>
+    <div class="notice notice-success" id="pod-upload-ok" style="display:none;"></div>
+    <div class="notice notice-error" id="pod-upload-err" style="display:none;"></div>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn btn-primary" onclick="continuePodcastPitch()">Continue &rarr;</button>
+    <button class="btn btn-outline" onclick="showScreen('s1')">&#8592; Back</button>
+  </div>
+</div>
+
+<!-- SCREEN 2C: MEDIA TARGETING -->
+<div class="screen" id="s2c">
+  <div class="back-link" id="s2c-back" onclick="goBackFromTargeting()">&#8592; Back</div>
+  <div class="eyebrow" id="s2c-eyebrow">Step 3 of 5 -- Target Media</div>
+  <h2 class="sec-title" id="s2c-title">What kind of press are you trying to reach?</h2>
+  <p class="sec-sub" id="s2c-sub">Tell us your target industries and preferences. We will use this to find and rank the most relevant platforms for your outreach.</p>
+  <div id="pr-gen-banner" style="display:none;" class="notice notice-gold">&#9203; Your press release is generating in the background...</div>
+
+  <div style="margin-bottom:1.5rem;">
+    <label id="t-primary-label">Primary industry -- the main category your story fits into</label>
+    <input type="text" id="t-primary" placeholder="e.g. Fashion &amp; Apparel, Technology, Retail, Plumbing, Food &amp; Beverage..."/>
+    <div class="chips" id="chips-primary" style="margin-top:10px;">
+      <div class="chip" onclick="setSuggest('t-primary',this,'Fashion &amp; Apparel')">Fashion &amp; Apparel</div>
+      <div class="chip" onclick="setSuggest('t-primary',this,'Technology &amp; AI')">Technology &amp; AI</div>
+      <div class="chip" onclick="setSuggest('t-primary',this,'Retail &amp; E-commerce')">Retail &amp; E-commerce</div>
+      <div class="chip" onclick="setSuggest('t-primary',this,'Marketing &amp; Advertising')">Marketing &amp; Advertising</div>
+      <div class="chip" onclick="setSuggest('t-primary',this,'Creative &amp; Design')">Creative &amp; Design</div>
+      <div class="chip" onclick="setSuggest('t-primary',this,'Beauty &amp; Lifestyle')">Beauty &amp; Lifestyle</div>
+      <div class="chip" onclick="setSuggest('t-primary',this,'Business &amp; Startups')">Business &amp; Startups</div>
+      <div class="chip" onclick="setSuggest('t-primary',this,'Luxury &amp; Premium')">Luxury &amp; Premium</div>
+      <div class="chip" onclick="setSuggest('t-primary',this,'Health &amp; Wellness')">Health &amp; Wellness</div>
+      <div class="chip" onclick="setSuggest('t-primary',this,'Media &amp; Publishing')">Media &amp; Publishing</div>
+    </div>
+  </div>
+
+  <div style="margin-bottom:1.5rem;">
+    <label>Secondary industry <span style="font-size:10px;font-weight:400;text-transform:none;">(optional crossover category)</span></label>
+    <input type="text" id="t-secondary" placeholder="e.g. Photography, Sustainability, Supply Chain, Influencer Marketing..."/>
+    <div class="chips" style="margin-top:10px;">
+      <div class="chip" onclick="setSuggest('t-secondary',this,'Photography &amp; Visual Media')">Photography &amp; Visual Media</div>
+      <div class="chip" onclick="setSuggest('t-secondary',this,'Sustainability')">Sustainability</div>
+      <div class="chip" onclick="setSuggest('t-secondary',this,'Influencer Marketing')">Influencer Marketing</div>
+      <div class="chip" onclick="setSuggest('t-secondary',this,'Supply Chain')">Supply Chain</div>
+      <div class="chip" onclick="setSuggest('t-secondary',this,'Consumer Tech')">Consumer Tech</div>
+      <div class="chip" onclick="setSuggest('t-secondary',this,'Digital Marketing')">Digital Marketing</div>
+      <div class="chip" onclick="setSuggest('t-secondary',this,'Entrepreneurship')">Entrepreneurship</div>
+      <div class="chip" onclick="setSuggest('t-secondary',this,'Artificial Intelligence')">Artificial Intelligence</div>
+      <div class="chip" onclick="setSuggest('t-secondary',this,'Social Media')">Social Media</div>
+      <div class="chip" onclick="setSuggest('t-secondary',this,'Brand Strategy')">Brand Strategy</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <label>Target countries <span style="font-size:10px;font-weight:400;text-transform:none;">(select all that apply)</span></label>
+  <div class="chips" style="margin-top:8px;">
+    <div class="chip" onclick="toggleChip(this,'tCountries','Australia')">Australia</div>
+    <div class="chip" onclick="toggleChip(this,'tCountries','United Kingdom')">United Kingdom</div>
+    <div class="chip" onclick="toggleChip(this,'tCountries','United States')">United States</div>
+    <div class="chip" onclick="toggleChip(this,'tCountries','Canada')">Canada</div>
+    <div class="chip" onclick="toggleChip(this,'tCountries','New Zealand')">New Zealand</div>
+    <div class="chip" onclick="toggleChip(this,'tCountries','Europe')">Europe</div>
+    <div class="chip" onclick="toggleChip(this,'tCountries','Global')">Global</div>
+  </div>
+
+  <!-- PR-only fields (hidden for podcast path) -->
+  <div id="pr-only-fields">
+    <label style="margin-top:1.25rem;">Platform type</label>
+    <div class="chips" style="margin-top:8px;">
+      <div class="chip on" id="tp-both" onclick="setTPref('both')">Free &amp; Paid</div>
+      <div class="chip" id="tp-free" onclick="setTPref('free')">Free only</div>
+      <div class="chip" id="tp-paid" onclick="setTPref('paid')">Paid only</div>
+    </div>
+    <label style="margin-top:1.25rem;">Type of coverage you want</label>
+    <div class="chips" style="margin-top:8px;">
+      <div class="chip on" onclick="toggleChip(this,'tMedia','News')">News &amp; Press Release</div>
+      <div class="chip" onclick="toggleChip(this,'tMedia','Editorial')">Editorial &amp; Feature</div>
+      <div class="chip" onclick="toggleChip(this,'tMedia','Trade')">Trade Publication</div>
+      <div class="chip" onclick="toggleChip(this,'tMedia','Online')">Online &amp; Digital</div>
+      <div class="chip" onclick="toggleChip(this,'tMedia','Influencer')">Influencer &amp; Social</div>
+    </div>
+  </div>
+
+  <!-- Podcast-only fields (shown for Path C) -->
+  <div id="pod-only-fields" style="display:none;">
+    <label style="margin-top:1.25rem;">Podcast format preference</label>
+    <div class="chips" style="margin-top:8px;">
+      <div class="chip on" onclick="toggleChip(this,'tPodFmt','Interview')">Interview / Guest</div>
+      <div class="chip" onclick="toggleChip(this,'tPodFmt','Panel')">Panel Discussion</div>
+      <div class="chip" onclick="toggleChip(this,'tPodFmt','Solo')">Solo / Hosted</div>
+      <div class="chip" onclick="toggleChip(this,'tPodFmt','Storytelling')">Storytelling / Narrative</div>
+    </div>
+    <label style="margin-top:1.25rem;">Audience size preference</label>
+    <div class="chips" style="margin-top:8px;">
+      <div class="chip on" id="pod-aud-all" onclick="setPodAud('all')">Any size</div>
+      <div class="chip" id="pod-aud-niche" onclick="setPodAud('niche')">Niche &amp; engaged</div>
+      <div class="chip" id="pod-aud-large" onclick="setPodAud('large')">Large reach (50k+)</div>
+    </div>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn btn-gold" id="find-plats-btn" onclick="submitTargeting()">Find my platforms &rarr;</button>
+    <button class="btn btn-outline" onclick="goBackFromTargeting()">&#8592; Back</button>
+  </div>
+</div>
+
+<!-- SCREEN 3: PLATFORMS / PODCASTS -->
+<div class="screen" id="s3">
+  <div class="back-link" onclick="showScreen('s2c')">&#8592; Back</div>
+  <div class="eyebrow" id="s3-eyebrow">Step 4 of 5 -- Platforms</div>
+  <h2 class="sec-title" id="s3-title">Choose your target platform</h2>
+  <p class="sec-sub" id="s3-sub">Searching for matched outlets...</p>
+  <div id="pr-ready-banner" style="display:none;" class="notice notice-success">
+    &#10003; Your press release is ready --
+    <button onclick="showScreen('s2a');document.getElementById('pr-ready-banner').style.display='none';" style="background:none;border:none;color:var(--success);font-weight:600;cursor:pointer;text-decoration:underline;font-size:13px;">review and approve it here</button>
+    before sending.
+  </div>
+  <div id="plat-search-banner" class="notice notice-gold" style="margin-bottom:12px;">
+    <span style="display:inline-flex;align-items:center;gap:10px;">
+      <span style="width:14px;height:14px;border-radius:50%;border:2px solid rgba(194,24,91,0.2);border-top-color:#c2185b;animation:spin 0.7s linear infinite;display:inline-block;flex-shrink:0;"></span>
+      <span id="plat-search-status">Searching for PR platforms in your industry and countries...</span>
+    </span>
+  </div>
+  <div id="plat-search-done" style="display:none;" class="notice notice-success" style="margin-bottom:12px;"></div>
+  <div id="plat-filter-row" style="display:none;">
+    <div class="chips" id="plat-filters" style="margin-bottom:12px;">
+      <div class="chip on" onclick="filterPlats('all',this)">All</div>
+      <div class="chip" onclick="filterPlats('Free',this)">Free only</div>
+      <div class="chip" onclick="filterPlats('Paid',this)">Paid only</div>
+      <div class="chip" onclick="filterPlats('Top',this)">Top rated</div>
+    </div>
+  </div>
+  <div class="plat-list" id="plat-list"></div>
+  <div id="plat-sel-pill" style="display:none;margin-top:10px;"></div>
+  <div class="btn-row">
+    <button class="btn btn-primary" id="plat-btn" onclick="continueFromPlatforms()" style="display:none;" id="plat-continue-btn">Continue with this selection &rarr;</button>
+    <button class="btn btn-outline" onclick="showScreen('s2c')">&#8592; Back</button>
+  </div>
+</div>
+
+<!-- SCREEN 4: PITCH IDEAS (Path B only) -->
+<div class="screen" id="s4">
+  <div class="back-link" onclick="showScreen('s3')">&#8592; Back</div>
+  <div class="eyebrow">Step 4 of 5 -- Pitch Ideas</div>
+  <h2 class="sec-title">Generate pitch ideas</h2>
+  <p class="sec-sub">3-5 story angles tailored to <strong id="s4-plat">this platform</strong>. Click Use this pitch to auto-fill your outreach email.</p>
+  <label>Any specific angle to emphasise? <span style="font-size:10px;font-weight:400;text-transform:none;">(optional)</span></label>
+  <input type="text" id="pitch-angle" placeholder="e.g. AI cost savings for emerging Australian fashion brands" style="margin-bottom:4px;"/>
+  <div class="btn-row" style="margin-top:12px;">
+    <button class="btn btn-primary" onclick="generatePitches()">Generate pitch ideas &rarr;</button>
+  </div>
+  <div class="gen-row" id="pitch-spinner" style="display:none;"><div class="spinner"></div> <span id="pitch-status">Reading your website...</span></div>
+  <div class="pitch-cards" id="pitch-cards"></div>
+  <div id="pitch-continue-row" style="display:none;" class="btn-row">
+    <button class="btn btn-primary" onclick="document.getElementById('e-pitch-field').style.display='block';showScreen('s5');">Continue to outreach email &rarr;</button>
+  </div>
+</div>
+
+<!-- SCREEN 5: EMAIL -->
+<div class="screen" id="s5">
+  <div class="back-link" id="s5-back" onclick="goBackFromEmail()">&#8592; Back</div>
+  <div class="eyebrow">Final Step -- Outreach Email</div>
+  <h2 class="sec-title">Generate your outreach email</h2>
+  <p class="sec-sub" id="s5-sub">A short, focused outreach email. Your press release is referenced as an attachment and included below the sign-off.</p>
+  <div class="g2">
+    <div><label>Editor name <span style="font-size:10px;font-weight:400;text-transform:none;">(if known)</span></label><input type="text" id="e-editor" placeholder="e.g. Sarah Jones"/></div>
+    <div>
+      <label>Their email address <span style="font-size:10px;font-weight:400;text-transform:none;color:var(--gold);" id="email-auto-label"></span></label>
+      <input type="text" id="e-contact" placeholder="e.g. editorial@mumbrella.com.au"/>
+    </div>
+    <div class="full" id="e-pitch-field"><label>Pitch idea to lead with</label><textarea id="e-pitch" style="min-height:70px;" placeholder="Paste or type your pitch idea here -- or it will auto-fill if you selected one in Step 4."></textarea></div>
+  </div>
+  <div class="btn-row">
+    <button class="btn btn-primary" onclick="generateEmail()">Generate email &rarr;</button>
+  </div>
+  <div class="gen-row" id="email-spinner" style="display:none;"><div class="spinner"></div> Generating your email...</div>
+  <div id="email-preview-wrap" style="display:none;margin-top:1.5rem;">
+    <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:12px;">Your outreach email -- ready to send</div>
+    <div id="email-preview" style="font-size:14px;line-height:1.9;white-space:pre-wrap;color:var(--text);font-family:Georgia,serif;padding-bottom:1rem;border-bottom:1px solid var(--border);"></div>
+    <div class="btn-row" style="margin-top:1.25rem;">
+      <button class="btn btn-gold" onclick="copyEmail()" id="copy-btn">&#8984; Copy email</button>
+      <button class="btn btn-outline" onclick="generateEmail()">Regenerate</button>
+      <button class="btn btn-outline btn-sm" onclick="resetAll()">Start over</button>
+    </div>
+    <div class="notice notice-success" id="copy-confirm" style="display:none;margin-top:10px;">&#10003; Copied to clipboard -- open Gmail or Outlook, compose a new email, and paste (Cmd+V / Ctrl+V).</div>
+    <div class="divider"></div>
+    <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Press release attachment</div>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:12px;">Download your press release as a PDF to attach to the email before sending.</p>
+    <div id="pr-pdf-area">
+      <div id="pr-not-ready" class="notice notice-gold" style="display:none;">&#9203; Your press release is still generating -- it will be available to download shortly.</div>
+      <div id="pr-pdf-btns" style="display:none;">
+        <button class="btn btn-primary" onclick="downloadPRasPDF()">&#8595; Save press release as PDF</button>
+        <p style="font-size:12px;color:var(--muted);margin-top:8px;">A print window will open -- select <strong>Save as PDF</strong> as your printer to download the file.</p>
+      </div>
+      <div class="notice notice-success" id="pr-pdf-confirm" style="display:none;margin-top:10px;">&#10003; PDF downloaded -- find it in your Downloads folder and attach it to the email.</div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /wrap -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>
+var state = {
+  path: null,
+  prSource: null,
+  profile: {},
+  targeting: { primary: '', secondary: '', countries: [], pref: 'both', media: ['News'] },
+  pressRelease: '',
+  prApproved: false,
+  prGenerating: false,
+  selectedPlatform: null,
+  selectedPitch: '',
+  pitchTexts: [],
+  platFilter: 'all',
+  foundPlatforms: [],
+  pitchStory: null,
+  podcastPitch: null,
+  podMediaKit: null,
+  websiteContent: null,
+  currentScreen: 's0'
+};
+
+var PLATFORMS = [
+  {n:'PR Newswire',u:'prnewswire.com',e:'clientservices@prnewswire.com',t:'Major Wire',r:'AU,UK,US',c:'',paid:true,s:5},
+  {n:'Business Wire',u:'businesswire.com',e:'info@businesswire.com',t:'Major Wire',r:'UK,US',c:'',paid:true,s:5},
+  {n:'GlobeNewswire',u:'globenewswire.com',e:'support@globenewswire.com',t:'Major Wire',r:'UK,US',c:'',paid:true,s:5},
+  {n:'EIN Presswire',u:'einpresswire.com',e:'support@einpresswire.com',t:'Major Wire',r:'AU,UK,US',c:'',paid:true,s:4},
+  {n:'Accesswire',u:'accesswire.com',e:'clients@accesswire.com',t:'Major Wire',r:'UK,US',c:'',paid:true,s:4},
+  {n:'AAP Newswire',u:'aap.com.au',e:'aap@aap.com.au',t:'Australia',r:'AU',c:'AU',paid:true,s:5},
+  {n:'Medianet Australia',u:'medianet.com.au',e:'info@medianet.com.au',t:'Australia',r:'AU',c:'AU',paid:true,s:4},
+  {n:'Mumbrella',u:'mumbrella.com.au',e:'editorial@mumbrella.com.au',t:'Australia',r:'AU',c:'AU',paid:true,s:4},
+  {n:'SmartCompany',u:'smartcompany.com.au',e:'editorial@smartcompany.com.au',t:'Australia',r:'AU',c:'AU',paid:false,s:4},
+  {n:'StartupSmart',u:'startupsmart.com.au',e:'editor@startupsmart.com.au',t:'Australia',r:'AU',c:'AU',paid:false,s:3},
+  {n:'Dynamic Business',u:'dynamicbusiness.com.au',e:'editor@dynamicbusiness.com.au',t:'Australia',r:'AU',c:'AU',paid:false,s:3},
+  {n:'Anthill Online',u:'anthillonline.com',e:'editor@anthillonline.com',t:'Australia',r:'AU',c:'AU',paid:false,s:3},
+  {n:'Ragtrader',u:'ragtrader.com.au',e:'editorial@ragtrader.com.au',t:'Fashion AU',r:'AU',c:'Fashion',paid:false,s:4},
+  {n:'Inside Retail AU',u:'insideretail.com.au',e:'editorial@insideretail.com.au',t:'Fashion AU',r:'AU',c:'Fashion',paid:true,s:4},
+  {n:'Retail Biz AU',u:'retailbiz.com.au',e:'editor@retailbiz.com.au',t:'Fashion AU',r:'AU',c:'Fashion',paid:false,s:3},
+  {n:'Fashion Quarterly',u:'fashionquarterly.co.nz',e:'editor@fashionquarterly.co.nz',t:'Fashion AU',r:'AU',c:'Fashion',paid:false,s:3},
+  {n:'Vogue Business',u:'voguebusiness.com',e:'pitches@voguebusiness.com',t:'Fashion Global',r:'AU,UK,US',c:'Fashion',paid:false,s:5},
+  {n:'Business of Fashion',u:'businessoffashion.com',e:'editorial@businessoffashion.com',t:'Fashion Global',r:'AU,UK,US',c:'Fashion',paid:false,s:5},
+  {n:'Fashion Network',u:'fashionnetwork.com',e:'press@fashionnetwork.com',t:'Fashion Global',r:'AU,UK,US',c:'Fashion',paid:false,s:4},
+  {n:'Fashion United',u:'fashionunited.com',e:'press@fashionunited.com',t:'Fashion Global',r:'AU,UK,US',c:'Fashion',paid:false,s:4},
+  {n:'Hypebeast',u:'hypebeast.com',e:'editorial@hypebeast.com',t:'Fashion Global',r:'AU,UK,US',c:'Fashion',paid:false,s:5},
+  {n:'Who What Wear',u:'whowhatwear.com',e:'tips@whowhatwear.com',t:'Fashion Global',r:'AU,UK,US',c:'Fashion',paid:false,s:4},
+  {n:'Glossy',u:'glossy.co',e:'tips@glossy.co',t:'Fashion US',r:'US',c:'Fashion',paid:false,s:4},
+  {n:'The Interline',u:'theinterline.com',e:'editorial@theinterline.com',t:'Fashion Tech',r:'AU,UK,US',c:'Fashion',paid:false,s:4},
+  {n:'Drapers Online',u:'drapersonline.com',e:'editorial@drapersonline.com',t:'Fashion UK',r:'UK',c:'Fashion',paid:false,s:4},
+  {n:'WWD',u:'wwd.com',e:'tips@wwd.com',t:'Fashion US',r:'US',c:'Fashion',paid:false,s:5},
+  {n:'Fashionista',u:'fashionista.com',e:'tips@fashionista.com',t:'Fashion US',r:'US',c:'Fashion',paid:false,s:4},
+  {n:'Retail Dive',u:'retaildive.com',e:'editorial@retaildive.com',t:'Retail US',r:'US',c:'Fashion',paid:false,s:4},
+  {n:'Sourcing Journal',u:'sourcingjournalonline.com',e:'editorial@sourcingjournalonline.com',t:'Fashion US',r:'US',c:'Fashion',paid:false,s:4},
+  {n:'TechCrunch',u:'techcrunch.com',e:'tips@techcrunch.com',t:'Tech Global',r:'AU,UK,US',c:'Tech',paid:false,s:5},
+  {n:'VentureBeat',u:'venturebeat.com',e:'editorial@venturebeat.com',t:'Tech Global',r:'AU,UK,US',c:'Tech',paid:false,s:5},
+  {n:'The Next Web',u:'thenextweb.com',e:'tips@thenextweb.com',t:'Tech Global',r:'UK,US',c:'Tech',paid:false,s:5},
+  {n:'Wired',u:'wired.com',e:'tips@wired.com',t:'Tech Global',r:'UK,US',c:'Tech',paid:false,s:5},
+  {n:'HackerNoon',u:'hackernoon.com',e:'stories@hackernoon.com',t:'Tech Global',r:'AU,UK,US',c:'Tech',paid:false,s:4},
+  {n:'Product Hunt',u:'producthunt.com',e:'hello@producthunt.com',t:'Tech Global',r:'US',c:'Tech',paid:false,s:4},
+  {n:'Crunchbase News',u:'crunchbase.com',e:'editorial@crunchbase.com',t:'Tech US',r:'US',c:'Tech',paid:false,s:4},
+  {n:'Startup Daily AU',u:'startupdaily.net',e:'editor@startupdaily.net',t:'Tech AU',r:'AU',c:'Tech',paid:false,s:3},
+  {n:'Which-50',u:'which-50.com',e:'editor@which-50.com',t:'Tech AU',r:'AU',c:'Tech',paid:false,s:3},
+  {n:'CMO Australia',u:'cmo.com.au',e:'editorial@cmo.com.au',t:'Tech AU',r:'AU',c:'Tech',paid:false,s:3},
+  {n:'Cision UK',u:'cision.com/uk',e:'info@cision.com',t:'Wire UK',r:'UK',c:'UK',paid:true,s:5},
+  {n:'PR Fire UK',u:'prfire.com',e:'hello@prfire.com',t:'UK',r:'UK',c:'UK',paid:true,s:4},
+  {n:'ResponseSource',u:'responsesource.com',e:'support@responsesource.com',t:'UK',r:'UK',c:'UK',paid:true,s:4},
+  {n:'Pressat UK',u:'pressat.co.uk',e:'hello@pressat.co.uk',t:'UK',r:'UK',c:'UK',paid:true,s:3},
+  {n:'PRLog',u:'prlog.org',e:'support@prlog.org',t:'Free Wire',r:'AU,UK,US',c:'',paid:false,s:3},
+  {n:'OpenPR',u:'openpr.com',e:'support@openpr.com',t:'Free Wire',r:'AU,UK,US',c:'',paid:false,s:3},
+  {n:'Medium',u:'medium.com',e:'hello@medium.com',t:'Content',r:'AU,UK,US',c:'',paid:false,s:4},
+  {n:'LinkedIn Articles',u:'linkedin.com',e:'',t:'Content',r:'AU,UK,US',c:'',paid:false,s:4},
+  {n:'Substack',u:'substack.com',e:'',t:'Content',r:'AU,UK,US',c:'',paid:false,s:3}
+];
+
+// ---- NAVIGATION ----
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); });
+  var el = document.getElementById(id);
+  if (el) el.classList.add('active');
+  state.currentScreen = id;
+  updateProgress(id);
+  if (id === 's2c') showTargetingForPath();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function updateProgress(screenId) {
+  var orderA = ['s0','s1','s2a','s2c','s3','s5'];
+  var orderB = ['s0','s1','s2b','s2c','s3','s4','s5'];
+  var orderC = ['s0','s1','s2pod','s2c','s3','s5'];
+  var order = state.path === 'B' ? orderB : state.path === 'C' ? orderC : orderA;
+  var idx = order.indexOf(screenId);
+  var bar = document.getElementById('progress-bar');
+  bar.innerHTML = '';
+  for (var i = 0; i < order.length; i++) {
+    var d = document.createElement('div');
+    d.className = 'progress-step' + (i < idx ? ' done' : i === idx ? ' active' : '');
+    bar.appendChild(d);
+  }
+}
+
+// ---- PATH SELECTION ----
+function selectPath(p) {
+  state.path = p;
+  document.getElementById('card-a').classList.toggle('on', p === 'A');
+  document.getElementById('card-b').classList.toggle('on', p === 'B');
+  document.getElementById('card-c').classList.toggle('on', p === 'C');
+  var notice = document.getElementById('path-notice');
+  notice.style.display = 'block';
+  var labels = { A: 'Selected: Send a press release to the press', B: 'Selected: Pitch a content idea to the press', C: 'Selected: Pitch a podcast or collaboration' };
+  notice.textContent = labels[p] || '';
+  document.getElementById('entry-btn').style.display = 'inline-flex';
+}
+
+// ---- PROFILE ----
+function submitProfile() {
+  var name = document.getElementById('f-name').value.trim();
+  var co = document.getElementById('f-co').value.trim();
+  if (!name || !co) { alert('Please fill in at least your name and company name.'); return; }
+  state.profile = {
+    name: name,
+    pos: document.getElementById('f-pos').value.trim(),
+    co: co,
+    web: document.getElementById('f-web').value.trim(),
+    email: document.getElementById('f-email').value.trim(),
+    what: document.getElementById('f-what').value.trim(),
+    angle: document.getElementById('f-angle').value.trim(),
+    extra: document.getElementById('f-extra').value.trim()
+  };
+  if (state.path === 'A') showScreen('s2a');
+  else if (state.path === 'B') showScreen('s2b');
+  else if (state.path === 'C') showScreen('s2pod');
+}
+
+// ---- PRESS RELEASE - PATH A ----
+function generatePR() {
+  var points = [
+    document.getElementById('pr-point-1').value.trim(),
+    document.getElementById('pr-point-2').value.trim(),
+    document.getElementById('pr-point-3').value.trim(),
+    document.getElementById('pr-point-4').value.trim(),
+    document.getElementById('pr-point-5').value.trim()
+  ].filter(function(p) { return p.length > 0; });
+
+  if (points.length === 0) { alert('Please fill in at least one key point before generating.'); return; }
+
+  var quote = document.getElementById('pr-quote').value.trim();
+  document.getElementById('gen-pr-btn').textContent = 'Generating...';
+  document.getElementById('gen-pr-btn').disabled = true;
+  document.getElementById('pr-gen-area').style.display = 'block';
+  document.getElementById('pr-spinner').style.display = 'flex';
+  document.getElementById('pr-result-wrap').style.display = 'none';
+  document.getElementById('pr-approved-msg').style.display = 'none';
+  state.prGenerating = true;
+
+  callAPI(buildPRPrompt(points, quote), function(text) {
+    state.pressRelease = text;
+    state.prGenerating = false;
+    document.getElementById('pr-spinner').style.display = 'none';
+    document.getElementById('pr-result').textContent = text;
+    document.getElementById('pr-result-wrap').style.display = 'block';
+    document.getElementById('gen-pr-btn').textContent = 'Generate press release \u2192';
+    document.getElementById('gen-pr-btn').disabled = false;
+    document.getElementById('pr-result-wrap').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }, function() {
+    state.prGenerating = false;
+    document.getElementById('pr-spinner').style.display = 'none';
+    document.getElementById('gen-pr-btn').textContent = 'Generate press release \u2192';
+    document.getElementById('gen-pr-btn').disabled = false;
+    alert('Could not connect to AI. Please check your connection and try again.');
+  });
+}
+
+function regenPR() {
+  var points = [
+    document.getElementById('pr-point-1').value.trim(),
+    document.getElementById('pr-point-2').value.trim(),
+    document.getElementById('pr-point-3').value.trim(),
+    document.getElementById('pr-point-4').value.trim(),
+    document.getElementById('pr-point-5').value.trim()
+  ].filter(function(p) { return p.length > 0; });
+  var quote = document.getElementById('pr-quote').value.trim();
+  var feedback = document.getElementById('pr-feedback').value.trim();
+  var prompt = buildPRPrompt(points, quote) + (feedback ? '\n\nChanges requested by user: ' + feedback + '\n\nPlease regenerate incorporating these changes exactly.' : '');
+  document.getElementById('pr-spinner').style.display = 'flex';
+  document.getElementById('pr-result-wrap').style.display = 'none';
+  document.getElementById('regen-btn').textContent = 'Regenerating...';
+  document.getElementById('regen-btn').disabled = true;
+  callAPI(prompt, function(text) {
+    state.pressRelease = text;
+    document.getElementById('pr-spinner').style.display = 'none';
+    document.getElementById('pr-result').textContent = text;
+    document.getElementById('pr-result-wrap').style.display = 'block';
+    document.getElementById('pr-feedback').value = '';
+    document.getElementById('regen-btn').textContent = 'Regenerate with these changes';
+    document.getElementById('regen-btn').disabled = false;
+    document.getElementById('pr-approved-msg').style.display = 'none';
+    document.getElementById('pr-result-wrap').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }, function() {
+    document.getElementById('pr-spinner').style.display = 'none';
+    document.getElementById('pr-result-wrap').style.display = 'block';
+    document.getElementById('regen-btn').textContent = 'Regenerate with these changes';
+    document.getElementById('regen-btn').disabled = false;
+    alert('Could not regenerate. Please try again.');
+  });
+}
+
+function approvePR() {
+  state.prApproved = true;
+  var btn = document.getElementById('approve-btn');
+  btn.textContent = '\u2713 Approved!';
+  btn.disabled = true;
+  document.getElementById('pr-approved-msg').style.display = 'block';
+  setTimeout(function() {
+    btn.innerHTML = '&#10003; Approve and continue \u2192';
+    btn.disabled = false;
+    showScreen('s2c');
+  }, 1200);
+}
+
+function buildPRPrompt(points, quote) {
+  var p = state.profile;
+  var pointsList = points.map(function(pt, i) { return (i + 1) + '. ' + pt; }).join('\n');
+  return 'Write a professional press release of between 400 and 700 words for ' + p.co + '.\n\nKey points to cover (use all that are provided, in order of importance):\n' + pointsList + '\n\nCompany: ' + p.co + '\nWhat they do: ' + p.what + '\nUnique angle: ' + p.angle + (quote ? '\nQuote from ' + p.name + (p.pos ? ', ' + p.pos : '') + ': "' + quote + '"' : '') + '\nContact: ' + p.web + ' | ' + p.email + (p.extra ? '\nAdditional info: ' + p.extra : '') + '\n\nFormat:\nFOR IMMEDIATE RELEASE\n\n[Strong headline based on the key points]\n\n[City, Date] -- [3-4 body paragraphs covering all the key points provided, 400-700 words total]\n\nAbout ' + p.co + '\n[2-3 sentence boilerplate]\n\nMedia enquiries:\n' + p.name + '\n' + p.email + '\n' + p.web + '\n\n###\n\nPlain text only. No markdown, no asterisks.';
+}
+
+// ---- PATH B - PR SOURCE ----
+function continuePitchStory() {
+  var headline = document.getElementById('pitch-headline').value.trim();
+  var h1 = document.getElementById('b-hook-1').value.trim();
+  if (!headline && !h1) { alert('Please fill in at least a proposed headline or your first news hook.'); return; }
+  state.pitchStory = {
+    headline: headline,
+    hooks: [
+      h1,
+      document.getElementById('b-hook-2').value.trim(),
+      document.getElementById('b-hook-3').value.trim(),
+      document.getElementById('b-hook-4').value.trim(),
+      document.getElementById('b-hook-5').value.trim()
+    ].filter(function(h) { return h.length > 0; }),
+    quote: document.getElementById('b-quote').value.trim()
+  };
+  showScreen('s2c');
+}
+
+// ---- PATH C: PODCAST PITCH ----
+var podType = 'guest';
+
+function setPodType(type, el) {
+  podType = type;
+  ['guest','collab','sponsor'].forEach(function(t) {
+    document.getElementById('pod-type-' + t).classList.toggle('on', t === type);
+  });
+}
+
+function handlePodDrop(e) {
+  e.preventDefault();
+  document.getElementById('pod-upload-zone').classList.remove('drag');
+  var f = e.dataTransfer.files[0];
+  if (f) processPodFile(f);
+}
+
+function handlePodUpload(inp) {
+  var f = inp.files[0];
+  if (f) processPodFile(f);
+}
+
+function processPodFile(f) {
+  var spin = document.getElementById('pod-upload-spinner');
+  var ok = document.getElementById('pod-upload-ok');
+  var err = document.getElementById('pod-upload-err');
+  ok.style.display = 'none'; err.style.display = 'none'; spin.style.display = 'flex';
+  if (f.name.match(/\.txt$/i)) {
+    var r = new FileReader();
+    r.onload = function(e) {
+      state.podMediaKit = e.target.result;
+      spin.style.display = 'none';
+      ok.textContent = '\u2713 Uploaded: ' + f.name;
+      ok.style.display = 'block';
+    };
+    r.readAsText(f);
+  } else {
+    spin.style.display = 'none';
+    err.textContent = 'Please use a .txt file for best results.';
+    err.style.display = 'block';
+  }
+}
+
+function continuePodcastPitch() {
+  var title = document.getElementById('pod-title').value.trim();
+  var h1 = document.getElementById('pod-hook-1').value.trim();
+  if (!title && !h1) { alert('Please fill in at least a proposed episode title or your first hook.'); return; }
+  state.podcastPitch = {
+    type: podType,
+    title: title,
+    hooks: [
+      h1,
+      document.getElementById('pod-hook-2').value.trim(),
+      document.getElementById('pod-hook-3').value.trim(),
+      document.getElementById('pod-hook-4').value.trim(),
+      document.getElementById('pod-hook-5').value.trim()
+    ].filter(function(h) { return h.length > 0; }),
+    quote: document.getElementById('pod-quote').value.trim(),
+    mediaKit: state.podMediaKit || ''
+  };
+  goToTargeting();
+}
+
+// ---- FILE UPLOAD ----
+function handleDrop(e) {
+  e.preventDefault();
+  document.getElementById('upload-zone').classList.remove('drag');
+  var f = e.dataTransfer.files[0];
+  if (f) processFile(f);
+}
+
+function handleFileUpload(inp) {
+  var f = inp.files[0];
+  if (f) processFile(f);
+}
+
+function processFile(f) {
+  var spin = document.getElementById('upload-spinner');
+  var ok = document.getElementById('upload-ok');
+  var err = document.getElementById('upload-err');
+  var zone = document.getElementById('upload-zone');
+  ok.style.display = 'none';
+  err.style.display = 'none';
+  spin.style.display = 'flex';
+
+  function success(text, label) {
+    state.pressRelease = text;
+    spin.style.display = 'none';
+    zone.classList.add('done');
+    zone.innerHTML = '<div style="font-size:24px;margin-bottom:8px;">&#10003;</div><div style="font-size:14px;">' + f.name + ' -- uploaded successfully</div>';
+    ok.textContent = 'Press release text extracted and ready.';
+    ok.style.display = 'block';
+    document.getElementById('pr-source-btn').style.display = 'inline-flex';
+  }
+
+  function fail(msg) {
+    spin.style.display = 'none';
+    err.textContent = msg;
+    err.style.display = 'block';
+  }
+
+  if (f.name.match(/\.txt$/i)) {
+    var r = new FileReader();
+    r.onload = function(e) { success(e.target.result); };
+    r.onerror = function() { fail('Could not read file. Try the .txt or .docx format.'); };
+    r.readAsText(f);
+  } else if (f.name.match(/\.docx?$/i)) {
+    f.arrayBuffer().then(function(ab) {
+      if (typeof mammoth === 'undefined') { fail('Word extraction not available. Please use .txt instead.'); return; }
+      mammoth.extractRawText({ arrayBuffer: ab }).then(function(res) {
+        if (!res.value || res.value.trim().length < 10) { fail('Could not extract text. Please use a .txt file instead.'); return; }
+        success(res.value.trim());
+      }).catch(function(e) { fail('Error reading Word file: ' + e.message); });
+    });
+  } else if (f.name.match(/\.pdf$/i)) {
+    if (typeof pdfjsLib === 'undefined') { fail('PDF library not loaded. Please use .txt or .docx instead.'); return; }
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    f.arrayBuffer().then(function(ab) {
+      pdfjsLib.getDocument({ data: ab }).promise.then(function(pdf) {
+        var text = '';
+        var pages = [];
+        for (var i = 1; i <= pdf.numPages; i++) { pages.push(i); }
+        var chain = Promise.resolve();
+        pages.forEach(function(pg) {
+          chain = chain.then(function() {
+            return pdf.getPage(pg).then(function(page) {
+              return page.getTextContent().then(function(c) {
+                text += c.items.map(function(item) { return item.str; }).join(' ') + '\n\n';
+              });
+            });
+          });
+        });
+        chain.then(function() {
+          if (!text.trim() || text.trim().length < 20) {
+            fail('This PDF appears to be a scanned image. Please use a text-based PDF or .docx file.');
+            return;
+          }
+          success(text.trim());
+        });
+      }).catch(function(e) { fail('Error reading PDF: ' + e.message); });
+    });
+  } else {
+    fail('Unsupported file type. Please use .pdf, .docx, or .txt');
+  }
+}
+
+// ---- TARGETING ----
+function setSuggest(inputId, chip, val) {
+  document.getElementById(inputId).value = val;
+  chip.closest('.chips').querySelectorAll('.chip').forEach(function(c) { c.classList.remove('on'); });
+  chip.classList.add('on');
+}
+
+function toggleChip(el, key, val) {
+  el.classList.toggle('on');
+  if (!state.targeting[key]) state.targeting[key] = [];
+  if (el.classList.contains('on')) {
+    if (state.targeting[key].indexOf(val) === -1) state.targeting[key].push(val);
+  } else {
+    state.targeting[key] = state.targeting[key].filter(function(v) { return v !== val; });
+  }
+}
+
+function setTPref(val) {
+  state.targeting.pref = val;
+  ['both','free','paid'].forEach(function(v) {
+    document.getElementById('tp-' + v).classList.toggle('on', v === val);
+  });
+}
+
+function goBackFromTargeting() {
+  if (state.path === 'A') showScreen('s2a');
+  else if (state.path === 'B') showScreen('s2b');
+  else if (state.path === 'C') showScreen('s2pod');
+  else showScreen('s2a');
+}
+
+function goToTargeting() {
+  showTargetingForPath();
+  showScreen('s2c');
+}
+
+var podAudPref = 'all';
+
+function setPodAud(val) {
+  podAudPref = val;
+  ['all','niche','large'].forEach(function(v) {
+    var el = document.getElementById('pod-aud-' + v);
+    if (el) el.classList.toggle('on', v === val);
+  });
+}
+
+function showTargetingForPath() {
+  var isC = state.path === 'C';
+  document.getElementById('s2c-title').textContent = isC ? 'What kind of podcasts are you looking for?' : 'What kind of press are you trying to reach?';
+  document.getElementById('s2c-sub').textContent = isC
+    ? 'Tell us your industry and target audience. We will search for active podcasts that cover your niche and accept guest pitches or collaborations.'
+    : 'Tell us your target industries and preferences. We will use this to find and rank the most relevant platforms for your outreach.';
+  document.getElementById('t-primary-label').textContent = isC
+    ? 'Primary topic or niche -- what should the podcast cover?'
+    : 'Primary industry -- the main category your story fits into';
+  document.getElementById('pr-only-fields').style.display = isC ? 'none' : 'block';
+  document.getElementById('pod-only-fields').style.display = isC ? 'block' : 'none';
+  document.getElementById('find-plats-btn').textContent = isC ? 'Find podcasts \u2192' : 'Find my platforms \u2192';
+}
+
+function submitTargeting() {
+  var primary = document.getElementById('t-primary').value.trim();
+  if (!primary) { alert('Please enter a primary industry or topic.'); return; }
+  state.targeting.primary = primary;
+  state.targeting.secondary = document.getElementById('t-secondary').value.trim();
+  state.foundPlatforms = [];
+  state.platFilter = 'all';
+  document.getElementById('plat-list').innerHTML = '';
+  document.getElementById('plat-btn').style.display = 'none';
+  document.getElementById('plat-sel-pill').style.display = 'none';
+  document.getElementById('plat-search-done').style.display = 'none';
+  document.getElementById('plat-filter-row').style.display = 'none';
+  document.getElementById('plat-search-banner').style.display = 'block';
+
+  if (state.path === 'C') {
+    document.getElementById('s3-title').textContent = 'Choose your target podcast';
+    document.getElementById('s3-eyebrow').textContent = 'Step 4 of 5 -- Podcasts';
+    document.getElementById('plat-search-status').textContent = 'Searching for podcasts in ' + primary + '...';
+    document.getElementById('s3-sub').textContent = 'Finding podcasts matched to your selections...';
+    showScreen('s3');
+    searchPodcasts();
+  } else {
+    document.getElementById('s3-title').textContent = 'Choose your target platform';
+    document.getElementById('s3-eyebrow').textContent = 'Step 4 of 5 -- Platforms';
+    document.getElementById('plat-search-status').textContent = 'Searching for PR platforms in ' + primary + '...';
+    document.getElementById('s3-sub').textContent = 'Finding platforms matched to your selections...';
+    showScreen('s3');
+    searchIndustryPlatforms();
+  }
+}
+
+function searchPodcasts() {
+  var t = state.targeting;
+  var primary = t.primary;
+  var secondary = t.secondary || '';
+  var countries = (t.countries && t.countries.length > 0) ? t.countries.join(', ') : 'Global';
+  var pp = state.podcastPitch || {};
+  var pitchType = pp.type || 'guest';
+  var audText = podAudPref === 'niche' ? 'niche highly-engaged audiences' : podAudPref === 'large' ? 'large audiences 50k+ listeners' : 'any audience size';
+
+  // Smaller targeted prompt -- 20 results keeps response within token limits
+  var prompt = 'List 20 real, currently active podcasts specifically about "' + primary + '"' + (secondary ? ' or "' + secondary + '"' : '') + ' that are popular in ' + countries + ' and accept ' + pitchType + ' pitches.\n\nCriteria: ' + audText + '. Only include podcasts you know are real and active.\n\nRespond ONLY with a JSON array. No text before or after. Start your response with [ immediately:\n[{"n":"Podcast Name","u":"podcasturl.com","e":"contact@email.com","host":"Host Name","platform":"Spotify, Apple Podcasts","t":"niche","r":"' + (countries.split(',')[0].trim().substring(0,2).toUpperCase() || 'Global') + '","s":4,"desc":"One sentence why relevant for ' + primary + ' guests","accepts_guests":true}]';
+
+  callAPIHighTokens(prompt, function(text) {
+    document.getElementById('plat-search-banner').style.display = 'none';
+    try {
+      // Aggressive JSON extraction
+      var clean = text.trim();
+      // Strip any markdown fences
+      clean = clean.replace(/^```json\s*/i,'').replace(/^```\s*/i,'').replace(/```\s*$/,'').trim();
+      // Strip any prose before the array
+      var start = clean.indexOf('[');
+      var end = clean.lastIndexOf(']');
+      if (start === -1 || end === -1 || end <= start) throw new Error('No JSON array in response');
+      clean = clean.substring(start, end + 1);
+      // Fix common JSON issues -- trailing commas
+      clean = clean.replace(/,\s*([}\]])/g, '$1');
+      var found = JSON.parse(clean);
+      if (!Array.isArray(found) || !found.length) throw new Error('Empty array');
+      found = found.filter(function(p) { return p && p.n; });
+      if (!found.length) throw new Error('No valid entries');
+      found.forEach(function(p) {
+        p.s = Math.min(5, Math.max(1, parseInt(p.s) || 3));
+        p.paid = false;
+        p.e = p.e || '';
+        p.desc = p.desc || '';
+        p.host = p.host || '';
+        p.platform = p.platform || '';
+        p.t = p.t || primary;
+        p.r = p.r || countries.split(',')[0].trim();
+        p.isPodcast = true;
+        p.accepts_guests = p.accepts_guests !== false;
+      });
+      found.sort(function(a,b) { return b.s - a.s; });
+      state.foundPlatforms = found;
+      renderFoundPodcasts(found);
+      var d = document.getElementById('plat-search-done');
+      d.textContent = '\u2713 Found ' + found.length + ' podcasts for "' + primary + '"' + (secondary ? ' + "' + secondary + '"' : '') + ' in ' + countries;
+      d.style.display = 'block';
+      document.getElementById('plat-filter-row').style.display = 'block';
+      document.getElementById('plat-filters').innerHTML = '<div class="chip on" onclick="filterPodcasts(\'all\',this)">All</div><div class="chip" onclick="filterPodcasts(\'top\',this)">Top rated</div><div class="chip" onclick="filterPodcasts(\'guests\',this)">Accepts guests</div>';
+      document.getElementById('s3-sub').textContent = found.length + ' podcasts matched to your niche. Click one to select it.';
+    } catch(e) {
+      // Show the raw response so we can debug
+      document.getElementById('plat-search-done').style.display = 'block';
+      document.getElementById('plat-search-done').className = 'notice notice-error';
+      document.getElementById('plat-search-done').textContent = 'Could not parse results ('+e.message+'). Raw response below -- click Retry.';
+      document.getElementById('plat-list').innerHTML = '<div style="padding:1rem;">' +
+        '<button class="btn btn-primary btn-sm" onclick="searchPodcasts()" style="margin-bottom:10px;">Retry search</button>' +
+        '<pre style="font-size:10px;color:var(--muted);white-space:pre-wrap;max-height:200px;overflow-y:auto;">' + text.substring(0, 800) + '</pre></div>';
+    }
+  }, function(err) {
+    document.getElementById('plat-search-banner').style.display = 'none';
+    document.getElementById('plat-search-done').style.display = 'block';
+    document.getElementById('plat-search-done').className = 'notice notice-error';
+    document.getElementById('plat-search-done').textContent = 'API error: ' + err;
+    document.getElementById('plat-list').innerHTML = '<div style="padding:1rem;"><button class="btn btn-primary btn-sm" onclick="searchPodcasts()">Retry search</button></div>';
+  });
+}
+
+function callAPIHighTokens(prompt, onSuccess, onError) {
+  fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 8000,
+      messages: [{ role: 'user', content: prompt }]
+    })
+  }).then(function(r) { return r.json(); })
+  .then(function(d) {
+    if (d.error) { onError(d.error.message); return; }
+    var t = (d.content || []).map(function(c) { return c.text || ''; }).join('');
+    onSuccess(t);
+  }).catch(function(e) { onError(e.message); });
+}
+
+function filterPodcasts(f, btn) {
+  document.querySelectorAll('#plat-filters .chip').forEach(function(c) { c.classList.remove('on'); });
+  btn.classList.add('on');
+  var list = state.foundPlatforms || [];
+  if (f === 'top') list = list.filter(function(p) { return p.s >= 4; });
+  else if (f === 'guests') list = list.filter(function(p) { return p.accepts_guests !== false; });
+  renderFoundPodcasts(list);
+}
+
+function renderFoundPodcasts(list) {
+  var el = document.getElementById('plat-list');
+  if (!list.length) { el.innerHTML = '<div style="padding:1rem;color:var(--muted);font-size:13px;">No podcasts match this filter.</div>'; return; }
+  var html = '';
+  list.forEach(function(p) {
+    var sel = state.selectedPlatform && state.selectedPlatform.n === p.n;
+    var stars = '';
+    for (var i = 0; i < p.s; i++) stars += '&#9733;';
+    for (var i = p.s; i < 5; i++) stars += '&#9734;';
+    var safe = p.n.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+    html += '<div class="plat-item' + (sel ? ' sel' : '') + '" onclick="selectPlatform(\'' + safe + '\')">';
+    html += '<div style="flex:1;">';
+    html += '<div class="plat-name">&#127911; ' + p.n + '</div>';
+    if (p.host) html += '<div style="font-size:11px;color:var(--text);font-weight:500;margin-top:1px;">Host: ' + p.host + '</div>';
+    if (p.platform) html += '<div style="font-size:10px;color:var(--gold);margin-top:2px;">On: ' + p.platform + '</div>';
+    if (p.u) html += '<div class="plat-url">' + p.u + '</div>';
+    if (p.desc) html += '<div style="font-size:11px;color:var(--muted);margin-top:3px;font-style:italic;">' + p.desc + '</div>';
+    if (p.e) html += '<div class="plat-email">&#9993; ' + p.e + '</div>';
+    if (p.accepts_guests !== false) html += '<div style="font-size:10px;background:#d8f3dc;color:#2d6a4f;border-radius:3px;padding:2px 6px;display:inline-block;margin-top:4px;font-weight:500;">Accepts guest pitches</div>';
+    html += '</div>';
+    html += '<div style="text-align:right;flex-shrink:0;">';
+    html += '<div class="stars">' + stars + '</div>';
+    html += '<div style="font-size:10px;color:var(--muted);margin-top:3px;">' + p.t + '</div>';
+    html += '</div></div>';
+  });
+  el.innerHTML = html;
+}
+
+function searchIndustryPlatforms() {
+  var t = state.targeting;
+  var primary = t.primary;
+  var secondary = t.secondary || '';
+  var countries = (t.countries && t.countries.length > 0) ? t.countries.join(', ') : 'Global';
+  var pref = t.pref || 'both';
+  var media = (t.media && t.media.length > 0) ? t.media.join(', ') : 'News and Press Release';
+  var prefText = pref === 'free' ? 'free to submit only' : pref === 'paid' ? 'paid distribution only' : 'free and paid';
+
+  var prompt = 'You are a specialist PR researcher with deep knowledge of media outlets worldwide. Generate a comprehensive list of up to 50 real, named, currently active media outlets, trade publications, PR distribution platforms, and websites that accept press releases within the ' + primary + ' sector' + (secondary ? ' and the ' + secondary + ' crossover niche' : '') + '.\n\nInclude both niche industry-specific platforms AND broader media channels that have a proven track record of featuring ' + primary + ' content.\n\nUSER CRITERIA (apply all of these):\n- PRIMARY INDUSTRY: ' + primary + '\n- SECONDARY INDUSTRY: ' + (secondary || 'none') + '\n- TARGET COUNTRIES: ' + countries + ' (focus on outlets with strong readership or based in these countries)\n- PLATFORM TYPE: ' + prefText + '\n- COVERAGE TYPE WANTED: ' + media + '\n\nFor each outlet include:\n1. Exact platform/outlet name\n2. Real website URL\n3. Best known editorial or press submission email (use press@, editorial@, news@, contact@ formats based on the outlet -- leave blank if genuinely unknown)\n4. Whether submission is free or paid\n5. Relevance star rating 1-5 for ' + primary + ' in ' + countries + '\n6. What content types they accept: press releases, guest articles, case studies, news stories\n7. One sentence description of their focus and why they are relevant to ' + primary + (secondary ? ' and ' + secondary : '') + '\n\nInclude a mix of:\n- Specialist trade journals and magazines for ' + primary + '\n- Industry news websites and portals\n- PR wire distribution services\n- General media outlets with ' + primary + ' sections or beats\n- Influential newsletters or online publications in this space\n- Relevant journalists or editors who cover ' + primary + '\n\nIMPORTANT: Only include platforms that genuinely cover ' + primary + '. Every entry must be a real, named platform. Do not invent platforms.\n\nReturn ONLY a raw JSON array. No text before or after. No markdown. No code fences. Start immediately with [ :\n[{"n":"Exact Platform Name","u":"realwebsite.com","e":"editorial@realwebsite.com","t":"Trade Publication","r":"AU","paid":false,"s":5,"content_type":"Press releases, news","desc":"Covers ' + primary + ' with focus on..."}]';
+
+  callAPIWithSearch(prompt, function(text) {
+    document.getElementById('plat-search-banner').style.display = 'none';
+    try {
+      var clean = text.trim();
+      // Strip any markdown or preamble
+      clean = clean.replace(/^```json\s*/i,'').replace(/^```\s*/i,'').replace(/```\s*$/,'').trim();
+      // Find the JSON array
+      var start = clean.indexOf('[');
+      var end = clean.lastIndexOf(']');
+      if (start === -1 || end === -1 || end <= start) throw new Error('No JSON array found');
+      clean = clean.substring(start, end + 1);
+      var found = JSON.parse(clean);
+      if (!Array.isArray(found) || found.length === 0) throw new Error('Empty array');
+
+      // Validate and normalise
+      found = found.filter(function(p) { return p && p.n && p.u; });
+      found.forEach(function(p) {
+        p.s = Math.min(5, Math.max(1, parseInt(p.s) || 3));
+        p.paid = (p.paid === true || p.paid === 'true' || p.paid === 'yes');
+        p.e = p.e || '';
+        p.desc = p.desc || '';
+        p.content_type = p.content_type || media;
+        p.t = p.t || primary;
+        p.r = p.r || countries.split(',')[0].trim();
+        p.c = primary;
+      });
+
+      // Apply paid/free filter
+      if (pref === 'free') found = found.filter(function(p) { return !p.paid; });
+      else if (pref === 'paid') found = found.filter(function(p) { return p.paid; });
+      if (found.length === 0) throw new Error('No platforms after filter');
+
+      // Sort by stars descending
+      found.sort(function(a, b) { return b.s - a.s; });
+      state.foundPlatforms = found;
+      renderFoundPlatforms(found);
+
+      var doneBanner = document.getElementById('plat-search-done');
+      doneBanner.textContent = '\u2713 Found ' + found.length + ' outlets for "' + primary + '"' + (secondary ? ' + "' + secondary + '"' : '') + ' in ' + countries;
+      doneBanner.style.display = 'block';
+      document.getElementById('plat-filter-row').style.display = 'block';
+      var sub = document.getElementById('s3-sub');
+      if (sub) sub.textContent = found.length + ' outlets matched to your selections, ranked by relevance. Click one to select it.';
+
+    } catch(e) {
+      console.error('Platform search parse error:', e, 'Raw text:', text.substring(0, 500));
+      document.getElementById('plat-search-done').style.display = 'block';
+      document.getElementById('plat-search-done').textContent = 'Search returned unexpected format -- showing best matches from our database.';
+      document.getElementById('plat-filter-row').style.display = 'block';
+      fallbackPlatforms();
+    }
+  }, function(err) {
+    console.error('Platform search API error:', err);
+    document.getElementById('plat-search-banner').style.display = 'none';
+    document.getElementById('plat-search-done').style.display = 'block';
+    document.getElementById('plat-search-done').textContent = 'API error: ' + err + ' -- showing best matches from our database.';
+    document.getElementById('plat-filter-row').style.display = 'block';
+    fallbackPlatforms();
+  }, function(statusMsg) {
+    document.getElementById('plat-search-status').textContent = statusMsg;
+  });
+}
+
+function fallbackPlatforms() {
+  var t = state.targeting;
+  var pref = t.pref || 'both';
+  var countries = t.countries || [];
+  var list = PLATFORMS.slice();
+  if (countries.length > 0 && countries.indexOf('Global') === -1) {
+    var cmap = {'Australia':'AU','United Kingdom':'UK','United States':'US','Canada':'US','New Zealand':'AU','Europe':'UK'};
+    var codes = countries.map(function(c) { return cmap[c] || ''; }).filter(Boolean);
+    if (codes.length) list = list.filter(function(p) { return codes.some(function(code) { return p.r.indexOf(code) > -1; }); });
+  }
+  if (pref === 'free') list = list.filter(function(p) { return !p.paid; });
+  if (pref === 'paid') list = list.filter(function(p) { return p.paid; });
+  list.sort(function(a,b) { return b.s - a.s; });
+  state.foundPlatforms = list;
+  renderFoundPlatforms(list);
+  var sub = document.getElementById('s3-sub');
+  if (sub) sub.textContent = list.length + ' platforms from our database. Click one to select it.';
+}
+
+function renderFoundPlatforms(list) {
+  var f = state.platFilter || 'all';
+  var filtered = list.slice();
+  if (f === 'Free') filtered = filtered.filter(function(p) { return !p.paid; });
+  else if (f === 'Paid') filtered = filtered.filter(function(p) { return p.paid; });
+  else if (f === 'Top') filtered = filtered.filter(function(p) { return p.s >= 4; });
+  // Sort by stars desc
+  filtered.sort(function(a,b) { return b.s - a.s; });
+  var el = document.getElementById('plat-list');
+  if (!filtered.length) {
+    el.innerHTML = '<div style="padding:1.25rem;color:var(--muted);font-size:13px;">No platforms match this filter. Try a different filter above.</div>';
+    return;
+  }
+  var html = '';
+  filtered.forEach(function(p) {
+    var sel = state.selectedPlatform && state.selectedPlatform.n === p.n;
+    var stars = '';
+    for (var i = 0; i < p.s; i++) stars += '&#9733;';
+    for (var i = p.s; i < 5; i++) stars += '&#9734;';
+    var safeName = p.n.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+    html += '<div class="plat-item' + (sel ? ' sel' : '') + '" onclick="selectPlatform(\'' + safeName + '\')">';
+    html += '<div style="flex:1;">';
+    html += '<div class="plat-name">' + p.n + '</div>';
+    html += '<div class="plat-url">' + p.u + '</div>';
+    if (p.content_type) html += '<div style="font-size:11px;color:var(--gold);margin-top:2px;">Accepts: ' + p.content_type + '</div>';
+    if (p.desc) html += '<div style="font-size:11px;color:var(--muted);margin-top:2px;font-style:italic;">' + p.desc + '</div>';
+    if (p.e) html += '<div class="plat-email">&#9993; ' + p.e + '</div>';
+    html += '</div>';
+    html += '<div style="text-align:right;flex-shrink:0;">';
+    html += '<div class="stars">' + stars + '</div>';
+    html += '<div style="margin-top:4px;"><span class="' + (p.paid ? 'tag-paid' : 'tag-free') + '">' + (p.paid ? 'Paid' : 'Free') + '</span></div>';
+    html += '<div style="font-size:10px;color:var(--muted);margin-top:3px;">' + p.t + '</div>';
+    html += '</div>';
+    html += '</div>';
+  });
+  el.innerHTML = html;
+}
+
+// Override selectPlatform to also work with found platforms
+function selectPlatform(name) {
+  var plat = (state.foundPlatforms || []).find(function(p) { return p.n === name; });
+  if (!plat) plat = PLATFORMS.find(function(p) { return p.n === name; });
+  if (!plat) return;
+  state.selectedPlatform = plat;
+  document.getElementById('plat-btn').style.display = 'inline-flex';
+  var pill = document.getElementById('plat-sel-pill');
+  var pillLabel = plat.isPodcast
+    ? '&#127911; ' + plat.n + (plat.host ? ' -- Host: ' + plat.host : '')
+    : '&#10003; ' + plat.n + ' -- ' + plat.t + ' -- ' + (plat.paid ? 'Paid' : 'Free');
+  pill.innerHTML = '<div class="sel-pill">' + pillLabel + '</div>';
+  pill.style.display = 'block';
+  // Auto-populate email screen fields
+  var emailField = document.getElementById('e-contact');
+  var editorField = document.getElementById('e-editor');
+  if (emailField && plat.e) { emailField.value = plat.e; }
+  // For podcasts auto-fill host name as editor name
+  if (editorField) {
+    if (plat.isPodcast && plat.host) {
+      editorField.value = plat.host;
+    } else {
+      editorField.value = plat.editor || '';
+      editorField.placeholder = 'e.g. Editor at ' + plat.n;
+    }
+  }
+  var autoLabel = document.getElementById('email-auto-label');
+  if (autoLabel) autoLabel.textContent = plat.e ? '(auto-filled from platform)' : '';
+  // Re-render correctly based on path
+  if (plat.isPodcast) renderFoundPodcasts(state.foundPlatforms);
+  else if (state.foundPlatforms && state.foundPlatforms.length) renderFoundPlatforms(state.foundPlatforms);
+  else renderPlatforms();
+}
+
+// ---- PLATFORMS ----
+function platScore(p) {
+  var s = p.s;
+  var pri = state.targeting.primary.toLowerCase();
+  var sec = state.targeting.secondary.toLowerCase();
+  var fashWords = ['fashion','apparel','clothing','retail','style','luxury','brand'];
+  var techWords = ['tech','technology','ai','software','digital','startup','innovation'];
+  var bizWords = ['business','marketing','advertising','media','pr'];
+  if (pri) {
+    if (fashWords.some(function(w) { return pri.indexOf(w) > -1; }) && p.c === 'Fashion') s += 4;
+    if (techWords.some(function(w) { return pri.indexOf(w) > -1; }) && p.c === 'Tech') s += 4;
+    if (bizWords.some(function(w) { return pri.indexOf(w) > -1; }) && (p.r.indexOf('AU') > -1)) s += 1;
+  }
+  if (sec && p.c && p.c.toLowerCase().indexOf(sec.split(' ')[0]) > -1) s += 1;
+  return s;
+}
+
+function platBadge(p, idx) {
+  var pri = state.targeting.primary.toLowerCase();
+  if (!pri) return '';
+  var fashWords = ['fashion','apparel','clothing','retail','style','luxury','brand'];
+  var techWords = ['tech','technology','ai','software','digital','startup','innovation'];
+  if (fashWords.some(function(w) { return pri.indexOf(w) > -1; }) && p.c === 'Fashion') return idx < 3 ? 'Top pick' : 'Best match';
+  if (techWords.some(function(w) { return pri.indexOf(w) > -1; }) && p.c === 'Tech') return idx < 3 ? 'Top pick' : 'Best match';
+  if (p.t.indexOf('Major Wire') > -1) return 'Wide reach';
+  if (p.s === 5 && idx < 4) return 'Highly rated';
+  return '';
+}
+
+function filterPlats(f, btn) {
+  state.platFilter = f;
+  document.querySelectorAll('#plat-filters .chip').forEach(function(c) { c.classList.remove('on'); });
+  btn.classList.add('on');
+  if (state.foundPlatforms && state.foundPlatforms.length) renderFoundPlatforms(state.foundPlatforms);
+  else renderPlatforms();
+}
+
+function renderPlatforms() {
+  var el = document.getElementById('plat-list');
+  var pref = state.targeting.pref || 'both';
+  var f = state.platFilter;
+  var countries = state.targeting.countries || [];
+  var list = PLATFORMS.slice();
+
+  if (countries.length > 0 && countries.indexOf('Global') === -1) {
+    var cmap = {'Australia':'AU','United Kingdom':'UK','United States':'US','Canada':'US','New Zealand':'AU','Europe':'UK'};
+    var codes = countries.map(function(c) { return cmap[c] || ''; }).filter(function(c) { return c; });
+    if (codes.length > 0) {
+      list = list.filter(function(p) {
+        return codes.some(function(code) { return p.r.indexOf(code) > -1; });
+      });
+    }
+  }
+
+  if (f === 'AU') list = list.filter(function(p) { return p.r.indexOf('AU') > -1; });
+  else if (f === 'UK') list = list.filter(function(p) { return p.r.indexOf('UK') > -1; });
+  else if (f === 'US') list = list.filter(function(p) { return p.r.indexOf('US') > -1; });
+  else if (f === 'Fashion') list = list.filter(function(p) { return p.c === 'Fashion'; });
+  else if (f === 'Tech') list = list.filter(function(p) { return p.c === 'Tech'; });
+  else if (f === 'Free') list = list.filter(function(p) { return !p.paid; });
+  else if (f === 'Top') list = list.filter(function(p) { return p.s === 5; });
+
+  if (pref === 'free') list = list.filter(function(p) { return !p.paid; });
+  if (pref === 'paid') list = list.filter(function(p) { return p.paid; });
+
+  if (state.targeting.primary) {
+    list.sort(function(a, b) { return platScore(b) - platScore(a); });
+  }
+
+  var html = '';
+  list.forEach(function(p, idx) {
+    var badge = platBadge(p, idx);
+    var sel = state.selectedPlatform && state.selectedPlatform.n === p.n;
+    var stars = '';
+    for (var i = 0; i < p.s; i++) stars += '&#9733;';
+    for (var i = p.s; i < 5; i++) stars += '&#9734;';
+    var safeName = p.n.replace(/'/g, "\\'");
+    html += '<div class="plat-item' + (sel ? ' sel' : '') + '" onclick="selectPlatform(\'' + safeName + '\')">';
+    html += '<div style="flex:1;">';
+    html += '<div class="plat-name">' + p.n + (badge ? '<span class="tag-match">' + badge + '</span>' : '') + '</div>';
+    html += '<div class="plat-url">' + p.u + '</div>';
+    if (p.desc) html += '<div style="font-size:11px;color:var(--muted);margin-top:2px;font-style:italic;">' + p.desc + '</div>';
+    if (p.e) html += '<div class="plat-email">&#9993; ' + p.e + '</div>';
+    html += '</div>';
+    html += '<div style="text-align:right;flex-shrink:0;">';
+    html += '<div class="stars">' + stars + '</div>';
+    html += '<div style="margin-top:4px;"><span class="' + (p.paid ? 'tag-paid' : 'tag-free') + '">' + (p.paid ? 'Paid' : 'Free') + '</span></div>';
+    html += '<div style="font-size:10px;color:var(--muted);margin-top:3px;">' + p.t + '</div>';
+    html += '</div>';
+    html += '</div>';
+  });
+
+  el.innerHTML = html || '<div style="padding:1rem;color:var(--muted);font-size:13px;">No platforms match your current filters.</div>';
+}
+
+function continueFromPlatforms() {
+  if (!state.selectedPlatform) { alert('Please select a platform first.'); return; }
+  var autoLabel = document.getElementById('email-auto-label');
+  if (autoLabel && state.selectedPlatform.e) { autoLabel.textContent = '(auto-filled from platform)'; }
+  if (state.path === 'A') {
+    document.getElementById('e-pitch-field').style.display = 'none';
+    document.getElementById('s5-sub').textContent = 'A short, punchy outreach email announcing your press release to ' + state.selectedPlatform.n + '.';
+    showScreen('s5');
+  } else if (state.path === 'C') {
+    document.getElementById('e-pitch-field').style.display = 'none';
+    var typeLabel = { guest: 'guest appearance pitch', collab: 'collaboration pitch', sponsor: 'sponsorship pitch' };
+    var pp = state.podcastPitch || {};
+    document.getElementById('s5-sub').textContent = 'A compelling ' + (typeLabel[pp.type] || 'podcast pitch') + ' email to ' + state.selectedPlatform.n + '.';
+    showScreen('s5');
+  } else {
+    document.getElementById('s4-plat').textContent = state.selectedPlatform.n;
+    showScreen('s4');
+  }
+}
+
+// ---- PITCH IDEAS ----
+// ---- WEBSITE FETCH ----
+function fetchWebsiteContent(url, onSuccess, onFail) {
+  if (!url) { onFail('No URL'); return; }
+  // Ensure URL has protocol
+  var fullUrl = url.match(/^https?:\/\//) ? url : 'https://' + url;
+  // Use allorigins proxy to bypass CORS
+  var proxy = 'https://api.allorigins.win/get?url=' + encodeURIComponent(fullUrl);
+  fetch(proxy, { method: 'GET' })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      var html = data.contents || '';
+      // Strip all HTML tags and collapse whitespace
+      var text = html
+        .replace(/<script[\s\S]*?<\/script>/gi, '')
+        .replace(/<style[\s\S]*?<\/style>/gi, '')
+        .replace(/<[^>]+>/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+      if (text.length < 50) { onFail('Too little content'); return; }
+      // Return first 2000 chars -- enough context without bloating prompt
+      onSuccess(text.substring(0, 2000));
+    })
+    .catch(function() { onFail('Fetch failed'); });
+}
+
+function generatePitches() {
+  if (!state.selectedPlatform) { alert('No platform selected. Please go back and select one.'); return; }
+  var p = state.profile;
+  var sel = state.selectedPlatform;
+  var angle = document.getElementById('pitch-angle').value.trim();
+  var ps = state.pitchStory || {};
+  var spinEl = document.getElementById('pitch-spinner');
+  var statusEl = document.getElementById('pitch-status');
+
+  document.getElementById('pitch-cards').innerHTML = '';
+  document.getElementById('pitch-continue-row').style.display = 'none';
+  spinEl.style.display = 'flex';
+  if (statusEl) statusEl.textContent = 'Reading ' + (p.web || 'your website') + '...';
+
+  function buildAndGenerate(websiteContent) {
+    if (statusEl) statusEl.textContent = 'Generating pitch ideas...';
+
+    // Build rich context from all available sources
+    var storyContext = '';
+    if (ps.headline) storyContext += 'Proposed story headline: ' + ps.headline + '\n';
+    if (ps.hooks && ps.hooks.length) storyContext += 'News hooks:\n' + ps.hooks.map(function(h,i){return (i+1)+'. '+h;}).join('\n') + '\n';
+    if (ps.quote) storyContext += 'Key quote: "' + ps.quote + '"\n';
+    if (state.pressRelease) storyContext += '\nExisting press release (summary):\n' + state.pressRelease.substring(0, 500) + '...\n';
+
+    var websiteSection = websiteContent ? '\nLive content from ' + p.web + ':\n' + websiteContent + '\n' : '';
+
+    var prompt = 'Generate exactly 5 specific, compelling story pitch ideas for ' + p.co + ' to pitch to ' + sel.n + ' (' + sel.u + '), a ' + sel.t + ' publication.\n\n' +
+      '=== BRAND PROFILE ===\n' +
+      'Company: ' + p.co + '\n' +
+      'What they do: ' + p.what + '\n' +
+      'Unique angle: ' + p.angle + '\n' +
+      (p.extra ? 'Additional info: ' + p.extra + '\n' : '') +
+      websiteSection +
+      (storyContext ? '\n=== STORY THEY WANT TO PITCH ===\n' + storyContext : '') +
+      (angle ? '\nAdditional focus: ' + angle + '\n' : '') +
+      '\n=== INSTRUCTIONS ===\n' +
+      'Use ALL the above -- the brand profile, website content, and story hooks -- to generate 5 highly specific, editorial pitch ideas tailored to ' + sel.n + '\'s audience and editorial style.\n' +
+      'Each pitch should feel like a real journalist story angle, not a press release. Draw on real details from the website and hooks above.\n\n' +
+      'Format EXACTLY as follows:\nPITCH 1\nHeadline: [punchy editorial headline]\nBody: [2-3 sentences making the case for the story]\n\nPITCH 2\nHeadline: [headline]\nBody: [2-3 sentences]\n\nContinue through PITCH 5. No asterisks or markdown.';
+
+    callAPI(prompt, function(text) {
+      spinEl.style.display = 'none';
+      renderPitchCards(text);
+    }, function() {
+      spinEl.style.display = 'none';
+      alert('Could not generate pitches. Please try again.');
+    });
+  }
+
+  // Try fetching website first -- proceed with or without it
+  if (p.web) {
+    fetchWebsiteContent(p.web, function(content) {
+      state.websiteContent = content;
+      buildAndGenerate(content);
+    }, function() {
+      // Website fetch failed -- generate without it
+      buildAndGenerate(state.websiteContent || '');
+    });
+  } else {
+    buildAndGenerate(state.websiteContent || '');
+  }
+}
+
+function renderPitchCards(text) {
+  var blocks = text.split(/PITCH\s+\d+/i).filter(function(b) { return b.trim().length > 10; });
+  state.pitchTexts = [];
+  var container = document.getElementById('pitch-cards');
+  if (!blocks.length) {
+    container.innerHTML = '<p style="color:var(--muted);font-size:13px;">Could not parse pitches. Please try generating again.</p>';
+    return;
+  }
+  var html = '';
+  blocks.forEach(function(block, i) {
+    var hm = block.match(/Headline:\s*(.+)/i);
+    var bm = block.match(/Body:\s*([\s\S]+)/i);
+    var h = hm ? hm[1].trim() : block.split('\n').filter(function(l) { return l.trim(); })[0] || ('Pitch ' + (i + 1));
+    var b = bm ? bm[1].trim() : '';
+    state.pitchTexts[i] = h + (b ? '\n\n' + b : '');
+    html += '<div class="pitch-card" id="pc-' + i + '">';
+    html += '<div class="pitch-badge">Pitch ' + (i + 1) + '</div>';
+    html += '<div class="pitch-headline">' + h + '</div>';
+    if (b) html += '<div class="pitch-body">' + b + '</div>';
+    html += '<button class="pitch-use" id="pu-' + i + '" onclick="usePitch(' + i + ')">Use this pitch &rarr;</button>';
+    html += '</div>';
+  });
+  container.innerHTML = html;
+  document.getElementById('pitch-continue-row').style.display = 'flex';
+}
+
+function usePitch(idx) {
+  state.selectedPitch = state.pitchTexts[idx] || '';
+  document.getElementById('e-pitch').value = state.selectedPitch;
+  document.querySelectorAll('.pitch-card').forEach(function(c) { c.classList.remove('sel'); });
+  document.querySelectorAll('.pitch-use').forEach(function(b) { b.textContent = 'Use this pitch \u2192'; b.classList.remove('used'); });
+  document.getElementById('pc-' + idx).classList.add('sel');
+  document.getElementById('pu-' + idx).textContent = '\u2713 Selected';
+  document.getElementById('pu-' + idx).classList.add('used');
+  document.getElementById('e-pitch').scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+// ---- EMAIL ----
+function goBackFromEmail() {
+  if (state.path === 'A') showScreen('s3');
+  else showScreen('s4');
+}
+
+function generateEmail() {
+  if (!state.selectedPlatform) { alert('No platform selected. Please go back and select one.'); return; }
+  var p = state.profile;
+  var sel = state.selectedPlatform;
+  var editor = document.getElementById('e-editor').value.trim() || 'the editorial team';
+  var contact = document.getElementById('e-contact').value.trim();
+
+  document.getElementById('email-spinner').style.display = 'flex';
+  document.getElementById('email-preview-wrap').style.display = 'none';
+
+  function buildEmail(websiteContent) {
+    var webSection = websiteContent ? '\n\nLive content from ' + p.web + ' (use for accuracy and brand voice):\n' + websiteContent + '\n' : '';
+    var boilerplate = '\n\nAbout ' + p.co + '\n' + p.co + ' is ' + p.what + '. ' + p.angle + (p.extra ? '\n' + p.extra : '') + '\nContact: ' + p.web + ' | ' + p.email + '\nNote: Full press release attached.';
+    var prompt;
+
+    if (state.path === 'A') {
+      var prSummary = state.pressRelease ? 'The press release covers: ' + state.pressRelease.substring(0, 500) + '...' : 'A press release about ' + p.co + ' and ' + p.what;
+      prompt = 'Write a short, professional press release outreach email from ' + p.name + (p.pos ? ', ' + p.pos : '') + ' at ' + p.co + ' to ' + editor + ' at ' + sel.n + (contact ? ' (' + contact + ')' : '') + '.\n\n' +
+        '=== BRAND INFO ===\n' +
+        'Company: ' + p.co + '\nWhat they do: ' + p.what + '\nUnique angle: ' + p.angle +
+        webSection +
+        '\n=== PRESS RELEASE ===\n' + prSummary +
+        '\n\nStructure exactly:\n1. SUBJECT LINE -- newsy and direct\n2. OPENING -- one sentence why this is relevant to ' + sel.n + '\'s readers\n3. THE NEWS -- 2-3 short paragraphs on key news, industry significance, why now\n4. CALL TO ACTION -- invite them to read attached release and reach out\n5. SIGN OFF:\n' + p.name + (p.pos ? '\n' + p.pos : '') + '\n' + boilerplate +
+        '\n\nNo asterisks, no markdown, plain text only.';
+    } else if (state.path === 'C') {
+    // Path C -- podcast / collaboration pitch
+    var pp = state.podcastPitch || {};
+    var typeLabels = { guest: 'guest appearance', collab: 'content collaboration', sponsor: 'sponsorship or partnership' };
+    var pitchType = typeLabels[pp.type] || 'podcast pitch';
+    var podHooks = (pp.hooks || []).map(function(h,i){return (i+1)+'. '+h;}).join('\n');
+    prompt = 'Write a professional ' + pitchType + ' outreach email from ' + p.name + (p.pos ? ', ' + p.pos : '') + ' at ' + p.co + ' to the host or producer of ' + sel.n + (contact ? ' (' + contact + ')' : '') + '.\n\n' +
+      '=== BRAND / PERSON INFO ===\n' +
+      'Name: ' + p.name + (p.pos ? ', ' + p.pos : '') + '\n' +
+      'Company: ' + p.co + '\nWhat they do: ' + p.what + '\nUnique angle: ' + p.angle +
+      webSection +
+      '\n=== THE PITCH ===\n' +
+      'Type of pitch: ' + pitchType + '\n' +
+      (pp.title ? 'Proposed episode / collaboration title: ' + pp.title + '\n' : '') +
+      (podHooks ? 'Hooks and talking points:\n' + podHooks + '\n' : '') +
+      (pp.quote ? 'Key quote / soundbite: "' + pp.quote + '"\n' : '') +
+      (pp.mediaKit ? '\nMedia kit / bio context:\n' + pp.mediaKit.substring(0, 400) + '\n' : '') +
+      '\nStructure exactly:\n' +
+      '1. SUBJECT LINE -- specific and compelling, referencing the episode concept\n' +
+      '2. OPENING -- one sentence showing genuine knowledge of ' + sel.n + ' and why this pitch fits their audience\n' +
+      '3. THE PITCH -- 2-3 paragraphs: who ' + p.name + ' is, why they are the right voice on this topic, what the audience will get out of it, and why now\n' +
+      '4. SUGGESTED TALKING POINTS -- 3-4 bullet points of specific topics or questions to discuss\n' +
+      '5. SOCIAL PROOF -- one sentence on any previous appearances, coverage, or credentials\n' +
+      '6. CALL TO ACTION -- friendly and low pressure\n' +
+      '7. SIGN OFF:\n' + p.name + (p.pos ? '\n' + p.pos : '') + '\n' + boilerplate +
+      '\n\nNo asterisks, no markdown, plain text only. Warm, professional, and genuine in tone.';
+    } else {
+      // Path B -- pitch a story
+      var ps = state.pitchStory || {};
+      var pitchHeadline = ps.headline || state.selectedPitch || '';
+      var hooks = ps.hooks || [];
+      var pitchQuote = ps.quote || '';
+      var hooksText = hooks.length > 0 ? hooks.map(function(h, i) { return 'Hook ' + (i+1) + ': ' + h; }).join('\n') : '';
+      var prContext = state.pressRelease ? '\nPress release context:\n' + state.pressRelease.substring(0, 500) + '...' : '';
+      prompt = 'Write a professional editorial pitch email from ' + p.name + (p.pos ? ', ' + p.pos : '') + ' at ' + p.co + ' to ' + editor + ' at ' + sel.n + (contact ? ' (' + contact + ')' : '') + '.\n\n' +
+        '=== BRAND INFO ===\n' +
+        'Company: ' + p.co + '\nWhat they do: ' + p.what + '\nUnique angle: ' + p.angle +
+        webSection +
+        '\n=== THE STORY TO PITCH ===\n' +
+        (pitchHeadline ? 'Proposed headline: ' + pitchHeadline + '\n' : '') +
+        (hooksText ? 'Story hooks:\n' + hooksText + '\n' : '') +
+        (pitchQuote ? 'Key quote: "' + pitchQuote + '"\n' : '') +
+        prContext +
+        '\n\nStructure exactly:\n1. SUBJECT LINE -- punchy and editorial\n2. OPENING -- one sentence about ' + sel.n + ' and why this story fits perfectly\n3. THE PITCH -- 2-3 paragraphs making the case for the story using the hooks above. Write as a journalist pitching to an editor.\n4. THE ANGLE -- what makes this unique and why ' + sel.n + '\'s readers care\n5. CALL TO ACTION -- low pressure\n6. SIGN OFF:\n' + p.name + (p.pos ? '\n' + p.pos : '') + '\n' + boilerplate +
+        '\n\nNo asterisks, no markdown, plain text only.';
+    }
+
+    callAPI(prompt, function(text) {
+      document.getElementById('email-spinner').style.display = 'none';
+      document.getElementById('email-preview').textContent = text;
+      document.getElementById('email-preview-wrap').style.display = 'block';
+      document.getElementById('copy-confirm').style.display = 'none';
+      if (state.pressRelease) {
+        document.getElementById('pr-not-ready').style.display = 'none';
+        document.getElementById('pr-pdf-btns').style.display = 'block';
+      }
+      document.getElementById('email-preview-wrap').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, function() {
+      document.getElementById('email-spinner').style.display = 'none';
+      alert('Could not generate email. Please try again.');
+    });
+  }
+
+  // Use cached website content if available, otherwise fetch fresh
+  if (state.websiteContent) {
+    buildEmail(state.websiteContent);
+  } else if (p.web) {
+    fetchWebsiteContent(p.web, function(content) {
+      state.websiteContent = content;
+      buildEmail(content);
+    }, function() {
+      buildEmail('');
+    });
+  } else {
+    buildEmail('');
+  }
+}
+
+function downloadPRasPDF() {
+  if (!state.pressRelease) { alert('No press release available to download yet.'); return; }
+  var co = state.profile.co || 'Press Release';
+  var web = state.profile.web || '';
+  var email = state.profile.email || '';
+  var name = state.profile.name || '';
+  var prText = state.pressRelease;
+  var safe = function(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); };
+  var filename = co.replace(/[^a-zA-Z0-9 ]/g,'').replace(/\s+/g,'_') + '_Press_Release.html';
+
+  var html = '<!DOCTYPE html><html><head><meta charset="UTF-8"/><title>' + safe(co) + ' -- Press Release</title>' +
+    '<style>*{box-sizing:border-box;margin:0;padding:0;}' +
+    'body{font-family:Georgia,serif;font-size:11pt;color:#1a1a1a;background:#fff;padding:20mm 22mm;}' +
+    '.hdr{border-bottom:2px solid #c2185b;padding-bottom:8px;margin-bottom:20px;}' +
+    '.co{font-family:Arial,sans-serif;font-size:9pt;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#c2185b;}' +
+    '.body{white-space:pre-wrap;line-height:1.9;font-size:11pt;}' +
+    '.ft{margin-top:24px;padding-top:10px;border-top:1px solid #e0e0e0;font-size:8pt;color:#999;display:flex;justify-content:space-between;}' +
+    '.instructions{background:#fce4ec;border:1px solid #f48fb1;border-radius:6px;padding:12px 16px;margin-bottom:24px;font-family:Arial,sans-serif;font-size:10pt;color:#880e4f;}' +
+    '@media print{.instructions{display:none;}body{padding:15mm 18mm;}@page{size:A4;margin:15mm;}}' +
+    '</style></head><body>' +
+    '<div class="instructions"><strong>To save as PDF:</strong> Press Cmd+P (Mac) or Ctrl+P (Windows) &rarr; change destination to <strong>Save as PDF</strong> &rarr; click Save.</div>' +
+    '<div class="hdr"><div class="co">' + safe(co) + '</div></div>' +
+    '<div class="body">' + safe(prText) + '</div>' +
+    '<div class="ft"><span>' + safe(co) + (name ? ' -- ' + safe(name) : '') + '</span>' +
+    '<span>' + safe(email) + (web ? '  |  ' + safe(web) : '') + '</span></div>' +
+    '</body></html>';
+
+  // Download as HTML file -- user opens it and prints to PDF
+  var blob = new Blob([html], { type: 'text/html' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(function() { URL.revokeObjectURL(url); }, 2000);
+
+  var confirm = document.getElementById('pr-pdf-confirm');
+  confirm.textContent = '\u2713 File downloaded to your Downloads folder. Open it in your browser, then press Cmd+P and choose Save as PDF to create the PDF attachment.';
+  confirm.style.display = 'block';
+}
+
+function copyEmail() {
+  var text = document.getElementById('email-preview').textContent;
+  var btn = document.getElementById('copy-btn');
+  var confirm = document.getElementById('copy-confirm');
+  var preview = document.getElementById('email-preview');
+  navigator.clipboard.writeText(text).then(function() {
+    btn.textContent = '\u2713 Copied!';
+    btn.style.background = '#2d6a4f';
+    btn.style.borderColor = '#2d6a4f';
+    preview.style.background = '#d8f3dc';
+    preview.style.transition = 'background 0.3s';
+    confirm.style.display = 'block';
+    setTimeout(function() {
+      btn.innerHTML = '&#8984; Copy email';
+      btn.style.background = '';
+      btn.style.borderColor = '';
+      preview.style.background = '';
+    }, 2500);
+  }).catch(function() {
+    var r = document.createRange();
+    r.selectNode(preview);
+    window.getSelection().removeAllRanges();
+    window.getSelection().addRange(r);
+    document.execCommand('copy');
+    window.getSelection().removeAllRanges();
+    btn.textContent = '\u2713 Copied!';
+    confirm.style.display = 'block';
+    setTimeout(function() { btn.innerHTML = '&#8984; Copy email'; }, 2500);
+  });
+}
+
+// ---- API ----
+function callAPI(prompt, onSuccess, onError) {
+  fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 4000,
+      messages: [{ role: 'user', content: prompt }]
+    })
+  }).then(function(resp) {
+    return resp.json();
+  }).then(function(data) {
+    if (data.error) { onError(data.error.message); return; }
+    var text = (data.content || []).map(function(c) { return c.text || ''; }).join('');
+    onSuccess(text);
+  }).catch(function(e) {
+    onError(e.message);
+  });
+}
+
+// Two-pass platform research using regular API calls
+// Pass 1: Find platform names and details
+// Pass 2: Enrich with contact info
+function callAPIWithSearch(prompt, onSuccess, onError, statusCallback) {
+  if (statusCallback) statusCallback('Researching platforms for your industry...');
+  fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 8000,
+      messages: [{ role: 'user', content: prompt }]
+    })
+  }).then(function(resp) { return resp.json(); })
+  .then(function(data) {
+    if (data.error) { onError(data.error.message); return; }
+    var text = (data.content || []).map(function(c) { return c.text || ''; }).join('');
+    if (statusCallback) statusCallback('Processing results...');
+    onSuccess(text);
+  }).catch(function(e) { onError(e.message); });
+}
+
+// ---- TEST MODE ----
+function testJump(screen) {
+  // Shared profile for all tests
+  state.profile = {
+    name: 'Aaron Kay', pos: 'Founder', co: 'NxxGen Studios',
+    web: 'nxxgenstudio.com', email: 'hello@nxxgenstudio.com',
+    what: 'AI-powered fashion photography studio for campaign and e-commerce content',
+    angle: 'We use proprietary AI workflows to create photorealistic fashion imagery at a fraction of traditional shoot costs.',
+    extra: ''
+  };
+  state.pressRelease = 'FOR IMMEDIATE RELEASE\n\nNxxGen Studios Launches AI Fashion Photography Platform\n\nSYDNEY -- NxxGen Studios today announced the launch of its AI-powered fashion content platform.\n\n###';
+  state.prApproved = true;
+
+  function resetPlatScreen() {
+    state.foundPlatforms = [];
+    document.getElementById('plat-list').innerHTML = '';
+    document.getElementById('plat-btn').style.display = 'none';
+    document.getElementById('plat-sel-pill').style.display = 'none';
+    document.getElementById('plat-search-done').style.display = 'none';
+    document.getElementById('plat-search-done').className = 'notice notice-success';
+    document.getElementById('plat-filter-row').style.display = 'none';
+    document.getElementById('plat-search-banner').style.display = 'block';
+  }
+
+  if (screen === 's3') {
+    state.path = 'A';
+    state.targeting = { primary: 'Fashion & Apparel', secondary: 'Technology & AI', countries: ['Australia'], pref: 'both', media: ['News & Press Release'] };
+    resetPlatScreen();
+    document.getElementById('s3-title').textContent = 'Choose your target platform';
+    document.getElementById('s3-eyebrow').textContent = 'Step 4 of 5 -- Platforms';
+    document.getElementById('plat-search-status').textContent = 'Searching for Fashion & Apparel PR platforms in Australia...';
+    showScreen('s3');
+    searchIndustryPlatforms();
+
+  } else if (screen === 's3pod') {
+    state.path = 'C';
+    state.targeting = { primary: 'Fashion & Apparel', secondary: 'Technology & AI', countries: ['Australia'], pref: 'both', tPodFmt: ['Interview'] };
+    state.podcastPitch = { type: 'guest', title: 'How AI is replacing the fashion photo shoot', hooks: ['AI is cutting fashion shoot costs by 90%','NxxGen Studios has served 12 Australian brands'], quote: 'The $10,000 photo shoot is dead.', mediaKit: '' };
+    resetPlatScreen();
+    document.getElementById('s3-title').textContent = 'Choose your target podcast';
+    document.getElementById('s3-eyebrow').textContent = 'Step 4 of 5 -- Podcasts';
+    document.getElementById('plat-search-status').textContent = 'Searching for Fashion & AI podcasts in Australia...';
+    showScreen('s3');
+    searchPodcasts();
+
+  } else if (screen === 's2c') {
+    state.path = 'A';
+    state.targeting = { primary: 'Health & Wellness', secondary: 'Sustainability', countries: ['Australia'], pref: 'both', media: ['News & Press Release'] };
+    showScreen('s2c');
+
+  } else if (screen === 's5') {
+    state.path = 'A';
+    state.targeting = { primary: 'Fashion & Apparel', secondary: '', countries: ['Australia'], pref: 'both', media: ['News'] };
+    state.selectedPlatform = { n: 'Ragtrader', u: 'ragtrader.com.au', e: 'editorial@ragtrader.com.au', t: 'Fashion AU', paid: false, s: 4 };
+    document.getElementById('e-contact').value = 'editorial@ragtrader.com.au';
+    document.getElementById('e-editor').value = '';
+    document.getElementById('e-pitch-field').style.display = 'none';
+    document.getElementById('s5-sub').textContent = 'Outreach email for Ragtrader. Press release is referenced as an attachment.';
+    showScreen('s5');
+  }
+}
+
+// ---- RESET ----
+function resetAll() {
+  state = {
+    path: null, prSource: null, profile: {},
+    targeting: { primary: '', secondary: '', countries: [], pref: 'both', media: ['News'] },
+    pressRelease: '', prApproved: false, prGenerating: false,
+    selectedPlatform: null, selectedPitch: '', pitchTexts: [],
+    platFilter: 'all', foundPlatforms: [], pitchStory: null, podcastPitch: null, podMediaKit: null, websiteContent: null, currentScreen: 's0'
+  };
+  document.getElementById('e-pitch-field').style.display = 'block';
+  document.getElementById('s5-sub').textContent = 'A short, focused outreach email. Your press release is referenced as an attachment and included below the sign-off.';
+  document.getElementById('tp-both').classList.add('on');
+  document.getElementById('card-a').classList.remove('on');
+  document.getElementById('card-b').classList.remove('on');
+  document.getElementById('card-c').classList.remove('on');
+  document.getElementById('path-notice').style.display = 'none';
+  document.getElementById('entry-btn').style.display = 'none';
+  showScreen('s0');
+}
+
+// ---- INIT ----
+renderPlatforms();
+updateProgress('s0');
+</script>
+</body>
+</html>
