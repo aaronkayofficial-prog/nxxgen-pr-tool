@@ -169,6 +169,16 @@ textarea{resize:vertical;line-height:1.6;}
         </div>
       </div>
     </div>
+    <div class="path-card" id="card-e" onclick="selectPath('E')">
+      <div style="display:flex;align-items:flex-start;gap:14px;">
+        <div class="path-icon" style="flex-shrink:0;">&#127968;</div>
+        <div>
+          <div class="path-title">Local media outreach</div>
+          <div class="path-desc">Target hyperlocal press in your neighbourhood, suburb, borough, or district. Find local newspapers, community websites, and regional media that cover your exact area.</div>
+          <div class="path-tag">Local & Community Press &rarr;</div>
+        </div>
+      </div>
+    </div>
   </div>
   <div id="path-notice" style="display:none;" class="notice notice-gold"></div>
   <div class="btn-row">
@@ -181,6 +191,7 @@ textarea{resize:vertical;line-height:1.6;}
       <button class="btn btn-outline btn-sm" onclick="testJump('s3')">Test Step 4 (PR Platforms)</button>
       <button class="btn btn-outline btn-sm" onclick="testJump('s3pod')">Test Step 4 (Podcasts)</button>
       <button class="btn btn-outline btn-sm" onclick="testJump('s5')">Test Step 5 (Email)</button>
+      <button class="btn btn-outline btn-sm" onclick="testJump('slocal')">Test Local Outreach</button>
     </div>
   </div>
 </div>
@@ -335,8 +346,26 @@ textarea{resize:vertical;line-height:1.6;}
 </div>
 
 <!-- ============================================================ -->
-<!-- PATH D: REDDIT COMMUNITY OUTREACH -->
+<!-- PATH D: REACH COMMUNITIES — REDDIT & LINKEDIN -->
 <!-- ============================================================ -->
+
+<!-- SCREEN D0: PLATFORM CHOOSER -->
+<!-- ============================================================ -->
+<!-- LINKEDIN PERSONAL POST -->
+<!-- ============================================================ -->
+
+<!-- SCREEN LI-P1: PERSONAL POST BRIEF -->
+<!-- SCREEN LI-P2: PERSONAL POST REVIEW -->
+<!-- ============================================================ -->
+<!-- LINKEDIN COMPANY POST -->
+<!-- ============================================================ -->
+
+<!-- ============================================================ -->
+<!-- LINKEDIN CONNECTION & OUTREACH -->
+<!-- ============================================================ -->
+
+<!-- ============================================================ -->
+<!-- REDDIT SCREENS -->
 
 <!-- SCREEN RD1: REDDIT NICHE & GOAL -->
 <div class="screen" id="srd1">
@@ -520,8 +549,13 @@ textarea{resize:vertical;line-height:1.6;}
       <button class="btn btn-outline btn-sm" onclick="openReddit()" id="open-reddit-btn">Open Reddit &rarr;</button>
     </div>
     <div class="notice notice-success" id="rd-copy-ok" style="display:none;margin-top:8px;"></div>
-    <div class="btn-row" style="margin-top:1.5rem;">
-      <button class="btn btn-outline btn-sm" onclick="resetAll()">Start over</button>
+    <div style="margin-top:1.5rem;padding:1.25rem 1.5rem;background:var(--off);border:1.5px solid var(--border);border-radius:12px;">
+      <div style="font-size:13px;font-weight:500;color:var(--black);margin-bottom:5px;">&#127919; Want to post to another subreddit?</div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:12px;">Your business profile and story are saved. Go back to the community search and pick a different subreddit.</div>
+      <div class="btn-row" style="margin-top:0;">
+        <button class="btn btn-primary" onclick="reachAnotherReddit()">Post to another subreddit &rarr;</button>
+        <button class="btn btn-outline btn-sm" onclick="resetAll()">Start completely over</button>
+      </div>
     </div>
   </div>
 </div>
@@ -616,35 +650,108 @@ textarea{resize:vertical;line-height:1.6;}
 
   <div style="margin-bottom:1.5rem;">
     <label id="t-primary-label">Primary industry -- the main category your story fits into</label>
-    <input type="text" id="t-primary" placeholder="e.g. Fashion &amp; Apparel, Technology, Retail, Plumbing, Food &amp; Beverage..."/>
-    <div class="chips" id="chips-primary" style="margin-top:10px;">
-      <div class="chip" onclick="setSuggest('t-primary',this,'Fashion &amp; Apparel')">Fashion &amp; Apparel</div>
-      <div class="chip" onclick="setSuggest('t-primary',this,'Technology &amp; AI')">Technology &amp; AI</div>
-      <div class="chip" onclick="setSuggest('t-primary',this,'Retail &amp; E-commerce')">Retail &amp; E-commerce</div>
+    <input type="text" id="t-primary" placeholder="e.g. Fashion &amp; Retail, Healthcare, Fintech, Gaming, Non-profit..."/>
+    <div style="font-size:11px;color:var(--muted);margin-top:6px;margin-bottom:8px;">Click a category to select it, or type your own above</div>
+
+    <div style="font-size:10px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;margin-top:10px;">Fashion, Retail & Consumer</div>
+    <div class="chips" id="chips-primary" style="margin-bottom:10px;">
+      <div class="chip" onclick="setSuggest('t-primary',this,'Fashion &amp; Retail')">Fashion &amp; Retail</div>
+      <div class="chip" onclick="setSuggest('t-primary',this,'Luxury Goods')">Luxury Goods</div>
+      <div class="chip" onclick="setSuggest('t-primary',this,'E-commerce')">E-commerce</div>
+      <div class="chip" onclick="setSuggest('t-primary',this,'Consumer Goods')">Consumer Goods</div>
+      <div class="chip" onclick="setSuggest('t-primary',this,'Beauty &amp; Cosmetics')">Beauty &amp; Cosmetics</div>
+      <div class="chip" onclick="setSuggest('t-primary',this,'Pet Care')">Pet Care</div>
+    </div>
+
+    <div style="font-size:10px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;">Technology & Innovation</div>
+    <div class="chips" style="margin-bottom:10px;">
+      <div class="chip" onclick="setSuggest('t-primary',this,'Technology &amp; Software')">Technology &amp; Software</div>
+      <div class="chip" onclick="setSuggest('t-primary',this,'Artificial Intelligence')">Artificial Intelligence</div>
+      <div class="chip" onclick="setSuggest('t-primary',this,'Telecommunications')">Telecommunications</div>
+      <div class="chip" onclick="setSuggest('t-primary',this,'Gaming')">Gaming</div>
+      <div class="chip" onclick="setSuggest('t-primary',this,'Biotech')">Biotech</div>
+      <div class="chip" onclick="setSuggest('t-primary',this,'Cybersecurity')">Cybersecurity</div>
+    </div>
+
+    <div style="font-size:10px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;">Health & Life Sciences</div>
+    <div class="chips" style="margin-bottom:10px;">
+      <div class="chip" onclick="setSuggest('t-primary',this,'Healthcare &amp; Pharmaceuticals')">Healthcare &amp; Pharmaceuticals</div>
+      <div class="chip" onclick="setSuggest('t-primary',this,'Health &amp; Wellness')">Health &amp; Wellness</div>
+      <div class="chip" onclick="setSuggest('t-primary',this,'Sports &amp; Fitness')">Sports &amp; Fitness</div>
+    </div>
+
+    <div style="font-size:10px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;">Finance & Professional Services</div>
+    <div class="chips" style="margin-bottom:10px;">
+      <div class="chip" onclick="setSuggest('t-primary',this,'Finance &amp; Fintech')">Finance &amp; Fintech</div>
+      <div class="chip" onclick="setSuggest('t-primary',this,'Professional Services')">Professional Services</div>
+      <div class="chip" onclick="setSuggest('t-primary',this,'Legal Services')">Legal Services</div>
+      <div class="chip" onclick="setSuggest('t-primary',this,'Real Estate')">Real Estate</div>
+      <div class="chip" onclick="setSuggest('t-primary',this,'Insurance')">Insurance</div>
+    </div>
+
+    <div style="font-size:10px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;">Media, Arts & Entertainment</div>
+    <div class="chips" style="margin-bottom:10px;">
+      <div class="chip" onclick="setSuggest('t-primary',this,'Entertainment &amp; Media')">Entertainment &amp; Media</div>
+      <div class="chip" onclick="setSuggest('t-primary',this,'Publishing')">Publishing</div>
+      <div class="chip" onclick="setSuggest('t-primary',this,'Art &amp; Design')">Art &amp; Design</div>
       <div class="chip" onclick="setSuggest('t-primary',this,'Marketing &amp; Advertising')">Marketing &amp; Advertising</div>
       <div class="chip" onclick="setSuggest('t-primary',this,'Creative &amp; Design')">Creative &amp; Design</div>
-      <div class="chip" onclick="setSuggest('t-primary',this,'Beauty &amp; Lifestyle')">Beauty &amp; Lifestyle</div>
+    </div>
+
+    <div style="font-size:10px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;">Food, Hospitality & Travel</div>
+    <div class="chips" style="margin-bottom:10px;">
+      <div class="chip" onclick="setSuggest('t-primary',this,'Food &amp; Beverage')">Food &amp; Beverage</div>
+      <div class="chip" onclick="setSuggest('t-primary',this,'Hospitality &amp; Travel')">Hospitality &amp; Travel</div>
+      <div class="chip" onclick="setSuggest('t-primary',this,'Agriculture')">Agriculture</div>
+    </div>
+
+    <div style="font-size:10px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;">Industry & Infrastructure</div>
+    <div class="chips" style="margin-bottom:10px;">
+      <div class="chip" onclick="setSuggest('t-primary',this,'Manufacturing')">Manufacturing</div>
+      <div class="chip" onclick="setSuggest('t-primary',this,'Automotive')">Automotive</div>
+      <div class="chip" onclick="setSuggest('t-primary',this,'Construction')">Construction</div>
+      <div class="chip" onclick="setSuggest('t-primary',this,'Logistics &amp; Shipping')">Logistics &amp; Shipping</div>
+      <div class="chip" onclick="setSuggest('t-primary',this,'Government &amp; Defence')">Government &amp; Defence</div>
+    </div>
+
+    <div style="font-size:10px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;">Energy, Environment & Education</div>
+    <div class="chips" style="margin-bottom:10px;">
+      <div class="chip" onclick="setSuggest('t-primary',this,'Renewable Energy')">Renewable Energy</div>
+      <div class="chip" onclick="setSuggest('t-primary',this,'Green Energy')">Green Energy</div>
+      <div class="chip" onclick="setSuggest('t-primary',this,'Education')">Education</div>
+      <div class="chip" onclick="setSuggest('t-primary',this,'Non-profit &amp; Social Impact')">Non-profit &amp; Social Impact</div>
+    </div>
+
+    <div style="font-size:10px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;">Business & Startups</div>
+    <div class="chips" style="margin-bottom:10px;">
       <div class="chip" onclick="setSuggest('t-primary',this,'Business &amp; Startups')">Business &amp; Startups</div>
-      <div class="chip" onclick="setSuggest('t-primary',this,'Luxury &amp; Premium')">Luxury &amp; Premium</div>
-      <div class="chip" onclick="setSuggest('t-primary',this,'Health &amp; Wellness')">Health &amp; Wellness</div>
-      <div class="chip" onclick="setSuggest('t-primary',this,'Media &amp; Publishing')">Media &amp; Publishing</div>
+      <div class="chip" onclick="setSuggest('t-primary',this,'Entrepreneurship')">Entrepreneurship</div>
+      <div class="chip" onclick="setSuggest('t-primary',this,'E-commerce &amp; DTC')">E-commerce &amp; DTC</div>
     </div>
   </div>
 
   <div style="margin-bottom:1.5rem;">
     <label>Secondary industry <span style="font-size:10px;font-weight:400;text-transform:none;">(optional crossover category)</span></label>
-    <input type="text" id="t-secondary" placeholder="e.g. Photography, Sustainability, Supply Chain, Influencer Marketing..."/>
+    <input type="text" id="t-secondary" placeholder="e.g. Sustainability, AI, Supply Chain, Influencer Marketing..."/>
     <div class="chips" style="margin-top:10px;">
-      <div class="chip" onclick="setSuggest('t-secondary',this,'Photography &amp; Visual Media')">Photography &amp; Visual Media</div>
       <div class="chip" onclick="setSuggest('t-secondary',this,'Sustainability')">Sustainability</div>
+      <div class="chip" onclick="setSuggest('t-secondary',this,'Artificial Intelligence')">Artificial Intelligence</div>
       <div class="chip" onclick="setSuggest('t-secondary',this,'Influencer Marketing')">Influencer Marketing</div>
       <div class="chip" onclick="setSuggest('t-secondary',this,'Supply Chain')">Supply Chain</div>
-      <div class="chip" onclick="setSuggest('t-secondary',this,'Consumer Tech')">Consumer Tech</div>
       <div class="chip" onclick="setSuggest('t-secondary',this,'Digital Marketing')">Digital Marketing</div>
-      <div class="chip" onclick="setSuggest('t-secondary',this,'Entrepreneurship')">Entrepreneurship</div>
-      <div class="chip" onclick="setSuggest('t-secondary',this,'Artificial Intelligence')">Artificial Intelligence</div>
       <div class="chip" onclick="setSuggest('t-secondary',this,'Social Media')">Social Media</div>
       <div class="chip" onclick="setSuggest('t-secondary',this,'Brand Strategy')">Brand Strategy</div>
+      <div class="chip" onclick="setSuggest('t-secondary',this,'Photography &amp; Visual Media')">Photography &amp; Visual Media</div>
+      <div class="chip" onclick="setSuggest('t-secondary',this,'E-commerce')">E-commerce</div>
+      <div class="chip" onclick="setSuggest('t-secondary',this,'Entrepreneurship')">Entrepreneurship</div>
+      <div class="chip" onclick="setSuggest('t-secondary',this,'Diversity &amp; Inclusion')">Diversity &amp; Inclusion</div>
+      <div class="chip" onclick="setSuggest('t-secondary',this,'Mental Health')">Mental Health</div>
+      <div class="chip" onclick="setSuggest('t-secondary',this,'Future of Work')">Future of Work</div>
+      <div class="chip" onclick="setSuggest('t-secondary',this,'Consumer Behaviour')">Consumer Behaviour</div>
+      <div class="chip" onclick="setSuggest('t-secondary',this,'Innovation &amp; Disruption')">Innovation &amp; Disruption</div>
+      <div class="chip" onclick="setSuggest('t-secondary',this,'Circular Economy')">Circular Economy</div>
+      <div class="chip" onclick="setSuggest('t-secondary',this,'Data &amp; Privacy')">Data &amp; Privacy</div>
+      <div class="chip" onclick="setSuggest('t-secondary',this,'Leadership')">Leadership</div>
     </div>
   </div>
 
@@ -760,6 +867,14 @@ textarea{resize:vertical;line-height:1.6;}
   <div class="eyebrow">Final Step -- Outreach Email</div>
   <h2 class="sec-title">Generate your outreach email</h2>
   <p class="sec-sub" id="s5-sub">A short, focused outreach email. Your press release is referenced as an attachment and included below the sign-off.</p>
+
+  <!-- Saved content summary -- shown when reusing existing content -->
+  <div id="saved-content-banner" style="display:none;" class="notice notice-gold" style="margin-bottom:1rem;">
+    <strong>&#128190; Your content is saved</strong><br/>
+    <span id="saved-content-summary"></span><br/>
+    <span style="font-size:12px;">All your profile and press release information is pre-loaded. Just pick a new outlet and generate.</span>
+  </div>
+
   <div class="g2">
     <div><label>Editor name <span style="font-size:10px;font-weight:400;text-transform:none;">(if known)</span></label><input type="text" id="e-editor" placeholder="e.g. Sarah Jones"/></div>
     <div>
@@ -778,9 +893,19 @@ textarea{resize:vertical;line-height:1.6;}
     <div class="btn-row" style="margin-top:1.25rem;">
       <button class="btn btn-gold" onclick="copyEmail()" id="copy-btn">&#8984; Copy email</button>
       <button class="btn btn-outline" onclick="generateEmail()">Regenerate</button>
-      <button class="btn btn-outline btn-sm" onclick="resetAll()">Start over</button>
     </div>
     <div class="notice notice-success" id="copy-confirm" style="display:none;margin-top:10px;">&#10003; Copied to clipboard -- open Gmail or Outlook, compose a new email, and paste (Cmd+V / Ctrl+V).</div>
+
+    <!-- Reach another outlet -->
+    <div style="margin-top:1.5rem;padding:1.25rem 1.5rem;background:var(--off);border:1.5px solid var(--border);border-radius:12px;">
+      <div style="font-size:13px;font-weight:500;color:var(--black);margin-bottom:5px;">&#127919; Want to reach another outlet?</div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:12px;">Your profile and press release are saved. Go straight back to the platform list and pick a new outlet -- no need to re-fill anything.</div>
+      <div class="btn-row" style="margin-top:0;">
+        <button class="btn btn-primary" onclick="reachAnotherOutlet()">Reach another outlet &rarr;</button>
+        <button class="btn btn-outline btn-sm" onclick="resetAll()">Start completely over</button>
+      </div>
+    </div>
+
     <div class="divider"></div>
     <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Press release attachment</div>
     <p style="font-size:13px;color:var(--muted);margin-bottom:12px;">Download your press release as a PDF to attach to the email before sending.</p>
@@ -791,6 +916,179 @@ textarea{resize:vertical;line-height:1.6;}
         <p style="font-size:12px;color:var(--muted);margin-top:8px;">A print window will open -- select <strong>Save as PDF</strong> as your printer to download the file.</p>
       </div>
       <div class="notice notice-success" id="pr-pdf-confirm" style="display:none;margin-top:10px;">&#10003; PDF downloaded -- find it in your Downloads folder and attach it to the email.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- PATH E: LOCAL MEDIA OUTREACH -->
+<!-- ============================================================ -->
+
+<!-- SCREEN E1: LOCATION TARGETING -->
+<div class="screen" id="sloc1">
+  <div class="back-link" onclick="showScreen('s1')">&#8592; Back</div>
+  <div class="eyebrow">Local Outreach -- Step 2 of 4</div>
+  <h2 class="sec-title">Where are you targeting?</h2>
+  <p class="sec-sub">The more specific your location, the better the results. We can search down to neighbourhood, suburb, borough, or district level for any country in the world.</p>
+
+  <div class="notice notice-gold" style="margin-bottom:1.5rem;">
+    <strong>&#128205; How this works</strong><br/>
+    Enter your country first, then narrow down as far as you can. The more specific you go -- suburb, borough, postcode, district -- the more hyperlocal the media results will be. You can add multiple locations if your business serves more than one area.
+  </div>
+
+  <!-- Country -->
+  <div style="margin-bottom:1.25rem;">
+    <label>Country</label>
+    <div class="chips" style="margin-top:8px;" id="loc-country-chips">
+      <div class="chip on" onclick="setLocCountry('Australia',this)">Australia</div>
+      <div class="chip" onclick="setLocCountry('United States',this)">United States</div>
+      <div class="chip" onclick="setLocCountry('United Kingdom',this)">United Kingdom</div>
+      <div class="chip" onclick="setLocCountry('Canada',this)">Canada</div>
+      <div class="chip" onclick="setLocCountry('New Zealand',this)">New Zealand</div>
+      <div class="chip" onclick="setLocCountry('Ireland',this)">Ireland</div>
+      <div class="chip" onclick="setLocCountry('South Africa',this)">South Africa</div>
+      <div class="chip" onclick="setLocCountry('India',this)">India</div>
+      <div class="chip" onclick="setLocCountry('Singapore',this)">Singapore</div>
+      <div class="chip" onclick="setLocCountry('Other',this)">Other</div>
+    </div>
+    <input type="text" id="loc-country-other" style="display:none;margin-top:8px;" placeholder="Type your country"/>
+  </div>
+
+  <!-- State / Region -->
+  <div style="margin-bottom:1.25rem;">
+    <label>State, province, or region <span style="font-size:10px;font-weight:400;text-transform:none;">(e.g. NSW, California, Greater London)</span></label>
+    <input type="text" id="loc-state" placeholder="e.g. New South Wales, California, Texas, Greater London, Ontario"/>
+    <div id="loc-state-hints" class="chips" style="margin-top:8px;"></div>
+  </div>
+
+  <!-- City -->
+  <div style="margin-bottom:1.25rem;">
+    <label>City or metropolitan area <span style="font-size:10px;font-weight:400;text-transform:none;">(e.g. Sydney, San Francisco, London)</span></label>
+    <input type="text" id="loc-city" placeholder="e.g. Sydney, New York City, Melbourne, San Francisco, Chicago"/>
+  </div>
+
+  <!-- Hyperlocal -->
+  <div style="margin-bottom:1.25rem;">
+    <label>Suburb, neighbourhood, borough, or district <span style="font-size:10px;font-weight:400;text-transform:none;">(this is where hyperlocal results come from)</span></label>
+    <input type="text" id="loc-hyper" placeholder="e.g. Surry Hills, Brooklyn Heights, Fitzroy, Pleasant Hill, Shoreditch, Bondi"/>
+    <div style="font-size:11px;color:var(--muted);margin-top:5px;">You can enter multiple areas separated by commas -- e.g. "Surry Hills, Newtown, Glebe"</div>
+  </div>
+
+  <!-- Local government area -->
+  <div style="margin-bottom:1.5rem;">
+    <label>Local Government Area or Council <span style="font-size:10px;font-weight:400;text-transform:none;">(optional -- adds more precision)</span></label>
+    <input type="text" id="loc-lga" placeholder="e.g. Inner West Council, City of Melbourne, Brooklyn Borough, City of Westminster"/>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- What the business does locally -->
+  <div style="margin-bottom:1.25rem;">
+    <label>What does your business do and why is it relevant to this local area?</label>
+    <textarea id="loc-what" style="min-height:80px;" placeholder="e.g. We are a locally owned cafe in Surry Hills that has just opened after 2 years of planning. We source all produce from within 50km and employ 12 local residents"></textarea>
+  </div>
+
+  <!-- Local angle -->
+  <div style="margin-bottom:1.25rem;">
+    <label>What is the local angle or story? <span style="font-size:10px;font-weight:400;text-transform:none;">(what makes this newsworthy for local readers?)</span></label>
+    <div class="chips" style="margin-top:8px;" id="loc-angle-chips">
+      <div class="chip on" onclick="toggleLocAngle(this,'New business opening')">New business opening</div>
+      <div class="chip" onclick="toggleLocAngle(this,'Community contribution')">Community contribution</div>
+      <div class="chip" onclick="toggleLocAngle(this,'Local jobs created')">Local jobs created</div>
+      <div class="chip" onclick="toggleLocAngle(this,'Local event or initiative')">Local event or initiative</div>
+      <div class="chip" onclick="toggleLocAngle(this,'Business expansion')">Business expansion</div>
+      <div class="chip" onclick="toggleLocAngle(this,'Award or recognition')">Award or recognition</div>
+      <div class="chip" onclick="toggleLocAngle(this,'Supporting local suppliers')">Supporting local suppliers</div>
+      <div class="chip" onclick="toggleLocAngle(this,'Charity or fundraising')">Charity or fundraising</div>
+      <div class="chip" onclick="toggleLocAngle(this,'Local landmark or heritage')">Local landmark or heritage</div>
+      <div class="chip" onclick="toggleLocAngle(this,'Sustainability initiative')">Sustainability initiative</div>
+    </div>
+  </div>
+
+  <div style="margin-bottom:1.5rem;">
+    <label>Describe your local story in more detail</label>
+    <textarea id="loc-story" style="min-height:90px;" placeholder="e.g. After 15 years working in hospitality across Sydney, we finally opened our dream cafe in the heart of Surry Hills. We wanted to create something the neighbourhood was missing -- a genuine community space with great food that brings people together"></textarea>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn btn-primary" onclick="submitLocalTargeting()">Find local media &rarr;</button>
+    <button class="btn btn-outline" onclick="showScreen('s1')">&#8592; Back</button>
+  </div>
+</div>
+
+<!-- SCREEN E2: LOCAL MEDIA RESULTS -->
+<div class="screen" id="sloc2">
+  <div class="back-link" onclick="showScreen('sloc1')">&#8592; Back</div>
+  <div class="eyebrow">Local Outreach -- Step 3 of 4</div>
+  <h2 class="sec-title">Choose your local outlet</h2>
+  <p class="sec-sub" id="loc-results-sub">Searching for local media in your area...</p>
+
+  <div id="loc-search-banner" class="notice notice-gold" style="margin-bottom:12px;">
+    <span style="display:inline-flex;align-items:center;gap:10px;">
+      <span style="width:14px;height:14px;border-radius:50%;border:2px solid rgba(194,24,91,.2);border-top-color:#c2185b;animation:spin .7s linear infinite;display:inline-block;flex-shrink:0;"></span>
+      <span id="loc-search-status">Searching for local and hyperlocal media...</span>
+    </span>
+  </div>
+  <div id="loc-search-done" style="display:none;" class="notice notice-success" style="margin-bottom:12px;"></div>
+
+  <div id="loc-filter-row" style="display:none;">
+    <div class="chips" id="loc-filters" style="margin-bottom:12px;">
+      <div class="chip on" onclick="filtLocal('all',this)">All</div>
+      <div class="chip" onclick="filtLocal('newspaper',this)">Newspapers</div>
+      <div class="chip" onclick="filtLocal('online',this)">Online &amp; Digital</div>
+      <div class="chip" onclick="filtLocal('radio',this)">Radio &amp; TV</div>
+      <div class="chip" onclick="filtLocal('community',this)">Community</div>
+    </div>
+  </div>
+
+  <div class="plat-list" id="loc-list"></div>
+  <div id="loc-sel-pill" style="display:none;margin-top:10px;"></div>
+
+  <div class="btn-row">
+    <button class="btn btn-primary" id="loc-cont-btn" onclick="showScreen('sloc3')" style="display:none;">Continue with this outlet &rarr;</button>
+    <button class="btn btn-outline" onclick="showScreen('sloc1')">&#8592; Back</button>
+  </div>
+</div>
+
+<!-- SCREEN E3: LOCAL EMAIL -->
+<div class="screen" id="sloc3">
+  <div class="back-link" onclick="showScreen('sloc2')">&#8592; Back</div>
+  <div class="eyebrow">Local Outreach -- Step 4 of 4</div>
+  <h2 class="sec-title">Generate your local outreach email</h2>
+  <p class="sec-sub" id="loc-email-sub">A community-focused email written for local journalists -- not a national press pitch.</p>
+
+  <div class="notice notice-gold" style="margin-bottom:1.5rem;">
+    <strong>&#128221; Local press is different</strong><br/>
+    Local journalists cover community stories, not industry disruption. Your email should emphasise the local connection -- who you are in the community, what you contribute locally, and why local readers will care. Keep it short, warm, and personal.
+  </div>
+
+  <div class="g2">
+    <div><label>Journalist or editor name <span style="font-size:10px;font-weight:400;text-transform:none;">(if known)</span></label><input type="text" id="loc-editor" placeholder="e.g. Jane Smith"/></div>
+    <div><label>Their email <span style="font-size:10px;font-weight:400;text-transform:none;" id="loc-email-auto"></span></label><input type="text" id="loc-contact" placeholder="e.g. news@localgazette.com.au"/></div>
+    <div class="full"><label>Any additional local detail to include? <span style="font-size:10px;font-weight:400;text-transform:none;">(optional)</span></label><textarea id="loc-extra" style="min-height:60px;" placeholder="e.g. We are offering readers a 20% discount in opening week, or we are hosting a community open day on Saturday 10 May"></textarea></div>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn btn-primary" onclick="generateLocalEmail()">Generate email &rarr;</button>
+  </div>
+
+  <div class="gen-row" id="loc-email-spinner" style="display:none;"><div class="spinner"></div> Generating your local outreach email...</div>
+
+  <div id="loc-email-wrap" style="display:none;margin-top:1.5rem;">
+    <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Your local outreach email</div>
+    <div id="loc-email-out" style="font-size:14px;line-height:1.9;white-space:pre-wrap;color:var(--text);font-family:Georgia,serif;padding-bottom:1rem;border-bottom:1px solid var(--border);"></div>
+    <div class="btn-row" style="margin-top:1rem;">
+      <button class="btn btn-gold" onclick="copyLocEmail()" id="copy-loc-btn">Copy email</button>
+      <button class="btn btn-outline" onclick="generateLocalEmail()">Regenerate</button>
+    </div>
+    <div class="notice notice-success" id="loc-copy-ok" style="display:none;margin-top:8px;">&#10003; Copied -- paste into Gmail or Outlook.</div>
+    <div style="margin-top:1.5rem;padding:1.25rem 1.5rem;background:var(--off);border:1.5px solid var(--border);border-radius:12px;">
+      <div style="font-size:13px;font-weight:500;color:var(--black);margin-bottom:5px;">&#127919; Want to reach another local outlet?</div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:12px;">Your profile and local story are saved. Go back to the outlet list and pick a different publication.</div>
+      <div class="btn-row" style="margin-top:0;">
+        <button class="btn btn-primary" onclick="reachAnotherLocal()">Reach another local outlet &rarr;</button>
+        <button class="btn btn-outline btn-sm" onclick="resetAll()">Start completely over</button>
+      </div>
     </div>
   </div>
 </div>
@@ -887,7 +1185,8 @@ function updateProgress(screenId) {
   var orderB = ['s0','s1','s2b','s2c','s3','s4','s5'];
   var orderC = ['s0','s1','s2pod','s2c','s3','s5'];
   var orderD = ['s0','srd1','srd2','srd3','srd4'];
-  var order = state.path === 'B' ? orderB : state.path === 'C' ? orderC : state.path === 'D' ? orderD : orderA;
+  var orderE = ['s0','s1','sloc1','sloc2','sloc3'];
+  var order = state.path === 'B' ? orderB : state.path === 'C' ? orderC : state.path === 'D' ? orderD : state.path === 'E' ? orderE : orderA;
   var idx = order.indexOf(screenId);
   var bar = document.getElementById('progress-bar');
   bar.innerHTML = '';
@@ -901,7 +1200,7 @@ function updateProgress(screenId) {
 // ---- PATH SELECTION ----
 function selectPath(p) {
   state.path = p;
-  ['a','b','c','d'].forEach(function(x) {
+  ['a','b','c','d','e'].forEach(function(x) {
     var el = document.getElementById('card-' + x);
     if (el) el.classList.toggle('on', x === p.toLowerCase());
   });
@@ -911,13 +1210,17 @@ function selectPath(p) {
     A: 'Selected: Send a press release to the press',
     B: 'Selected: Pitch a content idea to the press',
     C: 'Selected: Pitch a podcast or collaboration',
-    D: 'Selected: Reach communities on Reddit'
+    D: 'Selected: Reach communities on Reddit',
+    E: 'Selected: Local media outreach'
   };
   notice.textContent = labels[p] || '';
   var btn = document.getElementById('entry-btn');
   if (p === 'D') {
     btn.textContent = 'Continue \u2192';
     btn.onclick = function() { showScreen('srd1'); };
+  } else if (p === 'E') {
+    btn.textContent = 'Continue \u2192';
+    btn.onclick = function() { showScreen('s1'); };
   } else {
     btn.textContent = 'Continue \u2192';
     btn.onclick = function() { showScreen('s1'); };
@@ -943,6 +1246,7 @@ function submitProfile() {
   if (state.path === 'A') showScreen('s2a');
   else if (state.path === 'B') showScreen('s2b');
   else if (state.path === 'C') showScreen('s2pod');
+  else if (state.path === 'E') showScreen('sloc1');
 }
 
 // ---- PRESS RELEASE - PATH A ----
@@ -1680,6 +1984,7 @@ function continueFromPlatforms() {
   if (!state.selectedPlatform) { alert('Please select a platform first.'); return; }
   var autoLabel = document.getElementById('email-auto-label');
   if (autoLabel && state.selectedPlatform.e) { autoLabel.textContent = '(auto-filled from platform)'; }
+  showSavedContentBanner();
   if (state.path === 'A') {
     document.getElementById('e-pitch-field').style.display = 'none';
     document.getElementById('s5-sub').textContent = 'A short, punchy outreach email announcing your press release to ' + state.selectedPlatform.n + '.';
@@ -1694,6 +1999,82 @@ function continueFromPlatforms() {
     document.getElementById('s4-plat').textContent = state.selectedPlatform.n;
     showScreen('s4');
   }
+}
+
+function showSavedContentBanner() {
+  var banner = document.getElementById('saved-content-banner');
+  var summary = document.getElementById('saved-content-summary');
+  if (!banner || !summary) return;
+  var p = state.profile;
+  var parts = [];
+  if (p.co) parts.push(p.co);
+  if (state.pressRelease) parts.push('Press release ready');
+  if (state.pitchStory && state.pitchStory.headline) parts.push('"' + state.pitchStory.headline.substring(0, 50) + '..."');
+  if (state.podcastPitch && state.podcastPitch.title) parts.push('"' + state.podcastPitch.title.substring(0, 50) + '..."');
+  if (parts.length > 0) {
+    summary.textContent = parts.join(' \u2022 ');
+    banner.style.display = 'block';
+  } else {
+    banner.style.display = 'none';
+  }
+}
+
+function reachAnotherOutlet() {
+  // Clear only the selected platform and email fields -- keep everything else
+  state.selectedPlatform = null;
+  state.selectedPitch = '';
+  document.getElementById('e-editor').value = '';
+  document.getElementById('e-contact').value = '';
+  document.getElementById('e-pitch').value = '';
+  document.getElementById('email-auto-label').textContent = '';
+  document.getElementById('email-preview-wrap').style.display = 'none';
+  document.getElementById('copy-confirm').style.display = 'none';
+  document.getElementById('pr-pdf-confirm').style.display = 'none';
+  // Reset platform list selection visually
+  document.getElementById('plat-btn').style.display = 'none';
+  document.getElementById('plat-sel-pill').style.display = 'none';
+  // Re-render platform list without selection
+  if (state.foundPlatforms && state.foundPlatforms.length) {
+    renderFoundPlatforms(state.foundPlatforms);
+  } else {
+    renderPlatforms();
+  }
+  // Go back to platform list
+  showScreen('s3');
+}
+
+function reachAnotherReddit() {
+  // Keep rdState story data, just clear the selected sub and post
+  rdState.selectedSub = null;
+  rdState.postTitle = '';
+  rdState.postBody = '';
+  rdState.approved = false;
+  document.getElementById('rd-post-wrap').style.display = 'none';
+  document.getElementById('rd-final-wrap').style.display = 'none';
+  document.getElementById('rd-approved-msg').style.display = 'none';
+  document.getElementById('rd-sub-btn').style.display = 'none';
+  document.getElementById('rd-sel-pill').style.display = 'none';
+  // Re-render subreddit list without selection
+  if (rdState.subreddits && rdState.subreddits.length) {
+    renderSubreddits(rdState.subreddits);
+  }
+  showScreen('srd2');
+}
+
+function reachAnotherLocal() {
+  // Keep locState profile and story, just clear the selected outlet
+  locState.selectedOutlet = null;
+  document.getElementById('loc-contact').value = '';
+  document.getElementById('loc-editor').value = '';
+  document.getElementById('loc-email-wrap').style.display = 'none';
+  document.getElementById('loc-email-auto').textContent = '';
+  document.getElementById('loc-cont-btn').style.display = 'none';
+  document.getElementById('loc-sel-pill').style.display = 'none';
+  // Re-render outlet list without selection
+  if (locState.outlets && locState.outlets.length) {
+    renderLocalOutlets(locState.outlets);
+  }
+  showScreen('sloc2');
 }
 
 // ---- PITCH IDEAS ----
@@ -2103,11 +2484,34 @@ function testJump(screen) {
     document.getElementById('e-pitch-field').style.display = 'none';
     document.getElementById('s5-sub').textContent = 'Outreach email for Ragtrader. Press release is referenced as an attachment.';
     showScreen('s5');
+  } else if (screen === 'slocal') {
+    state.path = 'E';
+    state.profile = {name:'Aaron Kay',pos:'Founder',co:'NxxGen Studios',web:'nxxgenstudio.com',email:'hello@nxxgenstudio.com',what:'AI-powered fashion photography studio serving Sydney brands',angle:'Proprietary AI workflows for photorealistic fashion imagery.',extra:''};
+    locState.country = 'Australia'; locState.state = 'NSW'; locState.city = 'Sydney';
+    locState.hyper = 'Surry Hills'; locState.lga = 'City of Sydney';
+    locState.what = 'AI-powered fashion photography studio serving Sydney brands';
+    locState.story = 'We just opened our first studio in Surry Hills after 18 months of development, employing 8 local creatives';
+    locState.angles = ['New business opening','Local jobs created'];
+    locState.outlets = []; locState.selectedOutlet = null;
+    document.getElementById('loc-list').innerHTML = '';
+    document.getElementById('loc-cont-btn').style.display = 'none';
+    document.getElementById('loc-sel-pill').style.display = 'none';
+    document.getElementById('loc-search-done').style.display = 'none';
+    document.getElementById('loc-search-done').className = 'notice notice-success';
+    document.getElementById('loc-filter-row').style.display = 'none';
+    document.getElementById('loc-search-banner').style.display = 'block';
+    document.getElementById('loc-search-status').textContent = 'Searching for local media covering Surry Hills, Sydney...';
+    document.getElementById('loc-results-sub').textContent = 'Finding local newspapers and community outlets for Surry Hills, Sydney...';
+    showScreen('sloc2');
+    searchLocalMedia('Australia','NSW','Sydney','Surry Hills','City of Sydney');
   }
 }
 
+
 // ============================================================
 // PATH D: REDDIT COMMUNITY OUTREACH
+// ============================================================
+
 // ============================================================
 var rdState = {
   niche: '', goal: 'discussion', message: '', audience: '', tone: 'conversational',
@@ -2367,7 +2771,257 @@ function openReddit() {
   window.open(url, '_blank');
 }
 
-// ---- RESET ----
+// ============================================================
+// PATH E: LOCAL MEDIA OUTREACH
+// ============================================================
+var locState = {
+  country: 'Australia',
+  state: '', city: '', hyper: '', lga: '',
+  what: '', angles: ['New business opening'], story: '',
+  selectedOutlet: null, outlets: []
+};
+
+function setLocCountry(country, el) {
+  locState.country = country;
+  document.querySelectorAll('#loc-country-chips .chip').forEach(function(c) { c.classList.remove('on'); });
+  el.classList.add('on');
+  // Show/hide other field
+  document.getElementById('loc-country-other').style.display = country === 'Other' ? 'block' : 'none';
+  // Populate state hints based on country
+  var hints = {
+    'Australia': ['NSW','Victoria','Queensland','South Australia','Western Australia','Tasmania','ACT','Northern Territory'],
+    'United States': ['California','New York','Texas','Florida','Illinois','Washington','Georgia','Colorado','Massachusetts'],
+    'United Kingdom': ['England','Scotland','Wales','Northern Ireland','Greater London'],
+    'Canada': ['Ontario','British Columbia','Quebec','Alberta','Manitoba','Nova Scotia'],
+    'New Zealand': ['Auckland','Wellington','Canterbury','Waikato','Bay of Plenty']
+  };
+  var hintsEl = document.getElementById('loc-state-hints');
+  hintsEl.innerHTML = '';
+  if (hints[country]) {
+    hints[country].forEach(function(h) {
+      var chip = document.createElement('div');
+      chip.className = 'chip';
+      chip.textContent = h;
+      chip.onclick = function() {
+        document.getElementById('loc-state').value = h;
+        hintsEl.querySelectorAll('.chip').forEach(function(c) { c.classList.remove('on'); });
+        chip.classList.add('on');
+      };
+      hintsEl.appendChild(chip);
+    });
+  }
+}
+
+function toggleLocAngle(el, val) {
+  el.classList.toggle('on');
+  if (el.classList.contains('on')) {
+    if (locState.angles.indexOf(val) === -1) locState.angles.push(val);
+  } else {
+    locState.angles = locState.angles.filter(function(v) { return v !== val; });
+  }
+}
+
+function submitLocalTargeting() {
+  var country = locState.country === 'Other'
+    ? document.getElementById('loc-country-other').value.trim()
+    : locState.country;
+  var state = document.getElementById('loc-state').value.trim();
+  var city = document.getElementById('loc-city').value.trim();
+  var hyper = document.getElementById('loc-hyper').value.trim();
+  var lga = document.getElementById('loc-lga').value.trim();
+  var what = document.getElementById('loc-what').value.trim();
+  var story = document.getElementById('loc-story').value.trim();
+
+  if (!city && !hyper) { alert('Please enter at least a city or suburb/neighbourhood to target.'); return; }
+  if (!what) { alert('Please describe what your business does and why it is relevant locally.'); return; }
+
+  locState.country = country;
+  locState.state = state;
+  locState.city = city;
+  locState.hyper = hyper;
+  locState.lga = lga;
+  locState.what = what;
+  locState.story = story;
+  locState.selectedOutlet = null;
+  locState.outlets = [];
+
+  // Reset results screen
+  document.getElementById('loc-list').innerHTML = '';
+  document.getElementById('loc-cont-btn').style.display = 'none';
+  document.getElementById('loc-sel-pill').style.display = 'none';
+  document.getElementById('loc-search-done').style.display = 'none';
+  document.getElementById('loc-filter-row').style.display = 'none';
+  document.getElementById('loc-search-banner').style.display = 'block';
+
+  // Build location string for subtitle and search
+  var locParts = [hyper, city, state, country].filter(function(p) { return p; });
+  var locStr = locParts.join(', ');
+  document.getElementById('loc-search-status').textContent = 'Searching for local media covering ' + locStr + '...';
+  document.getElementById('loc-results-sub').textContent = 'Finding local newspapers, community websites and regional media for ' + locStr + '...';
+
+  showScreen('sloc2');
+  searchLocalMedia(country, state, city, hyper, lga);
+}
+
+function searchLocalMedia(country, state, city, hyper, lga) {
+  // Build precise location description
+  var locFull = [hyper, lga, city, state, country].filter(function(p) { return p; }).join(', ');
+  var locCore = [hyper || city, state, country].filter(function(p) { return p; }).join(', ');
+
+  var prompt = 'You are a local media research expert. Find up to 25 real, currently active local and hyperlocal media outlets that cover this exact area: ' + locFull + '.\n\nThis must be genuinely LOCAL media -- not national outlets. Focus on:\n- Local newspapers (print and digital) covering ' + (hyper || city) + ' and surrounding areas\n- Suburb or district-specific news websites\n- Local council and community news portals\n- Regional radio stations covering this area\n- Local TV news covering ' + city + ' or ' + (state || country) + '\n- Community newsletters and hyperlocal blogs with editorial standards\n- Local business journals or chamber of commerce publications\n\nFor each outlet:\n- Exact outlet name\n- Website URL\n- Best contact email for news tips or press releases\n- Exact coverage area (which suburbs/neighbourhoods/districts they cover)\n- Type: newspaper / online / radio / tv / community / council\n- Whether they accept community press releases (yes/no/maybe)\n- Relevance rating 1-5 for a business in ' + (hyper || city) + '\n- One sentence on what they cover\n\nOnly include outlets that genuinely serve ' + locCore + '. Do not include national outlets unless they have a dedicated local section for this area.\n\nReturn ONLY a raw JSON array starting with [:\n[{"n":"Outlet Name","u":"website.com","e":"news@outlet.com","coverage":"Suburbs or areas covered","type":"newspaper","accepts_pr":true,"s":5,"desc":"What they cover"}]';
+
+  callAPIHighTokens(prompt, function(text) {
+    document.getElementById('loc-search-banner').style.display = 'none';
+    try {
+      var clean = text.trim().replace(/^```json\s*/i,'').replace(/^```\s*/i,'').replace(/```\s*$/,'').trim();
+      var start = clean.indexOf('['), end = clean.lastIndexOf(']');
+      if (start === -1 || end === -1) throw new Error('no array');
+      clean = clean.substring(start, end + 1);
+      clean = clean.replace(/,\s*([}\]])/g, '$1');
+      var found = JSON.parse(clean);
+      if (!Array.isArray(found) || !found.length) throw new Error('empty');
+      found = found.filter(function(p) { return p && p.n; });
+      found.forEach(function(p) {
+        p.s = Math.min(5, Math.max(1, parseInt(p.s) || 3));
+        p.e = p.e || '';
+        p.desc = p.desc || '';
+        p.coverage = p.coverage || (hyper || city);
+        p.type = p.type || 'online';
+      });
+      found.sort(function(a,b) { return b.s - a.s; });
+      locState.outlets = found;
+      renderLocalOutlets(found);
+      var d = document.getElementById('loc-search-done');
+      d.textContent = '\u2713 Found ' + found.length + ' local outlets covering ' + (hyper || city);
+      d.style.display = 'block';
+      document.getElementById('loc-filter-row').style.display = 'block';
+      document.getElementById('loc-results-sub').textContent = found.length + ' local outlets found, ranked by relevance. Click one to select it.';
+    } catch(e) {
+      document.getElementById('loc-search-done').textContent = 'Could not parse results. Please try again.';
+      document.getElementById('loc-search-done').style.display = 'block';
+      document.getElementById('loc-search-done').className = 'notice notice-error';
+      document.getElementById('loc-list').innerHTML = '<div style="padding:1rem;"><button class="btn btn-primary btn-sm" onclick="submitLocalTargeting()">Retry search</button></div>';
+    }
+  }, function(err) {
+    document.getElementById('loc-search-banner').style.display = 'none';
+    document.getElementById('loc-search-done').textContent = 'Search error: ' + err;
+    document.getElementById('loc-search-done').style.display = 'block';
+    document.getElementById('loc-search-done').className = 'notice notice-error';
+    document.getElementById('loc-list').innerHTML = '<div style="padding:1rem;"><button class="btn btn-primary btn-sm" onclick="submitLocalTargeting()">Retry</button></div>';
+  });
+}
+
+function renderLocalOutlets(list, filter) {
+  var filtered = list.slice();
+  if (filter && filter !== 'all') {
+    filtered = filtered.filter(function(p) { return p.type === filter; });
+  }
+  var el = document.getElementById('loc-list');
+  if (!filtered.length) {
+    el.innerHTML = '<div style="padding:1rem;color:var(--muted);font-size:13px;">No outlets match this filter.</div>';
+    return;
+  }
+  var typeIcons = { newspaper:'&#128240;', online:'&#127760;', radio:'&#128251;', tv:'&#128250;', community:'&#127968;', council:'&#127963;' };
+  var html = '';
+  filtered.forEach(function(p) {
+    var sel = locState.selectedOutlet && locState.selectedOutlet.n === p.n;
+    var stars = '';
+    for (var i = 0; i < p.s; i++) stars += '&#9733;';
+    for (var i = p.s; i < 5; i++) stars += '&#9734;';
+    var safe = p.n.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+    var icon = typeIcons[p.type] || '&#128240;';
+    html += '<div class="plat-item' + (sel ? ' sel' : '') + '" onclick="selectLocalOutlet(\'' + safe + '\')">';
+    html += '<div style="flex:1;">';
+    html += '<div class="plat-name">' + icon + ' ' + p.n + '</div>';
+    if (p.coverage) html += '<div style="font-size:11px;color:var(--gold);margin-top:1px;">Covers: ' + p.coverage + '</div>';
+    if (p.u) html += '<div class="plat-url">' + p.u + '</div>';
+    if (p.desc) html += '<div style="font-size:11px;color:var(--muted);margin-top:2px;font-style:italic;">' + p.desc + '</div>';
+    if (p.e) html += '<div class="plat-email">&#9993; ' + p.e + '</div>';
+    if (p.accepts_pr !== false) html += '<div style="font-size:10px;background:#d8f3dc;color:#2d6a4f;border-radius:3px;padding:2px 6px;display:inline-block;margin-top:3px;font-weight:500;">Accepts press releases</div>';
+    html += '</div>';
+    html += '<div style="text-align:right;flex-shrink:0;">';
+    html += '<div class="stars">' + stars + '</div>';
+    html += '<div style="font-size:10px;color:var(--muted);margin-top:2px;text-transform:capitalize;">' + p.type + '</div>';
+    html += '</div></div>';
+  });
+  el.innerHTML = html;
+}
+
+function selectLocalOutlet(name) {
+  var outlet = locState.outlets.find(function(p) { return p.n === name; });
+  if (!outlet) return;
+  locState.selectedOutlet = outlet;
+  document.getElementById('loc-cont-btn').style.display = 'inline-flex';
+  var pill = document.getElementById('loc-sel-pill');
+  pill.innerHTML = '<div class="sel-pill">&#10003; ' + outlet.n + ' -- Covers: ' + (outlet.coverage || outlet.type) + '</div>';
+  pill.style.display = 'block';
+  // Auto-fill email screen
+  if (outlet.e) {
+    document.getElementById('loc-contact').value = outlet.e;
+    document.getElementById('loc-email-auto').textContent = '(auto-filled)';
+  }
+  document.getElementById('loc-email-sub').textContent = 'A community-focused email written for ' + outlet.n + ' -- not a national press pitch.';
+  renderLocalOutlets(locState.outlets, locState.locFilter);
+}
+
+function filtLocal(f, btn) {
+  locState.locFilter = f;
+  document.querySelectorAll('#loc-filters .chip').forEach(function(c) { c.classList.remove('on'); });
+  btn.classList.add('on');
+  renderLocalOutlets(locState.outlets, f);
+}
+
+function generateLocalEmail() {
+  if (!locState.selectedOutlet) { alert('No outlet selected. Please go back and select one.'); return; }
+  var p = state.profile;
+  var outlet = locState.selectedOutlet;
+  var editor = document.getElementById('loc-editor').value.trim() || 'the editorial team';
+  var contact = document.getElementById('loc-contact').value.trim();
+  var extra = document.getElementById('loc-extra').value.trim();
+  var locStr = [locState.hyper, locState.city, locState.state, locState.country].filter(function(x) { return x; }).join(', ');
+
+  document.getElementById('loc-email-spinner').style.display = 'flex';
+  document.getElementById('loc-email-wrap').style.display = 'none';
+
+  var prompt = 'Write a short, warm, community-focused press outreach email from ' + (p.name || 'a local business owner') + (p.pos ? ', ' + p.pos : '') + (p.co ? ' at ' + p.co : '') + ' to ' + editor + ' at ' + outlet.n + (contact ? ' (' + contact + ')' : '') + '.\n\n' +
+    'LOCATION: ' + locStr + '\n' +
+    'OUTLET COVERAGE AREA: ' + (outlet.coverage || locStr) + '\n' +
+    'BUSINESS CONTEXT: ' + locState.what + '\n' +
+    'LOCAL STORY: ' + locState.story + '\n' +
+    'LOCAL ANGLES: ' + locState.angles.join(', ') + '\n' +
+    (extra ? 'ADDITIONAL DETAILS: ' + extra + '\n' : '') +
+    (p.what ? 'ABOUT THE BUSINESS: ' + p.what + '\n' : '') +
+    '\nThis is LOCAL community outreach -- not a national PR pitch. Write it accordingly:\n\n' +
+    '1. SUBJECT LINE -- local, specific, community-focused (mention the area by name)\n' +
+    '2. OPENING -- one sentence showing genuine connection to ' + (locState.hyper || locState.city) + ' and why ' + outlet.n + ' readers will care\n' +
+    '3. THE LOCAL STORY -- 2-3 short paragraphs telling the community story. Emphasise: local connection, community contribution, why local readers should care. Human interest over business metrics.\n' +
+    '4. WHAT YOU ARE OFFERING -- interview availability, photos, community event access, exclusive local detail\n' +
+    '5. CALL TO ACTION -- warm and approachable, invite them to get in touch\n' +
+    '6. SIGN OFF:\n' + (p.name || 'Kind regards') + (p.pos ? '\n' + p.pos : '') + (p.co ? '\n' + p.co : '') + '\n' + (p.email || '') + '\n' + (p.web || '') + '\n\n' +
+    'Tone: warm, personal, genuinely local. NOT a corporate press release. NOT industry jargon. Write like a real person from the community reaching out to a local journalist they respect.\nNo asterisks, no markdown, plain text only.';
+
+  callAPIHighTokens(prompt, function(text) {
+    document.getElementById('loc-email-spinner').style.display = 'none';
+    document.getElementById('loc-email-out').textContent = text;
+    document.getElementById('loc-email-wrap').style.display = 'block';
+    document.getElementById('loc-copy-ok').style.display = 'none';
+    document.getElementById('loc-email-wrap').scrollIntoView({ behavior:'smooth', block:'nearest' });
+  }, function(err) {
+    document.getElementById('loc-email-spinner').style.display = 'none';
+    alert('Could not generate email. Please try again.');
+  });
+}
+
+function copyLocEmail() {
+  var text = document.getElementById('loc-email-out').textContent;
+  var btn = document.getElementById('copy-loc-btn');
+  var ok = document.getElementById('loc-copy-ok');
+  navigator.clipboard.writeText(text).then(function() {
+    btn.textContent = '\u2713 Copied!'; btn.style.background='#2d6a4f'; btn.style.borderColor='#2d6a4f';
+    ok.style.display = 'block';
+    setTimeout(function() { btn.textContent='Copy email'; btn.style.background=''; btn.style.borderColor=''; }, 2500);
+  });
+}
 function resetAll() {
   state = {
     path: null, prSource: null, profile: {},
@@ -2383,9 +3037,13 @@ function resetAll() {
   document.getElementById('card-b').classList.remove('on');
   document.getElementById('card-c').classList.remove('on');
   document.getElementById('card-d').classList.remove('on');
+  document.getElementById('card-e').classList.remove('on');
+  locState = { country:'Australia', state:'', city:'', hyper:'', lga:'', what:'', angles:['New business opening'], story:'', selectedOutlet:null, outlets:[] };
   rdState = { niche:'', goal:'discussion', message:'', audience:'', tone:'conversational', selectedSub:null, subreddits:[], story1:'', story2:'', story3:'', story4:'', story5:'', postTitle:'', postBody:'', approved:false };
   document.getElementById('path-notice').style.display = 'none';
   document.getElementById('entry-btn').style.display = 'none';
+  var scb = document.getElementById('saved-content-banner');
+  if (scb) scb.style.display = 'none';
   showScreen('s0');
 }
 
