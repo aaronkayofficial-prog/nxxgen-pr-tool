@@ -159,6 +159,16 @@ textarea{resize:vertical;line-height:1.6;}
         </div>
       </div>
     </div>
+    <div class="path-card" id="card-d" onclick="selectPath('D')">
+      <div style="display:flex;align-items:flex-start;gap:14px;">
+        <div class="path-icon" style="flex-shrink:0;">&#127760;</div>
+        <div>
+          <div class="path-title">Reach communities</div>
+          <div class="path-desc">Find the right Reddit communities for your niche, craft a genuine discussion-based post that adds real value, and engage authentically with your audience.</div>
+          <div class="path-tag">Reddit Community Outreach &rarr;</div>
+        </div>
+      </div>
+    </div>
   </div>
   <div id="path-notice" style="display:none;" class="notice notice-gold"></div>
   <div class="btn-row">
@@ -324,6 +334,199 @@ textarea{resize:vertical;line-height:1.6;}
   </div>
 </div>
 
+<!-- ============================================================ -->
+<!-- PATH D: REDDIT COMMUNITY OUTREACH -->
+<!-- ============================================================ -->
+
+<!-- SCREEN RD1: REDDIT NICHE & GOAL -->
+<div class="screen" id="srd1">
+  <div class="back-link" onclick="showScreen('s0')">&#8592; Back</div>
+  <div class="eyebrow">Reddit Outreach -- Step 1 of 4</div>
+  <h2 class="sec-title">Tell us about your business and goal</h2>
+  <p class="sec-sub">We will use this to find the right Reddit communities and craft a post that genuinely fits in there.</p>
+
+  <div class="notice notice-gold" style="margin-bottom:1.5rem;">
+    <strong>&#9888; Important -- read this first</strong><br/>
+    Reddit communities are highly sensitive to marketing and self-promotion. Posts that feel like ads get removed or downvoted immediately. This tool is designed to help you contribute genuine value and spark real discussion -- not to advertise. The AI will craft your post to sound like a real community member, not a brand. Be honest, be helpful, and Reddit will reward you.
+  </div>
+
+  <div class="g2">
+    <div class="full">
+      <label>Your business niche -- be as specific as possible</label>
+      <input type="text" id="rd-niche" placeholder="e.g. AI-powered fashion photography for e-commerce brands"/>
+    </div>
+    <div class="full">
+      <label>What is the goal of this Reddit post?</label>
+      <div class="chips" style="margin-top:8px;" id="rd-goal-chips">
+        <div class="chip on" onclick="setRdGoal('discussion',this)">Spark a discussion</div>
+        <div class="chip" onclick="setRdGoal('advice',this)">Ask for advice or feedback</div>
+        <div class="chip" onclick="setRdGoal('share',this)">Share a lesson or insight</div>
+        <div class="chip" onclick="setRdGoal('launch',this)">Share something I built</div>
+        <div class="chip" onclick="setRdGoal('ama',this)">Host an AMA (Ask Me Anything)</div>
+      </div>
+    </div>
+    <div class="full">
+      <label>What is the key message or insight you want to share?</label>
+      <textarea id="rd-message" style="min-height:80px;" placeholder="e.g. We replaced a $10,000 fashion shoot with AI for under $500 and the results were indistinguishable -- happy to share exactly how we did it"></textarea>
+    </div>
+    <div class="full">
+      <label>Who is your target audience on Reddit?</label>
+      <input type="text" id="rd-audience" placeholder="e.g. fashion brand owners, e-commerce founders, photographers, AI enthusiasts"/>
+    </div>
+    <div class="full">
+      <label>What tone fits your message best?</label>
+      <div class="chips" style="margin-top:8px;">
+        <div class="chip on" id="rd-tone-conversational" onclick="setRdTone('conversational',this)">Conversational & casual</div>
+        <div class="chip" id="rd-tone-educational" onclick="setRdTone('educational',this)">Educational & helpful</div>
+        <div class="chip" id="rd-tone-story" onclick="setRdTone('story',this)">Personal story</div>
+        <div class="chip" id="rd-tone-controversial" onclick="setRdTone('controversial',this)">Bold & opinion-driven</div>
+      </div>
+    </div>
+  </div>
+  <div class="btn-row">
+    <button class="btn btn-primary" onclick="submitRdProfile()">Find subreddits &rarr;</button>
+    <button class="btn btn-outline" onclick="showScreen('s0')">&#8592; Back</button>
+  </div>
+</div>
+
+<!-- SCREEN RD2: SUBREDDIT DISCOVERY -->
+<div class="screen" id="srd2">
+  <div class="back-link" onclick="showScreen('srd1')">&#8592; Back</div>
+  <div class="eyebrow">Reddit Outreach -- Step 2 of 4</div>
+  <h2 class="sec-title">Choose your target community</h2>
+  <p class="sec-sub" id="rd-sub-sub">Finding the best subreddits for your niche...</p>
+
+  <div id="rd-search-banner" class="notice notice-gold" style="margin-bottom:12px;">
+    <span style="display:inline-flex;align-items:center;gap:10px;">
+      <span style="width:14px;height:14px;border-radius:50%;border:2px solid rgba(194,24,91,.2);border-top-color:#c2185b;animation:spin .7s linear infinite;display:inline-block;flex-shrink:0;"></span>
+      <span id="rd-search-status">Searching for communities...</span>
+    </span>
+  </div>
+  <div id="rd-search-done" style="display:none;" class="notice notice-success"></div>
+
+  <div id="rd-sub-list" class="plat-list" style="display:none;"></div>
+  <div id="rd-sel-pill" style="display:none;margin-top:10px;"></div>
+
+  <div class="btn-row">
+    <button class="btn btn-primary" id="rd-sub-btn" onclick="showScreen('srd3')" style="display:none;">Continue with this community &rarr;</button>
+    <button class="btn btn-outline" onclick="showScreen('srd1')">&#8592; Back</button>
+  </div>
+</div>
+
+<!-- SCREEN RD3: STORY QUESTIONNAIRE -->
+<div class="screen" id="srd3">
+  <div class="back-link" onclick="showScreen('srd2')">&#8592; Back</div>
+  <div class="eyebrow">Reddit Outreach -- Step 3 of 4</div>
+  <h2 class="sec-title">Tell us your story</h2>
+  <p class="sec-sub">The more specific and honest your answers, the more authentic and engaging your post will be. Reddit rewards real stories and genuine insight.</p>
+
+  <div class="notice notice-gold" style="margin-bottom:1.5rem;">
+    &#127919; You are posting to <strong id="rd-chosen-sub">this subreddit</strong>. The AI will read the community's tone and rules and tailor your post to fit in naturally.
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:1.5rem;">
+    <div>
+      <label>What is the specific story, insight, or question you want to lead with?</label>
+      <textarea id="rd-story-1" style="min-height:90px;" placeholder="e.g. We spent 6 months trying to figure out if AI could actually replace a fashion photo shoot. Here is what we found -- including where it completely failed us"></textarea>
+    </div>
+    <div>
+      <label>What makes your experience or perspective unique? Why should this community listen to you?</label>
+      <textarea id="rd-story-2" style="min-height:80px;" placeholder="e.g. I was a fashion photographer for 15 years before I built the AI tool that made my own job obsolete. I have seen this from both sides"></textarea>
+    </div>
+    <div>
+      <label>Any specific data, results, or proof points that add credibility?</label>
+      <textarea id="rd-story-3" style="min-height:80px;" placeholder="e.g. We cut costs from $10k to $400, delivery from 3 weeks to 48 hours, and the brand using it grew their Instagram engagement by 40%"></textarea>
+    </div>
+    <div>
+      <label>What question do you want to ask the community to spark discussion?</label>
+      <textarea id="rd-story-4" style="min-height:75px;" placeholder="e.g. Has anyone else tried AI for product photography? I am curious whether this is just our experience or a broader industry shift"></textarea>
+    </div>
+    <div>
+      <label>Anything you want to avoid or be careful about in this post? <span style="font-size:10px;font-weight:400;text-transform:none;">(optional)</span></label>
+      <textarea id="rd-story-5" style="min-height:65px;" placeholder="e.g. Do not mention our company name directly, avoid sounding like an ad, do not link to our website in the post body"></textarea>
+    </div>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn btn-primary" id="rd-gen-btn" onclick="generateRedditPost()">Generate my Reddit post &rarr;</button>
+    <button class="btn btn-outline" onclick="showScreen('srd2')">&#8592; Back</button>
+  </div>
+</div>
+
+<!-- SCREEN RD4: REVIEW & APPROVE -->
+<div class="screen" id="srd4">
+  <div class="back-link" onclick="showScreen('srd3')">&#8592; Back</div>
+  <div class="eyebrow">Reddit Outreach -- Step 4 of 4</div>
+  <h2 class="sec-title">Review and approve your post</h2>
+  <p class="sec-sub">Read it carefully. Does it sound like a genuine community member? Would you upvote this if you saw it? If not, request changes below.</p>
+
+  <div class="gen-row" id="rd-gen-spinner" style="display:none;"><div class="spinner"></div> <span id="rd-gen-status">Crafting your Reddit post...</span></div>
+
+  <div id="rd-post-wrap" style="display:none;">
+    <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;">Your Reddit post -- for r/<span id="rd-post-sub-label"></span></div>
+
+    <!-- Title -->
+    <div style="margin-bottom:12px;">
+      <div style="font-size:11px;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;">Post title</div>
+      <div id="rd-post-title" style="background:#f0f0f0;border:1.5px solid var(--border);border-radius:8px;padding:10px 14px;font-size:15px;font-weight:500;color:var(--black);line-height:1.5;"></div>
+    </div>
+
+    <!-- Body -->
+    <div style="margin-bottom:12px;">
+      <div style="font-size:11px;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;">Post body</div>
+      <div class="pr-box" id="rd-post-body" style="min-height:200px;"></div>
+    </div>
+
+    <!-- Reddit rules reminder -->
+    <div class="notice notice-gold" style="margin-bottom:1rem;">
+      <strong>Before you post:</strong><br/>
+      &#10003; Read the subreddit rules carefully -- each community has different self-promotion policies<br/>
+      &#10003; Make sure your account is established in this subreddit before posting<br/>
+      &#10003; Engage with comments genuinely after posting -- do not post and disappear<br/>
+      &#10003; Do not include links to your website in the post body unless the subreddit explicitly allows it
+    </div>
+
+    <!-- Change request -->
+    <label>Request changes <span style="font-size:10px;font-weight:400;text-transform:none;">(describe what to adjust)</span></label>
+    <textarea id="rd-feedback" style="min-height:65px;" placeholder="e.g. Make it less formal, add more of the personal story, shorten the body, make the question at the end more provocative..."></textarea>
+
+    <div class="btn-row" style="margin-top:10px;">
+      <button class="btn btn-outline btn-sm" id="rd-regen-btn" onclick="regenRedditPost()">Regenerate with changes</button>
+      <button class="btn btn-gold" id="rd-approve-btn" onclick="approveRedditPost()">&#10003; Approve post &rarr;</button>
+    </div>
+    <div class="notice notice-success" id="rd-approved-msg" style="display:none;">&#10003; Post approved!</div>
+  </div>
+
+  <!-- After approval -->
+  <div id="rd-final-wrap" style="display:none;margin-top:1.5rem;">
+    <div class="divider"></div>
+    <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Ready to post</div>
+    <div class="notice notice-success" style="margin-bottom:1rem;">Your post is approved and ready. Here is how to post it right now.</div>
+    <div style="background:var(--off);border:1.5px solid var(--border);border-radius:12px;padding:1.25rem 1.5rem;margin-bottom:1rem;">
+      <div style="font-size:13px;font-weight:500;margin-bottom:10px;">How to post on Reddit:</div>
+      <ol style="font-size:13px;color:var(--muted);line-height:2;padding-left:1.25rem;">
+        <li>Go to <strong>reddit.com/r/<span class="rd-sub-ref"></span></strong></li>
+        <li>Click <strong>"Create Post"</strong></li>
+        <li>Copy and paste the <strong>title</strong> below into the title field</li>
+        <li>Copy and paste the <strong>body</strong> below into the text field</li>
+        <li>Read the subreddit rules one more time before submitting</li>
+        <li>Click <strong>Post</strong></li>
+        <li>Stay active in the comments for the next few hours</li>
+      </ol>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="copyRdTitle()" id="copy-rd-title-btn">Copy title</button>
+      <button class="btn btn-gold" onclick="copyRdBody()" id="copy-rd-body-btn">Copy post body</button>
+      <button class="btn btn-outline btn-sm" onclick="openReddit()" id="open-reddit-btn">Open Reddit &rarr;</button>
+    </div>
+    <div class="notice notice-success" id="rd-copy-ok" style="display:none;margin-top:8px;"></div>
+    <div class="btn-row" style="margin-top:1.5rem;">
+      <button class="btn btn-outline btn-sm" onclick="resetAll()">Start over</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
 <!-- SCREEN 2C-POD: PATH C - PODCAST PITCH -->
 <div class="screen" id="s2pod">
   <div class="back-link" onclick="showScreen('s1')">&#8592; Back</div>
@@ -683,7 +886,8 @@ function updateProgress(screenId) {
   var orderA = ['s0','s1','s2a','s2c','s3','s5'];
   var orderB = ['s0','s1','s2b','s2c','s3','s4','s5'];
   var orderC = ['s0','s1','s2pod','s2c','s3','s5'];
-  var order = state.path === 'B' ? orderB : state.path === 'C' ? orderC : orderA;
+  var orderD = ['s0','srd1','srd2','srd3','srd4'];
+  var order = state.path === 'B' ? orderB : state.path === 'C' ? orderC : state.path === 'D' ? orderD : orderA;
   var idx = order.indexOf(screenId);
   var bar = document.getElementById('progress-bar');
   bar.innerHTML = '';
@@ -697,14 +901,28 @@ function updateProgress(screenId) {
 // ---- PATH SELECTION ----
 function selectPath(p) {
   state.path = p;
-  document.getElementById('card-a').classList.toggle('on', p === 'A');
-  document.getElementById('card-b').classList.toggle('on', p === 'B');
-  document.getElementById('card-c').classList.toggle('on', p === 'C');
+  ['a','b','c','d'].forEach(function(x) {
+    var el = document.getElementById('card-' + x);
+    if (el) el.classList.toggle('on', x === p.toLowerCase());
+  });
   var notice = document.getElementById('path-notice');
   notice.style.display = 'block';
-  var labels = { A: 'Selected: Send a press release to the press', B: 'Selected: Pitch a content idea to the press', C: 'Selected: Pitch a podcast or collaboration' };
+  var labels = {
+    A: 'Selected: Send a press release to the press',
+    B: 'Selected: Pitch a content idea to the press',
+    C: 'Selected: Pitch a podcast or collaboration',
+    D: 'Selected: Reach communities on Reddit'
+  };
   notice.textContent = labels[p] || '';
-  document.getElementById('entry-btn').style.display = 'inline-flex';
+  var btn = document.getElementById('entry-btn');
+  if (p === 'D') {
+    btn.textContent = 'Continue \u2192';
+    btn.onclick = function() { showScreen('srd1'); };
+  } else {
+    btn.textContent = 'Continue \u2192';
+    btn.onclick = function() { showScreen('s1'); };
+  }
+  btn.style.display = 'inline-flex';
 }
 
 // ---- PROFILE ----
@@ -1888,6 +2106,267 @@ function testJump(screen) {
   }
 }
 
+// ============================================================
+// PATH D: REDDIT COMMUNITY OUTREACH
+// ============================================================
+var rdState = {
+  niche: '', goal: 'discussion', message: '', audience: '', tone: 'conversational',
+  selectedSub: null, subreddits: [],
+  story1: '', story2: '', story3: '', story4: '', story5: '',
+  postTitle: '', postBody: '', approved: false
+};
+
+function setRdGoal(goal, el) {
+  rdState.goal = goal;
+  document.querySelectorAll('#rd-goal-chips .chip').forEach(function(c) { c.classList.remove('on'); });
+  el.classList.add('on');
+}
+
+function setRdTone(tone, el) {
+  rdState.tone = tone;
+  ['conversational','educational','story','controversial'].forEach(function(t) {
+    var el2 = document.getElementById('rd-tone-' + t);
+    if (el2) el2.classList.remove('on');
+  });
+  el.classList.add('on');
+}
+
+function submitRdProfile() {
+  var niche = document.getElementById('rd-niche').value.trim();
+  var message = document.getElementById('rd-message').value.trim();
+  if (!niche) { alert('Please enter your business niche.'); return; }
+  if (!message) { alert('Please enter your key message or insight.'); return; }
+  rdState.niche = niche;
+  rdState.message = message;
+  rdState.audience = document.getElementById('rd-audience').value.trim();
+  // Reset subreddit state
+  rdState.selectedSub = null;
+  rdState.subreddits = [];
+  document.getElementById('rd-sub-list').style.display = 'none';
+  document.getElementById('rd-sub-btn').style.display = 'none';
+  document.getElementById('rd-sel-pill').style.display = 'none';
+  document.getElementById('rd-search-done').style.display = 'none';
+  document.getElementById('rd-search-banner').style.display = 'block';
+  document.getElementById('rd-search-status').textContent = 'Finding communities for "' + niche + '"...';
+  document.getElementById('rd-sub-sub').textContent = 'Finding the best subreddits for your niche...';
+  showScreen('srd2');
+  searchSubreddits();
+}
+
+function searchSubreddits() {
+  var prompt = 'List 15 real active Reddit subreddits that would be relevant for someone in the "' + rdState.niche + '" space who wants to ' + rdState.goal + ' with an audience of ' + (rdState.audience || 'general users') + '.\n\nFor each subreddit provide:\n- Exact subreddit name (without r/)\n- Number of members (approximate)\n- What topics the community covers\n- Whether self-promotion is generally allowed (yes/no/limited)\n- Best type of post that works well there (discussion, story, question, tutorial, etc.)\n- A relevance rating 1-5 for this specific niche\n\nOnly include real active subreddits. Prioritise communities where authentic discussion is valued and the niche is genuinely relevant.\n\nReturn ONLY a raw JSON array starting with [:\n[{"name":"entrepreneurship","members":"2.1M","desc":"What the community covers","allows_promo":"limited","best_post_type":"Story or lesson learned","s":5}]';
+
+  callAPIHighTokens(prompt, function(text) {
+    document.getElementById('rd-search-banner').style.display = 'none';
+    try {
+      var clean = text.trim().replace(/^```json\s*/i,'').replace(/^```\s*/i,'').replace(/```\s*$/,'').trim();
+      var start = clean.indexOf('['), end = clean.lastIndexOf(']');
+      if (start === -1 || end === -1) throw new Error('no array');
+      clean = clean.substring(start, end + 1);
+      clean = clean.replace(/,\s*([}\]])/g, '$1');
+      var subs = JSON.parse(clean);
+      if (!Array.isArray(subs) || !subs.length) throw new Error('empty');
+      subs = subs.filter(function(s) { return s && s.name; });
+      subs.forEach(function(s) { s.s = Math.min(5, Math.max(1, parseInt(s.s) || 3)); });
+      subs.sort(function(a,b) { return b.s - a.s; });
+      rdState.subreddits = subs;
+      renderSubreddits(subs);
+      var d = document.getElementById('rd-search-done');
+      d.textContent = '\u2713 Found ' + subs.length + ' communities for "' + rdState.niche + '"';
+      d.style.display = 'block';
+      document.getElementById('rd-sub-sub').textContent = subs.length + ' communities found. Click one to select it.';
+    } catch(e) {
+      document.getElementById('rd-search-done').textContent = 'Could not load results. Please try again.';
+      document.getElementById('rd-search-done').style.display = 'block';
+      document.getElementById('rd-search-done').className = 'notice notice-error';
+      document.getElementById('rd-sub-list').innerHTML = '<div style="padding:1rem;"><button class="btn btn-primary btn-sm" onclick="searchSubreddits()">Retry</button></div>';
+      document.getElementById('rd-sub-list').style.display = 'block';
+    }
+  }, function(err) {
+    document.getElementById('rd-search-banner').style.display = 'none';
+    document.getElementById('rd-search-done').textContent = 'Error: ' + err;
+    document.getElementById('rd-search-done').style.display = 'block';
+    document.getElementById('rd-search-done').className = 'notice notice-error';
+  });
+}
+
+function renderSubreddits(list) {
+  var el = document.getElementById('rd-sub-list');
+  if (!list.length) { el.innerHTML = '<div style="padding:1rem;color:var(--muted);font-size:13px;">No communities found.</div>'; el.style.display = 'block'; return; }
+  var html = '';
+  list.forEach(function(s) {
+    var sel = rdState.selectedSub && rdState.selectedSub.name === s.name;
+    var stars = '';
+    for (var i = 0; i < s.s; i++) stars += '&#9733;';
+    for (var i = s.s; i < 5; i++) stars += '&#9734;';
+    var promoColor = s.allows_promo === 'yes' ? '#2d6a4f' : s.allows_promo === 'limited' ? '#856404' : '#c1121f';
+    var safe = s.name.replace(/'/g, "\\'");
+    html += '<div class="plat-item' + (sel ? ' sel' : '') + '" onclick="selectSubreddit(\'' + safe + '\')">';
+    html += '<div style="flex:1;">';
+    html += '<div class="plat-name">r/' + s.name + '</div>';
+    html += '<div class="plat-url">' + (s.members || '') + ' members</div>';
+    if (s.desc) html += '<div style="font-size:11px;color:var(--muted);margin-top:2px;font-style:italic;">' + s.desc + '</div>';
+    if (s.best_post_type) html += '<div style="font-size:10px;color:var(--gold);margin-top:3px;">Best posts: ' + s.best_post_type + '</div>';
+    html += '<div style="font-size:10px;margin-top:3px;color:' + promoColor + ';">Self-promotion: ' + (s.allows_promo || 'check rules') + '</div>';
+    html += '</div>';
+    html += '<div style="text-align:right;flex-shrink:0;"><div class="stars">' + stars + '</div></div>';
+    html += '</div>';
+  });
+  el.innerHTML = html;
+  el.style.display = 'block';
+}
+
+function selectSubreddit(name) {
+  rdState.selectedSub = rdState.subreddits.find(function(s) { return s.name === name; });
+  if (!rdState.selectedSub) return;
+  document.getElementById('rd-sub-btn').style.display = 'inline-flex';
+  var pill = document.getElementById('rd-sel-pill');
+  pill.innerHTML = '<div class="sel-pill">&#10003; r/' + rdState.selectedSub.name + ' -- ' + (rdState.selectedSub.members || '') + ' members</div>';
+  pill.style.display = 'block';
+  renderSubreddits(rdState.subreddits);
+  // Pre-fill subreddit name on story screen
+  var chosenEl = document.getElementById('rd-chosen-sub');
+  if (chosenEl) chosenEl.textContent = 'r/' + rdState.selectedSub.name;
+  document.querySelectorAll('.rd-sub-ref').forEach(function(el) { el.textContent = rdState.selectedSub.name; });
+}
+
+function generateRedditPost() {
+  if (!rdState.selectedSub) { alert('No subreddit selected. Please go back and select one.'); return; }
+  rdState.story1 = document.getElementById('rd-story-1').value.trim();
+  rdState.story2 = document.getElementById('rd-story-2').value.trim();
+  rdState.story3 = document.getElementById('rd-story-3').value.trim();
+  rdState.story4 = document.getElementById('rd-story-4').value.trim();
+  rdState.story5 = document.getElementById('rd-story-5').value.trim();
+  if (!rdState.story1) { alert('Please fill in at least the first story field.'); return; }
+
+  var sub = rdState.selectedSub;
+  var btn = document.getElementById('rd-gen-btn');
+  btn.textContent = 'Generating...'; btn.disabled = true;
+  document.getElementById('rd-gen-spinner').style.display = 'flex';
+  document.getElementById('rd-gen-status').textContent = 'Crafting your Reddit post for r/' + sub.name + '...';
+  document.getElementById('rd-post-wrap').style.display = 'none';
+  document.getElementById('rd-final-wrap').style.display = 'none';
+  document.getElementById('rd-approved-msg').style.display = 'none';
+  showScreen('srd4');
+
+  var goalLabels = { discussion: 'spark a genuine discussion', advice: 'ask for advice or feedback', share: 'share a valuable lesson or insight', launch: 'share something I built', ama: 'host an AMA' };
+  var toneLabels = { conversational: 'casual and conversational', educational: 'educational and helpful', story: 'personal story-driven', controversial: 'bold and opinion-driven' };
+
+  var prompt = 'Write a Reddit post for r/' + sub.name + ' (' + (sub.members || '') + ' members, ' + (sub.desc || '') + ').\n\n' +
+    'GOAL: ' + (goalLabels[rdState.goal] || rdState.goal) + '\n' +
+    'TONE: ' + (toneLabels[rdState.tone] || rdState.tone) + '\n' +
+    'NICHE: ' + rdState.niche + '\n\n' +
+    'STORY DETAILS:\n' +
+    '- Core story/insight: ' + rdState.story1 + '\n' +
+    (rdState.story2 ? '- Unique perspective/authority: ' + rdState.story2 + '\n' : '') +
+    (rdState.story3 ? '- Data/proof points: ' + rdState.story3 + '\n' : '') +
+    (rdState.story4 ? '- Discussion question: ' + rdState.story4 + '\n' : '') +
+    (rdState.story5 ? '- Avoid: ' + rdState.story5 + '\n' : '') +
+    '\nRULES FOR THIS POST:\n' +
+    '1. Sound like a genuine community member, NOT a marketer or brand\n' +
+    '2. Lead with the story or insight -- not with who you are or what you sell\n' +
+    '3. Be specific, honest and vulnerable where appropriate -- Reddit rewards authenticity\n' +
+    '4. End with a genuine question that invites discussion\n' +
+    '5. Do NOT include links or obvious self-promotion unless the story specifically requires it\n' +
+    '6. Match the casual, direct tone of r/' + sub.name + '\n' +
+    '7. Best post type for this subreddit: ' + (sub.best_post_type || 'discussion') + '\n\n' +
+    'Format your response EXACTLY as:\nTITLE: [the post title]\n\nBODY:\n[the full post body]\n\nNo asterisks, no markdown headers, plain conversational text only.';
+
+  callAPIHighTokens(prompt, function(text) {
+    btn.textContent = 'Generate my Reddit post \u2192'; btn.disabled = false;
+    document.getElementById('rd-gen-spinner').style.display = 'none';
+    // Parse title and body
+    var titleMatch = text.match(/^TITLE:\s*(.+)/m);
+    var bodyMatch = text.match(/BODY:\s*([\s\S]+)/i);
+    var title = titleMatch ? titleMatch[1].trim() : 'My Reddit post';
+    var body = bodyMatch ? bodyMatch[1].trim() : text.trim();
+    rdState.postTitle = title;
+    rdState.postBody = body;
+    document.getElementById('rd-post-title').textContent = title;
+    document.getElementById('rd-post-body').textContent = body;
+    document.getElementById('rd-post-sub-label').textContent = sub.name;
+    document.getElementById('rd-post-wrap').style.display = 'block';
+    document.getElementById('rd-post-wrap').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }, function(err) {
+    btn.textContent = 'Generate my Reddit post \u2192'; btn.disabled = false;
+    document.getElementById('rd-gen-spinner').style.display = 'none';
+    alert('Could not generate post. Please try again. Error: ' + err);
+    showScreen('srd3');
+  });
+}
+
+function regenRedditPost() {
+  var feedback = document.getElementById('rd-feedback').value.trim();
+  var sub = rdState.selectedSub;
+  var btn = document.getElementById('rd-regen-btn');
+  btn.textContent = 'Regenerating...'; btn.disabled = true;
+  document.getElementById('rd-gen-spinner').style.display = 'flex';
+  document.getElementById('rd-post-wrap').style.display = 'none';
+
+  var prompt = 'Rewrite this Reddit post for r/' + sub.name + '.\n\nCurrent title: ' + rdState.postTitle + '\n\nCurrent body:\n' + rdState.postBody + '\n\nChanges requested: ' + (feedback || 'Improve it generally') + '\n\nKeep it authentic, community-appropriate and non-promotional. Format as:\nTITLE: [title]\n\nBODY:\n[body]';
+
+  callAPIHighTokens(prompt, function(text) {
+    btn.textContent = 'Regenerate with changes'; btn.disabled = false;
+    document.getElementById('rd-gen-spinner').style.display = 'none';
+    var titleMatch = text.match(/^TITLE:\s*(.+)/m);
+    var bodyMatch = text.match(/BODY:\s*([\s\S]+)/i);
+    rdState.postTitle = titleMatch ? titleMatch[1].trim() : rdState.postTitle;
+    rdState.postBody = bodyMatch ? bodyMatch[1].trim() : text.trim();
+    document.getElementById('rd-post-title').textContent = rdState.postTitle;
+    document.getElementById('rd-post-body').textContent = rdState.postBody;
+    document.getElementById('rd-feedback').value = '';
+    document.getElementById('rd-approved-msg').style.display = 'none';
+    document.getElementById('rd-post-wrap').style.display = 'block';
+    document.getElementById('rd-post-wrap').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }, function(err) {
+    btn.textContent = 'Regenerate with changes'; btn.disabled = false;
+    document.getElementById('rd-gen-spinner').style.display = 'none';
+    document.getElementById('rd-post-wrap').style.display = 'block';
+    alert('Could not regenerate. Please try again.');
+  });
+}
+
+function approveRedditPost() {
+  rdState.approved = true;
+  var btn = document.getElementById('rd-approve-btn');
+  btn.textContent = '\u2713 Approved!'; btn.disabled = true;
+  document.getElementById('rd-approved-msg').style.display = 'block';
+  document.querySelectorAll('.rd-sub-ref').forEach(function(el) { el.textContent = rdState.selectedSub ? rdState.selectedSub.name : ''; });
+  setTimeout(function() {
+    btn.innerHTML = '&#10003; Approve post \u2192'; btn.disabled = false;
+    document.getElementById('rd-post-wrap').style.display = 'none';
+    document.getElementById('rd-final-wrap').style.display = 'block';
+    document.getElementById('rd-final-wrap').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }, 1000);
+}
+
+function copyRdTitle() {
+  var btn = document.getElementById('copy-rd-title-btn');
+  var ok = document.getElementById('rd-copy-ok');
+  navigator.clipboard.writeText(rdState.postTitle).then(function() {
+    btn.textContent = '\u2713 Title copied!'; btn.style.background = '#2d6a4f'; btn.style.borderColor = '#2d6a4f';
+    ok.textContent = '\u2713 Title copied -- paste it into the Reddit title field.';
+    ok.style.display = 'block';
+    setTimeout(function() { btn.textContent = 'Copy title'; btn.style.background = ''; btn.style.borderColor = ''; }, 2500);
+  });
+}
+
+function copyRdBody() {
+  var btn = document.getElementById('copy-rd-body-btn');
+  var ok = document.getElementById('rd-copy-ok');
+  navigator.clipboard.writeText(rdState.postBody).then(function() {
+    btn.textContent = '\u2713 Body copied!'; btn.style.background = '#2d6a4f'; btn.style.borderColor = '#2d6a4f';
+    ok.textContent = '\u2713 Body copied -- paste it into the Reddit text field.';
+    ok.style.display = 'block';
+    setTimeout(function() { btn.textContent = 'Copy post body'; btn.style.background = ''; btn.style.borderColor = ''; }, 2500);
+  });
+}
+
+function openReddit() {
+  var url = rdState.selectedSub ? 'https://www.reddit.com/r/' + rdState.selectedSub.name + '/submit' : 'https://www.reddit.com';
+  window.open(url, '_blank');
+}
+
 // ---- RESET ----
 function resetAll() {
   state = {
@@ -1903,6 +2382,8 @@ function resetAll() {
   document.getElementById('card-a').classList.remove('on');
   document.getElementById('card-b').classList.remove('on');
   document.getElementById('card-c').classList.remove('on');
+  document.getElementById('card-d').classList.remove('on');
+  rdState = { niche:'', goal:'discussion', message:'', audience:'', tone:'conversational', selectedSub:null, subreddits:[], story1:'', story2:'', story3:'', story4:'', story5:'', postTitle:'', postBody:'', approved:false };
   document.getElementById('path-notice').style.display = 'none';
   document.getElementById('entry-btn').style.display = 'none';
   showScreen('s0');
