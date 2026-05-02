@@ -956,28 +956,41 @@ textarea{resize:vertical;line-height:1.6;}
 
   <!-- State / Region -->
   <div style="margin-bottom:1.25rem;">
-    <label>State, province, or region <span style="font-size:10px;font-weight:400;text-transform:none;">(e.g. NSW, California, Greater London)</span></label>
-    <input type="text" id="loc-state" placeholder="e.g. New South Wales, California, Texas, Greater London, Ontario"/>
-    <div id="loc-state-hints" class="chips" style="margin-top:8px;"></div>
+    <label>State, province, or region</label>
+    <div style="position:relative;">
+      <input type="text" id="loc-state" placeholder="Type or select your state, province, or region..." autocomplete="off" oninput="filterStateDropdown()" onfocus="showStateDropdown()" onblur="setTimeout(hideStateDropdown,200)"/>
+      <div id="loc-state-dropdown" style="display:none;position:absolute;top:100%;left:0;right:0;background:var(--white);border:1.5px solid var(--gold);border-top:none;border-radius:0 0 var(--radius) var(--radius);max-height:220px;overflow-y:auto;z-index:100;box-shadow:0 4px 12px rgba(0,0,0,0.1);"></div>
+    </div>
+    <div id="loc-state-hints" style="display:none;"></div>
   </div>
 
   <!-- City -->
   <div style="margin-bottom:1.25rem;">
-    <label>City or metropolitan area <span style="font-size:10px;font-weight:400;text-transform:none;">(e.g. Sydney, San Francisco, London)</span></label>
-    <input type="text" id="loc-city" placeholder="e.g. Sydney, New York City, Melbourne, San Francisco, Chicago"/>
+    <label>City or metropolitan area</label>
+    <div class="chips" id="loc-city-chips" style="margin-top:8px;margin-bottom:8px;"></div>
+    <div id="loc-city-other-wrap" style="display:none;">
+      <input type="text" id="loc-city" placeholder="Type your city or metropolitan area..." autocomplete="off" oninput="filterCityInput()" style="margin-top:4px;"/>
+    </div>
+    <input type="hidden" id="loc-city-val"/>
   </div>
 
   <!-- Hyperlocal -->
-  <div style="margin-bottom:1.25rem;">
+  <div style="margin-bottom:1.25rem;" id="loc-hyper-section" style="display:none;">
     <label>Suburb, neighbourhood, borough, or district <span style="font-size:10px;font-weight:400;text-transform:none;">(this is where hyperlocal results come from)</span></label>
-    <input type="text" id="loc-hyper" placeholder="e.g. Surry Hills, Brooklyn Heights, Fitzroy, Pleasant Hill, Shoreditch, Bondi"/>
-    <div style="font-size:11px;color:var(--muted);margin-top:5px;">You can enter multiple areas separated by commas -- e.g. "Surry Hills, Newtown, Glebe"</div>
+    <div class="chips" id="loc-hyper-chips" style="margin-top:8px;margin-bottom:8px;"></div>
+    <div id="loc-hyper-other-wrap" style="display:none;position:relative;">
+      <input type="text" id="loc-hyper" placeholder="Type suburb, neighbourhood, borough or district..." autocomplete="off" oninput="filterHyperInput()" onfocus="showHyperDropdown()" onblur="setTimeout(hideHyperDropdown,200)" style="margin-top:4px;"/>
+      <div id="loc-hyper-dropdown" style="display:none;position:absolute;top:100%;left:0;right:0;background:var(--white);border:1.5px solid var(--gold);border-top:none;border-radius:0 0 var(--radius) var(--radius);max-height:200px;overflow-y:auto;z-index:100;box-shadow:0 4px 12px rgba(0,0,0,0.1);"></div>
+    </div>
+    <div style="font-size:11px;color:var(--muted);margin-top:5px;">You can select multiple areas or type your own</div>
+    <div id="loc-hyper-selected" style="display:none;margin-top:8px;" class="notice notice-gold" style="font-size:12px;"></div>
   </div>
 
   <!-- Local government area -->
-  <div style="margin-bottom:1.5rem;">
-    <label>Local Government Area or Council <span style="font-size:10px;font-weight:400;text-transform:none;">(optional -- adds more precision)</span></label>
-    <input type="text" id="loc-lga" placeholder="e.g. Inner West Council, City of Melbourne, Brooklyn Borough, City of Westminster"/>
+  <div style="margin-bottom:1.5rem;" id="loc-lga-section">
+    <label>Local Government Area or Council <span style="font-size:10px;font-weight:400;text-transform:none;">(auto-suggested based on your selections)</span></label>
+    <div class="chips" id="loc-lga-chips" style="margin-top:8px;margin-bottom:8px;"></div>
+    <input type="text" id="loc-lga" placeholder="Or type your LGA or council name..." style="margin-top:4px;"/>
   </div>
 
   <div class="divider"></div>
@@ -2513,6 +2526,7 @@ function testJump(screen) {
 // ============================================================
 
 // ============================================================
+
 var rdState = {
   niche: '', goal: 'discussion', message: '', audience: '', tone: 'conversational',
   selectedSub: null, subreddits: [],
@@ -2781,35 +2795,372 @@ var locState = {
   selectedOutlet: null, outlets: []
 };
 
+var LOC_STATES = {
+  'Australia': ['Australian Capital Territory','New South Wales','Northern Territory','Queensland','South Australia','Tasmania','Victoria','Western Australia'],
+  'United States': ['Alabama','Alaska','Arizona','Arkansas','California','Colorado','Connecticut','Delaware','Florida','Georgia','Hawaii','Idaho','Illinois','Indiana','Iowa','Kansas','Kentucky','Louisiana','Maine','Maryland','Massachusetts','Michigan','Minnesota','Mississippi','Missouri','Montana','Nebraska','Nevada','New Hampshire','New Jersey','New Mexico','New York','North Carolina','North Dakota','Ohio','Oklahoma','Oregon','Pennsylvania','Rhode Island','South Carolina','South Dakota','Tennessee','Texas','Utah','Vermont','Virginia','Washington','West Virginia','Wisconsin','Wyoming','District of Columbia'],
+  'United Kingdom': ['England','Scotland','Wales','Northern Ireland','Greater London','South East England','South West England','East of England','East Midlands','West Midlands','Yorkshire and the Humber','North West England','North East England'],
+  'Canada': ['Alberta','British Columbia','Manitoba','New Brunswick','Newfoundland and Labrador','Northwest Territories','Nova Scotia','Nunavut','Ontario','Prince Edward Island','Quebec','Saskatchewan','Yukon'],
+  'New Zealand': ['Auckland','Bay of Plenty','Canterbury','Gisborne','Hawkes Bay','Manawatu-Whanganui','Marlborough','Nelson','Northland','Otago','Southland','Taranaki','Tasman','Waikato','Wellington','West Coast'],
+  'Ireland': ['Carlow','Cavan','Clare','Cork','Donegal','Dublin','Galway','Kerry','Kildare','Kilkenny','Laois','Leitrim','Limerick','Longford','Louth','Mayo','Meath','Monaghan','Offaly','Roscommon','Sligo','Tipperary','Waterford','Westmeath','Wexford','Wicklow'],
+  'South Africa': ['Eastern Cape','Free State','Gauteng','KwaZulu-Natal','Limpopo','Mpumalanga','Northern Cape','North West','Western Cape'],
+  'India': ['Andhra Pradesh','Arunachal Pradesh','Assam','Bihar','Chhattisgarh','Goa','Gujarat','Haryana','Himachal Pradesh','Jharkhand','Karnataka','Kerala','Madhya Pradesh','Maharashtra','Manipur','Meghalaya','Mizoram','Nagaland','Odisha','Punjab','Rajasthan','Sikkim','Tamil Nadu','Telangana','Tripura','Uttar Pradesh','Uttarakhand','West Bengal','Delhi','Jammu and Kashmir'],
+  'Singapore': ['Central Region','East Region','North Region','North-East Region','West Region'],
+  'Other': []
+};
+
+var LOC_CITIES = {
+  'Australia': {
+    'New South Wales': ['Sydney','Newcastle','Wollongong','Central Coast','Blue Mountains','Albury','Wagga Wagga','Other'],
+    'Victoria': ['Melbourne','Geelong','Ballarat','Bendigo','Shepparton','Wodonga','Warrnambool','Other'],
+    'Queensland': ['Brisbane','Gold Coast','Sunshine Coast','Cairns','Townsville','Toowoomba','Mackay','Other'],
+    'South Australia': ['Adelaide','Mount Gambier','Port Augusta','Whyalla','Other'],
+    'Western Australia': ['Perth','Fremantle','Bunbury','Geraldton','Kalgoorlie','Other'],
+    'Tasmania': ['Hobart','Launceston','Devonport','Burnie','Other'],
+    'Australian Capital Territory': ['Canberra','Other'],
+    'Northern Territory': ['Darwin','Alice Springs','Other']
+  },
+  'United States': {
+    'California': ['Los Angeles','San Francisco','San Diego','Sacramento','San Jose','Oakland','Fresno','Long Beach','Other'],
+    'New York': ['New York City','Buffalo','Rochester','Syracuse','Albany','Yonkers','Other'],
+    'Texas': ['Houston','Dallas','Austin','San Antonio','Fort Worth','El Paso','Other'],
+    'Florida': ['Miami','Orlando','Tampa','Jacksonville','Fort Lauderdale','St. Petersburg','Other'],
+    'Illinois': ['Chicago','Aurora','Naperville','Joliet','Rockford','Other'],
+    'Washington': ['Seattle','Spokane','Tacoma','Bellevue','Other'],
+    'Georgia': ['Atlanta','Savannah','Augusta','Columbus','Other'],
+    'Colorado': ['Denver','Colorado Springs','Aurora','Boulder','Fort Collins','Other'],
+    'Massachusetts': ['Boston','Worcester','Springfield','Cambridge','Lowell','Other']
+  },
+  'United Kingdom': {
+    'England': ['London','Manchester','Birmingham','Leeds','Liverpool','Sheffield','Bristol','Newcastle','Other'],
+    'Greater London': ['London','Other'],
+    'Scotland': ['Edinburgh','Glasgow','Aberdeen','Dundee','Inverness','Other'],
+    'Wales': ['Cardiff','Swansea','Newport','Bangor','Other'],
+    'Northern Ireland': ['Belfast','Londonderry','Lisburn','Other']
+  },
+  'Canada': {
+    'Ontario': ['Toronto','Ottawa','Mississauga','Hamilton','London','Brampton','Other'],
+    'British Columbia': ['Vancouver','Victoria','Surrey','Burnaby','Richmond','Kelowna','Other'],
+    'Quebec': ['Montreal','Quebec City','Laval','Gatineau','Other'],
+    'Alberta': ['Calgary','Edmonton','Red Deer','Lethbridge','Other']
+  },
+  'New Zealand': {
+    'Auckland': ['Auckland City','North Shore','Manukau','Waitakere','Other'],
+    'Wellington': ['Wellington City','Lower Hutt','Upper Hutt','Porirua','Other'],
+    'Canterbury': ['Christchurch','Timaru','Ashburton','Other'],
+    'Waikato': ['Hamilton','Cambridge','Te Awamutu','Other']
+  },
+  'Ireland': {
+    'Dublin': ['Dublin City','Dun Laoghaire','Fingal','South Dublin','Other'],
+    'Cork': ['Cork City','Cobh','Midleton','Other'],
+    'Galway': ['Galway City','Tuam','Other']
+  },
+  'South Africa': {
+    'Gauteng': ['Johannesburg','Pretoria','Soweto','Sandton','Other'],
+    'Western Cape': ['Cape Town','Stellenbosch','Paarl','Other'],
+    'KwaZulu-Natal': ['Durban','Pietermaritzburg','Other']
+  },
+  'India': {
+    'Maharashtra': ['Mumbai','Pune','Nagpur','Nashik','Other'],
+    'Karnataka': ['Bangalore','Mysore','Mangalore','Other'],
+    'Delhi': ['New Delhi','Other'],
+    'Tamil Nadu': ['Chennai','Coimbatore','Madurai','Other']
+  },
+  'Singapore': {
+    'Central Region': ['Orchard','Marina Bay','Tanjong Pagar','Other'],
+    'East Region': ['Tampines','Bedok','Pasir Ris','Other'],
+    'West Region': ['Jurong','Clementi','Buona Vista','Other']
+  }
+};
+
+var LOC_SUBURBS = {
+  'Sydney': ['Surry Hills','Newtown','Glebe','Paddington','Bondi','Manly','Balmain','Rozelle','Leichhardt','Marrickville','Inner West','Eastern Suburbs','Northern Beaches','Other'],
+  'Melbourne': ['Fitzroy','Collingwood','Richmond','St Kilda','South Yarra','Prahran','Brunswick','Northcote','Carlton','Docklands','Other'],
+  'Brisbane': ['South Bank','Fortitude Valley','New Farm','West End','Paddington','Woolloongabba','Other'],
+  'Adelaide': ['Glenelg','Norwood','Unley','Prospect','Other'],
+  'Perth': ['Fremantle','Subiaco','Leederville','Northbridge','Other'],
+  'New York City': ['Manhattan','Brooklyn','Queens','The Bronx','Staten Island','Brooklyn Heights','Williamsburg','Astoria','Harlem','SoHo','Other'],
+  'Los Angeles': ['Hollywood','Silver Lake','Echo Park','Westwood','Venice','Santa Monica','Other'],
+  'San Francisco': ['Mission District','Castro','Haight-Ashbury','SoMa','Noe Valley','Pacific Heights','Other'],
+  'Chicago': ['The Loop','Lincoln Park','Wicker Park','Logan Square','Hyde Park','Other'],
+  'London': ['Shoreditch','Brixton','Notting Hill','Camden','Hackney','Islington','Peckham','Other'],
+  'Manchester': ['Northern Quarter','Didsbury','Salford','Ancoats','Other'],
+  'Toronto': ['Kensington Market','The Annex','Queen West','Distillery District','Other'],
+  'Vancouver': ['Gastown','Commercial Drive','Kitsilano','Mount Pleasant','Other'],
+  'Auckland': ['Ponsonby','Grey Lynn','Newmarket','Takapuna','Other']
+};
+
+var LOC_LGAS = {
+  'Sydney': ['City of Sydney','Inner West Council','Northern Beaches Council','Waverley Council','Randwick City Council','Georges River Council'],
+  'Melbourne': ['City of Melbourne','City of Yarra','Moreland City Council','Port Phillip City Council','Stonnington City Council'],
+  'Brisbane': ['Brisbane City Council','Ipswich City Council'],
+  'Adelaide': ['City of Adelaide','Unley Council','Norwood Payneham & St Peters'],
+  'Perth': ['City of Perth','City of Fremantle','City of Subiaco'],
+  'New York City': ['Manhattan Borough','Brooklyn Borough','Queens Borough','Bronx Borough','Staten Island Borough'],
+  'Los Angeles': ['City of Los Angeles','City of Santa Monica','City of Beverly Hills'],
+  'San Francisco': ['City and County of San Francisco'],
+  'Chicago': ['City of Chicago','Cook County'],
+  'London': ['City of London','City of Westminster','London Borough of Hackney','London Borough of Southwark','London Borough of Camden','London Borough of Islington'],
+  'Manchester': ['Manchester City Council','Salford City Council'],
+  'Toronto': ['City of Toronto'],
+  'Vancouver': ['City of Vancouver','District of North Vancouver'],
+  'Auckland': ['Auckland Council']
+};
+
+var locSelectedHypers = [];
+
+function onStateSelected() {
+  // Called after state is chosen -- populate city chips
+  var country = locState.country === 'Other' ? (document.getElementById('loc-country-other').value.trim()||'Other') : locState.country;
+  var state = document.getElementById('loc-state').value.trim();
+  var cities = (LOC_CITIES[country] && LOC_CITIES[country][state]) ? LOC_CITIES[country][state] : ['Other'];
+  renderCityChips(cities);
+  // Reset downstream
+  document.getElementById('loc-city-other-wrap').style.display = 'none';
+  document.getElementById('loc-city-val').value = '';
+  document.getElementById('loc-city-chips').innerHTML = '';
+  document.getElementById('loc-hyper-section').style.display = 'none';
+  locSelectedHypers = [];
+  document.getElementById('loc-lga-chips').innerHTML = '';
+  document.getElementById('loc-lga').value = '';
+  renderCityChips(cities);
+}
+
+function renderCityChips(cities) {
+  var el = document.getElementById('loc-city-chips');
+  el.innerHTML = '';
+  cities.forEach(function(city) {
+    var chip = document.createElement('div');
+    chip.className = 'chip';
+    chip.textContent = city;
+    chip.onclick = function() {
+      el.querySelectorAll('.chip').forEach(function(c){c.classList.remove('on');});
+      chip.classList.add('on');
+      if (city === 'Other') {
+        document.getElementById('loc-city-other-wrap').style.display = 'block';
+        document.getElementById('loc-city-val').value = '';
+        document.getElementById('loc-city').focus();
+      } else {
+        document.getElementById('loc-city-other-wrap').style.display = 'none';
+        document.getElementById('loc-city-val').value = city;
+        onCitySelected(city);
+      }
+    };
+    el.appendChild(chip);
+  });
+}
+
+function filterCityInput() {
+  var val = document.getElementById('loc-city').value.trim();
+  document.getElementById('loc-city-val').value = val;
+  if (val.length > 1) onCitySelected(val);
+}
+
+function onCitySelected(city) {
+  // Populate suburb chips
+  var hypers = LOC_SUBURBS[city] || ['Other'];
+  renderHyperChips(hypers);
+  document.getElementById('loc-hyper-section').style.display = 'block';
+  // Populate LGA chips
+  var lgas = LOC_LGAS[city] || [];
+  renderLGAChips(lgas);
+  // Reset
+  locSelectedHypers = [];
+  document.getElementById('loc-hyper-selected').style.display = 'none';
+  document.getElementById('loc-hyper-other-wrap').style.display = 'none';
+}
+
+function renderHyperChips(hypers) {
+  var el = document.getElementById('loc-hyper-chips');
+  el.innerHTML = '';
+  hypers.forEach(function(h) {
+    var chip = document.createElement('div');
+    chip.className = 'chip';
+    chip.textContent = h;
+    chip.onclick = function() {
+      if (h === 'Other') {
+        document.getElementById('loc-hyper-other-wrap').style.display = 'block';
+        document.getElementById('loc-hyper').focus();
+        chip.classList.add('on');
+      } else {
+        chip.classList.toggle('on');
+        if (chip.classList.contains('on')) {
+          if (locSelectedHypers.indexOf(h) === -1) locSelectedHypers.push(h);
+        } else {
+          locSelectedHypers = locSelectedHypers.filter(function(v){return v!==h;});
+        }
+        updateHyperSelected();
+      }
+    };
+    el.appendChild(chip);
+  });
+}
+
+function updateHyperSelected() {
+  var el = document.getElementById('loc-hyper-selected');
+  if (locSelectedHypers.length > 0) {
+    el.style.display = 'block';
+    el.textContent = 'Selected: ' + locSelectedHypers.join(', ');
+  } else {
+    el.style.display = 'none';
+  }
+}
+
+function showHyperDropdown() {
+  var city = document.getElementById('loc-city-val').value || document.getElementById('loc-city').value || '';
+  var country = locState.country === 'Other' ? (document.getElementById('loc-country-other').value.trim()||'') : locState.country;
+  var state = document.getElementById('loc-state').value.trim();
+  // Generate suburb suggestions based on city + state + country
+  var suggestions = LOC_SUBURBS[city] || [];
+  if (!suggestions.length && city) {
+    // Generic suggestions based on state
+    suggestions = ['Central ' + city, 'North ' + city, 'South ' + city, 'East ' + city, 'West ' + city];
+  }
+  filterHyperInput(suggestions);
+}
+
+function filterHyperInput(baseSuggestions) {
+  var val = document.getElementById('loc-hyper').value.trim().toLowerCase();
+  var city = document.getElementById('loc-city-val').value || '';
+  var allSubs = baseSuggestions || LOC_SUBURBS[city] || [];
+  var filtered = val ? allSubs.filter(function(s){ return s.toLowerCase().indexOf(val)>-1; }) : allSubs;
+  // Add typed value as first option if not in list
+  if (val && filtered.indexOf(val) === -1) filtered.unshift(val);
+  var dd = document.getElementById('loc-hyper-dropdown');
+  if (!filtered.length) { dd.style.display='none'; return; }
+  dd.innerHTML = '';
+  filtered.slice(0,10).forEach(function(s) {
+    var item = document.createElement('div');
+    item.style.cssText = 'padding:9px 14px;cursor:pointer;font-size:13px;border-bottom:1px solid var(--border);';
+    item.textContent = s;
+    item.onmouseover = function(){ this.style.background='var(--off)'; };
+    item.onmouseout = function(){ this.style.background=''; };
+    item.onmousedown = function(e) {
+      e.preventDefault();
+      document.getElementById('loc-hyper').value = s;
+      if (locSelectedHypers.indexOf(s)===-1) locSelectedHypers.push(s);
+      updateHyperSelected();
+      dd.style.display = 'none';
+    };
+    dd.appendChild(item);
+  });
+  dd.style.display = 'block';
+}
+
+function hideHyperDropdown() {
+  var val = document.getElementById('loc-hyper').value.trim();
+  if (val && locSelectedHypers.indexOf(val)===-1) {
+    locSelectedHypers.push(val);
+    updateHyperSelected();
+  }
+  document.getElementById('loc-hyper-dropdown').style.display = 'none';
+}
+
+function renderLGAChips(lgas) {
+  var el = document.getElementById('loc-lga-chips');
+  el.innerHTML = '';
+  lgas.forEach(function(lga) {
+    var chip = document.createElement('div');
+    chip.className = 'chip';
+    chip.textContent = lga;
+    chip.onclick = function() {
+      el.querySelectorAll('.chip').forEach(function(c){c.classList.remove('on');});
+      chip.classList.add('on');
+      document.getElementById('loc-lga').value = lga;
+    };
+    el.appendChild(chip);
+  });
+  if (lgas.length) {
+    document.getElementById('loc-lga').placeholder = 'Or type a different LGA or council name...';
+  }
+}
+
+
 function setLocCountry(country, el) {
   locState.country = country;
   document.querySelectorAll('#loc-country-chips .chip').forEach(function(c) { c.classList.remove('on'); });
   el.classList.add('on');
-  // Show/hide other field
   document.getElementById('loc-country-other').style.display = country === 'Other' ? 'block' : 'none';
-  // Populate state hints based on country
-  var hints = {
-    'Australia': ['NSW','Victoria','Queensland','South Australia','Western Australia','Tasmania','ACT','Northern Territory'],
-    'United States': ['California','New York','Texas','Florida','Illinois','Washington','Georgia','Colorado','Massachusetts'],
-    'United Kingdom': ['England','Scotland','Wales','Northern Ireland','Greater London'],
-    'Canada': ['Ontario','British Columbia','Quebec','Alberta','Manitoba','Nova Scotia'],
-    'New Zealand': ['Auckland','Wellington','Canterbury','Waikato','Bay of Plenty']
+  // Reset state
+  document.getElementById('loc-state').value = '';
+  document.getElementById('loc-state-dropdown').style.display = 'none';
+  // Reset downstream
+  document.getElementById('loc-city-chips').innerHTML = '';
+  document.getElementById('loc-city-other-wrap').style.display = 'none';
+  document.getElementById('loc-city-val').value = '';
+  document.getElementById('loc-hyper-section').style.display = 'none';
+  document.getElementById('loc-hyper-chips').innerHTML = '';
+  document.getElementById('loc-lga-chips').innerHTML = '';
+  document.getElementById('loc-lga').value = '';
+  locSelectedHypers = [];
+  // Update placeholder
+  var placeholders = {
+    'Australia': 'e.g. New South Wales, Victoria, Queensland...',
+    'United States': 'e.g. California, New York, Texas...',
+    'United Kingdom': 'e.g. England, Scotland, Greater London...',
+    'Canada': 'e.g. Ontario, British Columbia, Quebec...',
+    'New Zealand': 'e.g. Auckland, Wellington, Canterbury...',
+    'Ireland': 'e.g. Dublin, Cork, Galway...',
+    'South Africa': 'e.g. Gauteng, Western Cape, KwaZulu-Natal...',
+    'India': 'e.g. Maharashtra, Karnataka, Delhi...',
+    'Singapore': 'e.g. Central Region, East Region...',
+    'Other': 'Type your state, province, or region...'
   };
-  var hintsEl = document.getElementById('loc-state-hints');
-  hintsEl.innerHTML = '';
-  if (hints[country]) {
-    hints[country].forEach(function(h) {
-      var chip = document.createElement('div');
-      chip.className = 'chip';
-      chip.textContent = h;
-      chip.onclick = function() {
-        document.getElementById('loc-state').value = h;
-        hintsEl.querySelectorAll('.chip').forEach(function(c) { c.classList.remove('on'); });
-        chip.classList.add('on');
-      };
-      hintsEl.appendChild(chip);
-    });
-  }
+  document.getElementById('loc-state').placeholder = placeholders[country] || 'Type your state, province, or region...';
+}
+
+function showStateDropdown() {
+  var country = locState.country === 'Other'
+    ? (document.getElementById('loc-country-other').value.trim() || 'Other')
+    : locState.country;
+  var states = LOC_STATES[country] || [];
+  if (!states.length) return;
+  renderStateDropdown(states, document.getElementById('loc-state').value.trim());
+  document.getElementById('loc-state-dropdown').style.display = 'block';
+}
+
+function hideStateDropdown() {
+  document.getElementById('loc-state-dropdown').style.display = 'none';
+}
+
+function filterStateDropdown() {
+  var country = locState.country === 'Other'
+    ? (document.getElementById('loc-country-other').value.trim() || 'Other')
+    : locState.country;
+  var states = LOC_STATES[country] || [];
+  var query = document.getElementById('loc-state').value.trim().toLowerCase();
+  var filtered = query ? states.filter(function(s) { return s.toLowerCase().indexOf(query) > -1; }) : states;
+  if (!filtered.length) { hideStateDropdown(); return; }
+  renderStateDropdown(filtered, query);
+  document.getElementById('loc-state-dropdown').style.display = 'block';
+}
+
+function renderStateDropdown(states, query) {
+  var dd = document.getElementById('loc-state-dropdown');
+  dd.innerHTML = '';
+  states.forEach(function(s) {
+    var item = document.createElement('div');
+    item.style.cssText = 'padding:9px 14px;cursor:pointer;font-size:13px;border-bottom:1px solid var(--border);transition:background 0.1s;';
+    // Highlight matching text
+    if (query) {
+      var idx = s.toLowerCase().indexOf(query.toLowerCase());
+      if (idx > -1) {
+        item.innerHTML = s.substring(0, idx) + '<strong style="color:var(--gold);">' + s.substring(idx, idx + query.length) + '</strong>' + s.substring(idx + query.length);
+      } else {
+        item.textContent = s;
+      }
+    } else {
+      item.textContent = s;
+    }
+    item.onmouseover = function() { this.style.background = 'var(--off)'; };
+    item.onmouseout = function() { this.style.background = ''; };
+    item.onmousedown = function(e) {
+      e.preventDefault();
+      document.getElementById('loc-state').value = s;
+      hideStateDropdown();
+      onStateSelected();
+    };
+    dd.appendChild(item);
+  });
 }
 
 function toggleLocAngle(el, val) {
@@ -2826,8 +3177,8 @@ function submitLocalTargeting() {
     ? document.getElementById('loc-country-other').value.trim()
     : locState.country;
   var state = document.getElementById('loc-state').value.trim();
-  var city = document.getElementById('loc-city').value.trim();
-  var hyper = document.getElementById('loc-hyper').value.trim();
+  var city = document.getElementById('loc-city-val').value.trim() || document.getElementById('loc-city').value.trim();
+  var hyper = locSelectedHypers.length > 0 ? locSelectedHypers.join(', ') : document.getElementById('loc-hyper') ? document.getElementById('loc-hyper').value.trim() : '';
   var lga = document.getElementById('loc-lga').value.trim();
   var what = document.getElementById('loc-what').value.trim();
   var story = document.getElementById('loc-story').value.trim();
