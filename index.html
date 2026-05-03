@@ -111,7 +111,33 @@ textarea{resize:vertical;line-height:1.6;}
 .gen-row{display:flex;align-items:center;gap:10px;padding:1rem 0;color:var(--muted);font-size:13px;}
 .spinner{width:16px;height:16px;border-radius:50%;border:2px solid var(--border);border-top-color:var(--gold);animation:spin 0.7s linear infinite;flex-shrink:0;}
 @keyframes spin{to{transform:rotate(360deg);}}
-@media(max-width:600px){.path-cards,.g2{grid-template-columns:1fr;}.page-title{font-size:28px;}.wrap{padding:2rem 1.25rem 5rem;}}
+.camp-card{border:1.5px solid var(--border);border-radius:12px;padding:1.25rem 1.5rem;background:var(--white);cursor:pointer;transition:all 0.2s;position:relative;overflow:hidden;}
+.camp-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--border);}
+.camp-card.active::before{background:var(--gold);}
+.camp-card.draft::before{background:var(--muted);}
+.camp-card.completed::before{background:var(--success);}
+.camp-card:hover{border-color:var(--gold);transform:translateY(-1px);box-shadow:0 4px 16px rgba(0,0,0,0.06);}
+.camp-name{font-size:16px;font-weight:500;color:var(--black);margin-bottom:4px;}
+.camp-meta{font-size:12px;color:var(--muted);margin-bottom:8px;}
+.camp-status{display:inline-block;font-size:10px;font-weight:500;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:3px;}
+.camp-status.active{background:#d8f3dc;color:#2d6a4f;}
+.camp-status.draft{background:#f0f0f0;color:#888;}
+.camp-status.completed{background:#e8f4fd;color:#1565c0;}
+.camp-paths{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:1.5rem;}
+.camp-path{border:1.5px solid var(--border);border-radius:10px;padding:1rem 1.25rem;cursor:pointer;transition:all 0.2s;background:var(--white);}
+.camp-path:hover{border-color:var(--gold);background:var(--gold-light);}
+.camp-path-icon{font-size:20px;margin-bottom:6px;}
+.camp-path-title{font-size:13px;font-weight:500;color:var(--black);margin-bottom:3px;}
+.camp-path-desc{font-size:11px;color:var(--muted);line-height:1.5;}
+.log-item{display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);}
+.log-item:last-child{border-bottom:none;}
+.log-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-top:4px;}
+.log-dot.sent{background:#2d6a4f;}
+.log-dot.pending{background:#856404;}
+.log-dot.replied{background:#1565c0;}
+.log-outlet{font-size:13px;font-weight:500;color:var(--black);}
+.log-detail{font-size:11px;color:var(--muted);margin-top:1px;}
+@media(max-width:600px){.camp-paths{grid-template-columns:1fr;}.path-cards,.g2{grid-template-columns:1fr;}.page-title{font-size:28px;}.wrap{padding:2rem 1.25rem 5rem;}}
 </style>
 </head>
 <body>
@@ -123,8 +149,343 @@ textarea{resize:vertical;line-height:1.6;}
 
 <div class="wrap">
 
-<!-- SCREEN 0: ENTRY -->
-<div class="screen active" id="s0">
+<!-- SCREEN: CAMPAIGNS DASHBOARD -->
+<div class="screen active" id="s-camps">
+  <div class="eyebrow">Outreach Platform</div>
+  <h1 class="page-title">My <span>Campaigns</span></h1>
+  <p class="page-sub">Each campaign stores your business profile and outreach history so you never have to re-fill your details. Pick a campaign to start outreach or create a new one.</p>
+
+  <div class="btn-row" style="margin-bottom:1.5rem;">
+    <button class="btn btn-primary" onclick="showNewCampaignForm()">+ Create new campaign</button>
+  </div>
+
+  <div id="camps-list"></div>
+
+  <div id="camps-empty" style="display:none;text-align:center;padding:3rem 1rem;border:2px dashed var(--border);border-radius:12px;">
+    <div style="font-size:32px;margin-bottom:12px;">&#128196;</div>
+    <div style="font-size:16px;font-weight:500;color:var(--black);margin-bottom:6px;">No campaigns yet</div>
+    <div style="font-size:13px;color:var(--muted);margin-bottom:1.25rem;">Create your first campaign to get started. Your profile and campaign info will be saved so you can reuse it across all outreach types.</div>
+    <button class="btn btn-primary" onclick="showNewCampaignForm()">+ Create your first campaign</button>
+  </div>
+</div>
+
+<!-- SCREEN: CREATE / EDIT CAMPAIGN -->
+<div class="screen" id="s-newcamp">
+  <div class="back-link" onclick="showScreen('s-camps')">&#8592; Back to campaigns</div>
+  <div class="eyebrow" id="newcamp-eyebrow">New Campaign</div>
+  <h2 class="sec-title" id="newcamp-title">Create a PR outreach campaign</h2>
+  <p class="sec-sub">Fill this in once. Every outreach path will pre-populate from this information so you can move fast without repeating yourself.</p>
+
+  <div style="background:var(--gold-light);border:1.5px solid var(--gold);border-radius:12px;padding:1.25rem 1.5rem;margin-bottom:1.5rem;">
+    <label style="color:var(--gold);">Campaign name</label>
+    <input type="text" id="camp-name-input" placeholder="e.g. May 2025 Product Launch, Q3 PR Push, Podcast Tour 2025"/>
+    <label style="margin-top:10px;color:var(--gold);">Campaign goal</label>
+    <input type="text" id="camp-goal-input" placeholder="e.g. Announce our new product launch, build brand awareness in the UK, get podcast appearances"/>
+  </div>
+
+  <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:1rem;font-weight:500;">Your business profile</div>
+
+  <div class="g2">
+    <div><label>Your name</label><input type="text" id="cp-name" placeholder="e.g. Jane Smith"/></div>
+    <div><label>Your position</label><input type="text" id="cp-pos" placeholder="e.g. Founder, CEO, Marketing Director"/></div>
+    <div><label>Company name</label><input type="text" id="cp-co" placeholder="e.g. Acme Co, The Local Bakery, Smith Legal"/></div>
+    <div><label>Website</label><input type="text" id="cp-web" placeholder="e.g. yourbusiness.com"/></div>
+    <div class="full"><label>Contact email</label><input type="text" id="cp-email" placeholder="e.g. hello@yourbusiness.com"/></div>
+    <div class="full"><label>What your business does</label><input type="text" id="cp-what" placeholder="e.g. A sustainable homewares brand selling handmade products across Australia and New Zealand"/></div>
+    <div class="full"><label>Your unique angle</label><textarea id="cp-angle" style="min-height:70px;" placeholder="e.g. We are the only certified carbon-neutral homewares brand in Australia, founded by two ex-architects with 20 years of design experience"/></textarea></div>
+    <div class="full"><label>Key message for this campaign</label><textarea id="cp-message" style="min-height:70px;" placeholder="e.g. We just launched our first retail collection in 12 stores nationally after 3 years of online-only -- this is the story we want covered"/></textarea></div>
+    <div class="full"><label>Additional info <span style="font-size:10px;font-weight:400;text-transform:none;">(optional -- milestones, clients, awards, launch dates)</span></label><textarea id="cp-extra" style="min-height:60px;" placeholder="e.g. Recently won Best New Brand at the 2025 Australian Design Awards, featured in Vogue Living, 50,000 customers served"/></textarea></div>
+  </div>
+
+  <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin:1.25rem 0 .75rem;font-weight:500;">Default targeting preferences <span style="font-size:10px;font-weight:400;text-transform:none;letter-spacing:0;">(used to pre-fill Step 3 of each path)</span></div>
+
+  <div style="margin-bottom:1.25rem;">
+    <label>Primary industry</label>
+    <input type="text" id="cp-industry" placeholder="e.g. Fashion &amp; Retail, Health &amp; Wellness, Technology"/>
+    <div style="font-size:11px;color:var(--muted);margin-top:6px;margin-bottom:8px;">Or click a category below</div>
+
+    <div style="font-size:10px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;margin-top:8px;">Fashion, Retail &amp; Consumer</div>
+    <div class="chips" style="margin-bottom:10px;">
+      <div class="chip" onclick="setCampIndustry('cp-industry',this,'Fashion &amp; Retail')">Fashion &amp; Retail</div>
+      <div class="chip" onclick="setCampIndustry('cp-industry',this,'Luxury Goods')">Luxury Goods</div>
+      <div class="chip" onclick="setCampIndustry('cp-industry',this,'E-commerce')">E-commerce</div>
+      <div class="chip" onclick="setCampIndustry('cp-industry',this,'Consumer Goods')">Consumer Goods</div>
+      <div class="chip" onclick="setCampIndustry('cp-industry',this,'Beauty &amp; Cosmetics')">Beauty &amp; Cosmetics</div>
+      <div class="chip" onclick="setCampIndustry('cp-industry',this,'Pet Care')">Pet Care</div>
+    </div>
+    <div style="font-size:10px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;">Technology &amp; Innovation</div>
+    <div class="chips" style="margin-bottom:10px;">
+      <div class="chip" onclick="setCampIndustry('cp-industry',this,'Technology &amp; Software')">Technology &amp; Software</div>
+      <div class="chip" onclick="setCampIndustry('cp-industry',this,'Artificial Intelligence')">Artificial Intelligence</div>
+      <div class="chip" onclick="setCampIndustry('cp-industry',this,'Telecommunications')">Telecommunications</div>
+      <div class="chip" onclick="setCampIndustry('cp-industry',this,'Gaming')">Gaming</div>
+      <div class="chip" onclick="setCampIndustry('cp-industry',this,'Biotech')">Biotech</div>
+      <div class="chip" onclick="setCampIndustry('cp-industry',this,'Cybersecurity')">Cybersecurity</div>
+    </div>
+    <div style="font-size:10px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;">Health &amp; Life Sciences</div>
+    <div class="chips" style="margin-bottom:10px;">
+      <div class="chip" onclick="setCampIndustry('cp-industry',this,'Healthcare &amp; Pharmaceuticals')">Healthcare &amp; Pharmaceuticals</div>
+      <div class="chip" onclick="setCampIndustry('cp-industry',this,'Health &amp; Wellness')">Health &amp; Wellness</div>
+      <div class="chip" onclick="setCampIndustry('cp-industry',this,'Sports &amp; Fitness')">Sports &amp; Fitness</div>
+    </div>
+    <div style="font-size:10px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;">Finance &amp; Professional Services</div>
+    <div class="chips" style="margin-bottom:10px;">
+      <div class="chip" onclick="setCampIndustry('cp-industry',this,'Finance &amp; Fintech')">Finance &amp; Fintech</div>
+      <div class="chip" onclick="setCampIndustry('cp-industry',this,'Professional Services')">Professional Services</div>
+      <div class="chip" onclick="setCampIndustry('cp-industry',this,'Legal Services')">Legal Services</div>
+      <div class="chip" onclick="setCampIndustry('cp-industry',this,'Real Estate')">Real Estate</div>
+      <div class="chip" onclick="setCampIndustry('cp-industry',this,'Insurance')">Insurance</div>
+    </div>
+    <div style="font-size:10px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;">Media, Arts &amp; Entertainment</div>
+    <div class="chips" style="margin-bottom:10px;">
+      <div class="chip" onclick="setCampIndustry('cp-industry',this,'Entertainment &amp; Media')">Entertainment &amp; Media</div>
+      <div class="chip" onclick="setCampIndustry('cp-industry',this,'Publishing')">Publishing</div>
+      <div class="chip" onclick="setCampIndustry('cp-industry',this,'Art &amp; Design')">Art &amp; Design</div>
+      <div class="chip" onclick="setCampIndustry('cp-industry',this,'Marketing &amp; Advertising')">Marketing &amp; Advertising</div>
+      <div class="chip" onclick="setCampIndustry('cp-industry',this,'Creative &amp; Design')">Creative &amp; Design</div>
+    </div>
+    <div style="font-size:10px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;">Food, Hospitality &amp; Travel</div>
+    <div class="chips" style="margin-bottom:10px;">
+      <div class="chip" onclick="setCampIndustry('cp-industry',this,'Food &amp; Beverage')">Food &amp; Beverage</div>
+      <div class="chip" onclick="setCampIndustry('cp-industry',this,'Hospitality &amp; Travel')">Hospitality &amp; Travel</div>
+      <div class="chip" onclick="setCampIndustry('cp-industry',this,'Agriculture')">Agriculture</div>
+    </div>
+    <div style="font-size:10px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;">Industry &amp; Infrastructure</div>
+    <div class="chips" style="margin-bottom:10px;">
+      <div class="chip" onclick="setCampIndustry('cp-industry',this,'Manufacturing')">Manufacturing</div>
+      <div class="chip" onclick="setCampIndustry('cp-industry',this,'Automotive')">Automotive</div>
+      <div class="chip" onclick="setCampIndustry('cp-industry',this,'Construction')">Construction</div>
+      <div class="chip" onclick="setCampIndustry('cp-industry',this,'Logistics &amp; Shipping')">Logistics &amp; Shipping</div>
+      <div class="chip" onclick="setCampIndustry('cp-industry',this,'Government &amp; Defence')">Government &amp; Defence</div>
+    </div>
+    <div style="font-size:10px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;">Energy, Environment &amp; Education</div>
+    <div class="chips" style="margin-bottom:10px;">
+      <div class="chip" onclick="setCampIndustry('cp-industry',this,'Renewable Energy')">Renewable Energy</div>
+      <div class="chip" onclick="setCampIndustry('cp-industry',this,'Green Energy')">Green Energy</div>
+      <div class="chip" onclick="setCampIndustry('cp-industry',this,'Education')">Education</div>
+      <div class="chip" onclick="setCampIndustry('cp-industry',this,'Non-profit &amp; Social Impact')">Non-profit &amp; Social Impact</div>
+    </div>
+    <div style="font-size:10px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;">Business &amp; Startups</div>
+    <div class="chips" style="margin-bottom:10px;">
+      <div class="chip" onclick="setCampIndustry('cp-industry',this,'Business &amp; Startups')">Business &amp; Startups</div>
+      <div class="chip" onclick="setCampIndustry('cp-industry',this,'Entrepreneurship')">Entrepreneurship</div>
+      <div class="chip" onclick="setCampIndustry('cp-industry',this,'E-commerce &amp; DTC')">E-commerce &amp; DTC</div>
+    </div>
+  </div>
+
+  <div style="margin-bottom:1.25rem;">
+    <label>Secondary industry <span style="font-size:10px;font-weight:400;text-transform:none;">(optional crossover)</span></label>
+    <input type="text" id="cp-industry2" placeholder="e.g. Sustainability, AI, Influencer Marketing"/>
+    <div class="chips" style="margin-top:10px;">
+      <div class="chip" onclick="setCampIndustry('cp-industry2',this,'Sustainability')">Sustainability</div>
+      <div class="chip" onclick="setCampIndustry('cp-industry2',this,'Artificial Intelligence')">Artificial Intelligence</div>
+      <div class="chip" onclick="setCampIndustry('cp-industry2',this,'Influencer Marketing')">Influencer Marketing</div>
+      <div class="chip" onclick="setCampIndustry('cp-industry2',this,'Supply Chain')">Supply Chain</div>
+      <div class="chip" onclick="setCampIndustry('cp-industry2',this,'Digital Marketing')">Digital Marketing</div>
+      <div class="chip" onclick="setCampIndustry('cp-industry2',this,'Social Media')">Social Media</div>
+      <div class="chip" onclick="setCampIndustry('cp-industry2',this,'Brand Strategy')">Brand Strategy</div>
+      <div class="chip" onclick="setCampIndustry('cp-industry2',this,'Photography &amp; Visual Media')">Photography &amp; Visual Media</div>
+      <div class="chip" onclick="setCampIndustry('cp-industry2',this,'Entrepreneurship')">Entrepreneurship</div>
+      <div class="chip" onclick="setCampIndustry('cp-industry2',this,'Diversity &amp; Inclusion')">Diversity &amp; Inclusion</div>
+      <div class="chip" onclick="setCampIndustry('cp-industry2',this,'Mental Health')">Mental Health</div>
+      <div class="chip" onclick="setCampIndustry('cp-industry2',this,'Future of Work')">Future of Work</div>
+      <div class="chip" onclick="setCampIndustry('cp-industry2',this,'Consumer Behaviour')">Consumer Behaviour</div>
+      <div class="chip" onclick="setCampIndustry('cp-industry2',this,'Innovation &amp; Disruption')">Innovation &amp; Disruption</div>
+      <div class="chip" onclick="setCampIndustry('cp-industry2',this,'Circular Economy')">Circular Economy</div>
+      <div class="chip" onclick="setCampIndustry('cp-industry2',this,'Data &amp; Privacy')">Data &amp; Privacy</div>
+      <div class="chip" onclick="setCampIndustry('cp-industry2',this,'Leadership')">Leadership</div>
+    </div>
+  </div>
+  <label style="margin-top:10px;">Target countries</label>
+  <div class="chips" style="margin-top:8px;" id="cp-countries-chips">
+    <div class="chip" onclick="toggleCampCountry(this,'Australia')">Australia</div>
+    <div class="chip" onclick="toggleCampCountry(this,'United Kingdom')">United Kingdom</div>
+    <div class="chip" onclick="toggleCampCountry(this,'United States')">United States</div>
+    <div class="chip" onclick="toggleCampCountry(this,'Canada')">Canada</div>
+    <div class="chip" onclick="toggleCampCountry(this,'New Zealand')">New Zealand</div>
+    <div class="chip" onclick="toggleCampCountry(this,'Global')">Global</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- PRESS RELEASE SECTION -->
+  <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:.75rem;font-weight:500;">
+    Press release <span style="font-size:10px;font-weight:400;text-transform:none;letter-spacing:0;color:var(--muted);">-- optional but recommended if you plan to send press release outreach</span>
+  </div>
+
+  <div id="cp-pr-status" style="display:none;margin-bottom:1rem;"></div>
+
+  <div id="cp-pr-collapsed">
+    <p style="font-size:13px;color:var(--muted);margin-bottom:1rem;">Generate a press release now and it will be saved to this campaign. Every outreach path will use it automatically -- no regenerating needed.</p>
+    <div class="btn-row" style="margin-top:0;">
+      <button class="btn btn-gold" onclick="expandPRSection()">&#10022; Generate press release for this campaign</button>
+      <button class="btn btn-outline btn-sm" onclick="skipPRSection()">Skip for now</button>
+    </div>
+  </div>
+
+  <div id="cp-pr-expanded" style="display:none;">
+    <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:1rem;">
+      <div>
+        <label>Key point 1 -- Main news hook <span style="font-size:10px;font-weight:400;text-transform:none;">(required)</span></label>
+        <textarea id="cp-p1" style="min-height:70px;" placeholder="e.g. What is the core announcement? Lead with the most newsworthy fact"></textarea>
+      </div>
+      <div>
+        <label>Key point 2 -- Why it matters</label>
+        <textarea id="cp-p2" style="min-height:70px;" placeholder="e.g. Why does this matter to the industry and to readers right now?"></textarea>
+      </div>
+      <div>
+        <label>Key point 3 -- How it works or what makes it different</label>
+        <textarea id="cp-p3" style="min-height:70px;" placeholder="e.g. What is the process, product, or approach that makes this unique?"></textarea>
+      </div>
+      <div>
+        <label>Key point 4 -- Supporting detail, stat, or proof point</label>
+        <textarea id="cp-p4" style="min-height:70px;" placeholder="e.g. Any numbers, results, client wins, timelines, or milestones that add credibility"></textarea>
+      </div>
+      <div>
+        <label>Key point 5 -- Call to action</label>
+        <textarea id="cp-p5" style="min-height:65px;" placeholder="e.g. What do you want media and readers to do? Visit, contact, attend, partner?"></textarea>
+      </div>
+      <div>
+        <label>Your key quote <span style="font-size:10px;font-weight:400;text-transform:none;">(the line you want journalists to use)</span></label>
+        <textarea id="cp-pq" style="min-height:60px;" placeholder="e.g. A bold, quotable statement that captures your point of view on this announcement"></textarea>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-gold" id="cp-gen-pr-btn" onclick="generateCampaignPR()">Generate press release &rarr;</button>
+      <button class="btn btn-outline btn-sm" onclick="collapsePRSection()">&#8592; Collapse</button>
+    </div>
+
+    <div class="gen-row" id="cp-pr-spinner" style="display:none;"><div class="spinner"></div> <span id="cp-pr-spin-label">Generating your press release...</span></div>
+
+    <div id="cp-pr-review" style="display:none;margin-top:1.25rem;">
+      <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;">Review your press release</div>
+      <div class="pr-box" id="cp-pr-text" style="max-height:320px;overflow-y:auto;"></div>
+      <label style="margin-top:1rem;">Request changes <span style="font-size:10px;font-weight:400;text-transform:none;">(optional)</span></label>
+      <textarea id="cp-pr-feedback" style="min-height:55px;" placeholder="e.g. Make it more urgent, shorten paragraph two, add the launch date..."></textarea>
+      <div class="btn-row" style="margin-top:8px;">
+        <button class="btn btn-outline btn-sm" id="cp-regen-btn" onclick="regenCampaignPR()">Regenerate with changes</button>
+        <button class="btn btn-gold" id="cp-approve-btn" onclick="approveCampaignPR()">&#10003; Approve &amp; save to campaign</button>
+      </div>
+      <div class="notice notice-success" id="cp-pr-approved" style="display:none;">&#10003; Press release approved and saved to this campaign.</div>
+    </div>
+  </div>
+
+  <div class="btn-row" style="margin-top:1.5rem;">
+    <button class="btn btn-primary" id="save-camp-btn" onclick="saveCampaign()">Save campaign &rarr;</button>
+    <button class="btn btn-outline" onclick="showScreen('s-camps')">Cancel</button>
+  </div>
+</div>
+
+<!-- SCREEN: CAMPAIGN HUB -->
+<div class="screen" id="s-hub">
+  <div class="back-link" onclick="showScreen('s-camps')">&#8592; All campaigns</div>
+  <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:1.5rem;">
+    <div>
+      <div class="eyebrow" id="hub-eyebrow">Campaign</div>
+      <h2 class="sec-title" id="hub-title" style="margin-bottom:4px;"></h2>
+      <div id="hub-goal" style="font-size:13px;color:var(--muted);"></div>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center;">
+      <span id="hub-status-pill" class="camp-status"></span>
+      <button class="btn btn-outline btn-sm" onclick="editCampaign()">Edit</button>
+    </div>
+  </div>
+
+  <!-- Campaign profile summary -->
+  <div style="background:var(--off);border:1.5px solid var(--border);border-radius:12px;padding:1rem 1.25rem;margin-bottom:1.5rem;" id="hub-profile-summary"></div>
+
+  <!-- Press release status -->
+  <div id="hub-pr-section" style="margin-bottom:1.5rem;padding:1rem 1.25rem;border-radius:12px;border:1.5px solid var(--border);background:var(--white);">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;">
+      <div>
+        <div style="font-size:12px;font-weight:500;color:var(--black);" id="hub-pr-label">&#128240; Press release</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:2px;" id="hub-pr-sub"></div>
+      </div>
+      <div id="hub-pr-actions"></div>
+    </div>
+    <div id="hub-pr-preview" style="display:none;margin-top:10px;" class="pr-box"></div>
+  </div>
+
+  <!-- Choose path -->
+  <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:.75rem;font-weight:500;">Choose your outreach path</div>
+  <div class="camp-paths">
+    <div class="camp-path" onclick="launchPath('A')">
+      <div class="camp-path-icon">&#128240;</div>
+      <div class="camp-path-title">Send a press release</div>
+      <div class="camp-path-desc">Generate a press release, find outlets, send outreach email</div>
+    </div>
+    <div class="camp-path" onclick="launchPath('B')">
+      <div class="camp-path-icon">&#128161;</div>
+      <div class="camp-path-title">Pitch a content idea</div>
+      <div class="camp-path-desc">Pitch a story angle to press and editorial outlets</div>
+    </div>
+    <div class="camp-path" onclick="launchPath('C')">
+      <div class="camp-path-icon">&#127911;</div>
+      <div class="camp-path-title">Pitch a podcast</div>
+      <div class="camp-path-desc">Craft a guest pitch or collaboration proposal</div>
+    </div>
+    <div class="camp-path" onclick="launchPath('D')">
+      <div class="camp-path-icon">&#127760;</div>
+      <div class="camp-path-title">Reach communities</div>
+      <div class="camp-path-desc">Reddit community outreach and discussion posts</div>
+    </div>
+    <div class="camp-path" style="grid-column:1/-1;" onclick="launchPath('E')">
+      <div class="camp-path-icon">&#127968;</div>
+      <div class="camp-path-title">Local media outreach</div>
+      <div class="camp-path-desc">Target hyperlocal press in your area -- suburb, borough, or district level</div>
+    </div>
+  </div>
+
+  <!-- Outreach log -->
+  <div style="margin-top:2rem;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem;">
+      <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);font-weight:500;">Outreach log</div>
+      <button class="btn btn-outline btn-sm" onclick="showAddLogModal()">+ Log outreach</button>
+    </div>
+    <div id="hub-log-list">
+      <div style="text-align:center;padding:1.5rem;color:var(--muted);font-size:13px;border:1.5px dashed var(--border);border-radius:10px;">No outreach logged yet. Complete a path and log your first outreach above.</div>
+    </div>
+  </div>
+
+  <!-- Mark complete -->
+  <div class="btn-row" style="margin-top:2rem;padding-top:1.5rem;border-top:1px solid var(--border);">
+    <button class="btn btn-outline btn-sm" onclick="markCampaignComplete()">Mark campaign as complete</button>
+    <button class="btn btn-outline btn-sm" style="color:#c1121f;border-color:#c1121f;" onclick="deleteCampaign()">Delete campaign</button>
+  </div>
+</div>
+
+<!-- LOG OUTREACH MODAL -->
+<div id="log-modal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:200;align-items:center;justify-content:center;">
+  <div style="background:var(--white);border-radius:16px;padding:1.75rem;max-width:480px;width:90%;margin:auto;position:relative;top:50%;transform:translateY(-50%);">
+    <div style="font-size:16px;font-weight:500;margin-bottom:1.25rem;">Log outreach</div>
+    <label>Outlet or platform name</label>
+    <input type="text" id="log-outlet" placeholder="e.g. Mumbrella, Ragtrader, Future of Fashion Podcast"/>
+    <label style="margin-top:10px;">Path used</label>
+    <select id="log-path" style="width:100%;padding:8px 11px;border:1.5px solid var(--border);border-radius:var(--radius);font-size:13px;font-family:inherit;">
+      <option value="Press Release">Press Release</option>
+      <option value="Editorial Pitch">Editorial Pitch</option>
+      <option value="Podcast Pitch">Podcast Pitch</option>
+      <option value="Reddit Outreach">Reddit Outreach</option>
+      <option value="Local Media">Local Media</option>
+    </select>
+    <label style="margin-top:10px;">Status</label>
+    <div class="chips" style="margin-top:6px;" id="log-status-chips">
+      <div class="chip on" onclick="setLogStatus('pending',this)">Pending</div>
+      <div class="chip" onclick="setLogStatus('sent',this)">Sent</div>
+      <div class="chip" onclick="setLogStatus('replied',this)">Replied</div>
+    </div>
+    <label style="margin-top:10px;">Notes <span style="font-size:10px;font-weight:400;text-transform:none;">(optional)</span></label>
+    <input type="text" id="log-notes" placeholder="e.g. Sent to Sarah Jones, following up next week"/>
+    <div class="btn-row" style="margin-top:1.25rem;">
+      <button class="btn btn-primary" onclick="saveLogEntry()">Save log entry</button>
+      <button class="btn btn-outline" onclick="hideAddLogModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- SCREEN 0: ENTRY (kept for direct path testing) -->
+<div class="screen" id="s0">
   <div class="eyebrow">PR Outreach Tool</div>
   <h1 class="page-title">What do you want<br>to do <span>today?</span></h1>
   <p class="page-sub">Choose your path. The tool guides you through every step from crafting your message to finding the right people to send it to.</p>
@@ -1015,6 +1376,10 @@ textarea{resize:vertical;line-height:1.6;}
       <div class="chip" onclick="toggleLocAngle(this,'Charity or fundraising')">Charity or fundraising</div>
       <div class="chip" onclick="toggleLocAngle(this,'Local landmark or heritage')">Local landmark or heritage</div>
       <div class="chip" onclick="toggleLocAngle(this,'Sustainability initiative')">Sustainability initiative</div>
+      <div class="chip" id="loc-angle-other-chip" onclick="toggleLocAngleOther(this)">Other</div>
+    </div>
+    <div id="loc-angle-other-wrap" style="display:none;margin-top:8px;">
+      <input type="text" id="loc-angle-other-input" placeholder="Describe your local angle -- e.g. First women-owned business in the area, historical building restoration, local sports sponsorship..." oninput="updateLocAngleOther()"/>
     </div>
   </div>
 
@@ -1111,6 +1476,544 @@ textarea{resize:vertical;line-height:1.6;}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script>
+// ============================================================
+// CAMPAIGN SYSTEM
+// ============================================================
+var campaigns = [];
+var activeCampaign = null;
+var campCountries = [];
+var logStatus = 'pending';
+var editingCampId = null;
+
+function loadCampaigns() {
+  try {
+    var stored = localStorage.getItem('op_campaigns');
+    campaigns = stored ? JSON.parse(stored) : [];
+  } catch(e) { campaigns = []; }
+}
+
+function saveCampaignsToStorage() {
+  try { localStorage.setItem('op_campaigns', JSON.stringify(campaigns)); } catch(e) {}
+}
+
+function genId() {
+  return 'camp_' + Date.now() + '_' + Math.random().toString(36).substr(2,6);
+}
+
+function renderCampaignsDashboard() {
+  loadCampaigns();
+  var list = document.getElementById('camps-list');
+  var empty = document.getElementById('camps-empty');
+  if (!campaigns.length) {
+    list.innerHTML = '';
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+  var html = '<div style="display:flex;flex-direction:column;gap:12px;">';
+  campaigns.slice().reverse().forEach(function(c) {
+    var statusLabel = c.status === 'active' ? 'Active' : c.status === 'completed' ? 'Completed' : 'Draft';
+    var logCount = (c.outreachLog || []).length;
+    var created = c.created ? new Date(c.created).toLocaleDateString('en-AU',{day:'numeric',month:'short',year:'numeric'}) : '';
+    html += '<div class="camp-card ' + (c.status||'draft') + '" onclick="openCampaign(\'' + c.id + '\')">';
+    html += '<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;">';
+    html += '<div><div class="camp-name">' + c.name + '</div>';
+    if (c.goal) html += '<div class="camp-meta">' + c.goal + '</div>';
+    html += '<div class="camp-meta">' + (c.profile.co || '') + (created ? ' &bull; Created ' + created : '') + '</div>';
+    html += '</div>';
+    html += '<span class="camp-status ' + (c.status||'draft') + '">' + statusLabel + '</span>';
+    html += '</div>';
+    html += '<div style="display:flex;align-items:center;gap:12px;margin-top:10px;">';
+    html += '<div style="font-size:12px;color:var(--muted);">&#128139; ' + logCount + ' outreach' + (logCount !== 1 ? 'es' : '') + ' logged</div>';
+    html += '<div style="font-size:12px;color:var(--gold);">Open campaign &rarr;</div>';
+    html += '</div></div>';
+  });
+  html += '</div>';
+  list.innerHTML = html;
+}
+
+function openCampaign(id) {
+  loadCampaigns();
+  var camp = campaigns.find(function(c){ return c.id === id; });
+  if (!camp) return;
+  activeCampaign = camp;
+  // Populate hub screen
+  document.getElementById('hub-eyebrow').textContent = 'Campaign';
+  document.getElementById('hub-title').textContent = camp.name;
+  document.getElementById('hub-goal').textContent = camp.goal || '';
+  var sp = document.getElementById('hub-status-pill');
+  sp.textContent = camp.status === 'active' ? 'Active' : camp.status === 'completed' ? 'Completed' : 'Draft';
+  sp.className = 'camp-status ' + (camp.status || 'draft');
+  // Profile summary
+  var p = camp.profile || {};
+  document.getElementById('hub-profile-summary').innerHTML =
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px 16px;font-size:12px;">' +
+    '<div><span style="color:var(--muted);">Name</span><br><strong>' + (p.name||'—') + (p.pos ? ', ' + p.pos : '') + '</strong></div>' +
+    '<div><span style="color:var(--muted);">Company</span><br><strong>' + (p.co||'—') + '</strong></div>' +
+    '<div><span style="color:var(--muted);">Website</span><br><strong>' + (p.web||'—') + '</strong></div>' +
+    '<div><span style="color:var(--muted);">Email</span><br><strong>' + (p.email||'—') + '</strong></div>' +
+    '</div>' +
+    (p.what ? '<div style="font-size:12px;color:var(--muted);margin-top:8px;">' + p.what + '</div>' : '');
+  // Render log and PR section
+  renderHubLog();
+  renderHubPRSection();
+  // Pre-load press release into session state so all paths can use it
+  if (camp.savedContent && camp.savedContent.pressRelease) {
+    state.pressRelease = camp.savedContent.pressRelease;
+    state.prApproved = true;
+  }
+  // Set campaign to active if still draft
+  if (camp.status === 'draft') {
+    camp.status = 'active';
+    saveCampaignsToStorage();
+  }
+  showScreen('s-hub');
+}
+
+function renderHubLog() {
+  if (!activeCampaign) return;
+  var log = activeCampaign.outreachLog || [];
+  var el = document.getElementById('hub-log-list');
+  if (!log.length) {
+    el.innerHTML = '<div style="text-align:center;padding:1.5rem;color:var(--muted);font-size:13px;border:1.5px dashed var(--border);border-radius:10px;">No outreach logged yet. Complete a path and log your first outreach above.</div>';
+    return;
+  }
+  var statusColors = { sent:'#2d6a4f', pending:'#856404', replied:'#1565c0' };
+  var html = '';
+  log.slice().reverse().forEach(function(entry) {
+    var dotColor = statusColors[entry.status] || '#888';
+    var date = entry.date ? new Date(entry.date).toLocaleDateString('en-AU',{day:'numeric',month:'short'}) : '';
+    html += '<div class="log-item">';
+    html += '<div class="log-dot ' + entry.status + '"></div>';
+    html += '<div style="flex:1;">';
+    html += '<div class="log-outlet">' + entry.outlet + '</div>';
+    html += '<div class="log-detail">' + entry.path + (date ? ' &bull; ' + date : '') + (entry.notes ? ' &bull; ' + entry.notes : '') + '</div>';
+    html += '</div>';
+    html += '<span style="font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:1px;color:' + dotColor + ';">' + entry.status + '</span>';
+    html += '</div>';
+  });
+  el.innerHTML = html;
+}
+
+function setCampIndustry(fieldId, el, val) {
+  document.getElementById(fieldId).value = val;
+  // Clear all chips in the same parent container that share the same field
+  var allChips = document.querySelectorAll('[onclick*="setCampIndustry(\'' + fieldId + '\'"]');
+  allChips.forEach(function(c) { c.classList.remove('on'); });
+  el.classList.add('on');
+}
+
+function toggleCampCountry(el, val) {
+  el.classList.toggle('on');
+  if (el.classList.contains('on')) { if (campCountries.indexOf(val)===-1) campCountries.push(val); }
+  else { campCountries = campCountries.filter(function(v){ return v!==val; }); }
+}
+
+function saveCampaign() {
+  var name = document.getElementById('camp-name-input').value.trim();
+  var goal = document.getElementById('camp-goal-input').value.trim();
+  var pname = document.getElementById('cp-name').value.trim();
+  var co = document.getElementById('cp-co').value.trim();
+  if (!name) { alert('Please give your campaign a name.'); return; }
+  if (!pname || !co) { alert('Please fill in your name and company.'); return; }
+
+  var campData = {
+    id: editingCampId || genId(),
+    name: name,
+    goal: goal,
+    status: editingCampId ? (activeCampaign ? activeCampaign.status : 'draft') : 'draft',
+    created: editingCampId ? (activeCampaign ? activeCampaign.created : new Date().toISOString()) : new Date().toISOString(),
+    profile: {
+      name: pname,
+      pos: document.getElementById('cp-pos').value.trim(),
+      co: co,
+      web: document.getElementById('cp-web').value.trim(),
+      email: document.getElementById('cp-email').value.trim(),
+      what: document.getElementById('cp-what').value.trim(),
+      angle: document.getElementById('cp-angle').value.trim(),
+      extra: document.getElementById('cp-extra').value.trim(),
+      message: document.getElementById('cp-message').value.trim()
+    },
+    targeting: {
+      primary: document.getElementById('cp-industry').value.trim(),
+      secondary: document.getElementById('cp-industry2').value.trim(),
+      countries: campCountries.slice()
+    },
+    outreachLog: editingCampId && activeCampaign ? (activeCampaign.outreachLog || []) : [],
+    savedContent: editingCampId && activeCampaign ? (activeCampaign.savedContent || {}) : {}
+  };
+  // Save approved press release if generated
+  if (campPRApproved && campPRDraft) {
+    campData.savedContent.pressRelease = campPRDraft;
+  }
+
+  loadCampaigns();
+  if (editingCampId) {
+    var idx = campaigns.findIndex(function(c){ return c.id === editingCampId; });
+    if (idx > -1) campaigns[idx] = campData;
+    else campaigns.push(campData);
+  } else {
+    campaigns.push(campData);
+  }
+  saveCampaignsToStorage();
+  activeCampaign = campData;
+  editingCampId = null;
+  openCampaign(campData.id);
+}
+
+function editCampaign() {
+  if (!activeCampaign) return;
+  editingCampId = activeCampaign.id;
+  // Populate form
+  document.getElementById('newcamp-eyebrow').textContent = 'Edit Campaign';
+  document.getElementById('newcamp-title').textContent = 'Edit campaign details';
+  document.getElementById('camp-name-input').value = activeCampaign.name || '';
+  document.getElementById('camp-goal-input').value = activeCampaign.goal || '';
+  var p = activeCampaign.profile || {};
+  document.getElementById('cp-name').value = p.name || '';
+  document.getElementById('cp-pos').value = p.pos || '';
+  document.getElementById('cp-co').value = p.co || '';
+  document.getElementById('cp-web').value = p.web || '';
+  document.getElementById('cp-email').value = p.email || '';
+  document.getElementById('cp-what').value = p.what || '';
+  document.getElementById('cp-angle').value = p.angle || '';
+  document.getElementById('cp-extra').value = p.extra || '';
+  document.getElementById('cp-message').value = p.message || '';
+  var t = activeCampaign.targeting || {};
+  document.getElementById('cp-industry').value = t.primary || '';
+  document.getElementById('cp-industry2').value = t.secondary || '';
+  // Restore selected primary chip
+  if (t.primary) {
+    document.querySelectorAll('[onclick*="setCampIndustry(\'cp-industry\'"]').forEach(function(c) {
+      c.classList.toggle('on', c.textContent.trim() === t.primary);
+    });
+  }
+  // Restore selected secondary chip
+  if (t.secondary) {
+    document.querySelectorAll('[onclick*="setCampIndustry(\'cp-industry2\'"]').forEach(function(c) {
+      c.classList.toggle('on', c.textContent.trim() === t.secondary);
+    });
+  }
+  campCountries = (t.countries || []).slice();
+  document.querySelectorAll('#cp-countries-chips .chip').forEach(function(chip) {
+    var val = chip.textContent.trim();
+    chip.classList.toggle('on', campCountries.indexOf(val) > -1);
+  });
+  // Reset PR section
+  campPRDraft = '';
+  campPRApproved = false;
+  document.getElementById('cp-pr-status').style.display = 'none';
+  document.getElementById('cp-pr-expanded').style.display = 'none';
+  document.getElementById('cp-pr-collapsed').style.display = 'block';
+  document.getElementById('cp-pr-review').style.display = 'none';
+  document.getElementById('cp-pr-approved').style.display = 'none';
+  // If existing PR, show status
+  if (activeCampaign && activeCampaign.savedContent && activeCampaign.savedContent.pressRelease) {
+    campPRDraft = activeCampaign.savedContent.pressRelease;
+    campPRApproved = true;
+    var statusEl = document.getElementById('cp-pr-status');
+    statusEl.innerHTML = '<div class="notice notice-success">&#10003; Press release already saved to this campaign. Generate a new one below to replace it.</div>';
+    statusEl.style.display = 'block';
+  }
+  showScreen('s-newcamp');
+}
+
+function markCampaignComplete() {
+  if (!activeCampaign) return;
+  activeCampaign.status = 'completed';
+  loadCampaigns();
+  var idx = campaigns.findIndex(function(c){ return c.id === activeCampaign.id; });
+  if (idx > -1) campaigns[idx] = activeCampaign;
+  saveCampaignsToStorage();
+  var sp = document.getElementById('hub-status-pill');
+  sp.textContent = 'Completed'; sp.className = 'camp-status completed';
+}
+
+function deleteCampaign() {
+  if (!activeCampaign) return;
+  if (!confirm('Delete "' + activeCampaign.name + '"? This cannot be undone.')) return;
+  loadCampaigns();
+  campaigns = campaigns.filter(function(c){ return c.id !== activeCampaign.id; });
+  saveCampaignsToStorage();
+  activeCampaign = null;
+  showScreen('s-camps');
+  renderCampaignsDashboard();
+}
+
+function showAddLogModal() {
+  document.getElementById('log-outlet').value = '';
+  document.getElementById('log-notes').value = '';
+  logStatus = 'pending';
+  document.querySelectorAll('#log-status-chips .chip').forEach(function(c){ c.classList.remove('on'); });
+  document.getElementById('log-status-chips').firstElementChild.classList.add('on');
+  // Auto-fill outlet if one is selected in current session
+  if (state.selectedPlatform) document.getElementById('log-outlet').value = state.selectedPlatform.n;
+  document.getElementById('log-modal').style.display = 'flex';
+}
+
+function hideAddLogModal() {
+  document.getElementById('log-modal').style.display = 'none';
+}
+
+function setLogStatus(s, el) {
+  logStatus = s;
+  document.querySelectorAll('#log-status-chips .chip').forEach(function(c){ c.classList.remove('on'); });
+  el.classList.add('on');
+}
+
+function saveLogEntry() {
+  var outlet = document.getElementById('log-outlet').value.trim();
+  if (!outlet) { alert('Please enter an outlet name.'); return; }
+  if (!activeCampaign) { hideAddLogModal(); return; }
+  var entry = {
+    id: genId(),
+    outlet: outlet,
+    path: document.getElementById('log-path').value,
+    status: logStatus,
+    date: new Date().toISOString(),
+    notes: document.getElementById('log-notes').value.trim()
+  };
+  activeCampaign.outreachLog = activeCampaign.outreachLog || [];
+  activeCampaign.outreachLog.push(entry);
+  loadCampaigns();
+  var idx = campaigns.findIndex(function(c){ return c.id === activeCampaign.id; });
+  if (idx > -1) campaigns[idx] = activeCampaign;
+  saveCampaignsToStorage();
+  hideAddLogModal();
+  renderHubLog();
+}
+
+function launchPath(path) {
+  if (!activeCampaign) return;
+  // Pre-populate state from campaign
+  var p = activeCampaign.profile || {};
+  var t = activeCampaign.targeting || {};
+  state.path = path;
+  state.profile = {
+    name: p.name || '', pos: p.pos || '', co: p.co || '',
+    web: p.web || '', email: p.email || '',
+    what: p.what || '', angle: p.angle || '', extra: p.extra || ''
+  };
+  state.targeting = {
+    primary: t.primary || '', secondary: t.secondary || '',
+    countries: (t.countries || []).slice(), pref: 'both', media: ['News']
+  };
+  // Pre-fill Step 1 fields in case user navigates there
+  setTimeout(function() {
+    var fields = {
+      'f-name': p.name, 'f-pos': p.pos, 'f-co': p.co,
+      'f-web': p.web, 'f-email': p.email, 'f-what': p.what,
+      'f-angle': p.angle, 'f-extra': p.extra
+    };
+    Object.keys(fields).forEach(function(id) {
+      var el = document.getElementById(id);
+      if (el && fields[id]) el.value = fields[id];
+    });
+    // Pre-fill targeting fields
+    var tpri = document.getElementById('t-primary');
+    var tsec = document.getElementById('t-secondary');
+    if (tpri && t.primary) tpri.value = t.primary;
+    if (tsec && t.secondary) tsec.value = t.secondary;
+  }, 50);
+  // Go directly to Step 2 — skip Step 1 since profile is pre-loaded
+  if (path === 'A') showScreen('s2a');
+  else if (path === 'B') showScreen('s2b');
+  else if (path === 'C') showScreen('s2pod');
+  else if (path === 'D') showScreen('srd1');
+  else if (path === 'E') { showScreen('s1'); setTimeout(function(){ submitProfile(); }, 100); }
+  // Show saved banner at top of email screen
+  showSavedContentBanner();
+}
+
+function autoLogAfterEmail() {
+  // Called after email is generated -- prompt user to log this outreach
+  if (!activeCampaign || !state.selectedPlatform) return;
+  var banner = document.createElement('div');
+  banner.className = 'notice notice-gold';
+  banner.style.marginTop = '1rem';
+  banner.innerHTML = '&#128203; <strong>Log this outreach to your campaign?</strong> ' +
+    '<button class="btn btn-primary btn-sm" style="margin-left:8px;" onclick="quickLog()">Log it</button>';
+  var wrap = document.getElementById('email-preview-wrap');
+  if (wrap && !document.getElementById('auto-log-banner')) {
+    banner.id = 'auto-log-banner';
+    wrap.appendChild(banner);
+  }
+}
+
+function quickLog() {
+  if (!activeCampaign || !state.selectedPlatform) return;
+  document.getElementById('log-outlet').value = state.selectedPlatform.n;
+  var pathLabels = { A:'Press Release', B:'Editorial Pitch', C:'Podcast Pitch', D:'Reddit Outreach', E:'Local Media' };
+  document.getElementById('log-path').value = pathLabels[state.path] || 'Press Release';
+  showAddLogModal();
+}
+
+// ---- CAMPAIGN PRESS RELEASE ----
+var campPRDraft = '';
+var campPRApproved = false;
+
+function expandPRSection() {
+  document.getElementById('cp-pr-collapsed').style.display = 'none';
+  document.getElementById('cp-pr-expanded').style.display = 'block';
+}
+
+function collapsePRSection() {
+  document.getElementById('cp-pr-expanded').style.display = 'none';
+  document.getElementById('cp-pr-collapsed').style.display = 'block';
+}
+
+function skipPRSection() {
+  campPRDraft = '';
+  campPRApproved = false;
+  document.getElementById('cp-pr-status').style.display = 'none';
+  collapsePRSection();
+}
+
+function generateCampaignPR() {
+  var pts = [
+    document.getElementById('cp-p1').value.trim(),
+    document.getElementById('cp-p2').value.trim(),
+    document.getElementById('cp-p3').value.trim(),
+    document.getElementById('cp-p4').value.trim(),
+    document.getElementById('cp-p5').value.trim()
+  ].filter(function(p) { return p.length > 0; });
+  if (!pts.length) { alert('Please fill in at least Key Point 1.'); return; }
+  var q = document.getElementById('cp-pq').value.trim();
+  var co = document.getElementById('cp-co').value.trim() || 'the company';
+  var name = document.getElementById('cp-name').value.trim() || 'the founder';
+  var web = document.getElementById('cp-web').value.trim();
+  var email = document.getElementById('cp-email').value.trim();
+  var what = document.getElementById('cp-what').value.trim();
+  var angle = document.getElementById('cp-angle').value.trim();
+  var prompt = 'Write a 400-700 word professional press release for ' + co + '.\n\nKey points:\n' +
+    pts.map(function(p,i){ return (i+1)+'. '+p; }).join('\n') +
+    '\n\nCompany: ' + co + (what ? '\nWhat they do: ' + what : '') + (angle ? '\nUnique angle: ' + angle : '') +
+    (q ? '\nQuote from ' + name + ': "' + q + '"' : '') + (web ? '\nWebsite: ' + web : '') + (email ? '\nContact: ' + email : '') +
+    '\n\nFormat:\nFOR IMMEDIATE RELEASE\n\n[Headline]\n\n[City, Date] -- [3-4 paragraphs]\n\nAbout ' + co +
+    '\n[2-3 sentence boilerplate]\n\nMedia enquiries:\n' + name + '\n' + (email||'') + '\n' + (web||'') + '\n\n###\n\nPlain text only.';
+  var btn = document.getElementById('cp-gen-pr-btn');
+  btn.textContent = 'Generating...'; btn.disabled = true;
+  document.getElementById('cp-pr-spinner').style.display = 'flex';
+  document.getElementById('cp-pr-spin-label').textContent = 'Generating your press release...';
+  document.getElementById('cp-pr-review').style.display = 'none';
+  document.getElementById('cp-pr-approved').style.display = 'none';
+  callAPIHighTokens(prompt, function(text) {
+    campPRDraft = text; campPRApproved = false;
+    btn.textContent = 'Regenerate \u2192'; btn.disabled = false;
+    document.getElementById('cp-pr-spinner').style.display = 'none';
+    document.getElementById('cp-pr-text').textContent = text;
+    document.getElementById('cp-pr-review').style.display = 'block';
+    document.getElementById('cp-pr-review').scrollIntoView({ behavior:'smooth', block:'nearest' });
+  }, function(err) {
+    btn.textContent = 'Generate press release \u2192'; btn.disabled = false;
+    document.getElementById('cp-pr-spinner').style.display = 'none';
+    alert('Could not generate press release. Error: ' + (err || 'Unknown error') + '\n\nMake sure you are on the live Vercel site, not the Claude preview.');
+  });
+}
+
+function regenCampaignPR() {
+  var fb = document.getElementById('cp-pr-feedback').value.trim();
+  var btn = document.getElementById('cp-regen-btn');
+  btn.textContent = 'Regenerating...'; btn.disabled = true;
+  document.getElementById('cp-pr-spinner').style.display = 'flex';
+  document.getElementById('cp-pr-spin-label').textContent = 'Applying your changes...';
+  document.getElementById('cp-pr-review').style.display = 'none';
+  var prompt = 'Rewrite this press release:\n\n' + campPRDraft + '\n\nChanges: ' + (fb || 'Improve it') + '\n\nKeep FOR IMMEDIATE RELEASE format. Plain text only.';
+  callAPIHighTokens(prompt, function(text) {
+    campPRDraft = text;
+    btn.textContent = 'Regenerate with changes'; btn.disabled = false;
+    document.getElementById('cp-pr-spinner').style.display = 'none';
+    document.getElementById('cp-pr-text').textContent = text;
+    document.getElementById('cp-pr-feedback').value = '';
+    document.getElementById('cp-pr-approved').style.display = 'none';
+    document.getElementById('cp-pr-review').style.display = 'block';
+  }, function() {
+    btn.textContent = 'Regenerate with changes'; btn.disabled = false;
+    document.getElementById('cp-pr-spinner').style.display = 'none';
+    document.getElementById('cp-pr-review').style.display = 'block';
+    alert('Could not regenerate. Try again.');
+  });
+}
+
+function approveCampaignPR() {
+  campPRApproved = true;
+  var btn = document.getElementById('cp-approve-btn');
+  btn.textContent = '\u2713 Approved!'; btn.disabled = true;
+  document.getElementById('cp-pr-approved').style.display = 'block';
+  var statusEl = document.getElementById('cp-pr-status');
+  statusEl.innerHTML = '<div class="notice notice-success">&#10003; Press release approved -- it will be saved with your campaign.</div>';
+  statusEl.style.display = 'block';
+  setTimeout(function() { btn.innerHTML = '&#10003; Approve &amp; save to campaign'; btn.disabled = false; }, 1500);
+}
+
+function renderHubPRSection() {
+  if (!activeCampaign) return;
+  var pr = (activeCampaign.savedContent || {}).pressRelease;
+  var label = document.getElementById('hub-pr-label');
+  var sub = document.getElementById('hub-pr-sub');
+  var actions = document.getElementById('hub-pr-actions');
+  var preview = document.getElementById('hub-pr-preview');
+  if (pr) {
+    label.innerHTML = '<span style="color:#2d6a4f;">&#10003;</span> Press release ready';
+    sub.textContent = 'Approved and saved -- pre-fills into all outreach paths automatically';
+    actions.innerHTML = '<button class="btn btn-outline btn-sm" onclick="toggleHubPRPreview()">View</button><button class="btn btn-outline btn-sm" style="margin-left:6px;" onclick="editHubPR()">Regenerate</button>';
+    preview.textContent = pr;
+  } else {
+    label.innerHTML = '&#128240; Press release';
+    sub.textContent = 'No press release yet -- generate one to use across all outreach paths';
+    actions.innerHTML = '<button class="btn btn-gold btn-sm" onclick="goGeneratePR()">Generate now</button>';
+    preview.style.display = 'none';
+  }
+}
+
+function toggleHubPRPreview() {
+  var el = document.getElementById('hub-pr-preview');
+  el.style.display = el.style.display === 'none' ? 'block' : 'none';
+}
+
+function goGeneratePR() {
+  editCampaign();
+  setTimeout(function() { expandPRSection(); }, 100);
+}
+
+function editHubPR() {
+  editCampaign();
+  setTimeout(function() {
+    expandPRSection();
+    if (activeCampaign && activeCampaign.savedContent && activeCampaign.savedContent.pressRelease) {
+      campPRDraft = activeCampaign.savedContent.pressRelease;
+      document.getElementById('cp-pr-text').textContent = campPRDraft;
+      document.getElementById('cp-pr-review').style.display = 'block';
+    }
+  }, 150);
+}
+
+function showNewCampaignForm() {
+  editingCampId = null;
+  activeCampaign = null;
+  campCountries = [];
+  campPRDraft = '';
+  campPRApproved = false;
+  // Reset all form fields
+  ['camp-name-input','camp-goal-input','cp-name','cp-pos','cp-co','cp-web','cp-email','cp-what','cp-angle','cp-extra','cp-message','cp-industry','cp-industry2'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  ['cp-p1','cp-p2','cp-p3','cp-p4','cp-p5','cp-pq'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  document.querySelectorAll('#cp-countries-chips .chip').forEach(function(c){ c.classList.remove('on'); });
+  document.getElementById('cp-pr-status').style.display = 'none';
+  document.getElementById('cp-pr-expanded').style.display = 'none';
+  document.getElementById('cp-pr-collapsed').style.display = 'block';
+  document.getElementById('cp-pr-review').style.display = 'none';
+  document.getElementById('cp-pr-approved').style.display = 'none';
+  document.getElementById('newcamp-eyebrow').textContent = 'New Campaign';
+  document.getElementById('newcamp-title').textContent = 'Create a PR outreach campaign';
+  showScreen('s-newcamp');
+}
+
 var state = {
   path: null,
   prSource: null,
@@ -1190,6 +2093,7 @@ function showScreen(id) {
   state.currentScreen = id;
   updateProgress(id);
   if (id === 's2c') showTargetingForPath();
+  if (id === 's-camps') { loadCampaigns(); renderCampaignsDashboard(); }
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -2303,6 +3207,7 @@ function generateEmail() {
         document.getElementById('pr-pdf-btns').style.display = 'block';
       }
       document.getElementById('email-preview-wrap').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      autoLogAfterEmail();
     }, function() {
       document.getElementById('email-spinner').style.display = 'none';
       alert('Could not generate email. Please try again.');
@@ -3163,6 +4068,30 @@ function renderStateDropdown(states, query) {
   });
 }
 
+function toggleLocAngleOther(el) {
+  el.classList.toggle('on');
+  var wrap = document.getElementById('loc-angle-other-wrap');
+  if (el.classList.contains('on')) {
+    wrap.style.display = 'block';
+    document.getElementById('loc-angle-other-input').focus();
+  } else {
+    wrap.style.display = 'none';
+    // Remove any custom angle from state
+    locState.angles = locState.angles.filter(function(a) {
+      return ['New business opening','Community contribution','Local jobs created','Local event or initiative','Business expansion','Award or recognition','Supporting local suppliers','Charity or fundraising','Local landmark or heritage','Sustainability initiative'].indexOf(a) > -1;
+    });
+  }
+}
+
+function updateLocAngleOther() {
+  var val = document.getElementById('loc-angle-other-input').value.trim();
+  // Remove previous custom angle and add updated one
+  locState.angles = locState.angles.filter(function(a) {
+    return ['New business opening','Community contribution','Local jobs created','Local event or initiative','Business expansion','Award or recognition','Supporting local suppliers','Charity or fundraising','Local landmark or heritage','Sustainability initiative'].indexOf(a) > -1;
+  });
+  if (val) locState.angles.push(val);
+}
+
 function toggleLocAngle(el, val) {
   el.classList.toggle('on');
   if (el.classList.contains('on')) {
@@ -3218,8 +4147,9 @@ function searchLocalMedia(country, state, city, hyper, lga) {
   // Build precise location description
   var locFull = [hyper, lga, city, state, country].filter(function(p) { return p; }).join(', ');
   var locCore = [hyper || city, state, country].filter(function(p) { return p; }).join(', ');
+  var anglesStr = locState.angles && locState.angles.length ? locState.angles.join(', ') : 'local business news';
 
-  var prompt = 'You are a local media research expert. Find up to 25 real, currently active local and hyperlocal media outlets that cover this exact area: ' + locFull + '.\n\nThis must be genuinely LOCAL media -- not national outlets. Focus on:\n- Local newspapers (print and digital) covering ' + (hyper || city) + ' and surrounding areas\n- Suburb or district-specific news websites\n- Local council and community news portals\n- Regional radio stations covering this area\n- Local TV news covering ' + city + ' or ' + (state || country) + '\n- Community newsletters and hyperlocal blogs with editorial standards\n- Local business journals or chamber of commerce publications\n\nFor each outlet:\n- Exact outlet name\n- Website URL\n- Best contact email for news tips or press releases\n- Exact coverage area (which suburbs/neighbourhoods/districts they cover)\n- Type: newspaper / online / radio / tv / community / council\n- Whether they accept community press releases (yes/no/maybe)\n- Relevance rating 1-5 for a business in ' + (hyper || city) + '\n- One sentence on what they cover\n\nOnly include outlets that genuinely serve ' + locCore + '. Do not include national outlets unless they have a dedicated local section for this area.\n\nReturn ONLY a raw JSON array starting with [:\n[{"n":"Outlet Name","u":"website.com","e":"news@outlet.com","coverage":"Suburbs or areas covered","type":"newspaper","accepts_pr":true,"s":5,"desc":"What they cover"}]';
+  var prompt = 'You are a local media research expert. Find up to 25 real, currently active local and hyperlocal media outlets that cover this exact area: ' + locFull + '.\n\nThe business has these local story angles: ' + anglesStr + '. Prioritise outlets that specifically cover these types of stories.\n\nThis must be genuinely LOCAL media -- not national outlets. Focus on:\n- Local newspapers (print and digital) covering ' + (hyper || city) + ' and surrounding areas\n- Suburb or district-specific news websites\n- Local council and community news portals\n- Regional radio stations covering this area\n- Local TV news covering ' + city + ' or ' + (state || country) + '\n- Community newsletters and hyperlocal blogs with editorial standards\n- Local business journals or chamber of commerce publications\n\nFor each outlet:\n- Exact outlet name\n- Website URL\n- Best contact email for news tips or press releases\n- Exact coverage area (which suburbs/neighbourhoods/districts they cover)\n- Type: newspaper / online / radio / tv / community / council\n- Whether they accept community press releases (yes/no/maybe)\n- Relevance rating 1-5 for a business in ' + (hyper || city) + ' with story angles: ' + anglesStr + '\n- One sentence on what they cover\n\nOnly include outlets that genuinely serve ' + locCore + '. Do not include national outlets unless they have a dedicated local section for this area.\n\nReturn ONLY a raw JSON array starting with [:\n[{"n":"Outlet Name","u":"website.com","e":"news@outlet.com","coverage":"Suburbs or areas covered","type":"newspaper","accepts_pr":true,"s":5,"desc":"What they cover"}]';
 
   callAPIHighTokens(prompt, function(text) {
     document.getElementById('loc-search-banner').style.display = 'none';
@@ -3395,12 +4325,24 @@ function resetAll() {
   document.getElementById('entry-btn').style.display = 'none';
   var scb = document.getElementById('saved-content-banner');
   if (scb) scb.style.display = 'none';
-  showScreen('s0');
+  var alb = document.getElementById('auto-log-banner');
+  if (alb) alb.remove();
+  if (activeCampaign) {
+    openCampaign(activeCampaign.id);
+  } else {
+    showScreen('s-camps');
+  }
 }
 
 // ---- INIT ----
-renderPlatforms();
-updateProgress('s0');
+function initApp() {
+  renderPlatforms();
+  loadCampaigns();
+  renderCampaignsDashboard();
+  campCountries = [];
+  editingCampId = null;
+}
+initApp();
 </script>
 </body>
 </html>
