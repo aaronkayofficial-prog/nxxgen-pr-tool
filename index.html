@@ -457,23 +457,23 @@ textarea{resize:vertical;line-height:1.6;}
   <div class="camp-paths">
     <div class="camp-path" onclick="launchPath('A')">
       <div class="camp-path-icon">&#128240;</div>
-      <div class="camp-path-title">Send a press release</div>
-      <div class="camp-path-desc">Generate a press release, find outlets, send outreach email</div>
+      <div class="camp-path-title">Reach press &amp; media with your press release</div>
+      <div class="camp-path-desc">Find outlets and send outreach email with your campaign press release attached</div>
     </div>
     <div class="camp-path" onclick="launchPath('B')">
       <div class="camp-path-icon">&#128161;</div>
-      <div class="camp-path-title">Pitch a content idea</div>
-      <div class="camp-path-desc">Pitch a story angle to press and editorial outlets</div>
+      <div class="camp-path-title">Pitch a story idea to press &amp; media</div>
+      <div class="camp-path-desc">Develop a story angle and pitch it to journalists and editorial outlets</div>
     </div>
     <div class="camp-path" onclick="launchPath('C')">
       <div class="camp-path-icon">&#127911;</div>
-      <div class="camp-path-title">Pitch a podcast</div>
-      <div class="camp-path-desc">Craft a guest pitch or collaboration proposal</div>
+      <div class="camp-path-title">Pitch a podcast or collaboration</div>
+      <div class="camp-path-desc">Craft a guest pitch or collaboration proposal to the right shows</div>
     </div>
     <div class="camp-path" onclick="launchPath('D')">
       <div class="camp-path-icon">&#127760;</div>
-      <div class="camp-path-title">Reach communities</div>
-      <div class="camp-path-desc">Reddit community outreach and discussion posts</div>
+      <div class="camp-path-title">Reach communities on Reddit</div>
+      <div class="camp-path-desc">Find the right subreddits and craft an authentic community post</div>
     </div>
     <div class="camp-path" style="grid-column:1/-1;" onclick="launchPath('E')">
       <div class="camp-path-icon">&#127968;</div>
@@ -2087,9 +2087,11 @@ function saveLogEntry() {
 
 function launchPath(path) {
   if (!activeCampaign) return;
-  // Pre-populate state from campaign
   var p = activeCampaign.profile || {};
   var t = activeCampaign.targeting || {};
+  var savedContent = activeCampaign.savedContent || {};
+  var hasPR = !!(savedContent.pressRelease);
+
   state.path = path;
   state.profile = {
     name: p.name || '', pos: p.pos || '', co: p.co || '',
@@ -2100,7 +2102,14 @@ function launchPath(path) {
     primary: t.primary || '', secondary: t.secondary || '',
     countries: (t.countries || []).slice(), pref: 'both', media: ['News']
   };
-  // Pre-fill Step 1 fields in case user navigates there
+
+  // Pre-load press release from campaign into session state
+  if (hasPR) {
+    state.pressRelease = savedContent.pressRelease;
+    state.prApproved = true;
+  }
+
+  // Pre-fill profile fields in case user navigates to Step 1
   setTimeout(function() {
     var fields = {
       'f-name': p.name, 'f-pos': p.pos, 'f-co': p.co,
@@ -2116,14 +2125,42 @@ function launchPath(path) {
     var tsec = document.getElementById('t-secondary');
     if (tpri && t.primary) tpri.value = t.primary;
     if (tsec && t.secondary) tsec.value = t.secondary;
+    // Pre-fill industry card selection visually if primary is set
+    if (t.primary) {
+      document.getElementById('primary-selected-label').textContent = t.primary;
+      document.getElementById('primary-selected-summary').style.display = 'block';
+      document.getElementById('industry-cards-grid').style.display = 'none';
+      document.getElementById('secondary-industry-section').style.display = 'block';
+    }
   }, 50);
-  // Go directly to Step 2 — skip Step 1 since profile is pre-loaded
-  if (path === 'A') showScreen('s2a');
-  else if (path === 'B') showScreen('s2b');
-  else if (path === 'C') showScreen('s2pod');
-  else if (path === 'D') showScreen('srd1');
-  else if (path === 'E') { showScreen('s1'); setTimeout(function(){ submitProfile(); }, 100); }
-  // Show saved banner at top of email screen
+
+  // ROUTING LOGIC
+  // If campaign has a press release saved, skip Step 2 for all paths
+  // and go straight to Step 3 (targeting) since the core content is ready
+  if (path === 'A') {
+    if (hasPR) {
+      // PR already exists -- skip generation, go straight to targeting
+      showScreen('s2c');
+    } else {
+      // No PR yet -- go to press release generation
+      showScreen('s2a');
+    }
+  } else if (path === 'B') {
+    showScreen('s2b');
+  } else if (path === 'C') {
+    showScreen('s2pod');
+  } else if (path === 'D') {
+    showScreen('srd1');
+  } else if (path === 'E') {
+    // For local outreach, pre-populate profile then go to location targeting
+    state.profile = {
+      name: p.name || '', pos: p.pos || '', co: p.co || '',
+      web: p.web || '', email: p.email || '',
+      what: p.what || '', angle: p.angle || '', extra: p.extra || ''
+    };
+    showScreen('sloc1');
+  }
+
   showSavedContentBanner();
 }
 
