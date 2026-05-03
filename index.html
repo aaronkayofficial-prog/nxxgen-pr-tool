@@ -113,18 +113,16 @@ textarea{resize:vertical;line-height:1.6;}
 @keyframes spin{to{transform:rotate(360deg);}}
 .ind-card{border:1.5px solid var(--border);border-radius:12px;padding:14px 12px;cursor:pointer;transition:all 0.2s;background:var(--white);position:relative;overflow:hidden;}
 .ind-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--border);transition:background 0.2s;}
-.ind-card:hover{border-color:var(--gold);transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,0,0,0.06);}
-.ind-card:hover::before{background:var(--gold);}
+.ind-card:hover{border-color:var(--gold);transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,0.06);}
+.ind-card:hover::before,.ind-card.selected::before{background:var(--gold);}
 .ind-card.selected{border-color:var(--gold);background:var(--gold-light);}
-.ind-card.selected::before{background:var(--gold);}
-.ind-card.collapsed{opacity:0.4;transform:scale(0.97);pointer-events:none;}
 .ind-card-icon{font-size:22px;margin-bottom:6px;}
 .ind-card-title{font-size:12px;font-weight:600;color:var(--black);margin-bottom:5px;line-height:1.3;}
 .ind-card-pills{font-size:10px;color:var(--muted);line-height:1.5;}
-.ind-card-sub{display:none;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);}
-.ind-card.selected .ind-card-sub{display:flex;flex-wrap:wrap;gap:5px;}
-.ind-card.selected .ind-card-pills{display:none;}
-.ind-card.selected .ind-card-icon{font-size:18px;}
+.ind-card-sub{display:none;}
+#ind-pill-zone{display:none;margin-top:4px;margin-bottom:1.25rem;padding:16px;background:var(--gold-light);border:1.5px solid var(--gold);border-radius:12px;animation:fadeIn 0.2s ease;}
+#ind-pill-zone .ind-pill-label{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:10px;}
+#ind-pill-zone .chips{gap:8px;}
 @media(max-width:700px){#industry-cards-grid{grid-template-columns:repeat(2,1fr)!important;}}align-items:center;gap:8px;font-size:12px;}
 .usage-label{color:var(--muted);font-weight:500;letter-spacing:.5px;text-transform:uppercase;font-size:10px;}
 .usage-pip-wrap{display:flex;gap:3px;align-items:center;}
@@ -1059,142 +1057,80 @@ textarea{resize:vertical;line-height:1.6;}
 
   <!-- PRIMARY INDUSTRY CARDS -->
   <div id="primary-industry-section">
-    <div style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);font-weight:500;margin-bottom:12px;" id="t-primary-label">Primary industry -- choose the main category</div>
-    <div id="industry-cards-grid" style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:1rem;">
+    <div style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);font-weight:500;margin-bottom:12px;" id="t-primary-label">Primary industry -- select your main category</div>
+
+    <div id="industry-cards-grid" style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:12px;">
       <div class="ind-card" id="icard-0" onclick="selectIndustryCard(0)">
         <div class="ind-card-icon">&#128522;</div>
         <div class="ind-card-title">Fashion, Retail &amp; Consumer</div>
         <div class="ind-card-pills">Fashion &bull; Luxury &bull; E-commerce &bull; Beauty &bull; Consumer</div>
-        <div class="ind-card-sub" id="isub-0">
-          <div class="chip" onclick="pickPrimaryChip(event,'Fashion &amp; Retail')">Fashion &amp; Retail</div>
-          <div class="chip" onclick="pickPrimaryChip(event,'Luxury Goods')">Luxury Goods</div>
-          <div class="chip" onclick="pickPrimaryChip(event,'E-commerce')">E-commerce</div>
-          <div class="chip" onclick="pickPrimaryChip(event,'Consumer Goods')">Consumer Goods</div>
-          <div class="chip" onclick="pickPrimaryChip(event,'Beauty &amp; Cosmetics')">Beauty &amp; Cosmetics</div>
-          <div class="chip" onclick="pickPrimaryChip(event,'Pet Care')">Pet Care</div>
-        </div>
       </div>
       <div class="ind-card" id="icard-1" onclick="selectIndustryCard(1)">
         <div class="ind-card-icon">&#128187;</div>
         <div class="ind-card-title">Technology &amp; Innovation</div>
         <div class="ind-card-pills">Tech &bull; AI &bull; Telecoms &bull; Gaming &bull; Biotech &bull; Cyber</div>
-        <div class="ind-card-sub" id="isub-1">
-          <div class="chip" onclick="pickPrimaryChip(event,'Technology &amp; Software')">Technology &amp; Software</div>
-          <div class="chip" onclick="pickPrimaryChip(event,'Artificial Intelligence')">Artificial Intelligence</div>
-          <div class="chip" onclick="pickPrimaryChip(event,'Telecommunications')">Telecommunications</div>
-          <div class="chip" onclick="pickPrimaryChip(event,'Gaming')">Gaming</div>
-          <div class="chip" onclick="pickPrimaryChip(event,'Biotech')">Biotech</div>
-          <div class="chip" onclick="pickPrimaryChip(event,'Cybersecurity')">Cybersecurity</div>
-        </div>
       </div>
       <div class="ind-card" id="icard-2" onclick="selectIndustryCard(2)">
         <div class="ind-card-icon">&#128138;</div>
         <div class="ind-card-title">Health &amp; Life Sciences</div>
         <div class="ind-card-pills">Healthcare &bull; Pharma &bull; Wellness &bull; Fitness &bull; Mental Health</div>
-        <div class="ind-card-sub" id="isub-2">
-          <div class="chip" onclick="pickPrimaryChip(event,'Healthcare &amp; Pharmaceuticals')">Healthcare &amp; Pharmaceuticals</div>
-          <div class="chip" onclick="pickPrimaryChip(event,'Health &amp; Wellness')">Health &amp; Wellness</div>
-          <div class="chip" onclick="pickPrimaryChip(event,'Sports &amp; Fitness')">Sports &amp; Fitness</div>
-          <div class="chip" onclick="pickPrimaryChip(event,'Mental Health')">Mental Health</div>
-        </div>
       </div>
       <div class="ind-card" id="icard-3" onclick="selectIndustryCard(3)">
         <div class="ind-card-icon">&#128200;</div>
         <div class="ind-card-title">Finance &amp; Professional Services</div>
         <div class="ind-card-pills">Finance &bull; Fintech &bull; Legal &bull; Real Estate &bull; Insurance</div>
-        <div class="ind-card-sub" id="isub-3">
-          <div class="chip" onclick="pickPrimaryChip(event,'Finance &amp; Fintech')">Finance &amp; Fintech</div>
-          <div class="chip" onclick="pickPrimaryChip(event,'Professional Services')">Professional Services</div>
-          <div class="chip" onclick="pickPrimaryChip(event,'Legal Services')">Legal Services</div>
-          <div class="chip" onclick="pickPrimaryChip(event,'Real Estate')">Real Estate</div>
-          <div class="chip" onclick="pickPrimaryChip(event,'Insurance')">Insurance</div>
-        </div>
       </div>
       <div class="ind-card" id="icard-4" onclick="selectIndustryCard(4)">
         <div class="ind-card-icon">&#127916;</div>
         <div class="ind-card-title">Media, Arts &amp; Entertainment</div>
         <div class="ind-card-pills">Entertainment &bull; Publishing &bull; Art &bull; Marketing &bull; Creative</div>
-        <div class="ind-card-sub" id="isub-4">
-          <div class="chip" onclick="pickPrimaryChip(event,'Entertainment &amp; Media')">Entertainment &amp; Media</div>
-          <div class="chip" onclick="pickPrimaryChip(event,'Publishing')">Publishing</div>
-          <div class="chip" onclick="pickPrimaryChip(event,'Art &amp; Design')">Art &amp; Design</div>
-          <div class="chip" onclick="pickPrimaryChip(event,'Marketing &amp; Advertising')">Marketing &amp; Advertising</div>
-          <div class="chip" onclick="pickPrimaryChip(event,'Creative &amp; Design')">Creative &amp; Design</div>
-        </div>
       </div>
       <div class="ind-card" id="icard-5" onclick="selectIndustryCard(5)">
         <div class="ind-card-icon">&#127859;</div>
         <div class="ind-card-title">Food, Hospitality &amp; Travel</div>
         <div class="ind-card-pills">Food &amp; Bev &bull; Hospitality &bull; Travel &bull; Agriculture</div>
-        <div class="ind-card-sub" id="isub-5">
-          <div class="chip" onclick="pickPrimaryChip(event,'Food &amp; Beverage')">Food &amp; Beverage</div>
-          <div class="chip" onclick="pickPrimaryChip(event,'Hospitality &amp; Travel')">Hospitality &amp; Travel</div>
-          <div class="chip" onclick="pickPrimaryChip(event,'Agriculture')">Agriculture</div>
-          <div class="chip" onclick="pickPrimaryChip(event,'Restaurant &amp; Dining')">Restaurant &amp; Dining</div>
-        </div>
       </div>
       <div class="ind-card" id="icard-6" onclick="selectIndustryCard(6)">
         <div class="ind-card-icon">&#127981;</div>
         <div class="ind-card-title">Industry &amp; Infrastructure</div>
         <div class="ind-card-pills">Manufacturing &bull; Automotive &bull; Construction &bull; Logistics</div>
-        <div class="ind-card-sub" id="isub-6">
-          <div class="chip" onclick="pickPrimaryChip(event,'Manufacturing')">Manufacturing</div>
-          <div class="chip" onclick="pickPrimaryChip(event,'Automotive')">Automotive</div>
-          <div class="chip" onclick="pickPrimaryChip(event,'Construction')">Construction</div>
-          <div class="chip" onclick="pickPrimaryChip(event,'Logistics &amp; Shipping')">Logistics &amp; Shipping</div>
-          <div class="chip" onclick="pickPrimaryChip(event,'Government &amp; Defence')">Government &amp; Defence</div>
-        </div>
       </div>
       <div class="ind-card" id="icard-7" onclick="selectIndustryCard(7)">
         <div class="ind-card-icon">&#127807;</div>
         <div class="ind-card-title">Energy, Environment &amp; Education</div>
         <div class="ind-card-pills">Renewable &bull; Green &bull; Education &bull; Non-profit</div>
-        <div class="ind-card-sub" id="isub-7">
-          <div class="chip" onclick="pickPrimaryChip(event,'Renewable Energy')">Renewable Energy</div>
-          <div class="chip" onclick="pickPrimaryChip(event,'Green Energy')">Green Energy</div>
-          <div class="chip" onclick="pickPrimaryChip(event,'Education')">Education</div>
-          <div class="chip" onclick="pickPrimaryChip(event,'Non-profit &amp; Social Impact')">Non-profit &amp; Social Impact</div>
-          <div class="chip" onclick="pickPrimaryChip(event,'Sustainability')">Sustainability</div>
-        </div>
       </div>
       <div class="ind-card" id="icard-8" onclick="selectIndustryCard(8)">
         <div class="ind-card-icon">&#128640;</div>
         <div class="ind-card-title">Business &amp; Startups</div>
         <div class="ind-card-pills">Startups &bull; Entrepreneurship &bull; DTC &bull; B2B &bull; SaaS</div>
-        <div class="ind-card-sub" id="isub-8">
-          <div class="chip" onclick="pickPrimaryChip(event,'Business &amp; Startups')">Business &amp; Startups</div>
-          <div class="chip" onclick="pickPrimaryChip(event,'Entrepreneurship')">Entrepreneurship</div>
-          <div class="chip" onclick="pickPrimaryChip(event,'E-commerce &amp; DTC')">E-commerce &amp; DTC</div>
-          <div class="chip" onclick="pickPrimaryChip(event,'B2B &amp; Enterprise')">B2B &amp; Enterprise</div>
-          <div class="chip" onclick="pickPrimaryChip(event,'SaaS')">SaaS</div>
-        </div>
       </div>
       <div class="ind-card" id="icard-9" onclick="selectIndustryCard(9)">
         <div class="ind-card-icon">&#127760;</div>
         <div class="ind-card-title">Other &amp; Niche</div>
-        <div class="ind-card-pills">Sports &bull; Gaming &bull; Luxury &bull; Social Enterprise &bull; Custom</div>
-        <div class="ind-card-sub" id="isub-9">
-          <div class="chip" onclick="pickPrimaryChip(event,'Sports &amp; Esports')">Sports &amp; Esports</div>
-          <div class="chip" onclick="pickPrimaryChip(event,'Luxury &amp; Premium')">Luxury &amp; Premium</div>
-          <div class="chip" onclick="pickPrimaryChip(event,'Social Enterprise')">Social Enterprise</div>
-          <div class="chip" onclick="pickPrimaryChip(event,'Arts &amp; Culture')">Arts &amp; Culture</div>
-          <input type="text" id="ind-custom-input" placeholder="Type a custom industry..." onclick="event.stopPropagation();" oninput="pickPrimaryCustom(this.value)" style="margin-top:8px;font-size:12px;width:100%;"/>
-        </div>
+        <div class="ind-card-pills">Sports &bull; Luxury &bull; Social Enterprise &bull; Custom</div>
       </div>
     </div>
-    <!-- Selected primary summary + change button -->
+
+    <!-- Pill zone -- appears below grid when a card is selected -->
+    <div id="ind-pill-zone">
+      <div class="ind-pill-label" id="ind-pill-label"></div>
+      <div class="chips" id="ind-pill-chips"></div>
+    </div>
+
+    <!-- Selected summary + change -->
     <div id="primary-selected-summary" style="display:none;margin-bottom:1rem;">
       <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--gold-light);border:1.5px solid var(--gold);border-radius:10px;">
         <div>
-          <div style="font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);font-weight:500;margin-bottom:2px;">Primary industry selected</div>
+          <div style="font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);font-weight:500;margin-bottom:2px;">Selected</div>
           <div style="font-size:14px;font-weight:500;color:var(--black);" id="primary-selected-label"></div>
         </div>
-        <button class="btn btn-outline btn-sm" onclick="changePrimaryIndustry()">Change &rarr;</button>
+        <button class="btn btn-outline btn-sm" onclick="changePrimaryIndustry()">Change</button>
       </div>
     </div>
   </div>
 
-  <!-- SECONDARY INDUSTRY -->
+    <!-- SECONDARY INDUSTRY -->
   <div id="secondary-industry-section" style="display:none;margin-bottom:1.5rem;">
     <div style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);font-weight:500;margin-bottom:6px;">Secondary industries <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:11px;"> -- pick up to 3 crossover angles (optional)</span></div>
     <div id="sec-count-notice" style="font-size:12px;color:var(--muted);margin-bottom:10px;">0 of 3 selected</div>
@@ -1675,50 +1611,97 @@ function checkUsageBeforeGenerate(onAllowed) {
 var selectedCardIdx = -1;
 var selectedSecondaries = [];
 
+// Chip data for each card
+var IND_CHIPS = [
+  // 0 Fashion
+  ['Fashion &amp; Retail','Luxury Goods','E-commerce','Consumer Goods','Beauty &amp; Cosmetics','Pet Care'],
+  // 1 Technology
+  ['Technology &amp; Software','Artificial Intelligence','Telecommunications','Gaming','Biotech','Cybersecurity'],
+  // 2 Health
+  ['Healthcare &amp; Pharmaceuticals','Health &amp; Wellness','Sports &amp; Fitness','Mental Health'],
+  // 3 Finance
+  ['Finance &amp; Fintech','Professional Services','Legal Services','Real Estate','Insurance'],
+  // 4 Media
+  ['Entertainment &amp; Media','Publishing','Art &amp; Design','Marketing &amp; Advertising','Creative &amp; Design'],
+  // 5 Food
+  ['Food &amp; Beverage','Hospitality &amp; Travel','Agriculture','Restaurant &amp; Dining'],
+  // 6 Industry
+  ['Manufacturing','Automotive','Construction','Logistics &amp; Shipping','Government &amp; Defence'],
+  // 7 Energy
+  ['Renewable Energy','Green Energy','Education','Non-profit &amp; Social Impact','Sustainability'],
+  // 8 Business
+  ['Business &amp; Startups','Entrepreneurship','E-commerce &amp; DTC','B2B &amp; Enterprise','SaaS'],
+  // 9 Other
+  ['Sports &amp; Esports','Luxury &amp; Premium','Social Enterprise','Arts &amp; Culture','__custom__']
+];
+
+var IND_NAMES = [
+  'Fashion, Retail & Consumer',
+  'Technology & Innovation',
+  'Health & Life Sciences',
+  'Finance & Professional Services',
+  'Media, Arts & Entertainment',
+  'Food, Hospitality & Travel',
+  'Industry & Infrastructure',
+  'Energy, Environment & Education',
+  'Business & Startups',
+  'Other & Niche'
+];
+
 function selectIndustryCard(idx) {
-  // If already selected, do nothing (sub-chips handle selection)
-  if (selectedCardIdx === idx) return;
-  // Collapse all other cards
+  selectedCardIdx = idx;
+  // Highlight selected card, un-highlight others
   for (var i = 0; i < 10; i++) {
     var card = document.getElementById('icard-' + i);
-    if (!card) continue;
-    if (i === idx) {
-      card.classList.add('selected');
-      card.classList.remove('collapsed');
+    if (card) card.classList.toggle('selected', i === idx);
+  }
+  // Build pill zone below grid
+  var chips = IND_CHIPS[idx];
+  var label = document.getElementById('ind-pill-label');
+  var pipsEl = document.getElementById('ind-pill-chips');
+  label.textContent = IND_NAMES[idx] + ' -- select your specific focus:';
+  pipsEl.innerHTML = '';
+  chips.forEach(function(chip) {
+    if (chip === '__custom__') {
+      // Custom input for Other
+      var wrap = document.createElement('div');
+      wrap.style.cssText = 'display:flex;align-items:center;gap:6px;margin-top:4px;width:100%;';
+      var input = document.createElement('input');
+      input.type = 'text';
+      input.id = 'ind-custom-input';
+      input.placeholder = 'Type a custom industry...';
+      input.style.cssText = 'font-size:13px;flex:1;';
+      input.oninput = function() { pickPrimaryCustom(this.value); };
+      wrap.appendChild(input);
+      pipsEl.appendChild(wrap);
     } else {
-      card.classList.remove('selected');
-      card.classList.add('collapsed');
+      var el = document.createElement('div');
+      el.className = 'chip';
+      el.innerHTML = chip;
+      el.onclick = function() { pickPrimaryChip(null, this.innerHTML); };
+      pipsEl.appendChild(el);
     }
-  }
-  selectedCardIdx = idx;
-  // If only one sub-chip exists, auto-select it
-  var sub = document.getElementById('isub-' + idx);
-  if (sub) {
-    var chips = sub.querySelectorAll('.chip');
-    if (chips.length === 1) {
-      pickPrimaryChip(null, chips[0].textContent.trim());
-    }
-  }
+  });
+  // Show pill zone
+  var zone = document.getElementById('ind-pill-zone');
+  zone.style.display = 'block';
+  zone.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
 function pickPrimaryChip(event, val) {
   if (event) event.stopPropagation();
-  // Decode HTML entities for storage
   var decoded = val.replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>');
   document.getElementById('t-primary').value = decoded;
-  // Highlight selected chip within sub
-  if (selectedCardIdx >= 0) {
-    var sub = document.getElementById('isub-' + selectedCardIdx);
-    if (sub) {
-      sub.querySelectorAll('.chip').forEach(function(c) {
-        c.classList.toggle('on', c.textContent.trim() === val || c.textContent.trim() === decoded);
-      });
-    }
-  }
-  // Show summary + hide grid, show secondary
+  // Highlight selected chip in pill zone
+  document.querySelectorAll('#ind-pill-chips .chip').forEach(function(c) {
+    c.classList.toggle('on', c.innerHTML === val || c.innerHTML === decoded);
+  });
+  // Show selected summary
   document.getElementById('primary-selected-label').textContent = decoded;
   document.getElementById('primary-selected-summary').style.display = 'block';
+  // Hide grid and pill zone, show secondary section
   document.getElementById('industry-cards-grid').style.display = 'none';
+  document.getElementById('ind-pill-zone').style.display = 'none';
   document.getElementById('secondary-industry-section').style.display = 'block';
   document.getElementById('secondary-industry-section').scrollIntoView({ behavior:'smooth', block:'nearest' });
 }
@@ -1729,18 +1712,18 @@ function pickPrimaryCustom(val) {
   document.getElementById('primary-selected-label').textContent = val.trim();
   document.getElementById('primary-selected-summary').style.display = 'block';
   document.getElementById('industry-cards-grid').style.display = 'none';
+  document.getElementById('ind-pill-zone').style.display = 'none';
   document.getElementById('secondary-industry-section').style.display = 'block';
 }
 
 function changePrimaryIndustry() {
-  // Show grid again, hide summary, reset selection
   document.getElementById('industry-cards-grid').style.display = 'grid';
+  document.getElementById('ind-pill-zone').style.display = 'none';
   document.getElementById('primary-selected-summary').style.display = 'none';
   document.getElementById('secondary-industry-section').style.display = 'none';
-  // Un-collapse all cards
   for (var i = 0; i < 10; i++) {
     var card = document.getElementById('icard-' + i);
-    if (card) { card.classList.remove('selected','collapsed'); }
+    if (card) card.classList.remove('selected');
   }
   selectedCardIdx = -1;
   document.getElementById('t-primary').value = '';
