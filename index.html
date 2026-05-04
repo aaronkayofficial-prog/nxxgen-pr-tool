@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -2406,7 +2407,10 @@ function renderHubPRSection() {
   if (pr) {
     label.innerHTML = '<span style="color:#2d6a4f;">&#10003;</span> Press release ready';
     sub.textContent = 'Approved and saved -- pre-fills into all outreach paths automatically';
-    actions.innerHTML = '<button class="btn btn-outline btn-sm" onclick="toggleHubPRPreview()">View</button><button class="btn btn-outline btn-sm" style="margin-left:6px;" onclick="editHubPR()">Regenerate</button>';
+    actions.innerHTML =
+      '<button class="btn btn-outline btn-sm" onclick="toggleHubPRPreview()">View</button>' +
+      '<button class="btn btn-gold btn-sm" style="margin-left:6px;" onclick="downloadHubPRasPDF()">&#8595; Download PDF</button>' +
+      '<button class="btn btn-outline btn-sm" style="margin-left:6px;" onclick="editHubPR()">Regenerate</button>';
     preview.textContent = pr;
   } else {
     label.innerHTML = '&#128240; Press release';
@@ -2414,6 +2418,46 @@ function renderHubPRSection() {
     actions.innerHTML = '<button class="btn btn-gold btn-sm" onclick="goGeneratePR()">Generate now</button>';
     preview.style.display = 'none';
   }
+}
+
+function downloadHubPRasPDF() {
+  if (!activeCampaign) return;
+  var pr = (activeCampaign.savedContent || {}).pressRelease;
+  if (!pr) { alert('No press release saved to this campaign yet.'); return; }
+  var p = activeCampaign.profile || {};
+  var co = p.co || activeCampaign.name || 'Press Release';
+  var name = p.name || '';
+  var email = p.email || '';
+  var web = p.web || '';
+  var safe = function(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); };
+
+  var html = '<!DOCTYPE html><html><head><meta charset="UTF-8"/>' +
+    '<title>' + safe(co) + ' -- Press Release</title>' +
+    '<style>' +
+    '* { box-sizing: border-box; margin: 0; padding: 0; }' +
+    'html, body { background: #fff; }' +
+    'body { font-family: Georgia, serif; font-size: 11pt; color: #1a1a1a; padding: 18mm 22mm; }' +
+    '.co { font-family: Arial, sans-serif; font-size: 8pt; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: #c2185b; margin-bottom: 10px; }' +
+    '.divider { border: none; border-top: 2px solid #c2185b; margin-bottom: 22px; }' +
+    '.body { white-space: pre-wrap; line-height: 1.85; font-size: 11pt; color: #1a1a1a; }' +
+    '.footer { margin-top: 28px; padding-top: 10px; border-top: 1px solid #e0e0e0; font-size: 8pt; color: #999; display: flex; justify-content: space-between; font-family: Arial, sans-serif; }' +
+    '@page { size: A4; margin: 0; }' +
+    '@media print { html, body { margin: 0 !important; padding: 18mm 22mm !important; } }' +
+    '</style></head><body>' +
+    '<div class="co">' + safe(co) + '</div>' +
+    '<hr class="divider"/>' +
+    '<div class="body">' + safe(pr) + '</div>' +
+    '<div class="footer">' +
+    '<span>' + safe(co) + (name ? ' &mdash; ' + safe(name) : '') + '</span>' +
+    '<span>' + safe(email) + (web ? ' &nbsp;|&nbsp; ' + safe(web) : '') + '</span>' +
+    '</div>' +
+    '<script>window.onload = function() { window.focus(); window.print(); window.onafterprint = function() { window.close(); }; };<\/script>' +
+    '</body></html>';
+
+  var popup = window.open('', '_blank', 'width=794,height=1123,scrollbars=yes');
+  if (!popup) { alert('Pop-up blocked. Please allow pop-ups for this site and try again.'); return; }
+  popup.document.write(html);
+  popup.document.close();
 }
 
 function toggleHubPRPreview() {
