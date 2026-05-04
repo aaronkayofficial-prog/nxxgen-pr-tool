@@ -1319,8 +1319,8 @@ textarea{resize:vertical;line-height:1.6;}
     <div id="pr-pdf-area">
       <div id="pr-not-ready" class="notice notice-gold" style="display:none;">&#9203; Your press release is still generating -- it will be available to download shortly.</div>
       <div id="pr-pdf-btns" style="display:none;">
-        <button class="btn btn-primary" onclick="downloadPRasPDF()">&#8595; Save press release as PDF</button>
-        <p style="font-size:12px;color:var(--muted);margin-top:8px;">A print window will open -- select <strong>Save as PDF</strong> as your printer to download the file.</p>
+        <button class="btn btn-primary" onclick="downloadPRasPDF()">&#8595; Download press release as PDF</button>
+        <p style="font-size:12px;color:var(--muted);margin-top:8px;">A print dialog will open automatically. Select <strong>Save as PDF</strong> as the destination and click Save. No file path or browser info will appear on the document.</p>
       </div>
       <div class="notice notice-success" id="pr-pdf-confirm" style="display:none;margin-top:10px;">&#10003; PDF downloaded -- find it in your Downloads folder and attach it to the email.</div>
     </div>
@@ -3599,7 +3599,7 @@ function generateEmail() {
 function doGenerateEmail() {
   var p = state.profile;
   var sel = state.selectedPlatform;
-  var editor = document.getElementById('e-editor').value.trim() || 'the editorial team';
+  var editor = document.getElementById('e-editor').value.trim() || 'Editor ✍️';
   var contact = document.getElementById('e-contact').value.trim();
 
   document.getElementById('email-spinner').style.display = 'flex';
@@ -3705,40 +3705,50 @@ function downloadPRasPDF() {
   var email = state.profile.email || '';
   var name = state.profile.name || '';
   var prText = state.pressRelease;
-  var safe = function(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); };
-  var filename = co.replace(/[^a-zA-Z0-9 ]/g,'').replace(/\s+/g,'_') + '_Press_Release.html';
+  var safe = function(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); };
 
-  var html = '<!DOCTYPE html><html><head><meta charset="UTF-8"/><title>' + safe(co) + ' -- Press Release</title>' +
-    '<style>*{box-sizing:border-box;margin:0;padding:0;}' +
-    'body{font-family:Georgia,serif;font-size:11pt;color:#1a1a1a;background:#fff;padding:20mm 22mm;}' +
-    '.hdr{border-bottom:2px solid #c2185b;padding-bottom:8px;margin-bottom:20px;}' +
-    '.co{font-family:Arial,sans-serif;font-size:9pt;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#c2185b;}' +
-    '.body{white-space:pre-wrap;line-height:1.9;font-size:11pt;}' +
-    '.ft{margin-top:24px;padding-top:10px;border-top:1px solid #e0e0e0;font-size:8pt;color:#999;display:flex;justify-content:space-between;}' +
-    '.instructions{background:#fce4ec;border:1px solid #f48fb1;border-radius:6px;padding:12px 16px;margin-bottom:24px;font-family:Arial,sans-serif;font-size:10pt;color:#880e4f;}' +
-    '@media print{.instructions{display:none;}body{padding:15mm 18mm;}@page{size:A4;margin:15mm;}}' +
+  var html = '<!DOCTYPE html><html><head><meta charset="UTF-8"/>' +
+    '<title>' + safe(co) + ' -- Press Release</title>' +
+    '<style>' +
+    '* { box-sizing: border-box; margin: 0; padding: 0; }' +
+    'html, body { background: #fff; }' +
+    'body { font-family: Georgia, serif; font-size: 11pt; color: #1a1a1a; padding: 18mm 22mm 18mm 22mm; }' +
+    '.co { font-family: Arial, sans-serif; font-size: 8pt; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: #c2185b; margin-bottom: 10px; }' +
+    '.divider { border: none; border-top: 2px solid #c2185b; margin-bottom: 22px; }' +
+    '.body { white-space: pre-wrap; line-height: 1.85; font-size: 11pt; color: #1a1a1a; }' +
+    '.footer { margin-top: 28px; padding-top: 10px; border-top: 1px solid #e0e0e0; font-size: 8pt; color: #999; display: flex; justify-content: space-between; font-family: Arial, sans-serif; }' +
+    '@page {' +
+    '  size: A4;' +
+    '  margin: 0;' +
+    '}' +
+    '@media print {' +
+    '  html, body { margin: 0 !important; padding: 18mm 22mm !important; }' +
+    '}' +
     '</style></head><body>' +
-    '<div class="instructions"><strong>To save as PDF:</strong> Press Cmd+P (Mac) or Ctrl+P (Windows) &rarr; change destination to <strong>Save as PDF</strong> &rarr; click Save.</div>' +
-    '<div class="hdr"><div class="co">' + safe(co) + '</div></div>' +
+    '<div class="co">' + safe(co) + '</div>' +
+    '<hr class="divider"/>' +
     '<div class="body">' + safe(prText) + '</div>' +
-    '<div class="ft"><span>' + safe(co) + (name ? ' -- ' + safe(name) : '') + '</span>' +
-    '<span>' + safe(email) + (web ? '  |  ' + safe(web) : '') + '</span></div>' +
+    '<div class="footer">' +
+    '<span>' + safe(co) + (name ? ' &mdash; ' + safe(name) : '') + '</span>' +
+    '<span>' + safe(email) + (web ? ' &nbsp;|&nbsp; ' + safe(web) : '') + '</span>' +
+    '</div>' +
+    '<script>window.onload = function() { window.focus(); window.print(); window.onafterprint = function() { window.close(); }; };<\/script>' +
     '</body></html>';
 
-  // Download as HTML file -- user opens it and prints to PDF
-  var blob = new Blob([html], { type: 'text/html' });
-  var url = URL.createObjectURL(blob);
-  var a = document.createElement('a');
-  a.href = url;
-  a.download = filename;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  setTimeout(function() { URL.revokeObjectURL(url); }, 2000);
+  // Open clean popup and print directly -- no file path in header/footer because @page margin:0
+  var popup = window.open('', '_blank', 'width=794,height=1123,scrollbars=yes');
+  if (!popup) {
+    alert('Pop-up blocked. Please allow pop-ups for this site and try again.');
+    return;
+  }
+  popup.document.write(html);
+  popup.document.close();
 
   var confirm = document.getElementById('pr-pdf-confirm');
-  confirm.textContent = '\u2713 File downloaded to your Downloads folder. Open it in your browser, then press Cmd+P and choose Save as PDF to create the PDF attachment.';
-  confirm.style.display = 'block';
+  if (confirm) {
+    confirm.textContent = '\u2713 Print dialog opened -- select "Save as PDF" as your printer to download the file.';
+    confirm.style.display = 'block';
+  }
 }
 
 function copyEmail() {
@@ -4732,7 +4742,7 @@ function generateLocalEmail() {
 function doGenerateLocalEmail() {
   var p = state.profile;
   var outlet = locState.selectedOutlet;
-  var editor = document.getElementById('loc-editor').value.trim() || 'the editorial team';
+  var editor = document.getElementById('loc-editor').value.trim() || 'Editor ✍️';
   var contact = document.getElementById('loc-contact').value.trim();
   var extra = document.getElementById('loc-extra').value.trim();
   var locStr = [locState.hyper, locState.city, locState.state, locState.country].filter(function(x) { return x; }).join(', ');
