@@ -253,84 +253,102 @@ textarea{resize:vertical;line-height:1.6;}
   <div id="nc-step2" style="display:none;">
     <p style="font-size:13px;color:var(--muted);margin-bottom:1.25rem;">These become the default targeting preferences for every outreach path in this campaign. You can refine them per path if needed.</p>
 
-    <div style="margin-bottom:1.25rem;">
-      <label>Primary industry</label>
-      <input type="text" id="cp-industry" placeholder="e.g. Fashion &amp; Retail, Health &amp; Wellness, Technology"/>
-      <div style="font-size:11px;color:var(--muted);margin-top:6px;margin-bottom:8px;">Or click a category below</div>
-      <div style="font-size:10px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;">Fashion, Retail &amp; Consumer</div>
-      <div class="chips" style="margin-bottom:10px;">
-        <div class="chip" onclick="setCampIndustry('cp-industry',this,'Fashion &amp; Retail')">Fashion &amp; Retail</div>
-        <div class="chip" onclick="setCampIndustry('cp-industry',this,'Luxury Goods')">Luxury Goods</div>
-        <div class="chip" onclick="setCampIndustry('cp-industry',this,'E-commerce')">E-commerce</div>
-        <div class="chip" onclick="setCampIndustry('cp-industry',this,'Consumer Goods')">Consumer Goods</div>
-        <div class="chip" onclick="setCampIndustry('cp-industry',this,'Beauty &amp; Cosmetics')">Beauty &amp; Cosmetics</div>
-        <div class="chip" onclick="setCampIndustry('cp-industry',this,'Pet Care')">Pet Care</div>
+    <!-- PRIMARY INDUSTRY CARDS -->
+    <div style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);font-weight:500;margin-bottom:12px;">Primary industry -- select your main category</div>
+    <input type="hidden" id="cp-industry"/>
+
+    <div id="cp-industry-cards-grid" style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:12px;">
+      <div class="ind-card" id="cp-icard-0" onclick="selectCampCard(0)">
+        <div class="ind-card-icon">&#128522;</div>
+        <div class="ind-card-title">Fashion, Retail &amp; Consumer</div>
+        <div class="ind-card-pills">Fashion &bull; Luxury &bull; E-commerce &bull; Beauty &bull; Consumer</div>
       </div>
-      <div style="font-size:10px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;">Technology &amp; Innovation</div>
-      <div class="chips" style="margin-bottom:10px;">
-        <div class="chip" onclick="setCampIndustry('cp-industry',this,'Technology &amp; Software')">Technology &amp; Software</div>
-        <div class="chip" onclick="setCampIndustry('cp-industry',this,'Artificial Intelligence')">Artificial Intelligence</div>
-        <div class="chip" onclick="setCampIndustry('cp-industry',this,'Gaming')">Gaming</div>
-        <div class="chip" onclick="setCampIndustry('cp-industry',this,'Biotech')">Biotech</div>
-        <div class="chip" onclick="setCampIndustry('cp-industry',this,'Cybersecurity')">Cybersecurity</div>
+      <div class="ind-card" id="cp-icard-1" onclick="selectCampCard(1)">
+        <div class="ind-card-icon">&#128187;</div>
+        <div class="ind-card-title">Technology &amp; Innovation</div>
+        <div class="ind-card-pills">Tech &bull; AI &bull; Telecoms &bull; Gaming &bull; Biotech &bull; Cyber</div>
       </div>
-      <div style="font-size:10px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;">Health &amp; Life Sciences</div>
-      <div class="chips" style="margin-bottom:10px;">
-        <div class="chip" onclick="setCampIndustry('cp-industry',this,'Healthcare &amp; Pharmaceuticals')">Healthcare &amp; Pharmaceuticals</div>
-        <div class="chip" onclick="setCampIndustry('cp-industry',this,'Health &amp; Wellness')">Health &amp; Wellness</div>
-        <div class="chip" onclick="setCampIndustry('cp-industry',this,'Sports &amp; Fitness')">Sports &amp; Fitness</div>
+      <div class="ind-card" id="cp-icard-2" onclick="selectCampCard(2)">
+        <div class="ind-card-icon">&#128138;</div>
+        <div class="ind-card-title">Health &amp; Life Sciences</div>
+        <div class="ind-card-pills">Healthcare &bull; Pharma &bull; Wellness &bull; Fitness &bull; Mental Health</div>
       </div>
-      <div style="font-size:10px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;">Finance &amp; Professional Services</div>
-      <div class="chips" style="margin-bottom:10px;">
-        <div class="chip" onclick="setCampIndustry('cp-industry',this,'Finance &amp; Fintech')">Finance &amp; Fintech</div>
-        <div class="chip" onclick="setCampIndustry('cp-industry',this,'Professional Services')">Professional Services</div>
-        <div class="chip" onclick="setCampIndustry('cp-industry',this,'Legal Services')">Legal Services</div>
-        <div class="chip" onclick="setCampIndustry('cp-industry',this,'Real Estate')">Real Estate</div>
+      <div class="ind-card" id="cp-icard-3" onclick="selectCampCard(3)">
+        <div class="ind-card-icon">&#128200;</div>
+        <div class="ind-card-title">Finance &amp; Professional Services</div>
+        <div class="ind-card-pills">Finance &bull; Fintech &bull; Legal &bull; Real Estate &bull; Insurance</div>
       </div>
-      <div style="font-size:10px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;">Media, Arts &amp; Entertainment</div>
-      <div class="chips" style="margin-bottom:10px;">
-        <div class="chip" onclick="setCampIndustry('cp-industry',this,'Entertainment &amp; Media')">Entertainment &amp; Media</div>
-        <div class="chip" onclick="setCampIndustry('cp-industry',this,'Publishing')">Publishing</div>
-        <div class="chip" onclick="setCampIndustry('cp-industry',this,'Art &amp; Design')">Art &amp; Design</div>
-        <div class="chip" onclick="setCampIndustry('cp-industry',this,'Marketing &amp; Advertising')">Marketing &amp; Advertising</div>
+      <div class="ind-card" id="cp-icard-4" onclick="selectCampCard(4)">
+        <div class="ind-card-icon">&#127916;</div>
+        <div class="ind-card-title">Media, Arts &amp; Entertainment</div>
+        <div class="ind-card-pills">Entertainment &bull; Publishing &bull; Art &bull; Marketing &bull; Creative</div>
       </div>
-      <div style="font-size:10px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;">Food, Hospitality &amp; Travel</div>
-      <div class="chips" style="margin-bottom:10px;">
-        <div class="chip" onclick="setCampIndustry('cp-industry',this,'Food &amp; Beverage')">Food &amp; Beverage</div>
-        <div class="chip" onclick="setCampIndustry('cp-industry',this,'Hospitality &amp; Travel')">Hospitality &amp; Travel</div>
-        <div class="chip" onclick="setCampIndustry('cp-industry',this,'Agriculture')">Agriculture</div>
+      <div class="ind-card" id="cp-icard-5" onclick="selectCampCard(5)">
+        <div class="ind-card-icon">&#127859;</div>
+        <div class="ind-card-title">Food, Hospitality &amp; Travel</div>
+        <div class="ind-card-pills">Food &amp; Bev &bull; Hospitality &bull; Travel &bull; Agriculture</div>
       </div>
-      <div style="font-size:10px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;">Business &amp; Startups</div>
-      <div class="chips" style="margin-bottom:10px;">
-        <div class="chip" onclick="setCampIndustry('cp-industry',this,'Business &amp; Startups')">Business &amp; Startups</div>
-        <div class="chip" onclick="setCampIndustry('cp-industry',this,'Entrepreneurship')">Entrepreneurship</div>
-        <div class="chip" onclick="setCampIndustry('cp-industry',this,'E-commerce &amp; DTC')">E-commerce &amp; DTC</div>
-        <div class="chip" onclick="setCampIndustry('cp-industry',this,'SaaS')">SaaS</div>
+      <div class="ind-card" id="cp-icard-6" onclick="selectCampCard(6)">
+        <div class="ind-card-icon">&#127981;</div>
+        <div class="ind-card-title">Industry &amp; Infrastructure</div>
+        <div class="ind-card-pills">Manufacturing &bull; Automotive &bull; Construction &bull; Logistics</div>
       </div>
-      <div style="font-size:10px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;">Other</div>
-      <div class="chips" style="margin-bottom:10px;">
-        <div class="chip" onclick="setCampIndustry('cp-industry',this,'Renewable Energy')">Renewable Energy</div>
-        <div class="chip" onclick="setCampIndustry('cp-industry',this,'Education')">Education</div>
-        <div class="chip" onclick="setCampIndustry('cp-industry',this,'Non-profit &amp; Social Impact')">Non-profit &amp; Social Impact</div>
-        <div class="chip" onclick="setCampIndustry('cp-industry',this,'Manufacturing')">Manufacturing</div>
-        <div class="chip" onclick="setCampIndustry('cp-industry',this,'Construction')">Construction</div>
+      <div class="ind-card" id="cp-icard-7" onclick="selectCampCard(7)">
+        <div class="ind-card-icon">&#127807;</div>
+        <div class="ind-card-title">Energy, Environment &amp; Education</div>
+        <div class="ind-card-pills">Renewable &bull; Green &bull; Education &bull; Non-profit</div>
+      </div>
+      <div class="ind-card" id="cp-icard-8" onclick="selectCampCard(8)">
+        <div class="ind-card-icon">&#128640;</div>
+        <div class="ind-card-title">Business &amp; Startups</div>
+        <div class="ind-card-pills">Startups &bull; Entrepreneurship &bull; DTC &bull; B2B &bull; SaaS</div>
+      </div>
+      <div class="ind-card" id="cp-icard-9" onclick="selectCampCard(9)">
+        <div class="ind-card-icon">&#127760;</div>
+        <div class="ind-card-title">Other &amp; Niche</div>
+        <div class="ind-card-pills">Sports &bull; Luxury &bull; Social Enterprise &bull; Custom</div>
       </div>
     </div>
 
-    <div style="margin-bottom:1.25rem;">
-      <label>Secondary industry <span style="font-size:10px;font-weight:400;text-transform:none;">(optional crossover)</span></label>
-      <input type="text" id="cp-industry2" placeholder="e.g. Sustainability, AI, Influencer Marketing"/>
-      <div class="chips" style="margin-top:10px;">
-        <div class="chip" onclick="setCampIndustry('cp-industry2',this,'Sustainability')">Sustainability</div>
-        <div class="chip" onclick="setCampIndustry('cp-industry2',this,'Artificial Intelligence')">Artificial Intelligence</div>
-        <div class="chip" onclick="setCampIndustry('cp-industry2',this,'Influencer Marketing')">Influencer Marketing</div>
-        <div class="chip" onclick="setCampIndustry('cp-industry2',this,'Digital Marketing')">Digital Marketing</div>
-        <div class="chip" onclick="setCampIndustry('cp-industry2',this,'Social Media')">Social Media</div>
-        <div class="chip" onclick="setCampIndustry('cp-industry2',this,'Brand Strategy')">Brand Strategy</div>
-        <div class="chip" onclick="setCampIndustry('cp-industry2',this,'Sustainability')">Sustainability</div>
-        <div class="chip" onclick="setCampIndustry('cp-industry2',this,'Innovation &amp; Disruption')">Innovation &amp; Disruption</div>
-        <div class="chip" onclick="setCampIndustry('cp-industry2',this,'Future of Work')">Future of Work</div>
-        <div class="chip" onclick="setCampIndustry('cp-industry2',this,'Leadership')">Leadership</div>
+    <!-- Pill zone below grid -->
+    <div id="cp-ind-pill-zone" style="display:none;margin-bottom:1.25rem;padding:16px;background:var(--gold-light);border:1.5px solid var(--gold);border-radius:12px;">
+      <div style="font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:10px;" id="cp-ind-pill-label"></div>
+      <div class="chips" id="cp-ind-pill-chips"></div>
+    </div>
+
+    <!-- Selected summary -->
+    <div id="cp-primary-selected-summary" style="display:none;margin-bottom:1.25rem;">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--gold-light);border:1.5px solid var(--gold);border-radius:10px;">
+        <div>
+          <div style="font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);font-weight:500;margin-bottom:2px;">Selected</div>
+          <div style="font-size:14px;font-weight:500;color:var(--black);" id="cp-primary-selected-label"></div>
+        </div>
+        <button class="btn btn-outline btn-sm" onclick="changeCampPrimaryIndustry()">Change</button>
+      </div>
+    </div>
+
+    <!-- Secondary industry -->
+    <div id="cp-secondary-section" style="display:none;margin-bottom:1.25rem;">
+      <label>Secondary industry <span style="font-size:10px;font-weight:400;text-transform:none;">(optional -- pick up to 3)</span></label>
+      <input type="hidden" id="cp-industry2"/>
+      <div style="font-size:12px;color:var(--muted);margin-top:4px;margin-bottom:8px;" id="cp-sec-count">0 of 3 selected</div>
+      <div class="chips" id="cp-secondary-chips">
+        <div class="chip" onclick="toggleCampSecondary(this,'Sustainability')">Sustainability</div>
+        <div class="chip" onclick="toggleCampSecondary(this,'Artificial Intelligence')">Artificial Intelligence</div>
+        <div class="chip" onclick="toggleCampSecondary(this,'Influencer Marketing')">Influencer Marketing</div>
+        <div class="chip" onclick="toggleCampSecondary(this,'Digital Marketing')">Digital Marketing</div>
+        <div class="chip" onclick="toggleCampSecondary(this,'Social Media')">Social Media</div>
+        <div class="chip" onclick="toggleCampSecondary(this,'Brand Strategy')">Brand Strategy</div>
+        <div class="chip" onclick="toggleCampSecondary(this,'Photography &amp; Visual Media')">Photography &amp; Visual Media</div>
+        <div class="chip" onclick="toggleCampSecondary(this,'Innovation &amp; Disruption')">Innovation &amp; Disruption</div>
+        <div class="chip" onclick="toggleCampSecondary(this,'Future of Work')">Future of Work</div>
+        <div class="chip" onclick="toggleCampSecondary(this,'Leadership')">Leadership</div>
+        <div class="chip" onclick="toggleCampSecondary(this,'Entrepreneurship')">Entrepreneurship</div>
+        <div class="chip" onclick="toggleCampSecondary(this,'Diversity &amp; Inclusion')">Diversity &amp; Inclusion</div>
+        <div class="chip" onclick="toggleCampSecondary(this,'Health Tech')">Health Tech</div>
+        <div class="chip" onclick="toggleCampSecondary(this,'Community &amp; Localisation')">Community &amp; Localisation</div>
+        <div class="chip" onclick="toggleCampSecondary(this,'Data &amp; Privacy')">Data &amp; Privacy</div>
+        <div class="chip" onclick="toggleCampSecondary(this,'Consumer Behaviour')">Consumer Behaviour</div>
       </div>
     </div>
 
@@ -1896,6 +1914,99 @@ function skipPRAndSave() {
   saveCampaign();
 }
 
+// ---- CAMPAIGN INDUSTRY CARD SELECTOR ----
+var selectedCampCardIdx = -1;
+var campSecondaries = [];
+
+function selectCampCard(idx) {
+  selectedCampCardIdx = idx;
+  for (var i = 0; i < 10; i++) {
+    var card = document.getElementById('cp-icard-' + i);
+    if (card) card.classList.toggle('selected', i === idx);
+  }
+  // Populate pill zone
+  var chips = IND_CHIPS[idx];
+  document.getElementById('cp-ind-pill-label').textContent = IND_NAMES[idx] + ' -- select your specific focus:';
+  var pipsEl = document.getElementById('cp-ind-pill-chips');
+  pipsEl.innerHTML = '';
+  chips.forEach(function(chip) {
+    if (chip === '__custom__') {
+      var input = document.createElement('input');
+      input.type = 'text';
+      input.placeholder = 'Type a custom industry...';
+      input.style.cssText = 'font-size:13px;width:100%;margin-top:4px;';
+      input.oninput = function() {
+        document.getElementById('cp-industry').value = this.value;
+        document.getElementById('cp-primary-selected-label').textContent = this.value;
+        document.getElementById('cp-primary-selected-summary').style.display = this.value ? 'block' : 'none';
+        if (this.value) {
+          document.getElementById('cp-industry-cards-grid').style.display = 'none';
+          document.getElementById('cp-ind-pill-zone').style.display = 'none';
+          document.getElementById('cp-secondary-section').style.display = 'block';
+        }
+      };
+      pipsEl.appendChild(input);
+    } else {
+      var el = document.createElement('div');
+      el.className = 'chip';
+      el.innerHTML = chip;
+      el.onclick = function() { pickCampChip(this.innerHTML); };
+      pipsEl.appendChild(el);
+    }
+  });
+  document.getElementById('cp-ind-pill-zone').style.display = 'block';
+  document.getElementById('cp-ind-pill-zone').scrollIntoView({ behavior:'smooth', block:'nearest' });
+}
+
+function pickCampChip(val) {
+  var decoded = val.replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>');
+  document.getElementById('cp-industry').value = decoded;
+  document.querySelectorAll('#cp-ind-pill-chips .chip').forEach(function(c) {
+    c.classList.toggle('on', c.innerHTML === val || c.innerHTML === decoded);
+  });
+  document.getElementById('cp-primary-selected-label').textContent = decoded;
+  document.getElementById('cp-primary-selected-summary').style.display = 'block';
+  document.getElementById('cp-industry-cards-grid').style.display = 'none';
+  document.getElementById('cp-ind-pill-zone').style.display = 'none';
+  document.getElementById('cp-secondary-section').style.display = 'block';
+  document.getElementById('cp-secondary-section').scrollIntoView({ behavior:'smooth', block:'nearest' });
+}
+
+function changeCampPrimaryIndustry() {
+  document.getElementById('cp-industry-cards-grid').style.display = 'grid';
+  document.getElementById('cp-ind-pill-zone').style.display = 'none';
+  document.getElementById('cp-primary-selected-summary').style.display = 'none';
+  document.getElementById('cp-secondary-section').style.display = 'none';
+  for (var i = 0; i < 10; i++) {
+    var card = document.getElementById('cp-icard-' + i);
+    if (card) card.classList.remove('selected');
+  }
+  selectedCampCardIdx = -1;
+  document.getElementById('cp-industry').value = '';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function toggleCampSecondary(el, val) {
+  var decoded = val.replace(/&amp;/g,'&');
+  if (el.classList.contains('on')) {
+    el.classList.remove('on');
+    campSecondaries = campSecondaries.filter(function(v){ return v !== decoded; });
+  } else {
+    if (campSecondaries.length >= 3) {
+      document.getElementById('cp-sec-count').textContent = 'Maximum 3 selected -- deselect one first';
+      document.getElementById('cp-sec-count').style.color = '#c1121f';
+      return;
+    }
+    el.classList.add('on');
+    campSecondaries.push(decoded);
+  }
+  var n = campSecondaries.length;
+  var notice = document.getElementById('cp-sec-count');
+  notice.style.color = n === 3 ? '#c2185b' : '';
+  notice.textContent = n === 3 ? '3 of 3 selected -- maximum reached' : n + ' of 3 selected';
+  document.getElementById('cp-industry2').value = campSecondaries.join(', ');
+}
+
 function setCampIndustry(fieldId, el, val) {
   document.getElementById(fieldId).value = val;
   // Clear all chips in the same parent container that share the same field
@@ -2331,7 +2442,21 @@ function showNewCampaignForm() {
   editingCampId = null;
   activeCampaign = null;
   campCountries = [];
-  campPRDraft = '';
+  campSecondaries = [];
+  selectedCampCardIdx = -1;
+  // Reset card UI
+  for (var i = 0; i < 10; i++) {
+    var card = document.getElementById('cp-icard-' + i);
+    if (card) card.classList.remove('selected');
+  }
+  var pillZone = document.getElementById('cp-ind-pill-zone');
+  if (pillZone) pillZone.style.display = 'none';
+  var cardGrid = document.getElementById('cp-industry-cards-grid');
+  if (cardGrid) cardGrid.style.display = 'grid';
+  var primSum = document.getElementById('cp-primary-selected-summary');
+  if (primSum) primSum.style.display = 'none';
+  var secSec = document.getElementById('cp-secondary-section');
+  if (secSec) secSec.style.display = 'none';
   campPRApproved = false;
   // Reset all form fields
   ['camp-name-input','camp-goal-input','cp-name','cp-pos','cp-co','cp-web','cp-email','cp-what','cp-angle','cp-extra','cp-message','cp-industry','cp-industry2'].forEach(function(id) {
