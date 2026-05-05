@@ -610,10 +610,10 @@ textarea{resize:vertical;line-height:1.6;}
 
   <!-- Campaign status tabs -->
   <div class="camp-tabs">
-    <div class="camp-tab active" id="ctab-active" onclick="switchCampTab('active',this)">Active</div>
+    <div class="camp-tab" id="ctab-active" onclick="switchCampTab('active',this)">Active</div>
     <div class="camp-tab" id="ctab-draft" onclick="switchCampTab('draft',this)">Drafts</div>
     <div class="camp-tab" id="ctab-completed" onclick="switchCampTab('completed',this)">Completed</div>
-    <div class="camp-tab" id="ctab-all" onclick="switchCampTab('all',this)">All</div>
+    <div class="camp-tab active" id="ctab-all" onclick="switchCampTab('all',this)">All</div>
   </div>
 
   <div id="camps-list"></div>
@@ -3058,7 +3058,7 @@ function genId() {
   return 'camp_' + Date.now() + '_' + Math.random().toString(36).substr(2,6);
 }
 
-var currentCampTab = 'active';
+var currentCampTab = 'all';
 
 function switchCampTab(tab, el) {
   currentCampTab = tab;
