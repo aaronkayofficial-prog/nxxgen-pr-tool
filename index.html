@@ -312,6 +312,7 @@ textarea{resize:vertical;line-height:1.6;}
     <div class="eyebrow">Welcome to Outreach Platform</div>
     <h1 class="sec-title" style="font-size:30px;">Let's set up your account</h1>
     <p class="sec-sub" style="margin:0 auto;">This information stays at your account level and pre-fills every campaign, press release, and outreach email automatically. You only do this once.</p>
+    <button class="btn btn-outline btn-sm" style="margin-top:14px;" onclick="fillTestAccount()">&#9889; Fill with test data</button>
   </div>
 
   <div style="background:var(--gold-light);border:1.5px solid var(--gold);border-radius:12px;padding:1.25rem 1.5rem;margin-bottom:1.5rem;">
@@ -369,7 +370,10 @@ textarea{resize:vertical;line-height:1.6;}
   <div class="back-link" onclick="goHome()">&#8592; Back to campaigns</div>
   <div class="eyebrow">Account Settings</div>
   <h2 class="sec-title">Your account</h2>
-  <p class="sec-sub">This information pre-fills every campaign, press release, and outreach email. Keep it up to date.</p>
+  <p class="sec-sub" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+    <span>This information pre-fills every campaign, press release, and outreach email. Keep it up to date.</span>
+    <button class="btn btn-outline btn-sm" onclick="fillTestAccount()" style="font-size:11px;">&#9889; Fill with test data</button>
+  </p>
 
   <div id="acct-complete-banner" style="display:none;margin-bottom:1.5rem;"></div>
 
@@ -599,6 +603,9 @@ textarea{resize:vertical;line-height:1.6;}
     <div id="camp-prefill-notice" style="display:none;margin-bottom:1.25rem;" class="notice notice-gold">
       &#10003; Your account information has been pre-filled below. Review and adjust anything specific to this campaign.
     </div>
+    <div style="display:flex;align-items:center;justify-content:flex-end;margin-bottom:8px;">
+      <button class="btn btn-outline btn-sm" onclick="fillTestCampaign()" style="font-size:11px;">&#9889; Fill with test data</button>
+    </div>
 
     <div style="background:var(--gold-light);border:1.5px solid var(--gold);border-radius:12px;padding:1.25rem 1.5rem;margin-bottom:1.5rem;">
       <div style="font-size:12px;font-weight:600;color:var(--gold);letter-spacing:1px;text-transform:uppercase;margin-bottom:12px;">This campaign</div>
@@ -709,6 +716,9 @@ textarea{resize:vertical;line-height:1.6;}
       <div class="notice notice-gold" style="margin-bottom:1.5rem;">
         <strong>&#128240; Generate your press release</strong><br/>
         Answer 3 short questions. The AI uses your account profile and campaign details to write a professional press release instantly. Approve it and download the PDF straight away.
+      </div>
+      <div style="display:flex;justify-content:flex-end;margin-bottom:10px;">
+        <button class="btn btn-outline btn-sm" onclick="fillTestPRQuestions()" style="font-size:11px;">&#9889; Fill with test data</button>
       </div>
 
       <!-- 3 Questions -->
@@ -1891,7 +1901,109 @@ textarea{resize:vertical;line-height:1.6;}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script>
 // ============================================================
-// DAILY USAGE COUNTER
+// TEST DATA HELPERS
+// ============================================================
+var TEST_PROFILES = [
+  {
+    fname:'Jane', lname:'Smith', pos:'Founder & CEO', phone:'+61 400 111 222',
+    email:'jane@springskin.com.au', co:'SpringSkin Skincare', web:'www.springskin.com.au',
+    what:'A certified-organic skincare brand creating dermatologist-formulated products for conscious consumers across Australia and New Zealand',
+    kp1:'We create certified-organic skincare products formulated by dermatologists and produced in Australia without harmful chemicals or synthetic fragrances',
+    kp2:'We serve conscious consumers aged 25-45 who prioritise ingredient transparency, sustainability, and clinical effectiveness over brand prestige',
+    kp3:'We are the only Australian skincare brand certified by three independent sustainability bodies, with zero plastic packaging and a carbon-neutral supply chain',
+    logo:'', social:'@springskin on Instagram'
+  },
+  {
+    fname:'Marcus', lname:'Chen', pos:'Co-Founder', phone:'+61 412 333 444',
+    email:'marcus@brightbrew.com', co:'BrightBrew Coffee', web:'www.brightbrew.com',
+    what:'A specialty coffee roastery sourcing single-origin beans directly from farmers across Ethiopia, Colombia and Papua New Guinea',
+    kp1:'We roast and deliver single-origin specialty coffee within 48 hours of roasting to ensure peak freshness and flavour',
+    kp2:'We serve coffee enthusiasts and hospitality businesses who demand transparency about where their coffee comes from and how farmers are paid',
+    kp3:'We pay farmers 40% above Fair Trade minimums and publish every farm\'s pay rate on our website -- the only roastery in Australia to do so',
+    logo:'', social:'@brightbrew on Instagram'
+  },
+  {
+    fname:'Aaron', lname:'Kay', pos:'Founder & Creative Director', phone:'+61 423 555 666',
+    email:'aaron@nxxgenstudio.com', co:'NxxGen Studio', web:'www.nxxgenstudio.com',
+    what:'Australia\'s first AI-powered digital fashion content studio creating professional campaign imagery and video assets for fashion brands',
+    kp1:'We produce 20 professional campaign images with HD video assets within 72 hours for $15 per look using proprietary AI workflows',
+    kp2:'We serve fashion brands and e-commerce retailers who need high-volume content at speed without the cost and complexity of traditional photo shoots',
+    kp3:'We are Australia\'s first dedicated AI fashion content studio, delivering 90% cost reduction and 10x faster turnaround compared to traditional photography',
+    logo:'', social:'@nxxgenstudio on Instagram'
+  }
+];
+
+var testProfileIdx = 0;
+
+function fillTestAccount() {
+  var p = TEST_PROFILES[testProfileIdx % TEST_PROFILES.length];
+  testProfileIdx++;
+  var suffix = '';
+  // Check which screen is active
+  var editScreen = document.getElementById('s-account');
+  if (editScreen && editScreen.classList.contains('active')) suffix = '-e';
+  var fields = ['fname','lname','pos','phone','email','co','web','what','kp1','kp2','kp3'];
+  fields.forEach(function(f) {
+    var el = document.getElementById('acct-' + f + suffix);
+    if (el) el.value = p[f] || '';
+  });
+  ['logo','social'].forEach(function(f) {
+    var el = document.getElementById('acct-' + f + suffix);
+    if (el) el.value = p[f] || '';
+  });
+  // Flash feedback
+  var btn = event ? event.target : null;
+  if (btn) { var orig = btn.textContent; btn.textContent = '✓ Filled!'; setTimeout(function(){ btn.textContent = orig; }, 1500); }
+}
+
+function fillTestCampaign() {
+  var profiles = [
+    { name:'SpringSkin Launch -- May 2025', goal:'Announce our national retail launch in 120 Priceline stores after 3 years of online-only', co:'SpringSkin Skincare', pname:'Jane Smith', pos:'Founder & CEO', web:'www.springskin.com.au', email:'jane@springskin.com.au', what:'A certified-organic skincare brand creating dermatologist-formulated products', angle:'The only Australian skincare brand certified by three independent sustainability bodies with zero plastic packaging', extra:'Recently won Best New Brand at the 2025 ABEA Awards. 50,000 customers served online.' },
+    { name:'BrightBrew Wholesale Expansion', goal:'Reach hospitality buyers and trade press about our new wholesale program launching nationally', co:'BrightBrew Coffee', pname:'Marcus Chen', pos:'Co-Founder', web:'www.brightbrew.com', email:'marcus@brightbrew.com', what:'A specialty coffee roastery sourcing single-origin beans directly from farmers', angle:'Only Australian roastery publishing every farmer\'s pay rate publicly -- 40% above Fair Trade minimums', extra:'Supplying 85 cafes across Melbourne and Sydney. Expanding to Brisbane and Perth in Q3.' },
+    { name:'NxxGen Studio -- Platform Launch', goal:'Get coverage in fashion, retail and technology publications about our AI content platform launch', co:'NxxGen Studio', pname:'Aaron Kay', pos:'Founder & Creative Director', web:'www.nxxgenstudio.com', email:'aaron@nxxgenstudio.com', what:'Australia\'s first AI-powered digital fashion content studio', angle:'90% cost reduction and 72-hour turnaround compared to weeks for traditional photo shoots', extra:'Currently in beta with 12 fashion brands. Free trial available from launch day 15 May.' }
+  ];
+  var p = profiles[Math.floor(Math.random() * profiles.length)];
+  document.getElementById('camp-name-input').value = p.name;
+  document.getElementById('camp-goal-input').value = p.goal;
+  document.getElementById('cp-name').value = p.pname;
+  document.getElementById('cp-pos').value = p.pos;
+  document.getElementById('cp-co').value = p.co;
+  document.getElementById('cp-web').value = p.web;
+  document.getElementById('cp-email').value = p.email;
+  document.getElementById('cp-what').value = p.what;
+  if (document.getElementById('cp-angle')) document.getElementById('cp-angle').value = p.angle;
+  if (document.getElementById('cp-extra')) document.getElementById('cp-extra').value = p.extra;
+  var btn = event ? event.target : null;
+  if (btn) { var orig = btn.textContent; btn.textContent = '✓ Filled!'; setTimeout(function(){ btn.textContent = orig; }, 1500); }
+}
+
+function fillTestPRQuestions() {
+  var sets = [
+    {
+      q1:'SpringSkin is launching nationally into 120 Priceline stores across Australia on 15 May 2025, marking our transition from online-only to a full omnichannel brand after 3 years and 50,000 online customers.',
+      q2:'Customers can now discover SpringSkin in person at their local Priceline, try the products before buying, and access our full range of 24 certified-organic SKUs. Retail pricing starts at $28 for our bestselling Vitamin C serum.',
+      q3:'Visit any Priceline store from 15 May or shop online at springskin.com.au. Media are welcome to visit our Sydney flagship pop-up on launch day for product demos and founder interviews.'
+    },
+    {
+      q1:'NxxGen Studio is officially launching Australia\'s first AI-powered digital fashion content studio on 15 May 2025, enabling fashion brands to produce 20 professional campaign images with HD video assets within 72 hours for just $15 per look.',
+      q2:'Fashion brands can now eliminate expensive photo shoot bookings, model castings, and lengthy post-production. A brand that previously spent $10,000 and waited 3 weeks for a shoot can now get better results in 72 hours for under $300.',
+      q3:'Fashion brands can start a free trial at nxxgenstudio.com from 15 May. We are available for media interviews and can provide behind-the-scenes studio access and sample content packages for journalists.'
+    },
+    {
+      q1:'BrightBrew Coffee is launching a national wholesale program on 1 June 2025, making our single-origin specialty coffee available to cafes, restaurants, and hotels across Australia for the first time outside Melbourne and Sydney.',
+      q2:'Hospitality businesses can now access traceable single-origin coffee with 48-hour roast-to-delivery, dedicated barista training, and guaranteed farmer pay rates 40% above Fair Trade minimums -- with full transparency on every bag.',
+      q3:'Cafe and restaurant owners can apply for a wholesale account at brightbrew.com/wholesale. We are offering a free 2kg sample pack to the first 50 applicants. Media can contact us for farm origin stories and founder interviews.'
+    }
+  ];
+  var s = sets[Math.floor(Math.random() * sets.length)];
+  document.getElementById('cp-q1').value = s.q1;
+  document.getElementById('cp-q2').value = s.q2;
+  document.getElementById('cp-q3').value = s.q3;
+  var btn = event ? event.target : null;
+  if (btn) { var orig = btn.textContent; btn.textContent = '✓ Filled!'; setTimeout(function(){ btn.textContent = orig; }, 1500); }
+}
+
+
 // ============================================================
 var DAILY_LIMIT = 10;
 var STORAGE_KEY = 'op_daily_usage';
