@@ -759,6 +759,10 @@ textarea{resize:vertical;line-height:1.6;}
           <button class="btn btn-outline btn-sm" id="cp-regen-btn" onclick="regenCampaignPR()">Regenerate with changes</button>
           <button class="btn btn-outline btn-sm" onclick="collapsePRSection()">&#8592; Back to questions</button>
         </div>
+        <div id="cp-download-pr-btn" style="display:none;margin-top:8px;">
+          <button class="btn btn-primary btn-sm" onclick="downloadCampaignDraftPR()">&#8595; Download as PDF</button>
+          <span style="font-size:11px;color:var(--muted);margin-left:8px;">Download now -- also saved when you click Save campaign below</span>
+        </div>
         <div class="notice notice-success" id="cp-pr-approved" style="display:none;margin-top:8px;">&#10003; Press release approved and saved to this campaign.</div>
       </div>
     </div>
@@ -2972,9 +2976,9 @@ function saveCampaign() {
       web: document.getElementById('cp-web').value.trim(),
       email: document.getElementById('cp-email').value.trim(),
       what: document.getElementById('cp-what').value.trim(),
-      angle: document.getElementById('cp-angle').value.trim(),
-      extra: document.getElementById('cp-extra').value.trim(),
-      message: document.getElementById('cp-message').value.trim()
+      angle: document.getElementById('cp-angle') ? document.getElementById('cp-angle').value.trim() : '',
+      extra: document.getElementById('cp-extra') ? document.getElementById('cp-extra').value.trim() : '',
+      message: ''
     },
     targeting: {
       primary: document.getElementById('cp-industry').value.trim(),
@@ -2984,8 +2988,13 @@ function saveCampaign() {
     outreachLog: editingCampId && activeCampaign ? (activeCampaign.outreachLog || []) : [],
     savedContent: editingCampId && activeCampaign ? (activeCampaign.savedContent || {}) : {}
   };
-  // Save approved press release if generated
-  if (campPRApproved && campPRDraft) {
+  // Always read press release from textarea if it has content
+  var prTextarea = document.getElementById('cp-pr-text');
+  var prText = prTextarea ? prTextarea.value.trim() : '';
+  if (prText) {
+    campData.savedContent.pressRelease = prText;
+    campPRDraft = prText;
+  } else if (campPRApproved && campPRDraft) {
     campData.savedContent.pressRelease = campPRDraft;
   }
 
@@ -3350,23 +3359,54 @@ function regenCampaignPR() {
 }
 
 function approveCampaignPR() {
-  // Read from the editable textarea
   var text = document.getElementById('cp-pr-text').value.trim();
   if (!text) { alert('No press release to approve.'); return; }
   campPRDraft = text;
   campPRApproved = true;
   var btn = document.getElementById('cp-approve-btn');
-  btn.textContent = '✓ Approved!'; btn.disabled = true;
+  btn.textContent = '\u2713 Approved!'; btn.disabled = true;
   document.getElementById('cp-pr-approved').style.display = 'block';
+  var dlBtn = document.getElementById('cp-download-pr-btn');
+  if (dlBtn) dlBtn.style.display = 'block';
   var statusEl = document.getElementById('cp-pr-status');
   if (statusEl) {
-    statusEl.innerHTML = '<div class="notice notice-success">&#10003; Press release approved and will be saved with your campaign. You can now download it as a PDF or save the campaign.</div>';
+    statusEl.innerHTML = '<div class="notice notice-success">&#10003; Press release approved. Download it now or click Save campaign below.</div>';
     statusEl.style.display = 'block';
+    statusEl.scrollIntoView({ behavior:'smooth', block:'nearest' });
   }
   setTimeout(function() {
     if (btn) { btn.innerHTML = '&#10003; Approve &amp; save'; btn.disabled = false; }
   }, 2000);
 }
+
+function downloadCampaignDraftPR() {
+  var text = document.getElementById('cp-pr-text') ? document.getElementById('cp-pr-text').value.trim() : campPRDraft;
+  if (!text) { alert('No press release to download yet.'); return; }
+  var co = (document.getElementById('cp-co') ? document.getElementById('cp-co').value.trim() : '') || (userAccount ? userAccount.co : '') || 'Press Release';
+  var name = (document.getElementById('cp-name') ? document.getElementById('cp-name').value.trim() : '') || (userAccount ? [userAccount.fname, userAccount.lname].filter(Boolean).join(' ') : '');
+  var email = (document.getElementById('cp-email') ? document.getElementById('cp-email').value.trim() : '') || (userAccount ? userAccount.email : '');
+  var web = (document.getElementById('cp-web') ? document.getElementById('cp-web').value.trim() : '') || (userAccount ? userAccount.web : '');
+  var safe = function(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); };
+  var html = '<!DOCTYPE html><html><head><meta charset="UTF-8"/>' +
+    '<style>*{box-sizing:border-box;margin:0;padding:0;}html,body{background:#fff;}' +
+    'body{font-family:Georgia,serif;font-size:11pt;color:#1a1a1a;padding:18mm 22mm;}' +
+    '.co{font-family:Arial,sans-serif;font-size:8pt;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#c2185b;margin-bottom:10px;}' +
+    '.divider{border:none;border-top:2px solid #c2185b;margin-bottom:22px;}' +
+    '.body{white-space:pre-wrap;line-height:1.85;font-size:11pt;}' +
+    '.footer{margin-top:28px;padding-top:10px;border-top:1px solid #e0e0e0;font-size:8pt;color:#999;display:flex;justify-content:space-between;font-family:Arial,sans-serif;}' +
+    '@page{size:A4;margin:0;}@media print{html,body{margin:0!important;padding:18mm 22mm!important;}}' +
+    '</style></head><body>' +
+    '<div class="co">' + safe(co) + '</div><hr class="divider"/>' +
+    '<div class="body">' + safe(text) + '</div>' +
+    '<div class="footer"><span>' + safe(co) + (name ? ' &mdash; ' + safe(name) : '') + '</span><span>' + safe(email) + (web ? ' | ' + safe(web) : '') + '</span></div>' +
+    '<scr' + 'ipt>window.onload=function(){window.focus();window.print();window.onafterprint=function(){window.close();};};</scr' + 'ipt>' +
+    '</body></html>';
+  var popup = window.open('','_blank','width=794,height=1123,scrollbars=yes');
+  if (!popup) { alert('Pop-up blocked. Please allow pop-ups and try again.'); return; }
+  popup.document.write(html);
+  popup.document.close();
+}
+
 
 function renderHubPRSection() {
   if (!activeCampaign) return;
