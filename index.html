@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+=<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
@@ -80,7 +80,16 @@ textarea{resize:vertical;line-height:1.6;}
 .notice-success{background:var(--success-bg);border:1px solid #95d5b2;color:var(--success);}
 .notice-error{background:var(--error-bg);border:1px solid #ffb3b3;color:var(--error);}
 .pr-box{background:var(--off);border:1.5px solid var(--border);border-radius:12px;padding:1.75rem;font-size:14px;line-height:1.9;white-space:pre-wrap;color:var(--text);max-height:500px;overflow-y:auto;font-family:'DM Sans',sans-serif;}
-.plat-list{border:1.5px solid var(--border);border-radius:12px;overflow:hidden;max-height:420px;overflow-y:auto;}
+.plat-item.already-contacted{background:#f0faf4;border-left:3px solid #2d6a4f;}
+.plat-item.locked{cursor:default;}
+.plat-item.locked:hover{background:var(--white);}
+.email-masked{font-size:11px;color:var(--muted);letter-spacing:2px;font-family:monospace;}
+.reveal-btn{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;padding:5px 10px;border-radius:6px;background:var(--black);color:var(--white);cursor:pointer;border:none;white-space:nowrap;flex-shrink:0;transition:opacity 0.15s;}
+.reveal-btn:hover{opacity:0.85;}
+.reveal-btn.used{background:var(--gold);color:var(--white);}
+.token-confirm-modal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.55);z-index:300;align-items:center;justify-content:center;}
+.token-confirm-box{background:var(--white);border-radius:16px;padding:2rem;max-width:400px;width:90%;margin:auto;position:relative;top:50%;transform:translateY(-50%);text-align:center;}
+
 .plat-item{display:flex;align-items:center;gap:12px;padding:11px 15px;border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.1s;}
 .plat-item:last-child{border-bottom:none;}
 .plat-item:hover{background:var(--off);}
@@ -162,25 +171,127 @@ textarea{resize:vertical;line-height:1.6;}
 .log-dot.replied{background:#1565c0;}
 .log-outlet{font-size:13px;font-weight:500;color:var(--black);}
 .log-detail{font-size:11px;color:var(--muted);margin-top:1px;}
+.dash-tab{padding:8px 16px;font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;white-space:nowrap;border-bottom:3px solid transparent;margin-bottom:-2px;transition:all 0.15s;}
+.dash-tab:hover{color:var(--text);}
+.dash-tab.active{color:var(--gold);border-bottom-color:var(--gold);}
+.dash-stat-card{border:1.5px solid var(--border);border-radius:10px;padding:14px;background:var(--white);text-align:center;}
+.dash-stat-num{font-size:28px;font-weight:600;color:var(--black);font-family:'Playfair Display',serif;}
+.dash-stat-label{font-size:11px;color:var(--muted);margin-top:3px;text-transform:uppercase;letter-spacing:0.5px;}
+.dash-row{display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--border);}
+.dash-row:last-child{border-bottom:none;}
+.dash-tick{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;margin-top:2px;}
+.dash-tick.sent{background:#d8f3dc;color:#2d6a4f;}
+.dash-tick.pending{background:#fff3cd;color:#856404;}
+.dash-tick.replied{background:#e8f4fd;color:#1565c0;}
+.acct-banner{background:var(--gold-light);border:1.5px solid var(--gold);border-radius:10px;padding:12px 16px;display:flex;align-items:center;gap:12px;margin-bottom:1.5rem;cursor:pointer;}
+.acct-avatar{width:34px;height:34px;border-radius:50%;background:var(--gold);color:var(--white);font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;border:2px solid var(--gold-light);transition:opacity 0.2s;}
+.acct-avatar:hover{opacity:0.85;}
+/* Phase 2 -- Nav */
+.main-nav{display:flex;align-items:center;gap:4px;}
+.nav-item{padding:7px 14px;font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;border-radius:8px;transition:all 0.15s;white-space:nowrap;}
+.nav-item:hover{background:var(--off);color:var(--text);}
+.nav-item.active{background:var(--black);color:var(--white);}
+/* Phase 2 -- Campaign cards */
+.camp-card-v2{border:1.5px solid var(--border);border-radius:14px;background:var(--white);cursor:pointer;transition:all 0.2s;overflow:hidden;position:relative;}
+.camp-card-v2::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:var(--border);}
+.camp-card-v2.active::before{background:var(--gold);}
+.camp-card-v2.completed::before{background:#2d6a4f;}
+.camp-card-v2.draft::before{background:var(--muted);}
+.camp-card-v2:hover{border-color:var(--gold);transform:translateY(-2px);box-shadow:0 6px 24px rgba(0,0,0,0.07);}
+.camp-card-v2-body{padding:1.25rem 1.5rem;}
+.camp-card-v2-header{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:10px;}
+.camp-card-v2-name{font-size:17px;font-weight:500;color:var(--black);line-height:1.3;font-family:'Playfair Display',serif;}
+.camp-card-v2-goal{font-size:12px;color:var(--muted);margin-top:3px;line-height:1.5;}
+.camp-card-v2-meta{display:flex;align-items:center;gap:16px;padding:10px 1.5rem;border-top:1px solid var(--border);background:var(--off);flex-wrap:wrap;}
+.camp-meta-stat{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--muted);}
+.camp-meta-stat strong{color:var(--black);font-weight:600;}
+.camp-pr-badge{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:600;padding:3px 8px;border-radius:4px;text-transform:uppercase;letter-spacing:0.5px;}
+.camp-pr-badge.ready{background:#d8f3dc;color:#2d6a4f;}
+.camp-pr-badge.missing{background:var(--gold-light);color:var(--gold);}
+.camp-branch-icons{display:flex;gap:6px;align-items:center;}
+.camp-branch-pip{width:26px;height:26px;border-radius:6px;background:var(--off);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;title:'';}
+.camp-branch-pip.used{background:var(--gold-light);border-color:var(--gold);}
+/* Phase 2 -- Tabs */
+.camp-tabs{display:flex;gap:0;border-bottom:2px solid var(--border);margin-bottom:1.5rem;}
+.camp-tab{padding:8px 18px;font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;transition:all 0.15s;}
+.camp-tab:hover{color:var(--text);}
+.camp-tab.active{color:var(--black);border-bottom-color:var(--black);}
+/* Phase 2 -- Empty state */
+.onboard-guide{border:1.5px dashed var(--border);border-radius:14px;padding:2rem;background:var(--off);}
+.onboard-guide-step{display:flex;align-items:flex-start;gap:14px;padding:14px 0;border-bottom:1px solid var(--border);}
+.onboard-guide-step:last-child{border-bottom:none;}
+.step-num{width:32px;height:32px;border-radius:50%;background:var(--black);color:var(--white);font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+@media(max-width:700px){.main-nav{display:none;}.camp-card-v2-meta{gap:10px;}.nav-item{padding:6px 10px;font-size:12px;}}
+.acct-dropdown{display:none;position:absolute;top:calc(100% + 8px);right:0;background:var(--white);border:1.5px solid var(--border);border-radius:12px;box-shadow:var(--shadow);min-width:220px;z-index:200;overflow:hidden;}
+.acct-dropdown.open{display:block;}
+.acct-dd-header{padding:14px 16px;border-bottom:1px solid var(--border);background:var(--off);}
+.acct-dd-name{font-size:14px;font-weight:500;color:var(--black);}
+.acct-dd-co{font-size:12px;color:var(--muted);}
+.acct-dd-item{padding:11px 16px;font-size:13px;color:var(--text);cursor:pointer;display:flex;align-items:center;gap:10px;transition:background 0.15s;}
+.acct-dd-item:hover{background:var(--off);}
+.acct-dd-item.danger{color:var(--error);}
+.acct-dd-divider{height:1px;background:var(--border);}
+.profile-complete-bar{height:4px;background:var(--border);border-radius:2px;margin-top:6px;}
+.profile-complete-fill{height:4px;background:var(--gold);border-radius:2px;transition:width 0.4s;}
+.onboard-step{display:flex;align-items:flex-start;gap:14px;padding:14px 0;border-bottom:1px solid var(--border);}
+.onboard-step:last-child{border-bottom:none;}
+.onboard-num{width:28px;height:28px;border-radius:50%;background:var(--black);color:var(--white);font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;}
+.onboard-num.done{background:var(--success);}
+.kp-card{border:1.5px solid var(--border);border-radius:10px;padding:14px;background:var(--white);margin-bottom:8px;}
+.kp-label{font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--gold);margin-bottom:6px;}
 @media(max-width:600px){.camp-paths{grid-template-columns:1fr;}.path-cards,.g2{grid-template-columns:1fr;}.page-title{font-size:28px;}.wrap{padding:2rem 1.25rem 5rem;}}
 </style>
 </head>
 <body>
 
 <header class="header">
-  <div class="logo">Outreach <span>Platform</span></div>
-  <div style="display:flex;align-items:center;gap:16px;">
-    <div class="usage-counter" id="usage-counter" title="Daily outreach limit">
+  <div class="logo" onclick="goHome()" style="cursor:pointer;">Outreach <span>Platform</span></div>
+  <nav class="main-nav" id="main-nav">
+    <div class="nav-item active" id="nav-campaigns" onclick="goHome()">&#128196; Campaigns</div>
+    <div class="nav-item" id="nav-dashboard" onclick="showScreen('s-dashboard')">&#128202; Dashboard</div>
+    <div class="nav-item" id="nav-account" onclick="showScreen('s-account')">&#128100; Account</div>
+  </nav>
+  <div style="display:flex;align-items:center;gap:12px;">
+    <div class="usage-counter" id="usage-counter" title="Daily outreach tokens remaining">
       <div class="usage-label">Daily</div>
       <div class="usage-pip-wrap" id="usage-pips"></div>
       <div class="usage-count" id="usage-count">0/10</div>
     </div>
     <div class="progress-bar" id="progress-bar"></div>
+    <div style="position:relative;">
+      <div class="acct-avatar" id="acct-avatar" onclick="toggleAccountDropdown()" title="Account settings">?</div>
+      <div class="acct-dropdown" id="acct-dropdown">
+        <div class="acct-dd-header">
+          <div class="acct-dd-name" id="dd-name">Your Account</div>
+          <div class="acct-dd-co" id="dd-co"></div>
+          <div class="profile-complete-bar" style="margin-top:8px;"><div class="profile-complete-fill" id="dd-complete-fill" style="width:0%"></div></div>
+          <div style="font-size:10px;color:var(--muted);margin-top:3px;" id="dd-complete-label"></div>
+        </div>
+        <div class="acct-dd-item" onclick="showScreen('s-account');closeAccountDropdown()">&#128100; My account</div>
+        <div class="acct-dd-item" onclick="goHome();closeAccountDropdown()">&#128196; My campaigns</div>
+        <div class="acct-dd-item" onclick="showScreen('s-dashboard');closeAccountDropdown()">&#128202; Outreach dashboard</div>
+        <div class="acct-dd-divider"></div>
+        <div class="acct-dd-item danger" onclick="confirmClearAccount()">&#128683; Clear account data</div>
+      </div>
+    </div>
   </div>
 </header>
 
-<!-- USAGE LIMIT MODAL -->
-<div class="usage-limit-modal" id="usage-limit-modal">
+<!-- TOKEN CONFIRM MODAL -->
+<div class="token-confirm-modal" id="token-confirm-modal">
+  <div class="token-confirm-box">
+    <div style="font-size:36px;margin-bottom:12px;">&#128274;</div>
+    <div style="font-size:18px;font-weight:500;color:var(--black);margin-bottom:8px;" id="token-confirm-outlet"></div>
+    <div style="font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:6px;" id="token-confirm-msg"></div>
+    <div style="font-size:12px;color:var(--gold);font-weight:500;margin-bottom:1.5rem;" id="token-confirm-remaining"></div>
+    <div class="btn-row" style="justify-content:center;">
+      <button class="btn btn-primary" id="token-confirm-yes" onclick="confirmRevealToken()">Reveal &amp; start outreach</button>
+      <button class="btn btn-outline" onclick="cancelRevealToken()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+
   <div class="usage-limit-box">
     <div class="usage-limit-icon">&#128683;</div>
     <div class="usage-limit-title">Daily limit reached</div>
@@ -192,21 +303,277 @@ textarea{resize:vertical;line-height:1.6;}
 
 <div class="wrap">
 
-<!-- SCREEN: CAMPAIGNS DASHBOARD -->
+<!-- SCREEN: ACCOUNT SETUP (first-time onboarding) -->
+<div class="screen" id="s-account-setup">
+  <div style="text-align:center;margin-bottom:2rem;">
+    <div style="font-size:40px;margin-bottom:12px;">&#128075;</div>
+    <div class="eyebrow">Welcome to Outreach Platform</div>
+    <h1 class="sec-title" style="font-size:30px;">Let's set up your account</h1>
+    <p class="sec-sub" style="margin:0 auto;">This information stays at your account level and pre-fills every campaign, press release, and outreach email automatically. You only do this once.</p>
+  </div>
+
+  <div style="background:var(--gold-light);border:1.5px solid var(--gold);border-radius:12px;padding:1.25rem 1.5rem;margin-bottom:1.5rem;">
+    <div style="font-size:12px;font-weight:500;color:var(--gold);margin-bottom:1rem;">YOUR PERSONAL DETAILS</div>
+    <div class="g2">
+      <div><label>First name</label><input type="text" id="acct-fname" placeholder="e.g. Jane"/></div>
+      <div><label>Last name</label><input type="text" id="acct-lname" placeholder="e.g. Smith"/></div>
+      <div><label>Your position / title</label><input type="text" id="acct-pos" placeholder="e.g. Founder, CEO, Marketing Director"/></div>
+      <div><label>Phone number</label><input type="text" id="acct-phone" placeholder="e.g. +61 400 000 000"/></div>
+      <div class="full"><label>Contact email</label><input type="text" id="acct-email" placeholder="e.g. jane@yourbusiness.com"/></div>
+    </div>
+  </div>
+
+  <div style="border:1.5px solid var(--border);border-radius:12px;padding:1.25rem 1.5rem;margin-bottom:1.5rem;background:var(--white);">
+    <div style="font-size:12px;font-weight:500;color:var(--muted);margin-bottom:1rem;">YOUR BUSINESS</div>
+    <div class="g2">
+      <div><label>Company name</label><input type="text" id="acct-co" placeholder="e.g. Acme Co, The Local Bakery"/></div>
+      <div><label>Website</label><input type="text" id="acct-web" placeholder="e.g. yourbusiness.com"/></div>
+      <div class="full"><label>What your business does</label><textarea id="acct-what" style="min-height:75px;" placeholder="e.g. A sustainable skincare brand creating certified-organic products for conscious consumers across Australia and New Zealand"></textarea></div>
+    </div>
+  </div>
+
+  <div style="border:1.5px solid var(--border);border-radius:12px;padding:1.25rem 1.5rem;margin-bottom:1.5rem;background:var(--white);">
+    <div style="font-size:12px;font-weight:500;color:var(--muted);margin-bottom:4px;">THREE KEY POINTS ABOUT YOUR BUSINESS</div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:1rem;">These are your core USPs — What you do / Who you serve / What makes you different. They feed directly into press release generation.</div>
+    <div class="kp-card">
+      <div class="kp-label">Key point 1 — What you do</div>
+      <textarea id="acct-kp1" style="min-height:60px;border:none;padding:0;font-size:14px;" placeholder="e.g. We create certified-organic skincare products formulated by dermatologists and produced in Australia without harmful chemicals"></textarea>
+    </div>
+    <div class="kp-card">
+      <div class="kp-label">Key point 2 — Who you serve</div>
+      <textarea id="acct-kp2" style="min-height:60px;border:none;padding:0;font-size:14px;" placeholder="e.g. We serve conscious consumers aged 25-45 who prioritise ingredient transparency, sustainability, and clinical effectiveness over brand prestige"></textarea>
+    </div>
+    <div class="kp-card">
+      <div class="kp-label">Key point 3 — What makes you different</div>
+      <textarea id="acct-kp3" style="min-height:60px;border:none;padding:0;font-size:14px;" placeholder="e.g. We are the only Australian skincare brand certified by three independent sustainability bodies, with zero plastic packaging and a carbon-neutral supply chain"></textarea>
+    </div>
+  </div>
+
+  <div style="border:1.5px solid var(--border);border-radius:12px;padding:1.25rem 1.5rem;margin-bottom:1.5rem;background:var(--white);">
+    <div style="font-size:12px;font-weight:500;color:var(--muted);margin-bottom:1rem;">OPTIONAL EXTRAS</div>
+    <div class="g2">
+      <div class="full"><label>Business logo URL <span style="font-size:10px;font-weight:400;text-transform:none;">(paste a link to your logo image)</span></label><input type="text" id="acct-logo" placeholder="e.g. https://yourbusiness.com/logo.png"/></div>
+      <div class="full"><label>Social media handles <span style="font-size:10px;font-weight:400;text-transform:none;">(optional)</span></label><input type="text" id="acct-social" placeholder="e.g. @yourbrand on Instagram, LinkedIn: linkedin.com/company/yourbrand"/></div>
+    </div>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn btn-primary" onclick="saveAccount(true)">Save account &amp; continue &rarr;</button>
+  </div>
+</div>
+
+<!-- SCREEN: ACCOUNT SETTINGS (edit existing) -->
+<div class="screen" id="s-account">
+  <div class="back-link" onclick="goHome()">&#8592; Back to campaigns</div>
+  <div class="eyebrow">Account Settings</div>
+  <h2 class="sec-title">Your account</h2>
+  <p class="sec-sub">This information pre-fills every campaign, press release, and outreach email. Keep it up to date.</p>
+
+  <div id="acct-complete-banner" style="display:none;margin-bottom:1.5rem;"></div>
+
+  <div style="background:var(--gold-light);border:1.5px solid var(--gold);border-radius:12px;padding:1.25rem 1.5rem;margin-bottom:1.5rem;">
+    <div style="font-size:12px;font-weight:500;color:var(--gold);margin-bottom:1rem;">PERSONAL DETAILS</div>
+    <div class="g2">
+      <div><label>First name</label><input type="text" id="acct-fname-e" placeholder="e.g. Jane"/></div>
+      <div><label>Last name</label><input type="text" id="acct-lname-e" placeholder="e.g. Smith"/></div>
+      <div><label>Position / title</label><input type="text" id="acct-pos-e" placeholder="e.g. Founder, CEO, Marketing Director"/></div>
+      <div><label>Phone number</label><input type="text" id="acct-phone-e" placeholder="e.g. +61 400 000 000"/></div>
+      <div class="full"><label>Contact email</label><input type="text" id="acct-email-e" placeholder="e.g. jane@yourbusiness.com"/></div>
+    </div>
+  </div>
+
+  <div style="border:1.5px solid var(--border);border-radius:12px;padding:1.25rem 1.5rem;margin-bottom:1.5rem;background:var(--white);">
+    <div style="font-size:12px;font-weight:500;color:var(--muted);margin-bottom:1rem;">BUSINESS</div>
+    <div class="g2">
+      <div><label>Company name</label><input type="text" id="acct-co-e" placeholder="e.g. Acme Co"/></div>
+      <div><label>Website</label><input type="text" id="acct-web-e" placeholder="e.g. yourbusiness.com"/></div>
+      <div class="full"><label>What your business does</label><textarea id="acct-what-e" style="min-height:75px;" placeholder="Describe your business in 1-2 sentences"></textarea></div>
+    </div>
+  </div>
+
+  <div style="border:1.5px solid var(--border);border-radius:12px;padding:1.25rem 1.5rem;margin-bottom:1.5rem;background:var(--white);">
+    <div style="font-size:12px;font-weight:500;color:var(--muted);margin-bottom:4px;">THREE KEY BUSINESS POINTS</div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:1rem;">What you do / Who you serve / What makes you different</div>
+    <div class="kp-card">
+      <div class="kp-label">Key point 1 — What you do</div>
+      <textarea id="acct-kp1-e" style="min-height:60px;border:none;padding:0;font-size:14px;" placeholder="What you do"></textarea>
+    </div>
+    <div class="kp-card">
+      <div class="kp-label">Key point 2 — Who you serve</div>
+      <textarea id="acct-kp2-e" style="min-height:60px;border:none;padding:0;font-size:14px;" placeholder="Who you serve"></textarea>
+    </div>
+    <div class="kp-card">
+      <div class="kp-label">Key point 3 — What makes you different</div>
+      <textarea id="acct-kp3-e" style="min-height:60px;border:none;padding:0;font-size:14px;" placeholder="What makes you different"></textarea>
+    </div>
+  </div>
+
+  <div style="border:1.5px solid var(--border);border-radius:12px;padding:1.25rem 1.5rem;margin-bottom:1.5rem;background:var(--white);">
+    <div style="font-size:12px;font-weight:500;color:var(--muted);margin-bottom:1rem;">OPTIONAL</div>
+    <div class="g2">
+      <div class="full"><label>Business logo URL</label><input type="text" id="acct-logo-e" placeholder="https://yourbusiness.com/logo.png"/></div>
+      <div class="full"><label>Social media handles</label><input type="text" id="acct-social-e" placeholder="e.g. @yourbrand on Instagram"/></div>
+    </div>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn btn-primary" onclick="saveAccount(false)">Save changes</button>
+    <button class="btn btn-outline" onclick="goHome()">Cancel</button>
+  </div>
+  <div class="notice notice-success" id="acct-save-confirm" style="display:none;margin-top:1rem;">&#10003; Account updated successfully.</div>
+</div>
+
+<!-- SCREEN: OUTREACH DASHBOARD -->
+<div class="screen" id="s-dashboard">
+
+  <!-- Header -->
+  <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:1.5rem;">
+    <div>
+      <div class="eyebrow">Outreach Dashboard</div>
+      <h2 class="sec-title" style="margin-bottom:4px;">Your outreach activity</h2>
+      <p style="font-size:13px;color:var(--muted);margin:0;">Every outreach across all campaigns -- by path, status, and date.</p>
+    </div>
+    <button class="btn btn-outline btn-sm" onclick="exportDashCSV()">&#8595; Export CSV</button>
+  </div>
+
+  <!-- Stats row -->
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1.5rem;" id="dash-stats"></div>
+
+  <!-- Branch breakdown bar -->
+  <div id="dash-branch-bar" style="display:none;margin-bottom:1.5rem;background:var(--off);border:1.5px solid var(--border);border-radius:12px;padding:14px 18px;">
+    <div style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);font-weight:500;margin-bottom:10px;">Outreach by path</div>
+    <div id="dash-branch-breakdown" style="display:flex;gap:8px;flex-wrap:wrap;"></div>
+  </div>
+
+  <!-- Filters row -->
+  <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:1rem;">
+    <div style="flex:1;min-width:160px;">
+      <select id="dash-camp-filter" onchange="renderDashboard()" style="width:100%;padding:8px 11px;border:1.5px solid var(--border);border-radius:var(--radius);font-size:13px;font-family:inherit;">
+        <option value="all">All campaigns</option>
+      </select>
+    </div>
+    <div style="flex:1;min-width:120px;">
+      <select id="dash-status-filter" onchange="renderDashboard()" style="width:100%;padding:8px 11px;border:1.5px solid var(--border);border-radius:var(--radius);font-size:13px;font-family:inherit;">
+        <option value="all">All statuses</option>
+        <option value="sent">Sent</option>
+        <option value="pending">Pending</option>
+        <option value="replied">Replied</option>
+      </select>
+    </div>
+    <div style="flex:1;min-width:120px;">
+      <select id="dash-sort-filter" onchange="renderDashboard()" style="width:100%;padding:8px 11px;border:1.5px solid var(--border);border-radius:var(--radius);font-size:13px;font-family:inherit;">
+        <option value="newest">Newest first</option>
+        <option value="oldest">Oldest first</option>
+        <option value="outlet">By outlet</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Path tabs -->
+  <div style="display:flex;border-bottom:2px solid var(--border);margin-bottom:1.5rem;overflow-x:auto;gap:0;">
+    <div class="dash-tab active" id="dtab-all" onclick="switchDashTab('all',this)">All</div>
+    <div class="dash-tab" id="dtab-pr" onclick="switchDashTab('Press Release',this)">&#128240; Press</div>
+    <div class="dash-tab" id="dtab-story" onclick="switchDashTab('Editorial Pitch',this)">&#128161; Story</div>
+    <div class="dash-tab" id="dtab-pod" onclick="switchDashTab('Podcast Pitch',this)">&#127911; Podcast</div>
+    <div class="dash-tab" id="dtab-local" onclick="switchDashTab('Local Media',this)">&#127968; Local</div>
+    <div class="dash-tab" id="dtab-reddit" onclick="switchDashTab('Reddit Outreach',this)">&#127760; Community</div>
+  </div>
+
+  <!-- Results count -->
+  <div id="dash-result-count" style="font-size:12px;color:var(--muted);margin-bottom:10px;"></div>
+
+  <!-- List -->
+  <div id="dash-list"></div>
+
+  <!-- Follow-up reminder modal -->
+  <div id="followup-modal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:300;align-items:center;justify-content:center;">
+    <div style="background:var(--white);border-radius:16px;padding:1.75rem;max-width:440px;width:90%;margin:auto;position:relative;top:50%;transform:translateY(-50%);">
+      <div style="font-size:16px;font-weight:500;margin-bottom:4px;">Follow up with <span id="fu-outlet-name"></span></div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:1.25rem;" id="fu-original-date"></div>
+      <label>Update status</label>
+      <div class="chips" style="margin-top:6px;" id="fu-status-chips">
+        <div class="chip on" onclick="setFUStatus('sent',this)">Sent</div>
+        <div class="chip" onclick="setFUStatus('pending',this)">Pending</div>
+        <div class="chip" onclick="setFUStatus('replied',this)">Replied &#127881;</div>
+        <div class="chip" onclick="setFUStatus('no-reply',this)">No reply</div>
+      </div>
+      <label style="margin-top:12px;">Follow-up note <span style="font-size:10px;font-weight:400;text-transform:none;">(optional)</span></label>
+      <textarea id="fu-note" style="min-height:65px;" placeholder="e.g. Sent follow-up email, left voicemail, Sarah replied asking for more details..."></textarea>
+      <div class="btn-row" style="margin-top:1rem;">
+        <button class="btn btn-primary" onclick="saveFollowUp()">Save update</button>
+        <button class="btn btn-outline" onclick="closeFollowUpModal()">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
 <!-- CAMPAIGNS DASHBOARD -->
 <div class="screen active" id="s-camps">
-  <div class="eyebrow">Outreach Platform</div>
-  <h1 class="page-title">My <span>Campaigns</span></h1>
-  <p class="page-sub">Each campaign holds your business profile, press release, and full outreach history. Create one campaign per major story or announcement.</p>
-  <div class="btn-row" style="margin-bottom:2rem;">
-    <button class="btn btn-primary" onclick="showNewCampaignForm()">+ Create new campaign</button>
+
+  <!-- Account summary bar -->
+  <div id="camps-acct-summary" style="display:none;background:var(--off);border:1.5px solid var(--border);border-radius:12px;padding:14px 18px;margin-bottom:1.5rem;">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div id="camps-acct-avatar" style="width:40px;height:40px;border-radius:50%;background:var(--gold);color:var(--white);font-size:16px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;"></div>
+        <div>
+          <div id="camps-acct-name" style="font-size:15px;font-weight:500;color:var(--black);"></div>
+          <div id="camps-acct-details" style="font-size:12px;color:var(--muted);margin-top:1px;"></div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+        <div id="camps-acct-banner"></div>
+        <button class="btn btn-outline btn-sm" onclick="showScreen('s-account')">Edit profile</button>
+      </div>
+    </div>
   </div>
+
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;flex-wrap:wrap;gap:12px;">
+    <div>
+      <h1 class="page-title" style="margin-bottom:4px;">My <span>Campaigns</span></h1>
+      <p style="font-size:13px;color:var(--muted);margin:0;">One campaign per announcement. Press release and outreach history stay together.</p>
+    </div>
+    <button class="btn btn-primary" onclick="showNewCampaignForm()">+ New campaign</button>
+  </div>
+
+  <!-- Campaign status tabs -->
+  <div class="camp-tabs">
+    <div class="camp-tab active" id="ctab-active" onclick="switchCampTab('active',this)">Active</div>
+    <div class="camp-tab" id="ctab-draft" onclick="switchCampTab('draft',this)">Drafts</div>
+    <div class="camp-tab" id="ctab-completed" onclick="switchCampTab('completed',this)">Completed</div>
+    <div class="camp-tab" id="ctab-all" onclick="switchCampTab('all',this)">All</div>
+  </div>
+
   <div id="camps-list"></div>
-  <div id="camps-empty" style="display:none;text-align:center;padding:3rem 1rem;border:2px dashed var(--border);border-radius:12px;">
-    <div style="font-size:40px;margin-bottom:12px;">&#128196;</div>
-    <div style="font-size:18px;font-weight:500;color:var(--black);margin-bottom:8px;">No campaigns yet</div>
-    <div style="font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:1.5rem;max-width:400px;margin-left:auto;margin-right:auto;">Create your first campaign. Add your business profile and press release once -- then use it to reach press, podcasts, communities, and local media without re-entering anything.</div>
-    <button class="btn btn-primary" onclick="showNewCampaignForm()">+ Create your first campaign</button>
+
+  <!-- Empty state with onboarding guide -->
+  <div id="camps-empty" style="display:none;">
+    <div class="onboard-guide">
+      <div style="text-align:center;margin-bottom:1.5rem;">
+        <div style="font-size:40px;margin-bottom:10px;">&#128640;</div>
+        <div style="font-size:20px;font-weight:500;color:var(--black);margin-bottom:6px;">Create your first campaign</div>
+        <div style="font-size:13px;color:var(--muted);max-width:420px;margin:0 auto;line-height:1.7;">A campaign holds everything in one place -- your press release, targeting, and a complete record of every outreach you send.</div>
+      </div>
+      <div class="onboard-guide-step">
+        <div class="step-num">1</div>
+        <div><div style="font-size:14px;font-weight:500;color:var(--black);">Name your campaign</div><div style="font-size:12px;color:var(--muted);margin-top:3px;">Give it a clear name -- e.g. "May 2025 Product Launch" or "Podcast Tour Q3 2025"</div></div>
+      </div>
+      <div class="onboard-guide-step">
+        <div class="step-num">2</div>
+        <div><div style="font-size:14px;font-weight:500;color:var(--black);">Generate your press release</div><div style="font-size:12px;color:var(--muted);margin-top:3px;">Your account info pre-fills. Answer 3 questions and the AI writes your press release -- approve and download it as a PDF instantly.</div></div>
+      </div>
+      <div class="onboard-guide-step">
+        <div class="step-num">3</div>
+        <div><div style="font-size:14px;font-weight:500;color:var(--black);">Choose your outreach path</div><div style="font-size:12px;color:var(--muted);margin-top:3px;">Reach press &amp; media, pitch a story, pitch podcasts, target local media, or post to communities -- all from the same campaign hub.</div></div>
+      </div>
+      <div class="onboard-guide-step">
+        <div class="step-num">4</div>
+        <div><div style="font-size:14px;font-weight:500;color:var(--black);">Log and track everything</div><div style="font-size:12px;color:var(--muted);margin-top:3px;">Every outreach is saved with the email sent, journalist contact, and status. View your full history in the Outreach Dashboard.</div></div>
+      </div>
+      <div style="text-align:center;margin-top:1.5rem;">
+        <button class="btn btn-primary" onclick="showNewCampaignForm()">+ Create your first campaign</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -215,121 +582,85 @@ textarea{resize:vertical;line-height:1.6;}
   <div class="back-link" onclick="showScreen('s-camps')">&#8592; Back to campaigns</div>
   <div class="eyebrow" id="newcamp-eyebrow">New Campaign</div>
   <h2 class="sec-title" id="newcamp-title">Set up your campaign</h2>
-  <p class="sec-sub">This information stays fixed for the life of the campaign. Every outreach path draws from it so you never repeat yourself.</p>
+  <p class="sec-sub" id="newcamp-sub">Fill this in once. Every outreach path draws from it automatically.</p>
 
-  <!-- Step indicators -->
-  <div style="display:flex;gap:0;margin-bottom:2rem;border:1.5px solid var(--border);border-radius:10px;overflow:hidden;">
-    <div id="nc-step1-tab" style="flex:1;padding:10px;text-align:center;font-size:12px;font-weight:500;background:var(--black);color:var(--white);cursor:pointer;" onclick="showCampStep(1)">1. Business profile</div>
-    <div id="nc-step2-tab" style="flex:1;padding:10px;text-align:center;font-size:12px;font-weight:500;background:var(--off);color:var(--muted);cursor:pointer;" onclick="showCampStep(2)">2. Industry &amp; targeting</div>
-    <div id="nc-step3-tab" style="flex:1;padding:10px;text-align:center;font-size:12px;font-weight:500;background:var(--off);color:var(--muted);cursor:pointer;" onclick="showCampStep(3)">3. Press release</div>
+  <!-- Progress steps -->
+  <div style="display:flex;align-items:center;gap:0;margin-bottom:2rem;border:1.5px solid var(--border);border-radius:10px;overflow:hidden;" id="camp-step-tabs">
+    <div id="nc-step1-tab" style="flex:1;padding:10px 8px;text-align:center;font-size:12px;font-weight:500;cursor:pointer;transition:all 0.2s;" onclick="showCampStep(1)">1. Campaign</div>
+    <div id="nc-step2-tab" style="flex:1;padding:10px 8px;text-align:center;font-size:12px;font-weight:500;cursor:pointer;transition:all 0.2s;" onclick="showCampStep(2)">2. Industry</div>
+    <div id="nc-step3-tab" style="flex:1;padding:10px 8px;text-align:center;font-size:12px;font-weight:500;cursor:pointer;transition:all 0.2s;" onclick="showCampStep(3)">3. Press release</div>
   </div>
 
-  <!-- STEP 1: BUSINESS PROFILE -->
+  <!-- STEP 1: CAMPAIGN DETAILS -->
   <div id="nc-step1">
-    <div style="background:var(--gold-light);border:1.5px solid var(--gold);border-radius:12px;padding:1.25rem 1.5rem;margin-bottom:1.5rem;">
-      <label style="color:var(--gold);">Campaign name</label>
-      <input type="text" id="camp-name-input" placeholder="e.g. May 2025 Product Launch, Spring Campaign, Podcast Tour"/>
-      <label style="margin-top:10px;color:var(--gold);">Campaign goal</label>
-      <input type="text" id="camp-goal-input" placeholder="e.g. Announce our product launch, build brand awareness, get podcast appearances"/>
+    <!-- Account prefill notice -->
+    <div id="camp-prefill-notice" style="display:none;margin-bottom:1.25rem;" class="notice notice-gold">
+      &#10003; Your account information has been pre-filled below. Review and adjust anything specific to this campaign.
     </div>
-    <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:1rem;font-weight:500;">Your business profile</div>
+
+    <div style="background:var(--gold-light);border:1.5px solid var(--gold);border-radius:12px;padding:1.25rem 1.5rem;margin-bottom:1.5rem;">
+      <div style="font-size:12px;font-weight:600;color:var(--gold);letter-spacing:1px;text-transform:uppercase;margin-bottom:12px;">This campaign</div>
+      <label style="color:var(--gold);">Campaign name</label>
+      <input type="text" id="camp-name-input" placeholder="e.g. May 2025 Product Launch, Spring Campaign, Podcast Tour 2025"/>
+      <label style="margin-top:10px;color:var(--gold);">Campaign goal <span style="font-size:10px;font-weight:400;text-transform:none;">(what do you want this campaign to achieve?)</span></label>
+      <input type="text" id="camp-goal-input" placeholder="e.g. Announce our new product launch and get covered in 10 fashion publications"/>
+    </div>
+
+    <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:1rem;font-weight:500;">
+      Your details
+      <span style="font-size:10px;font-weight:400;letter-spacing:0;text-transform:none;color:var(--muted);margin-left:6px;">(pre-filled from your account)</span>
+    </div>
     <div class="g2">
       <div><label>Your name</label><input type="text" id="cp-name" placeholder="e.g. Jane Smith"/></div>
-      <div><label>Your position</label><input type="text" id="cp-pos" placeholder="e.g. Founder, CEO, Marketing Director"/></div>
-      <div><label>Company name</label><input type="text" id="cp-co" placeholder="e.g. Acme Co, The Local Bakery"/></div>
+      <div><label>Your position</label><input type="text" id="cp-pos" placeholder="e.g. Founder, CEO"/></div>
+      <div><label>Company name</label><input type="text" id="cp-co" placeholder="e.g. Acme Co"/></div>
       <div><label>Website</label><input type="text" id="cp-web" placeholder="e.g. yourbusiness.com"/></div>
       <div class="full"><label>Contact email</label><input type="text" id="cp-email" placeholder="e.g. hello@yourbusiness.com"/></div>
-      <div class="full"><label>What your business does</label><input type="text" id="cp-what" placeholder="e.g. A sustainable homewares brand selling handmade products across Australia and New Zealand"/></div>
-      <div class="full"><label>Your unique angle</label><textarea id="cp-angle" style="min-height:70px;" placeholder="e.g. We are the only certified carbon-neutral homewares brand in Australia, founded by two ex-architects"></textarea></div>
-      <div class="full"><label>Key message for this campaign</label><textarea id="cp-message" style="min-height:70px;" placeholder="e.g. We just launched our first retail collection in 12 stores nationally after 3 years of online-only"></textarea></div>
-      <div class="full"><label>Additional info <span style="font-size:10px;font-weight:400;text-transform:none;">(optional)</span></label><textarea id="cp-extra" style="min-height:55px;" placeholder="e.g. Awards won, notable clients, launch dates, media coverage so far"></textarea></div>
+      <div class="full"><label>What your business does</label><textarea id="cp-what" style="min-height:65px;" placeholder="A brief description of your business and what you offer"></textarea></div>
+      <div class="full"><label>Your unique angle <span style="font-size:10px;font-weight:400;text-transform:none;">(what makes you different)</span></label><textarea id="cp-angle" style="min-height:65px;" placeholder="e.g. We are the only certified carbon-neutral brand in our category"></textarea></div>
+      <div class="full"><label>Additional campaign notes <span style="font-size:10px;font-weight:400;text-transform:none;">(optional — awards, milestones, launch dates)</span></label><textarea id="cp-extra" style="min-height:55px;" placeholder="e.g. Just won Best New Brand at the 2025 Design Awards, launching nationally on 15 May"></textarea></div>
     </div>
     <div class="btn-row" style="margin-top:1.5rem;">
       <button class="btn btn-primary" onclick="campStep1Next()">Next: Industry &amp; targeting &rarr;</button>
     </div>
   </div>
 
-  <!-- STEP 2: INDUSTRY & TARGETING -->
+  <!-- STEP 2: INDUSTRY & TARGETING (card grid) -->
   <div id="nc-step2" style="display:none;">
-    <p style="font-size:13px;color:var(--muted);margin-bottom:1.25rem;">These become the default targeting preferences for every outreach path in this campaign. You can refine them per path if needed.</p>
-
-    <!-- PRIMARY INDUSTRY CARDS -->
-    <div style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);font-weight:500;margin-bottom:12px;">Primary industry -- select your main category</div>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:1.25rem;">Select your industry so we find the most relevant media outlets for every outreach path in this campaign.</p>
     <input type="hidden" id="cp-industry"/>
+    <div style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);font-weight:500;margin-bottom:12px;">Primary industry</div>
 
     <div id="cp-industry-cards-grid" style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:12px;">
-      <div class="ind-card" id="cp-icard-0" onclick="selectCampCard(0)">
-        <div class="ind-card-icon">&#128522;</div>
-        <div class="ind-card-title">Fashion, Retail &amp; Consumer</div>
-        <div class="ind-card-pills">Fashion &bull; Luxury &bull; E-commerce &bull; Beauty &bull; Consumer</div>
-      </div>
-      <div class="ind-card" id="cp-icard-1" onclick="selectCampCard(1)">
-        <div class="ind-card-icon">&#128187;</div>
-        <div class="ind-card-title">Technology &amp; Innovation</div>
-        <div class="ind-card-pills">Tech &bull; AI &bull; Telecoms &bull; Gaming &bull; Biotech &bull; Cyber</div>
-      </div>
-      <div class="ind-card" id="cp-icard-2" onclick="selectCampCard(2)">
-        <div class="ind-card-icon">&#128138;</div>
-        <div class="ind-card-title">Health &amp; Life Sciences</div>
-        <div class="ind-card-pills">Healthcare &bull; Pharma &bull; Wellness &bull; Fitness &bull; Mental Health</div>
-      </div>
-      <div class="ind-card" id="cp-icard-3" onclick="selectCampCard(3)">
-        <div class="ind-card-icon">&#128200;</div>
-        <div class="ind-card-title">Finance &amp; Professional Services</div>
-        <div class="ind-card-pills">Finance &bull; Fintech &bull; Legal &bull; Real Estate &bull; Insurance</div>
-      </div>
-      <div class="ind-card" id="cp-icard-4" onclick="selectCampCard(4)">
-        <div class="ind-card-icon">&#127916;</div>
-        <div class="ind-card-title">Media, Arts &amp; Entertainment</div>
-        <div class="ind-card-pills">Entertainment &bull; Publishing &bull; Art &bull; Marketing &bull; Creative</div>
-      </div>
-      <div class="ind-card" id="cp-icard-5" onclick="selectCampCard(5)">
-        <div class="ind-card-icon">&#127859;</div>
-        <div class="ind-card-title">Food, Hospitality &amp; Travel</div>
-        <div class="ind-card-pills">Food &amp; Bev &bull; Hospitality &bull; Travel &bull; Agriculture</div>
-      </div>
-      <div class="ind-card" id="cp-icard-6" onclick="selectCampCard(6)">
-        <div class="ind-card-icon">&#127981;</div>
-        <div class="ind-card-title">Industry &amp; Infrastructure</div>
-        <div class="ind-card-pills">Manufacturing &bull; Automotive &bull; Construction &bull; Logistics</div>
-      </div>
-      <div class="ind-card" id="cp-icard-7" onclick="selectCampCard(7)">
-        <div class="ind-card-icon">&#127807;</div>
-        <div class="ind-card-title">Energy, Environment &amp; Education</div>
-        <div class="ind-card-pills">Renewable &bull; Green &bull; Education &bull; Non-profit</div>
-      </div>
-      <div class="ind-card" id="cp-icard-8" onclick="selectCampCard(8)">
-        <div class="ind-card-icon">&#128640;</div>
-        <div class="ind-card-title">Business &amp; Startups</div>
-        <div class="ind-card-pills">Startups &bull; Entrepreneurship &bull; DTC &bull; B2B &bull; SaaS</div>
-      </div>
-      <div class="ind-card" id="cp-icard-9" onclick="selectCampCard(9)">
-        <div class="ind-card-icon">&#127760;</div>
-        <div class="ind-card-title">Other &amp; Niche</div>
-        <div class="ind-card-pills">Sports &bull; Luxury &bull; Social Enterprise &bull; Custom</div>
-      </div>
+      <div class="ind-card" id="cp-icard-0" onclick="selectCampCard(0)"><div class="ind-card-icon">&#128522;</div><div class="ind-card-title">Fashion, Retail &amp; Consumer</div><div class="ind-card-pills">Fashion &bull; Luxury &bull; E-commerce &bull; Beauty &bull; Consumer</div></div>
+      <div class="ind-card" id="cp-icard-1" onclick="selectCampCard(1)"><div class="ind-card-icon">&#128187;</div><div class="ind-card-title">Technology &amp; Innovation</div><div class="ind-card-pills">Tech &bull; AI &bull; Telecoms &bull; Gaming &bull; Biotech &bull; Cyber</div></div>
+      <div class="ind-card" id="cp-icard-2" onclick="selectCampCard(2)"><div class="ind-card-icon">&#128138;</div><div class="ind-card-title">Health &amp; Life Sciences</div><div class="ind-card-pills">Healthcare &bull; Pharma &bull; Wellness &bull; Fitness &bull; Mental Health</div></div>
+      <div class="ind-card" id="cp-icard-3" onclick="selectCampCard(3)"><div class="ind-card-icon">&#128200;</div><div class="ind-card-title">Finance &amp; Professional Services</div><div class="ind-card-pills">Finance &bull; Fintech &bull; Legal &bull; Real Estate &bull; Insurance</div></div>
+      <div class="ind-card" id="cp-icard-4" onclick="selectCampCard(4)"><div class="ind-card-icon">&#127916;</div><div class="ind-card-title">Media, Arts &amp; Entertainment</div><div class="ind-card-pills">Entertainment &bull; Publishing &bull; Art &bull; Marketing &bull; Creative</div></div>
+      <div class="ind-card" id="cp-icard-5" onclick="selectCampCard(5)"><div class="ind-card-icon">&#127859;</div><div class="ind-card-title">Food, Hospitality &amp; Travel</div><div class="ind-card-pills">Food &amp; Bev &bull; Hospitality &bull; Travel &bull; Agriculture</div></div>
+      <div class="ind-card" id="cp-icard-6" onclick="selectCampCard(6)"><div class="ind-card-icon">&#127981;</div><div class="ind-card-title">Industry &amp; Infrastructure</div><div class="ind-card-pills">Manufacturing &bull; Automotive &bull; Construction &bull; Logistics</div></div>
+      <div class="ind-card" id="cp-icard-7" onclick="selectCampCard(7)"><div class="ind-card-icon">&#127807;</div><div class="ind-card-title">Energy, Environment &amp; Education</div><div class="ind-card-pills">Renewable &bull; Green &bull; Education &bull; Non-profit</div></div>
+      <div class="ind-card" id="cp-icard-8" onclick="selectCampCard(8)"><div class="ind-card-icon">&#128640;</div><div class="ind-card-title">Business &amp; Startups</div><div class="ind-card-pills">Startups &bull; Entrepreneurship &bull; DTC &bull; B2B &bull; SaaS</div></div>
+      <div class="ind-card" id="cp-icard-9" onclick="selectCampCard(9)"><div class="ind-card-icon">&#127760;</div><div class="ind-card-title">Other &amp; Niche</div><div class="ind-card-pills">Sports &bull; Luxury &bull; Social Enterprise &bull; Custom</div></div>
     </div>
 
-    <!-- Pill zone below grid -->
     <div id="cp-ind-pill-zone" style="display:none;margin-bottom:1.25rem;padding:16px;background:var(--gold-light);border:1.5px solid var(--gold);border-radius:12px;">
       <div style="font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:10px;" id="cp-ind-pill-label"></div>
       <div class="chips" id="cp-ind-pill-chips"></div>
     </div>
 
-    <!-- Selected summary -->
     <div id="cp-primary-selected-summary" style="display:none;margin-bottom:1.25rem;">
       <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--gold-light);border:1.5px solid var(--gold);border-radius:10px;">
         <div>
-          <div style="font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);font-weight:500;margin-bottom:2px;">Selected</div>
+          <div style="font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);font-weight:500;margin-bottom:2px;">Primary industry selected</div>
           <div style="font-size:14px;font-weight:500;color:var(--black);" id="cp-primary-selected-label"></div>
         </div>
         <button class="btn btn-outline btn-sm" onclick="changeCampPrimaryIndustry()">Change</button>
       </div>
     </div>
 
-    <!-- Secondary industry -->
     <div id="cp-secondary-section" style="display:none;margin-bottom:1.25rem;">
-      <label>Secondary industry <span style="font-size:10px;font-weight:400;text-transform:none;">(optional -- pick up to 3)</span></label>
+      <label>Secondary industries <span style="font-size:10px;font-weight:400;text-transform:none;">(optional -- pick up to 3 crossover angles)</span></label>
       <input type="hidden" id="cp-industry2"/>
       <div style="font-size:12px;color:var(--muted);margin-top:4px;margin-bottom:8px;" id="cp-sec-count">0 of 3 selected</div>
       <div class="chips" id="cp-secondary-chips">
@@ -347,7 +678,6 @@ textarea{resize:vertical;line-height:1.6;}
         <div class="chip" onclick="toggleCampSecondary(this,'Diversity &amp; Inclusion')">Diversity &amp; Inclusion</div>
         <div class="chip" onclick="toggleCampSecondary(this,'Health Tech')">Health Tech</div>
         <div class="chip" onclick="toggleCampSecondary(this,'Community &amp; Localisation')">Community &amp; Localisation</div>
-        <div class="chip" onclick="toggleCampSecondary(this,'Data &amp; Privacy')">Data &amp; Privacy</div>
         <div class="chip" onclick="toggleCampSecondary(this,'Consumer Behaviour')">Consumer Behaviour</div>
       </div>
     </div>
@@ -368,51 +698,66 @@ textarea{resize:vertical;line-height:1.6;}
     </div>
   </div>
 
-  <!-- STEP 3: PRESS RELEASE -->
+  <!-- STEP 3: PRESS RELEASE (Phase 3 -- 3 questions only) -->
   <div id="nc-step3" style="display:none;">
-    <div class="notice notice-gold" style="margin-bottom:1.5rem;">
-      <strong>&#128161; Strongly recommended</strong><br/>
-      A press release is the foundation of your campaign. Generate one here and it will be saved permanently -- every outreach path uses it automatically so you never need to create it again for this campaign. You can skip this and add it later from the Campaign Hub.
-    </div>
 
     <div id="cp-pr-status" style="display:none;margin-bottom:1rem;"></div>
+
     <div id="cp-pr-collapsed">
-      <div class="btn-row" style="margin-top:0;">
-        <button class="btn btn-gold" onclick="expandPRSection()">&#10022; Generate press release</button>
-        <button class="btn btn-outline btn-sm" onclick="skipPRAndSave()">Skip -- save campaign without press release</button>
+      <div class="notice notice-gold" style="margin-bottom:1.5rem;">
+        <strong>&#128240; Generate your press release</strong><br/>
+        Answer 3 short questions. The AI uses your account profile and campaign details to write a professional press release instantly. Approve it and download the PDF straight away.
+      </div>
+
+      <!-- 3 Questions -->
+      <div style="display:flex;flex-direction:column;gap:1rem;margin-bottom:1.5rem;">
+        <div style="border:1.5px solid var(--border);border-radius:12px;padding:1.25rem;background:var(--white);">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+            <div style="width:28px;height:28px;border-radius:50%;background:var(--black);color:var(--white);font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;">1</div>
+            <label style="margin:0;font-size:13px;text-transform:none;letter-spacing:0;color:var(--black);font-weight:500;">What is the specific news or announcement for this campaign?</label>
+          </div>
+          <textarea id="cp-q1" style="min-height:80px;" placeholder="e.g. We are launching Australia's first AI-powered fashion photography platform that replaces traditional photo shoots at a fraction of the cost. We go live on 15 May 2025."></textarea>
+        </div>
+
+        <div style="border:1.5px solid var(--border);border-radius:12px;padding:1.25rem;background:var(--white);">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+            <div style="width:28px;height:28px;border-radius:50%;background:var(--black);color:var(--white);font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;">2</div>
+            <label style="margin:0;font-size:13px;text-transform:none;letter-spacing:0;color:var(--black);font-weight:500;">What is the key outcome or benefit for your customers?</label>
+          </div>
+          <textarea id="cp-q2" style="min-height:80px;" placeholder="e.g. Fashion brands can now produce 20 campaign images with video in 72 hours for $15 per look -- versus weeks of production and $10,000+ for a traditional shoot."></textarea>
+        </div>
+
+        <div style="border:1.5px solid var(--border);border-radius:12px;padding:1.25rem;background:var(--white);">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+            <div style="width:28px;height:28px;border-radius:50%;background:var(--black);color:var(--white);font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;">3</div>
+            <label style="margin:0;font-size:13px;text-transform:none;letter-spacing:0;color:var(--black);font-weight:500;">What do you want media and readers to do after reading this?</label>
+          </div>
+          <textarea id="cp-q3" style="min-height:80px;" placeholder="e.g. Visit nxxgenstudio.com to start a free trial. We are also available for interviews and can provide behind-the-scenes access to our studio for journalists."></textarea>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-gold" id="cp-gen-pr-btn" onclick="generateCampaignPR()">&#10022; Generate press release</button>
+        <button class="btn btn-outline btn-sm" onclick="skipPRAndSave()">Skip -- add press release later</button>
       </div>
     </div>
 
     <div id="cp-pr-expanded" style="display:none;">
-      <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:1rem;">
-        <div><label>Key point 1 -- Main news hook <span style="font-size:10px;font-weight:400;text-transform:none;">(required)</span></label>
-          <textarea id="cp-p1" style="min-height:70px;" placeholder="e.g. What is the core announcement? Lead with the most newsworthy fact"></textarea></div>
-        <div><label>Key point 2 -- Why it matters</label>
-          <textarea id="cp-p2" style="min-height:70px;" placeholder="e.g. Why does this matter to the industry right now?"></textarea></div>
-        <div><label>Key point 3 -- How it works or what makes it different</label>
-          <textarea id="cp-p3" style="min-height:70px;" placeholder="e.g. What is the process, product, or approach that makes this unique?"></textarea></div>
-        <div><label>Key point 4 -- Supporting detail, stat, or proof point</label>
-          <textarea id="cp-p4" style="min-height:70px;" placeholder="e.g. Any numbers, results, client wins, timelines, or milestones"></textarea></div>
-        <div><label>Key point 5 -- Call to action</label>
-          <textarea id="cp-p5" style="min-height:65px;" placeholder="e.g. What do you want media and readers to do?"></textarea></div>
-        <div><label>Your key quote</label>
-          <textarea id="cp-pq" style="min-height:60px;" placeholder="e.g. A bold, quotable statement that captures your point of view"></textarea></div>
-      </div>
-      <div class="btn-row">
-        <button class="btn btn-gold" id="cp-gen-pr-btn" onclick="generateCampaignPR()">Generate press release &rarr;</button>
-        <button class="btn btn-outline btn-sm" onclick="collapsePRSection()">&#8592; Collapse</button>
-      </div>
-      <div class="gen-row" id="cp-pr-spinner" style="display:none;"><div class="spinner"></div> <span id="cp-pr-spin-label">Generating...</span></div>
+      <div class="gen-row" id="cp-pr-spinner" style="display:none;"><div class="spinner"></div> <span id="cp-pr-spin-label">Writing your press release...</span></div>
+
       <div id="cp-pr-review" style="display:none;margin-top:1.25rem;">
-        <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;">Review your press release</div>
-        <div class="pr-box" id="cp-pr-text" style="max-height:320px;overflow-y:auto;"></div>
-        <label style="margin-top:1rem;">Request changes <span style="font-size:10px;font-weight:400;text-transform:none;">(optional)</span></label>
-        <textarea id="cp-pr-feedback" style="min-height:55px;" placeholder="e.g. Make it more urgent, shorten paragraph two, add the launch date..."></textarea>
+        <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Your press release -- review and edit</div>
+        <textarea id="cp-pr-text" style="width:100%;min-height:400px;font-size:13px;line-height:1.85;font-family:Georgia,serif;color:var(--text);border:1.5px solid var(--gold);border-radius:10px;padding:14px 16px;background:#fffdf9;resize:vertical;"></textarea>
+
+        <label style="margin-top:1rem;">Request changes <span style="font-size:10px;font-weight:400;text-transform:none;">(optional -- describe what to change)</span></label>
+        <textarea id="cp-pr-feedback" style="min-height:55px;" placeholder="e.g. Make the opening more punchy, add the launch date 15 May, mention the free trial offer..."></textarea>
+
         <div class="btn-row" style="margin-top:8px;">
+          <button class="btn btn-gold" id="cp-approve-btn" onclick="approveCampaignPR()">&#10003; Approve &amp; save</button>
           <button class="btn btn-outline btn-sm" id="cp-regen-btn" onclick="regenCampaignPR()">Regenerate with changes</button>
-          <button class="btn btn-gold" id="cp-approve-btn" onclick="approveCampaignPR()">&#10003; Approve &amp; save to campaign</button>
+          <button class="btn btn-outline btn-sm" onclick="collapsePRSection()">&#8592; Back to questions</button>
         </div>
-        <div class="notice notice-success" id="cp-pr-approved" style="display:none;">&#10003; Press release approved and saved.</div>
+        <div class="notice notice-success" id="cp-pr-approved" style="display:none;margin-top:8px;">&#10003; Press release approved and saved to this campaign.</div>
       </div>
     </div>
 
@@ -1785,6 +2130,446 @@ function toggleSecondary(el, val) {
 function var_gold() { return '#c2185b'; }
 
 // ============================================================
+// USER ACCOUNT SYSTEM
+// ============================================================
+var ACCT_KEY = 'op_account';
+var userAccount = null;
+
+function loadAccount() {
+  try {
+    var raw = localStorage.getItem(ACCT_KEY);
+    userAccount = raw ? JSON.parse(raw) : null;
+  } catch(e) { userAccount = null; }
+  return userAccount;
+}
+
+function saveAccount(isOnboarding) {
+  var suffix = isOnboarding ? '' : '-e';
+  var fname = document.getElementById('acct-fname' + suffix).value.trim();
+  var lname = document.getElementById('acct-lname' + suffix).value.trim();
+  var co = document.getElementById('acct-co' + suffix).value.trim();
+  if (!fname || !co) {
+    alert('Please fill in at least your first name and company name.');
+    return;
+  }
+  var acct = {
+    fname: fname,
+    lname: lname,
+    pos: document.getElementById('acct-pos' + suffix).value.trim(),
+    phone: document.getElementById('acct-phone' + suffix).value.trim(),
+    email: document.getElementById('acct-email' + suffix).value.trim(),
+    co: co,
+    web: document.getElementById('acct-web' + suffix).value.trim(),
+    what: document.getElementById('acct-what' + suffix).value.trim(),
+    kp1: document.getElementById('acct-kp1' + suffix).value.trim(),
+    kp2: document.getElementById('acct-kp2' + suffix).value.trim(),
+    kp3: document.getElementById('acct-kp3' + suffix).value.trim(),
+    logo: document.getElementById('acct-logo' + suffix).value.trim(),
+    social: document.getElementById('acct-social' + suffix).value.trim(),
+    created: userAccount ? userAccount.created : new Date().toISOString(),
+    updated: new Date().toISOString()
+  };
+  try { localStorage.setItem(ACCT_KEY, JSON.stringify(acct)); } catch(e) {}
+  userAccount = acct;
+  updateAccountHeader();
+  if (isOnboarding) {
+    goHome();
+  } else {
+    var conf = document.getElementById('acct-save-confirm');
+    if (conf) { conf.style.display = 'block'; setTimeout(function(){ conf.style.display = 'none'; }, 3000); }
+    updateAccountCompleteBanner();
+  }
+}
+
+function getAccountCompleteness() {
+  if (!userAccount) return { pct: 0, missing: ['First name','Company name','Email','What you do','Key point 1'] };
+  var fields = [
+    { key:'fname', label:'First name' },
+    { key:'co', label:'Company name' },
+    { key:'email', label:'Contact email' },
+    { key:'web', label:'Website' },
+    { key:'what', label:'Business description' },
+    { key:'kp1', label:'Key point 1' },
+    { key:'kp2', label:'Key point 2' },
+    { key:'kp3', label:'Key point 3' },
+    { key:'phone', label:'Phone number' },
+    { key:'social', label:'Social handles' }
+  ];
+  var filled = fields.filter(function(f){ return userAccount[f.key] && userAccount[f.key].length > 0; });
+  var missing = fields.filter(function(f){ return !userAccount[f.key] || !userAccount[f.key].length; });
+  return { pct: Math.round((filled.length / fields.length) * 100), missing: missing.map(function(f){ return f.label; }) };
+}
+
+function updateAccountHeader() {
+  if (!userAccount) {
+    document.getElementById('acct-avatar').textContent = '?';
+    document.getElementById('acct-avatar').style.background = 'var(--border)';
+    return;
+  }
+  var initials = (userAccount.fname ? userAccount.fname[0] : '') + (userAccount.lname ? userAccount.lname[0] : '');
+  document.getElementById('acct-avatar').textContent = initials || userAccount.co[0].toUpperCase();
+  document.getElementById('acct-avatar').style.background = 'var(--gold)';
+  document.getElementById('dd-name').textContent = [userAccount.fname, userAccount.lname].filter(Boolean).join(' ') || userAccount.co;
+  document.getElementById('dd-co').textContent = userAccount.co + (userAccount.pos ? ' · ' + userAccount.pos : '');
+  var comp = getAccountCompleteness();
+  document.getElementById('dd-complete-fill').style.width = comp.pct + '%';
+  document.getElementById('dd-complete-label').textContent = 'Profile ' + comp.pct + '% complete' + (comp.pct < 100 ? ' · add ' + comp.missing[0] : ' ✓');
+}
+
+function updateAccountCompleteBanner() {
+  var banner = document.getElementById('acct-complete-banner');
+  if (!banner) return;
+  var comp = getAccountCompleteness();
+  if (comp.pct === 100) { banner.style.display = 'none'; return; }
+  banner.innerHTML = '<div class="notice notice-gold">Profile ' + comp.pct + '% complete. Missing: ' + comp.missing.slice(0,3).join(', ') + '. A complete profile generates better press releases and outreach emails.</div>';
+  banner.style.display = 'block';
+}
+
+function populateAccountEditForm() {
+  if (!userAccount) return;
+  var fields = ['fname','lname','pos','phone','email','co','web','what','kp1','kp2','kp3','logo','social'];
+  fields.forEach(function(f) {
+    var el = document.getElementById('acct-' + f + '-e');
+    if (el) el.value = userAccount[f] || '';
+  });
+  updateAccountCompleteBanner();
+}
+
+function toggleAccountDropdown() {
+  var dd = document.getElementById('acct-dropdown');
+  dd.classList.toggle('open');
+}
+
+function closeAccountDropdown() {
+  document.getElementById('acct-dropdown').classList.remove('open');
+}
+
+function confirmClearAccount() {
+  if (confirm('Clear all account data? This cannot be undone.')) {
+    localStorage.removeItem(ACCT_KEY);
+    userAccount = null;
+    updateAccountHeader();
+    closeAccountDropdown();
+    checkFirstRun();
+  }
+}
+
+function goHome() {
+  closeAccountDropdown();
+  showScreen('s-camps');
+  loadCampaigns();
+  renderCampaignsDashboard();
+}
+
+function checkFirstRun() {
+  loadAccount();
+  if (!userAccount) {
+    // First time — show account setup
+    document.querySelectorAll('.screen').forEach(function(s){ s.classList.remove('active'); });
+    document.getElementById('s-account-setup').classList.add('active');
+  } else {
+    updateAccountHeader();
+    // Pre-populate campaign form fields from account
+    syncAccountToCampaignForm();
+  }
+}
+
+function syncAccountToCampaignForm() {
+  if (!userAccount) return;
+  // Pre-fill campaign Step 1 fields from account data
+  var map = {
+    'cp-name': [userAccount.fname, userAccount.lname].filter(Boolean).join(' '),
+    'cp-pos': userAccount.pos,
+    'cp-co': userAccount.co,
+    'cp-web': userAccount.web,
+    'cp-email': userAccount.email,
+    'cp-what': userAccount.what
+  };
+  Object.keys(map).forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el && map[id] && !el.value) el.value = map[id];
+  });
+}
+
+// ---- OUTREACH DASHBOARD ----
+var currentDashTab = 'all';
+var pendingFollowUp = null; // { entry, campaignId }
+var fuStatus = 'sent';
+
+function switchDashTab(tab, el) {
+  currentDashTab = tab;
+  document.querySelectorAll('.dash-tab').forEach(function(t){ t.classList.remove('active'); });
+  if (el) el.classList.add('active');
+  renderDashboard();
+}
+
+function renderDashboard() {
+  loadCampaigns();
+
+  // Populate campaign filter
+  var campFilter = document.getElementById('dash-camp-filter');
+  var prevVal = campFilter.value;
+  campFilter.innerHTML = '<option value="all">All campaigns</option>';
+  campaigns.forEach(function(c) {
+    var opt = document.createElement('option');
+    opt.value = c.id;
+    opt.textContent = c.name;
+    campFilter.appendChild(opt);
+  });
+  if (prevVal) campFilter.value = prevVal;
+
+  var selectedCamp = campFilter.value;
+  var statusFilter = document.getElementById('dash-status-filter').value;
+  var sortFilter = document.getElementById('dash-sort-filter').value;
+
+  // Collect all entries
+  var allEntries = [];
+  campaigns.forEach(function(c) {
+    (c.outreachLog || []).forEach(function(entry) {
+      allEntries.push(Object.assign({}, entry, { campaignName: c.name, campaignId: c.id }));
+    });
+  });
+
+  // Campaign filter
+  var campEntries = selectedCamp !== 'all'
+    ? allEntries.filter(function(e){ return e.campaignId === selectedCamp; })
+    : allEntries;
+
+  // Stats (based on campaign filter but not tab/status filter)
+  var total = campEntries.length;
+  var sent = campEntries.filter(function(e){ return e.status === 'sent'; }).length;
+  var replied = campEntries.filter(function(e){ return e.status === 'replied'; }).length;
+  var pending = campEntries.filter(function(e){ return e.status === 'pending'; }).length;
+  var respRate = sent > 0 ? Math.round((replied / sent) * 100) : 0;
+
+  document.getElementById('dash-stats').innerHTML =
+    statCard(total, 'Total', '#0a0a0a') +
+    statCard(sent, 'Sent', '#2d6a4f') +
+    statCard(replied, 'Replied', '#1565c0') +
+    statCard(respRate + '%', 'Response rate', '#c2185b');
+
+  // Branch breakdown
+  var branchBar = document.getElementById('dash-branch-bar');
+  var branchDiv = document.getElementById('dash-branch-breakdown');
+  if (total > 0) {
+    var branches = [
+      { label:'Press', path:'Press Release', icon:'📰' },
+      { label:'Story', path:'Editorial Pitch', icon:'💡' },
+      { label:'Podcast', path:'Podcast Pitch', icon:'🎙' },
+      { label:'Local', path:'Local Media', icon:'🏘' },
+      { label:'Community', path:'Reddit Outreach', icon:'🌐' }
+    ];
+    var branchHtml = '';
+    branches.forEach(function(b) {
+      var count = campEntries.filter(function(e){ return e.path === b.path; }).length;
+      if (count === 0) return;
+      var pct = Math.round((count / total) * 100);
+      branchHtml += '<div style="display:flex;align-items:center;gap:8px;background:var(--white);border:1.5px solid var(--border);border-radius:8px;padding:8px 12px;cursor:pointer;" onclick="switchDashTab(\'' + b.path + '\',document.getElementById(\'dtab-' + b.label.toLowerCase() + '\'))">';
+      branchHtml += '<span style="font-size:16px;">' + b.icon + '</span>';
+      branchHtml += '<div><div style="font-size:13px;font-weight:500;color:var(--black);">' + count + '</div>';
+      branchHtml += '<div style="font-size:10px;color:var(--muted);">' + b.label + '</div></div>';
+      branchHtml += '<div style="font-size:10px;color:var(--gold);font-weight:500;">' + pct + '%</div>';
+      branchHtml += '</div>';
+    });
+    branchDiv.innerHTML = branchHtml;
+    branchBar.style.display = 'block';
+  } else {
+    branchBar.style.display = 'none';
+  }
+
+  // Apply tab + status filters
+  var filtered = campEntries.slice();
+  if (currentDashTab !== 'all') {
+    filtered = filtered.filter(function(e){ return e.path === currentDashTab; });
+  }
+  if (statusFilter !== 'all') {
+    filtered = filtered.filter(function(e){ return e.status === statusFilter; });
+  }
+
+  // Sort
+  if (sortFilter === 'newest') filtered.sort(function(a,b){ return new Date(b.date) - new Date(a.date); });
+  else if (sortFilter === 'oldest') filtered.sort(function(a,b){ return new Date(a.date) - new Date(b.date); });
+  else if (sortFilter === 'outlet') filtered.sort(function(a,b){ return (a.outlet||'').localeCompare(b.outlet||''); });
+
+  // Result count
+  var countEl = document.getElementById('dash-result-count');
+  countEl.textContent = filtered.length + ' outreach' + (filtered.length !== 1 ? 'es' : '') + ' shown';
+
+  // Render list
+  var listEl = document.getElementById('dash-list');
+  if (!filtered.length) {
+    listEl.innerHTML = '<div style="text-align:center;padding:2.5rem;color:var(--muted);border:1.5px dashed var(--border);border-radius:12px;">' +
+      '<div style="font-size:32px;margin-bottom:10px;">&#128203;</div>' +
+      '<div style="font-size:14px;font-weight:500;color:var(--black);margin-bottom:6px;">No outreach logged yet</div>' +
+      '<div style="font-size:13px;max-width:320px;margin:0 auto;line-height:1.7;">When you complete an outreach path and log it, it will appear here organised by path type.</div>' +
+      '</div>';
+    return;
+  }
+
+  var sbg = { sent:'#d8f3dc', pending:'#fff3cd', replied:'#e8f4fd', 'no-reply':'#f0f0f0' };
+  var sc = { sent:'#2d6a4f', pending:'#856404', replied:'#1565c0', 'no-reply':'#888' };
+  var statusLabel = { sent:'Sent', pending:'Pending', replied:'Replied ✓', 'no-reply':'No reply' };
+
+  var html = '<div style="display:flex;flex-direction:column;gap:10px;">';
+  filtered.forEach(function(entry) {
+    var date = entry.date ? new Date(entry.date).toLocaleDateString('en-AU',{day:'numeric',month:'short',year:'numeric'}) : '';
+    var emailId = 'dash-email-' + entry.id;
+    var entryStatus = entry.status || 'sent';
+    var isFollowUpDue = entryStatus === 'sent' && entry.date && (Date.now() - new Date(entry.date)) > 5 * 24 * 60 * 60 * 1000;
+
+    html += '<div style="border:1.5px solid var(--border);border-radius:12px;background:var(--white);overflow:hidden;">';
+
+    // Top bar with status indicator
+    html += '<div style="display:flex;align-items:stretch;">';
+    html += '<div style="width:4px;background:' + (sc[entryStatus]||'#888') + ';flex-shrink:0;"></div>';
+    html += '<div style="flex:1;padding:12px 14px;">';
+
+    // Header row
+    html += '<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;flex-wrap:wrap;">';
+    html += '<div>';
+    html += '<div style="font-size:15px;font-weight:500;color:var(--black);">' + (entry.outlet||'Unknown outlet') + '</div>';
+    html += '<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:4px;">';
+    html += '<span style="font-size:10px;padding:2px 7px;background:var(--off);border-radius:4px;color:var(--muted);font-weight:500;">' + (entry.path||'') + '</span>';
+    if (entry.campaignName) html += '<span style="font-size:10px;color:var(--gold);font-weight:500;">' + entry.campaignName + '</span>';
+    html += '<span style="font-size:11px;color:var(--muted);">' + date + '</span>';
+    html += '</div>';
+    if (entry.journalist && entry.journalist !== 'Editor') {
+      html += '<div style="font-size:12px;color:var(--muted);margin-top:4px;">&#9993; ' + entry.journalist;
+      if (entry.contactEmail) html += ' &lt;' + entry.contactEmail + '&gt;';
+      html += '</div>';
+    }
+    html += '</div>';
+
+    // Status badge
+    html += '<div style="text-align:right;flex-shrink:0;">';
+    html += '<span style="font-size:10px;font-weight:600;text-transform:uppercase;padding:4px 10px;border-radius:5px;background:' + (sbg[entryStatus]||'#f0f0f0') + ';color:' + (sc[entryStatus]||'#888') + ';">' + (statusLabel[entryStatus]||entryStatus) + '</span>';
+    if (isFollowUpDue) {
+      html += '<div style="font-size:10px;color:#856404;font-weight:500;margin-top:4px;">&#9201; Follow up due</div>';
+    }
+    html += '</div>';
+    html += '</div>'; // end header row
+
+    // Notes
+    if (entry.notes) {
+      html += '<div style="font-size:12px;color:var(--muted);margin-top:6px;font-style:italic;">' + entry.notes + '</div>';
+    }
+
+    // Action buttons row
+    html += '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:10px;">';
+    if (entry.emailText) {
+      html += '<button class="btn btn-outline btn-sm" style="font-size:11px;" onclick="toggleLogEmail(\'' + emailId + '\')">View email</button>';
+    }
+    html += '<button class="btn btn-outline btn-sm" style="font-size:11px;" onclick="openFollowUpModal(\'' + entry.id + '\',\'' + entry.campaignId + '\')">Update status</button>';
+    if (entry.contactEmail) {
+      html += '<a href="mailto:' + entry.contactEmail + '" class="btn btn-outline btn-sm" style="font-size:11px;text-decoration:none;">&#9993; Email again</a>';
+    }
+    html += '</div>'; // end actions
+
+    // Email preview (collapsed)
+    if (entry.emailText) {
+      html += '<div id="' + emailId + '" style="display:none;margin-top:10px;padding:12px;background:var(--off);border-radius:8px;font-size:12px;white-space:pre-wrap;font-family:Georgia,serif;line-height:1.7;max-height:220px;overflow-y:auto;border:1px solid var(--border);">' +
+        (entry.emailText||'').replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</div>';
+    }
+
+    html += '</div>'; // end padding div
+    html += '</div>'; // end flex
+    html += '</div>'; // end card
+  });
+  html += '</div>';
+  listEl.innerHTML = html;
+}
+
+function statCard(value, label, color) {
+  return '<div class="dash-stat-card"><div class="dash-stat-num" style="color:' + color + ';">' + value + '</div><div class="dash-stat-label">' + label + '</div></div>';
+}
+
+function openFollowUpModal(entryId, campaignId) {
+  loadCampaigns();
+  var camp = campaigns.find(function(c){ return c.id === campaignId; });
+  if (!camp) return;
+  var entry = (camp.outreachLog||[]).find(function(e){ return e.id === entryId; });
+  if (!entry) return;
+  pendingFollowUp = { entry: entry, campaignId: campaignId };
+  fuStatus = entry.status || 'sent';
+  document.getElementById('fu-outlet-name').textContent = entry.outlet || 'outlet';
+  var date = entry.date ? new Date(entry.date).toLocaleDateString('en-AU',{day:'numeric',month:'short',year:'numeric'}) : '';
+  document.getElementById('fu-original-date').textContent = 'Originally sent: ' + date;
+  document.getElementById('fu-note').value = '';
+  // Set status chips
+  document.querySelectorAll('#fu-status-chips .chip').forEach(function(c){ c.classList.remove('on'); });
+  var matching = document.querySelector('#fu-status-chips .chip[onclick*="\'' + fuStatus + '\'"]');
+  if (matching) matching.classList.add('on');
+  document.getElementById('followup-modal').style.display = 'flex';
+}
+
+function closeFollowUpModal() {
+  document.getElementById('followup-modal').style.display = 'none';
+  pendingFollowUp = null;
+}
+
+function setFUStatus(s, el) {
+  fuStatus = s;
+  document.querySelectorAll('#fu-status-chips .chip').forEach(function(c){ c.classList.remove('on'); });
+  el.classList.add('on');
+}
+
+function saveFollowUp() {
+  if (!pendingFollowUp) return;
+  var note = document.getElementById('fu-note').value.trim();
+  loadCampaigns();
+  var camp = campaigns.find(function(c){ return c.id === pendingFollowUp.campaignId; });
+  if (!camp) { closeFollowUpModal(); return; }
+  var entry = (camp.outreachLog||[]).find(function(e){ return e.id === pendingFollowUp.entry.id; });
+  if (entry) {
+    entry.status = fuStatus;
+    if (note) entry.notes = (entry.notes ? entry.notes + ' | ' : '') + note + ' (' + new Date().toLocaleDateString('en-AU',{day:'numeric',month:'short'}) + ')';
+    var idx = campaigns.findIndex(function(c){ return c.id === pendingFollowUp.campaignId; });
+    if (idx > -1) campaigns[idx] = camp;
+    saveCampaignsToStorage();
+    // Update campaign hub log if viewing same campaign
+    if (activeCampaign && activeCampaign.id === pendingFollowUp.campaignId) {
+      activeCampaign = camp;
+      renderHubLog();
+    }
+  }
+  closeFollowUpModal();
+  renderDashboard();
+}
+
+function exportDashCSV() {
+  loadCampaigns();
+  var rows = [['Campaign','Outlet','Journalist','Email','Path','Status','Date','Notes','Email sent']];
+  campaigns.forEach(function(c) {
+    (c.outreachLog || []).forEach(function(e) {
+      var date = e.date ? new Date(e.date).toLocaleDateString('en-AU') : '';
+      var emailSnippet = e.emailText ? e.emailText.substring(0,200).replace(/\n/g,' ') : '';
+      rows.push([c.name, e.outlet||'', e.journalist||'', e.contactEmail||'', e.path||'', e.status||'', date, e.notes||'', emailSnippet]);
+    });
+  });
+  var csv = rows.map(function(r){
+    return r.map(function(cell){ return '"' + (cell||'').replace(/"/g,'""') + '"'; }).join(',');
+  }).join('\n');
+  var blob = new Blob([csv], { type:'text/csv' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'outreach-log-' + new Date().toISOString().slice(0,10) + '.csv';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  setTimeout(function(){ URL.revokeObjectURL(url); }, 2000);
+}
+
+
+
+// Close dropdown when clicking outside
+document.addEventListener('click', function(e) {
+  var dd = document.getElementById('acct-dropdown');
+  var avatar = document.getElementById('acct-avatar');
+  if (dd && avatar && !dd.contains(e.target) && !avatar.contains(e.target)) {
+    dd.classList.remove('open');
+  }
+});
+
+// ============================================================
 // CAMPAIGN SYSTEM
 // ============================================================
 var campaigns = [];
@@ -1808,37 +2593,115 @@ function genId() {
   return 'camp_' + Date.now() + '_' + Math.random().toString(36).substr(2,6);
 }
 
+var currentCampTab = 'active';
+
+function switchCampTab(tab, el) {
+  currentCampTab = tab;
+  document.querySelectorAll('.camp-tab').forEach(function(t){ t.classList.remove('active'); });
+  if (el) el.classList.add('active');
+  renderCampaignsDashboard();
+}
+
 function renderCampaignsDashboard() {
   loadCampaigns();
+
+  // Account summary bar
+  var summary = document.getElementById('camps-acct-summary');
+  if (summary && userAccount) {
+    document.getElementById('camps-acct-avatar').textContent =
+      (userAccount.fname ? userAccount.fname[0] : '') + (userAccount.lname ? userAccount.lname[0] : '') || userAccount.co[0].toUpperCase();
+    document.getElementById('camps-acct-name').textContent =
+      [userAccount.fname, userAccount.lname].filter(Boolean).join(' ') || userAccount.co;
+    document.getElementById('camps-acct-details').textContent =
+      (userAccount.pos ? userAccount.pos + ' · ' : '') + userAccount.co + (userAccount.web ? ' · ' + userAccount.web : '');
+    // Profile completion nudge
+    var comp = getAccountCompleteness();
+    var banner = document.getElementById('camps-acct-banner');
+    if (banner && comp.pct < 100) {
+      banner.innerHTML = '<div style="font-size:12px;color:var(--gold);cursor:pointer;" onclick="showScreen(\'s-account\')">' +
+        'Profile ' + comp.pct + '% complete &mdash; add ' + comp.missing[0] + '</div>' +
+        '<div class="profile-complete-bar" style="width:140px;margin-top:4px;"><div class="profile-complete-fill" style="width:' + comp.pct + '%;"></div></div>';
+    } else if (banner) {
+      banner.innerHTML = '<div style="font-size:12px;color:var(--success);">&#10003; Profile complete</div>';
+    }
+    summary.style.display = 'block';
+  }
+
   var list = document.getElementById('camps-list');
   var empty = document.getElementById('camps-empty');
+
   if (!campaigns.length) {
     list.innerHTML = '';
     empty.style.display = 'block';
     return;
   }
   empty.style.display = 'none';
-  var html = '<div style="display:flex;flex-direction:column;gap:12px;">';
-  campaigns.slice().reverse().forEach(function(c) {
-    var statusLabel = c.status === 'active' ? 'Active' : c.status === 'completed' ? 'Completed' : 'Draft';
-    var logCount = (c.outreachLog || []).length;
+
+  // Filter by tab
+  var filtered = campaigns.slice().reverse();
+  if (currentCampTab !== 'all') {
+    filtered = filtered.filter(function(c){ return (c.status || 'draft') === currentCampTab; });
+  }
+
+  if (!filtered.length) {
+    list.innerHTML = '<div style="text-align:center;padding:2rem;color:var(--muted);font-size:13px;border:1.5px dashed var(--border);border-radius:10px;">No ' + currentCampTab + ' campaigns.</div>';
+    return;
+  }
+
+  var branchIcons = ['&#128240;','&#128161;','&#127911;','&#127968;','&#127760;'];
+  var branchLabels = ['Press','Story','Podcast','Local','Community'];
+  var branchPaths = ['Press Release','Editorial Pitch','Podcast Pitch','Local Media','Reddit Outreach'];
+
+  var html = '<div style="display:flex;flex-direction:column;gap:14px;">';
+  filtered.forEach(function(c) {
+    var log = c.outreachLog || [];
+    var hasPR = !!(c.savedContent && c.savedContent.pressRelease);
+    var lastActivity = log.length ? new Date(log[log.length-1].date).toLocaleDateString('en-AU',{day:'numeric',month:'short',year:'numeric'}) : null;
     var created = c.created ? new Date(c.created).toLocaleDateString('en-AU',{day:'numeric',month:'short',year:'numeric'}) : '';
-    html += '<div class="camp-card ' + (c.status||'draft') + '" onclick="openCampaign(\'' + c.id + '\')">';
-    html += '<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;">';
-    html += '<div><div class="camp-name">' + c.name + '</div>';
-    if (c.goal) html += '<div class="camp-meta">' + c.goal + '</div>';
-    html += '<div class="camp-meta">' + (c.profile.co || '') + (created ? ' &bull; Created ' + created : '') + '</div>';
+    var statusLabel = c.status === 'active' ? 'Active' : c.status === 'completed' ? 'Completed' : 'Draft';
+    var statusBg = { active:'#d8f3dc', completed:'#e8f4fd', draft:'#f0f0f0' };
+    var statusCol = { active:'#2d6a4f', completed:'#1565c0', draft:'#888' };
+    var st = c.status || 'draft';
+    var total = log.length;
+
+    html += '<div class="camp-card-v2 ' + st + '" onclick="openCampaign(\'' + c.id + '\')">';
+    html += '<div class="camp-card-v2-body">';
+    html += '<div class="camp-card-v2-header">';
+    html += '<div>';
+    html += '<div class="camp-card-v2-name">' + c.name + '</div>';
+    if (c.goal) html += '<div class="camp-card-v2-goal">' + c.goal + '</div>';
     html += '</div>';
-    html += '<span class="camp-status ' + (c.status||'draft') + '">' + statusLabel + '</span>';
+    html += '<span style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;padding:4px 10px;border-radius:5px;background:' + statusBg[st] + ';color:' + statusCol[st] + ';flex-shrink:0;">' + statusLabel + '</span>';
     html += '</div>';
-    html += '<div style="display:flex;align-items:center;gap:12px;margin-top:10px;">';
-    html += '<div style="font-size:12px;color:var(--muted);">&#128139; ' + logCount + ' outreach' + (logCount !== 1 ? 'es' : '') + ' logged</div>';
-    html += '<div style="font-size:12px;color:var(--gold);">Open campaign &rarr;</div>';
-    html += '</div></div>';
+
+    // PR badge + branch icons
+    html += '<div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">';
+    html += '<span class="camp-pr-badge ' + (hasPR ? 'ready' : 'missing') + '">' + (hasPR ? '&#10003; Press release ready' : '&#9711; No press release') + '</span>';
+    html += '<div class="camp-branch-icons">';
+    branchPaths.forEach(function(path, i) {
+      var used = log.some(function(e){ return e.path === path; });
+      var count = log.filter(function(e){ return e.path === path; }).length;
+      html += '<div class="camp-branch-pip ' + (used ? 'used' : '') + '" title="' + branchLabels[i] + ': ' + count + ' outreach' + (count!==1?'es':'') + '">' + branchIcons[i] + '</div>';
+    });
+    html += '</div>';
+    html += '</div>';
+    html += '</div>'; // end body
+
+    // Meta bar
+    html += '<div class="camp-card-v2-meta">';
+    html += '<div class="camp-meta-stat">&#128139; <strong>' + total + '</strong> outreach' + (total!==1?'es':'') + '</div>';
+    if (lastActivity) html += '<div class="camp-meta-stat">&#128336; Last: <strong>' + lastActivity + '</strong></div>';
+    else if (created) html += '<div class="camp-meta-stat">&#128197; Created: <strong>' + created + '</strong></div>';
+    html += '<div style="flex:1;"></div>';
+    html += '<div style="font-size:12px;color:var(--gold);font-weight:500;">Open campaign &rarr;</div>';
+    html += '</div>'; // end meta
+    html += '</div>'; // end card
   });
   html += '</div>';
   list.innerHTML = html;
 }
+
+
 
 function openCampaign(id) {
   loadCampaigns();
@@ -2341,8 +3204,11 @@ function expandPRSection() {
 }
 
 function collapsePRSection() {
+  // "Back to questions" -- show questions again
   document.getElementById('cp-pr-expanded').style.display = 'none';
   document.getElementById('cp-pr-collapsed').style.display = 'block';
+  campPRDraft = '';
+  campPRApproved = false;
 }
 
 function skipPRSection() {
@@ -2353,60 +3219,91 @@ function skipPRSection() {
 }
 
 function generateCampaignPR() {
-  var pts = [
-    document.getElementById('cp-p1').value.trim(),
-    document.getElementById('cp-p2').value.trim(),
-    document.getElementById('cp-p3').value.trim(),
-    document.getElementById('cp-p4').value.trim(),
-    document.getElementById('cp-p5').value.trim()
-  ].filter(function(p) { return p.length > 0; });
-  if (!pts.length) { alert('Please fill in at least Key Point 1.'); return; }
-  var q = document.getElementById('cp-pq').value.trim();
-  var co = document.getElementById('cp-co').value.trim() || 'the company';
-  var name = document.getElementById('cp-name').value.trim() || 'the founder';
-  var web = document.getElementById('cp-web').value.trim();
-  var email = document.getElementById('cp-email').value.trim();
-  var what = document.getElementById('cp-what').value.trim();
-  var angle = document.getElementById('cp-angle').value.trim();
-  var prompt = 'Write a 400-700 word professional press release for ' + co + '.\n\nKey points:\n' +
-    pts.map(function(p,i){ return (i+1)+'. '+p; }).join('\n') +
-    '\n\nCompany: ' + co + (what ? '\nWhat they do: ' + what : '') + (angle ? '\nUnique angle: ' + angle : '') +
-    (q ? '\nQuote from ' + name + ': "' + q + '"' : '') + (web ? '\nWebsite: ' + web : '') + (email ? '\nContact: ' + email : '') +
-    '\n\nFormat:\nFOR IMMEDIATE RELEASE\n\n[Headline]\n\n[City, Date] -- [3-4 paragraphs]\n\nAbout ' + co +
-    '\n[2-3 sentence boilerplate]\n\nMedia enquiries:\n' + name + '\n' + (email||'') + '\n' + (web||'') + '\n\n###\n\nPlain text only.';
-  var btn = document.getElementById('cp-gen-pr-btn');
-  btn.textContent = 'Generating...'; btn.disabled = true;
+  var q1 = document.getElementById('cp-q1') ? document.getElementById('cp-q1').value.trim() : '';
+  var q2 = document.getElementById('cp-q2') ? document.getElementById('cp-q2').value.trim() : '';
+  var q3 = document.getElementById('cp-q3') ? document.getElementById('cp-q3').value.trim() : '';
+  if (!q1) { alert('Please answer question 1 -- what is the specific announcement?'); return; }
+
+  var acct = userAccount || {};
+  var co = document.getElementById('cp-co').value.trim() || acct.co || 'the company';
+  var name = document.getElementById('cp-name').value.trim() || [acct.fname, acct.lname].filter(Boolean).join(' ') || 'the founder';
+  var pos = document.getElementById('cp-pos').value.trim() || acct.pos || '';
+  var web = document.getElementById('cp-web').value.trim() || acct.web || '';
+  var email = document.getElementById('cp-email').value.trim() || acct.email || '';
+  var what = document.getElementById('cp-what').value.trim() || acct.what || '';
+  var angle = document.getElementById('cp-angle').value.trim() || '';
+  var kp1 = acct.kp1 || '';
+  var kp2 = acct.kp2 || '';
+  var kp3 = acct.kp3 || '';
+  var campName = document.getElementById('camp-name-input') ? document.getElementById('camp-name-input').value.trim() : '';
+  var campGoal = document.getElementById('camp-goal-input') ? document.getElementById('camp-goal-input').value.trim() : '';
+
+  var prompt = [
+    'Write a professional press release (400-600 words) for ' + co + '.',
+    '',
+    'COMPANY BACKGROUND:',
+    'Company: ' + co,
+    'Spokesperson: ' + name + (pos ? ', ' + pos : ''),
+    (what ? 'What they do: ' + what : ''),
+    (angle ? 'Unique angle: ' + angle : ''),
+    (kp1 ? 'Key point 1: ' + kp1 : ''),
+    (kp2 ? 'Key point 2: ' + kp2 : ''),
+    (kp3 ? 'Key point 3: ' + kp3 : ''),
+    (web ? 'Website: ' + web : ''),
+    (email ? 'Contact: ' + email : ''),
+    '',
+    'CAMPAIGN: ' + (campName || 'Press Release'),
+    (campGoal ? 'Goal: ' + campGoal : ''),
+    '',
+    'CLIENT ANSWERS:',
+    '1. The announcement: ' + q1,
+    (q2 ? '2. Customer benefit: ' + q2 : ''),
+    (q3 ? '3. Call to action: ' + q3 : ''),
+    '',
+    'FORMAT: FOR IMMEDIATE RELEASE, headline, subheadline, 3-4 paragraphs, quote from ' + name + ', About section, media enquiries with ' + name + ' ' + (email||'') + ' ' + (web||'') + ', end with ###.',
+    'Plain text only. No asterisks, no markdown, no bold.'
+  ].filter(Boolean).join('\n');
+  document.getElementById('cp-pr-collapsed').style.display = 'none';
+  document.getElementById('cp-pr-expanded').style.display = 'block';
   document.getElementById('cp-pr-spinner').style.display = 'flex';
-  document.getElementById('cp-pr-spin-label').textContent = 'Generating your press release...';
+  document.getElementById('cp-pr-spin-label').textContent = 'Writing your press release...';
   document.getElementById('cp-pr-review').style.display = 'none';
   document.getElementById('cp-pr-approved').style.display = 'none';
+
+  var btn = document.getElementById('cp-gen-pr-btn');
+  if (btn) { btn.textContent = 'Generating...'; btn.disabled = true; }
+
   callAPIHighTokens(prompt, function(text) {
-    campPRDraft = text; campPRApproved = false;
-    btn.textContent = 'Regenerate \u2192'; btn.disabled = false;
+    campPRDraft = text;
+    campPRApproved = false;
+    if (btn) { btn.textContent = '✦ Generate press release'; btn.disabled = false; }
     document.getElementById('cp-pr-spinner').style.display = 'none';
-    document.getElementById('cp-pr-text').textContent = text;
+    document.getElementById('cp-pr-text').value = text;
     document.getElementById('cp-pr-review').style.display = 'block';
     document.getElementById('cp-pr-review').scrollIntoView({ behavior:'smooth', block:'nearest' });
   }, function(err) {
-    btn.textContent = 'Generate press release \u2192'; btn.disabled = false;
+    if (btn) { btn.textContent = '✦ Generate press release'; btn.disabled = false; }
     document.getElementById('cp-pr-spinner').style.display = 'none';
-    alert('Could not generate press release. Error: ' + (err || 'Unknown error') + '\n\nMake sure you are on the live Vercel site, not the Claude preview.');
+    document.getElementById('cp-pr-collapsed').style.display = 'block';
+    document.getElementById('cp-pr-expanded').style.display = 'none';
+    alert('Could not generate. Make sure you are on the live Vercel site. Error: ' + (err||'Unknown'));
   });
 }
 
 function regenCampaignPR() {
+  var currentText = document.getElementById('cp-pr-text').value.trim();
   var fb = document.getElementById('cp-pr-feedback').value.trim();
   var btn = document.getElementById('cp-regen-btn');
   btn.textContent = 'Regenerating...'; btn.disabled = true;
   document.getElementById('cp-pr-spinner').style.display = 'flex';
   document.getElementById('cp-pr-spin-label').textContent = 'Applying your changes...';
   document.getElementById('cp-pr-review').style.display = 'none';
-  var prompt = 'Rewrite this press release:\n\n' + campPRDraft + '\n\nChanges: ' + (fb || 'Improve it') + '\n\nKeep FOR IMMEDIATE RELEASE format. Plain text only.';
+  var prompt = 'Rewrite this press release with these changes: ' + (fb || 'Improve the overall quality and flow') + '\n\nCurrent press release:\n' + (currentText || campPRDraft) + '\n\nKeep the FOR IMMEDIATE RELEASE format. Plain text only.';
   callAPIHighTokens(prompt, function(text) {
     campPRDraft = text;
     btn.textContent = 'Regenerate with changes'; btn.disabled = false;
     document.getElementById('cp-pr-spinner').style.display = 'none';
-    document.getElementById('cp-pr-text').textContent = text;
+    document.getElementById('cp-pr-text').value = text;
     document.getElementById('cp-pr-feedback').value = '';
     document.getElementById('cp-pr-approved').style.display = 'none';
     document.getElementById('cp-pr-review').style.display = 'block';
@@ -2419,19 +3316,22 @@ function regenCampaignPR() {
 }
 
 function approveCampaignPR() {
+  // Read from the editable textarea
+  var text = document.getElementById('cp-pr-text').value.trim();
+  if (!text) { alert('No press release to approve.'); return; }
+  campPRDraft = text;
   campPRApproved = true;
   var btn = document.getElementById('cp-approve-btn');
-  btn.textContent = '\u2713 Approved!'; btn.disabled = true;
+  btn.textContent = '✓ Approved!'; btn.disabled = true;
   document.getElementById('cp-pr-approved').style.display = 'block';
   var statusEl = document.getElementById('cp-pr-status');
-  statusEl.innerHTML = '<div class="notice notice-success">&#10003; Press release approved -- it will be saved with your campaign.</div>';
-  statusEl.style.display = 'block';
-  setTimeout(function() { btn.innerHTML = '&#10003; Approve &amp; save to campaign'; btn.disabled = false; }, 1500);
-}
-
-function toggleLogEmail(id) {
-  var el = document.getElementById(id);
-  if (el) el.style.display = el.style.display === 'none' ? 'block' : 'none';
+  if (statusEl) {
+    statusEl.innerHTML = '<div class="notice notice-success">&#10003; Press release approved and will be saved with your campaign. You can now download it as a PDF or save the campaign.</div>';
+    statusEl.style.display = 'block';
+  }
+  setTimeout(function() {
+    if (btn) { btn.innerHTML = '&#10003; Approve &amp; save'; btn.disabled = false; }
+  }, 2000);
 }
 
 function renderHubPRSection() {
@@ -2554,8 +3454,17 @@ function showNewCampaignForm() {
   document.getElementById('cp-pr-collapsed').style.display = 'block';
   document.getElementById('cp-pr-review').style.display = 'none';
   document.getElementById('cp-pr-approved').style.display = 'none';
+  // Reset 3-question PR fields
+  ['cp-q1','cp-q2','cp-q3'].forEach(function(id){
+    var el = document.getElementById(id); if(el) el.value='';
+  });
+  // Show prefill notice if account exists
+  var notice = document.getElementById('camp-prefill-notice');
+  if (notice) notice.style.display = userAccount ? 'block' : 'none';
   document.getElementById('newcamp-eyebrow').textContent = 'New Campaign';
   document.getElementById('newcamp-title').textContent = 'Set up your campaign';
+  // Pre-fill from account if fields are empty
+  syncAccountToCampaignForm();
   showCampStep(1);
   showScreen('s-newcamp');
 }
@@ -2577,7 +3486,8 @@ var state = {
   podcastPitch: null,
   podMediaKit: null,
   websiteContent: null,
-  currentScreen: 's0'
+  currentScreen: 's0',
+  revealedOutlets: {}
 };
 
 var PLATFORMS = [
@@ -2640,6 +3550,15 @@ function showScreen(id) {
   updateProgress(id);
   if (id === 's2c') showTargetingForPath();
   if (id === 's-camps') { loadCampaigns(); renderCampaignsDashboard(); }
+  if (id === 's-account') { populateAccountEditForm(); }
+  if (id === 's-dashboard') { renderDashboard(); }
+  // Sync nav highlights
+  var navMap = { 's-camps':'nav-campaigns', 's-dashboard':'nav-dashboard', 's-account':'nav-account' };
+  document.querySelectorAll('.nav-item').forEach(function(n){ n.classList.remove('active'); });
+  if (navMap[id]) {
+    var navEl = document.getElementById(navMap[id]);
+    if (navEl) navEl.classList.add('active');
+  }
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -3276,77 +4195,212 @@ function fallbackPlatforms() {
   if (sub) sub.textContent = list.length + ' platforms from our database. Click one to select it.';
 }
 
+function maskEmail(email) {
+  if (!email) return '&#9679;&#9679;&#9679;&#9679;@&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;.com';
+  var parts = email.split('@');
+  if (parts.length !== 2) return '&#9679;&#9679;&#9679;&#9679;@&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;.com';
+  var local = parts[0].substring(0,2) + '&#9679;&#9679;&#9679;&#9679;';
+  var domain = parts[1];
+  return local + '@' + domain;
+}
+
+function getContactedOutlets() {
+  // Return set of outlet names already contacted in this campaign
+  if (!activeCampaign || !activeCampaign.outreachLog) return {};
+  var contacted = {};
+  activeCampaign.outreachLog.forEach(function(e) { contacted[e.outlet] = true; });
+  return contacted;
+}
+
 function renderFoundPlatforms(list) {
   var f = state.platFilter || 'all';
   var filtered = list.slice();
   if (f === 'Free') filtered = filtered.filter(function(p) { return !p.paid; });
   else if (f === 'Paid') filtered = filtered.filter(function(p) { return p.paid; });
   else if (f === 'Top') filtered = filtered.filter(function(p) { return p.s >= 4; });
-  // Sort by stars desc
   filtered.sort(function(a,b) { return b.s - a.s; });
+
   var el = document.getElementById('plat-list');
   if (!filtered.length) {
-    el.innerHTML = '<div style="padding:1.25rem;color:var(--muted);font-size:13px;">No platforms match this filter. Try a different filter above.</div>';
+    el.innerHTML = '<div style="padding:1.25rem;color:var(--muted);font-size:13px;">No platforms match this filter.</div>';
     return;
   }
+
+  var contacted = getContactedOutlets();
   var html = '';
+
   filtered.forEach(function(p) {
     var sel = state.selectedPlatform && state.selectedPlatform.n === p.n;
+    var alreadyContacted = contacted[p.n];
+    var isRevealed = state.revealedOutlets && state.revealedOutlets[p.n];
     var stars = '';
     for (var i = 0; i < p.s; i++) stars += '&#9733;';
     for (var i = p.s; i < 5; i++) stars += '&#9734;';
     var safeName = p.n.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
-    html += '<div class="plat-item' + (sel ? ' sel' : '') + '" onclick="selectPlatform(\'' + safeName + '\')">';
+
+    var rowClass = 'plat-item';
+    if (sel) rowClass += ' sel';
+    if (alreadyContacted) rowClass += ' already-contacted';
+
+    html += '<div class="' + rowClass + '">';
     html += '<div style="flex:1;">';
+    html += '<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;">';
+    html += '<div>';
     html += '<div class="plat-name">' + p.n + '</div>';
     html += '<div class="plat-url">' + p.u + '</div>';
     if (p.content_type) html += '<div style="font-size:11px;color:var(--gold);margin-top:2px;">Accepts: ' + p.content_type + '</div>';
     if (p.desc) html += '<div style="font-size:11px;color:var(--muted);margin-top:2px;font-style:italic;">' + p.desc + '</div>';
-    if (p.e) html += '<div class="plat-email">&#9993; ' + p.e + '</div>';
+
+    // Email -- masked or revealed
+    if (alreadyContacted) {
+      html += '<div style="font-size:11px;margin-top:4px;color:#2d6a4f;font-weight:500;">&#10003; Already contacted in this campaign</div>';
+      if (p.e) html += '<div class="plat-email">&#9993; ' + p.e + '</div>';
+    } else if (isRevealed || sel) {
+      if (p.e) html += '<div class="plat-email">&#9993; ' + p.e + '</div>';
+    } else {
+      html += '<div style="display:flex;align-items:center;gap:8px;margin-top:5px;">';
+      html += '<span class="email-masked">&#9679;&#9679;&#9679;&#9679;@' + (p.u || 'outlet.com') + '</span>';
+      html += '</div>';
+    }
     html += '</div>';
+
+    // Right side -- stars + action button
     html += '<div style="text-align:right;flex-shrink:0;">';
     html += '<div class="stars">' + stars + '</div>';
     html += '<div style="margin-top:4px;"><span class="' + (p.paid ? 'tag-paid' : 'tag-free') + '">' + (p.paid ? 'Paid' : 'Free') + '</span></div>';
-    html += '<div style="font-size:10px;color:var(--muted);margin-top:3px;">' + p.t + '</div>';
+    if (alreadyContacted) {
+      html += '<button class="reveal-btn used" style="margin-top:6px;" onclick="selectRevealedPlatform(\'' + safeName + '\')">Select &rarr;</button>';
+    } else if (isRevealed || sel) {
+      html += '<button class="reveal-btn used" style="margin-top:6px;" onclick="selectRevealedPlatform(\'' + safeName + '\')">Select &rarr;</button>';
+    } else {
+      html += '<button class="reveal-btn" style="margin-top:6px;" onclick="requestRevealToken(\'' + safeName + '\')">&#128274; Reveal &amp; select</button>';
+    }
+    html += '</div>';
+    html += '</div>';
     html += '</div>';
     html += '</div>';
   });
   el.innerHTML = html;
 }
 
-// Override selectPlatform to also work with found platforms
-function selectPlatform(name) {
+// ---- TOKEN REVEAL SYSTEM ----
+var pendingRevealName = null;
+
+function requestRevealToken(name) {
+  if (!hasUsageRemaining()) {
+    renderUsageCounter();
+    document.getElementById('usage-limit-modal').style.display = 'flex';
+    return;
+  }
+  pendingRevealName = name;
+  var remaining = DAILY_LIMIT - getUsageCount();
+  document.getElementById('token-confirm-outlet').textContent = name;
+  document.getElementById('token-confirm-msg').textContent = 'Revealing this outlet\'s contact email and selecting it for outreach uses 1 daily token. The email will be saved in your campaign log.';
+  document.getElementById('token-confirm-remaining').textContent = remaining + ' of ' + DAILY_LIMIT + ' daily tokens remaining after this action: ' + (remaining - 1);
+  document.getElementById('token-confirm-modal').style.display = 'flex';
+}
+
+function confirmRevealToken() {
+  document.getElementById('token-confirm-modal').style.display = 'none';
+  if (!pendingRevealName) return;
+  // Consume token
+  incrementUsage();
+  // Mark outlet as revealed in session
+  state.revealedOutlets = state.revealedOutlets || {};
+  state.revealedOutlets[pendingRevealName] = true;
+  // Now select it
+  selectRevealedPlatform(pendingRevealName);
+  pendingRevealName = null;
+}
+
+function cancelRevealToken() {
+  document.getElementById('token-confirm-modal').style.display = 'none';
+  pendingRevealName = null;
+}
+
+function selectRevealedPlatform(name) {
+  // Select platform without consuming another token (already revealed or already contacted)
   var plat = (state.foundPlatforms || []).find(function(p) { return p.n === name; });
   if (!plat) plat = PLATFORMS.find(function(p) { return p.n === name; });
   if (!plat) return;
   state.selectedPlatform = plat;
+  // Show continue button
   document.getElementById('plat-btn').style.display = 'inline-flex';
   var pill = document.getElementById('plat-sel-pill');
   var pillLabel = plat.isPodcast
     ? '&#127911; ' + plat.n + (plat.host ? ' -- Host: ' + plat.host : '')
-    : '&#10003; ' + plat.n + ' -- ' + plat.t + ' -- ' + (plat.paid ? 'Paid' : 'Free');
+    : '&#10003; ' + plat.n + ' -- ' + plat.t;
   pill.innerHTML = '<div class="sel-pill">' + pillLabel + '</div>';
   pill.style.display = 'block';
-  // Auto-populate email screen fields
+  // Auto-fill email + editor
   var emailField = document.getElementById('e-contact');
+  if (emailField && plat.e) emailField.value = plat.e;
   var editorField = document.getElementById('e-editor');
-  if (emailField && plat.e) { emailField.value = plat.e; }
-  // For podcasts auto-fill host name as editor name
   if (editorField) {
-    if (plat.isPodcast && plat.host) {
-      editorField.value = plat.host;
-    } else {
-      editorField.value = plat.editor || '';
-      editorField.placeholder = 'e.g. Editor at ' + plat.n;
-    }
+    if (plat.isPodcast && plat.host) editorField.value = plat.host;
+    else { editorField.value = plat.editor || ''; editorField.placeholder = 'e.g. Editor at ' + plat.n; }
   }
   var autoLabel = document.getElementById('email-auto-label');
-  if (autoLabel) autoLabel.textContent = plat.e ? '(auto-filled from platform)' : '';
-  // Re-render correctly based on path
-  if (plat.isPodcast) renderFoundPodcasts(state.foundPlatforms);
-  else if (state.foundPlatforms && state.foundPlatforms.length) renderFoundPlatforms(state.foundPlatforms);
-  else renderPlatforms();
+  if (autoLabel && plat.e) autoLabel.textContent = '(contact revealed)';
+  // Re-render to show selected state
+  if (state.foundPlatforms && state.foundPlatforms.length) renderFoundPlatforms(state.foundPlatforms);
 }
+
+// Override selectPlatform to route through token system
+function selectPlatform(name) {
+  var contacted = getContactedOutlets();
+  var isRevealed = state.revealedOutlets && state.revealedOutlets[name];
+  if (contacted[name] || isRevealed) {
+    selectRevealedPlatform(name);
+  } else {
+    requestRevealToken(name);
+  }
+}
+
+// Override selectLocalOutlet to use token system
+var _origSelectLocalOutlet = null;
+function selectLocalOutlet(name) {
+  var outlet = locState.outlets.find(function(p) { return p.n === name; });
+  if (!outlet) return;
+  var contacted = getContactedOutlets();
+  var isRevealed = state.revealedOutlets && state.revealedOutlets[name];
+  if (contacted[name] || isRevealed) {
+    _doSelectLocalOutlet(outlet);
+  } else {
+    // Request token for local outlet
+    pendingRevealName = name;
+    var remaining = DAILY_LIMIT - getUsageCount();
+    document.getElementById('token-confirm-outlet').textContent = name;
+    document.getElementById('token-confirm-msg').textContent = 'Revealing the contact details for this local outlet uses 1 daily token.';
+    document.getElementById('token-confirm-remaining').textContent = (remaining - 1) + ' tokens remaining after this';
+    document.getElementById('token-confirm-yes').onclick = function() {
+      document.getElementById('token-confirm-modal').style.display = 'none';
+      incrementUsage();
+      state.revealedOutlets = state.revealedOutlets || {};
+      state.revealedOutlets[name] = true;
+      _doSelectLocalOutlet(outlet);
+      pendingRevealName = null;
+      document.getElementById('token-confirm-yes').onclick = confirmRevealToken;
+    };
+    document.getElementById('token-confirm-modal').style.display = 'flex';
+  }
+}
+
+function _doSelectLocalOutlet(outlet) {
+  locState.selectedOutlet = outlet;
+  document.getElementById('loc-cont-btn').style.display = 'inline-flex';
+  var pill = document.getElementById('loc-sel-pill');
+  pill.innerHTML = '<div class="sel-pill">&#10003; ' + outlet.n + ' -- ' + (outlet.coverage || outlet.type) + '</div>';
+  pill.style.display = 'block';
+  if (outlet.e) {
+    document.getElementById('loc-contact').value = outlet.e;
+    document.getElementById('loc-email-auto').textContent = '(contact revealed)';
+  }
+  document.getElementById('loc-email-sub').textContent = 'A community-focused email written for ' + outlet.n;
+  renderLocalOutlets(locState.outlets, locState.locFilter);
+}
+
+// Reset revealed outlets on full reset — state.revealedOutlets = {} is handled in resetAll via state re-init
 
 // ---- PLATFORMS ----
 function platScore(p) {
@@ -4888,26 +5942,42 @@ function renderLocalOutlets(list, filter) {
     return;
   }
   var typeIcons = { newspaper:'&#128240;', online:'&#127760;', radio:'&#128251;', tv:'&#128250;', community:'&#127968;', council:'&#127963;' };
+  var contacted = getContactedOutlets();
   var html = '';
   filtered.forEach(function(p) {
     var sel = locState.selectedOutlet && locState.selectedOutlet.n === p.n;
+    var alreadyContacted = contacted[p.n];
+    var isRevealed = state.revealedOutlets && state.revealedOutlets[p.n];
     var stars = '';
     for (var i = 0; i < p.s; i++) stars += '&#9733;';
     for (var i = p.s; i < 5; i++) stars += '&#9734;';
     var safe = p.n.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
     var icon = typeIcons[p.type] || '&#128240;';
-    html += '<div class="plat-item' + (sel ? ' sel' : '') + '" onclick="selectLocalOutlet(\'' + safe + '\')">';
+    var rowClass = 'plat-item' + (sel ? ' sel' : '') + (alreadyContacted ? ' already-contacted' : '');
+    html += '<div class="' + rowClass + '">';
     html += '<div style="flex:1;">';
     html += '<div class="plat-name">' + icon + ' ' + p.n + '</div>';
     if (p.coverage) html += '<div style="font-size:11px;color:var(--gold);margin-top:1px;">Covers: ' + p.coverage + '</div>';
     if (p.u) html += '<div class="plat-url">' + p.u + '</div>';
     if (p.desc) html += '<div style="font-size:11px;color:var(--muted);margin-top:2px;font-style:italic;">' + p.desc + '</div>';
-    if (p.e) html += '<div class="plat-email">&#9993; ' + p.e + '</div>';
+    if (alreadyContacted) {
+      html += '<div style="font-size:11px;color:#2d6a4f;font-weight:500;margin-top:4px;">&#10003; Already contacted in this campaign</div>';
+      if (p.e) html += '<div class="plat-email">&#9993; ' + p.e + '</div>';
+    } else if (isRevealed || sel) {
+      if (p.e) html += '<div class="plat-email">&#9993; ' + p.e + '</div>';
+    } else {
+      html += '<div class="email-masked" style="margin-top:4px;">&#9679;&#9679;&#9679;&#9679;@' + (p.u || 'outlet.com') + '</div>';
+    }
     if (p.accepts_pr !== false) html += '<div style="font-size:10px;background:#d8f3dc;color:#2d6a4f;border-radius:3px;padding:2px 6px;display:inline-block;margin-top:3px;font-weight:500;">Accepts press releases</div>';
     html += '</div>';
     html += '<div style="text-align:right;flex-shrink:0;">';
     html += '<div class="stars">' + stars + '</div>';
     html += '<div style="font-size:10px;color:var(--muted);margin-top:2px;text-transform:capitalize;">' + p.type + '</div>';
+    if (alreadyContacted || isRevealed || sel) {
+      html += '<button class="reveal-btn used" style="margin-top:6px;" onclick="selectLocalOutlet(\'' + safe + '\')">Select &rarr;</button>';
+    } else {
+      html += '<button class="reveal-btn" style="margin-top:6px;" onclick="selectLocalOutlet(\'' + safe + '\')">&#128274; Reveal &amp; select</button>';
+    }
     html += '</div></div>';
   });
   el.innerHTML = html;
@@ -4916,18 +5986,16 @@ function renderLocalOutlets(list, filter) {
 function selectLocalOutlet(name) {
   var outlet = locState.outlets.find(function(p) { return p.n === name; });
   if (!outlet) return;
-  locState.selectedOutlet = outlet;
-  document.getElementById('loc-cont-btn').style.display = 'inline-flex';
-  var pill = document.getElementById('loc-sel-pill');
-  pill.innerHTML = '<div class="sel-pill">&#10003; ' + outlet.n + ' -- Covers: ' + (outlet.coverage || outlet.type) + '</div>';
-  pill.style.display = 'block';
-  // Auto-fill email screen
-  if (outlet.e) {
-    document.getElementById('loc-contact').value = outlet.e;
-    document.getElementById('loc-email-auto').textContent = '(auto-filled)';
+  var contacted = getContactedOutlets();
+  var isRevealed = state.revealedOutlets && state.revealedOutlets[name];
+  if (contacted[name] || isRevealed) {
+    _doSelectLocalOutlet(outlet);
+  } else {
+    // Already handled via token system in the override above
+    // But keep original logic as fallback
+    pendingRevealName = name;
+    requestRevealToken(name);
   }
-  document.getElementById('loc-email-sub').textContent = 'A community-focused email written for ' + outlet.n + ' -- not a national press pitch.';
-  renderLocalOutlets(locState.outlets, locState.locFilter);
 }
 
 function filtLocal(f, btn) {
@@ -5027,10 +6095,14 @@ function resetAll() {
 function initApp() {
   renderPlatforms();
   loadCampaigns();
-  renderCampaignsDashboard();
   campCountries = [];
+  campSecondaries = [];
+  selectedCampCardIdx = -1;
   editingCampId = null;
   renderUsageCounter();
+  checkFirstRun();
+  // Wire up s-account screen to populate when shown
+  var origShowScreen = showScreen;
 }
 initApp();
 </script>
