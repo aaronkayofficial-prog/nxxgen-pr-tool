@@ -183,6 +183,13 @@ textarea{resize:vertical;line-height:1.6;}
 .dash-tick.sent{background:#d8f3dc;color:#2d6a4f;}
 .dash-tick.pending{background:#fff3cd;color:#856404;}
 .dash-tick.replied{background:#e8f4fd;color:#1565c0;}
+.wfm-link{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:600;color:var(--gold);cursor:pointer;letter-spacing:0.3px;margin-top:4px;padding:2px 0;border:none;background:none;text-decoration:none;transition:opacity 0.15s;font-family:inherit;}
+.wfm-link:hover{opacity:0.7;}
+.wfm-wrap{display:flex;flex-direction:column;}
+.wfm-spinner-row{display:none;align-items:center;gap:5px;font-size:10px;color:var(--muted);margin-top:3px;}
+.wfm-spin{width:9px;height:9px;border:1.5px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin .6s linear infinite;display:inline-block;flex-shrink:0;}
+@keyframes wfmGlow{0%{border-color:var(--gold);}50%{border-color:var(--gold);box-shadow:0 0 0 3px rgba(194,24,91,0.1);}100%{border-color:var(--border);}}
+.wfm-filled{animation:wfmGlow 0.8s ease-out;}
 .acct-banner{background:var(--gold-light);border:1.5px solid var(--gold);border-radius:10px;padding:12px 16px;display:flex;align-items:center;gap:12px;margin-bottom:1.5rem;cursor:pointer;}
 .acct-avatar{width:34px;height:34px;border-radius:50%;background:var(--gold);color:var(--white);font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;border:2px solid var(--gold-light);transition:opacity 0.2s;}
 .acct-avatar:hover{opacity:0.85;}
@@ -247,9 +254,9 @@ textarea{resize:vertical;line-height:1.6;}
 <header class="header">
   <div class="logo" onclick="goHome()" style="cursor:pointer;">Outreach <span>Platform</span></div>
   <nav class="main-nav" id="main-nav">
-    <div class="nav-item active" id="nav-campaigns" onclick="goHome()">&#128196; Campaigns</div>
-    <div class="nav-item" id="nav-dashboard" onclick="showScreen('s-dashboard')">&#128202; Dashboard</div>
-    <div class="nav-item" id="nav-account" onclick="showScreen('s-account')">&#128100; Account</div>
+    <div class="nav-item active" id="nav-campaigns" onclick="goHome()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg> Campaigns</div>
+    <div class="nav-item" id="nav-dashboard" onclick="showScreen('s-dashboard')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg> Dashboard</div>
+    <div class="nav-item" id="nav-account" onclick="showScreen('s-account')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Account</div>
   </nav>
   <div style="display:flex;align-items:center;gap:12px;">
     <div class="usage-counter" id="usage-counter" title="Daily outreach tokens remaining">
@@ -267,13 +274,13 @@ textarea{resize:vertical;line-height:1.6;}
           <div class="profile-complete-bar" style="margin-top:8px;"><div class="profile-complete-fill" id="dd-complete-fill" style="width:0%"></div></div>
           <div style="font-size:10px;color:var(--muted);margin-top:3px;" id="dd-complete-label"></div>
         </div>
-        <div class="acct-dd-item" onclick="showScreen('s-account');closeAccountDropdown()">&#128100; My account</div>
-        <div class="acct-dd-item" onclick="goHome();closeAccountDropdown()">&#128196; My campaigns</div>
-        <div class="acct-dd-item" onclick="showScreen('s-dashboard');closeAccountDropdown()">&#128202; Outreach dashboard</div>
+        <div class="acct-dd-item" onclick="showScreen('s-account');closeAccountDropdown()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> My account</div>
+        <div class="acct-dd-item" onclick="goHome();closeAccountDropdown()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg> My campaigns</div>
+        <div class="acct-dd-item" onclick="showScreen('s-dashboard');closeAccountDropdown()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg> Outreach dashboard</div>
         <div class="acct-dd-divider"></div>
-        <div class="acct-dd-item" onclick="toggleDevMode()" id="dev-mode-btn" style="font-size:12px;color:var(--muted);">&#128274; Dev mode OFF</div>
+        <div class="acct-dd-item" onclick="toggleDevMode()" id="dev-mode-btn" style="font-size:12px;color:var(--muted);"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Dev mode OFF</div>
         <div class="acct-dd-divider"></div>
-        <div class="acct-dd-item danger" onclick="confirmClearAccount()">&#128683; Clear account data</div>
+        <div class="acct-dd-item danger" onclick="confirmClearAccount()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg> Clear account data</div>
       </div>
     </div>
   </div>
@@ -282,7 +289,7 @@ textarea{resize:vertical;line-height:1.6;}
 <!-- TOKEN CONFIRM MODAL -->
 <div class="token-confirm-modal" id="token-confirm-modal">
   <div class="token-confirm-box">
-    <div style="font-size:36px;margin-bottom:12px;">&#128274;</div>
+    <div style="font-size:36px;margin-bottom:12px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
     <div style="font-size:18px;font-weight:500;color:var(--black);margin-bottom:8px;" id="token-confirm-outlet"></div>
     <div style="font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:6px;" id="token-confirm-msg"></div>
     <div style="font-size:12px;color:var(--gold);font-weight:500;margin-bottom:1.5rem;" id="token-confirm-remaining"></div>
@@ -295,7 +302,7 @@ textarea{resize:vertical;line-height:1.6;}
 
 
   <div class="usage-limit-box">
-    <div class="usage-limit-icon">&#128683;</div>
+    <div class="usage-limit-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg></div>
     <div class="usage-limit-title">Daily limit reached</div>
     <div class="usage-limit-sub">You have used all 10 of your daily outreach emails. Your limit resets at midnight. Upgrade your plan for higher daily limits and unlimited outreach.</div>
     <button class="btn btn-primary" onclick="document.getElementById('usage-limit-modal').style.display='none'">Got it</button>
@@ -308,11 +315,11 @@ textarea{resize:vertical;line-height:1.6;}
 <!-- SCREEN: ACCOUNT SETUP (first-time onboarding) -->
 <div class="screen" id="s-account-setup">
   <div style="text-align:center;margin-bottom:2rem;">
-    <div style="font-size:40px;margin-bottom:12px;">&#128075;</div>
+    <div style="font-size:40px;margin-bottom:12px;"></div>
     <div class="eyebrow">Welcome to Outreach Platform</div>
     <h1 class="sec-title" style="font-size:30px;">Let's set up your account</h1>
     <p class="sec-sub" style="margin:0 auto;">This information stays at your account level and pre-fills every campaign, press release, and outreach email automatically. You only do this once.</p>
-    <button class="btn btn-outline btn-sm" style="margin-top:14px;" onclick="fillTestAccount()">&#9889; Fill with test data</button>
+    <button class="btn btn-outline btn-sm" style="margin-top:14px;" onclick="fillTestAccount()"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Fill with test data</button>
   </div>
 
   <div style="background:var(--gold-light);border:1.5px solid var(--gold);border-radius:12px;padding:1.25rem 1.5rem;margin-bottom:1.5rem;">
@@ -331,7 +338,10 @@ textarea{resize:vertical;line-height:1.6;}
     <div class="g2">
       <div><label>Company name</label><input type="text" id="acct-co" placeholder="e.g. Acme Co, The Local Bakery"/></div>
       <div><label>Website</label><input type="text" id="acct-web" placeholder="e.g. yourbusiness.com"/></div>
-      <div class="full"><label>What your business does</label><textarea id="acct-what" style="min-height:75px;" placeholder="e.g. A sustainable skincare brand creating certified-organic products for conscious consumers across Australia and New Zealand"></textarea></div>
+      <div class="full"><label style="display:flex;align-items:center;justify-content:space-between;">What your business does <div class="wfm-wrap">
+            <button class="wfm-link" onclick="writeForMe('acct-what',this)"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Write for me</button>
+            <div class="wfm-spinner-row" id="wfm-spin-acct-what"><span class="wfm-spin"></span><span id="wfm-label-acct-what">Writing...</span></div>
+          </div></label><textarea id="acct-what" style="min-height:75px;" placeholder="e.g. A sustainable skincare brand creating certified-organic products for conscious consumers across Australia and New Zealand"></textarea></div>
     </div>
   </div>
 
@@ -339,24 +349,47 @@ textarea{resize:vertical;line-height:1.6;}
     <div style="font-size:12px;font-weight:500;color:var(--muted);margin-bottom:4px;">THREE KEY POINTS ABOUT YOUR BUSINESS</div>
     <div style="font-size:12px;color:var(--muted);margin-bottom:1rem;">These are your core USPs — What you do / Who you serve / What makes you different. They feed directly into press release generation.</div>
     <div class="kp-card">
-      <div class="kp-label">Key point 1 — What you do</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;"><div class="kp-label" style="margin-bottom:0;">Key point 1 — What you do</div><div class="wfm-wrap">
+            <button class="wfm-link" onclick="writeForMe('acct-kp1',this)"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Write for me</button>
+            <div class="wfm-spinner-row" id="wfm-spin-acct-kp1"><span class="wfm-spin"></span><span id="wfm-label-acct-kp1">Writing...</span></div>
+          </div></div>
       <textarea id="acct-kp1" style="min-height:60px;border:none;padding:0;font-size:14px;" placeholder="e.g. We create certified-organic skincare products formulated by dermatologists and produced in Australia without harmful chemicals"></textarea>
     </div>
     <div class="kp-card">
-      <div class="kp-label">Key point 2 — Who you serve</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;"><div class="kp-label" style="margin-bottom:0;">Key point 2 — Who you serve</div><div class="wfm-wrap">
+            <button class="wfm-link" onclick="writeForMe('acct-kp2',this)"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Write for me</button>
+            <div class="wfm-spinner-row" id="wfm-spin-acct-kp2"><span class="wfm-spin"></span><span id="wfm-label-acct-kp2">Writing...</span></div>
+          </div></div>
       <textarea id="acct-kp2" style="min-height:60px;border:none;padding:0;font-size:14px;" placeholder="e.g. We serve conscious consumers aged 25-45 who prioritise ingredient transparency, sustainability, and clinical effectiveness over brand prestige"></textarea>
     </div>
     <div class="kp-card">
-      <div class="kp-label">Key point 3 — What makes you different</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;"><div class="kp-label" style="margin-bottom:0;">Key point 3 — What makes you different</div><div class="wfm-wrap">
+            <button class="wfm-link" onclick="writeForMe('acct-kp3',this)"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Write for me</button>
+            <div class="wfm-spinner-row" id="wfm-spin-acct-kp3"><span class="wfm-spin"></span><span id="wfm-label-acct-kp3">Writing...</span></div>
+          </div></div>
       <textarea id="acct-kp3" style="min-height:60px;border:none;padding:0;font-size:14px;" placeholder="e.g. We are the only Australian skincare brand certified by three independent sustainability bodies, with zero plastic packaging and a carbon-neutral supply chain"></textarea>
     </div>
   </div>
 
   <div style="border:1.5px solid var(--border);border-radius:12px;padding:1.25rem 1.5rem;margin-bottom:1.5rem;background:var(--white);">
     <div style="font-size:12px;font-weight:500;color:var(--muted);margin-bottom:1rem;">OPTIONAL EXTRAS</div>
+    <!-- Logo upload -->
+    <label>Business logo</label>
+    <div id="logo-drop-zone" onclick="document.getElementById('acct-logo-file').click()" ondragover="event.preventDefault();this.style.borderColor='var(--gold)';this.style.background='var(--gold-light)';" ondragleave="this.style.borderColor='var(--border)';this.style.background='';" ondrop="handleLogoDrop(event,'acct-logo')" style="border:2px dashed var(--border);border-radius:10px;padding:20px;text-align:center;cursor:pointer;margin-top:6px;margin-bottom:1.25rem;transition:all 0.2s;">
+      <div id="logo-drop-preview" style="display:none;"><img id="acct-logo-img" style="max-height:60px;max-width:200px;border-radius:6px;" src=""/><div style="font-size:11px;color:var(--muted);margin-top:6px;">Click or drag to replace</div></div>
+      <div id="logo-drop-empty"><div style="margin-bottom:8px;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M12 8v8m-4-4 4-4 4 4"/></svg></div><div style="font-size:13px;font-weight:500;color:var(--black);">Drag &amp; drop your logo here</div><div style="font-size:11px;color:var(--muted);margin-top:3px;">or click to browse -- PNG, JPG, SVG, WebP</div></div>
+      <input type="file" id="acct-logo-file" accept="image/*" style="display:none;" onchange="handleLogoFile(event,'acct-logo')"/>
+      <input type="hidden" id="acct-logo"/>
+    </div>
+    <!-- Social media handles -->
+    <div style="font-size:12px;font-weight:500;color:var(--muted);margin-bottom:10px;">SOCIAL MEDIA HANDLES <span style="font-size:10px;font-weight:400;text-transform:none;">(optional)</span></div>
     <div class="g2">
-      <div class="full"><label>Business logo URL <span style="font-size:10px;font-weight:400;text-transform:none;">(paste a link to your logo image)</span></label><input type="text" id="acct-logo" placeholder="e.g. https://yourbusiness.com/logo.png"/></div>
-      <div class="full"><label>Social media handles <span style="font-size:10px;font-weight:400;text-transform:none;">(optional)</span></label><input type="text" id="acct-social" placeholder="e.g. @yourbrand on Instagram, LinkedIn: linkedin.com/company/yourbrand"/></div>
+      <div><label><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg> Facebook</label><input type="text" id="acct-fb" placeholder="e.g. facebook.com/yourbrand"/></div>
+      <div><label><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg> Instagram</label><input type="text" id="acct-ig" placeholder="e.g. @yourbrand"/></div>
+      <div><label><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="#0a0a0a" stroke="none"/></svg> YouTube</label><input type="text" id="acct-yt" placeholder="e.g. youtube.com/@yourbrand"/></div>
+      <div><label><svg width="14" height="14" viewBox="0 0 24 24" fill="#0a0a0a"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg> X (Twitter)</label><input type="text" id="acct-x" placeholder="e.g. @yourbrand"/></div>
+      <div><label><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg> LinkedIn</label><input type="text" id="acct-li" placeholder="e.g. linkedin.com/company/yourbrand"/></div>
+      <div><label><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85m5.5-6.42c-.11 3.5-.83 4.86-3.2 4.86"/><path d="M9 12a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm8 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" fill="#0a0a0a" stroke="none"/></svg> Reddit</label><input type="text" id="acct-reddit" placeholder="e.g. r/yourbrand or u/yourusername"/></div>
     </div>
   </div>
 
@@ -372,7 +405,7 @@ textarea{resize:vertical;line-height:1.6;}
   <h2 class="sec-title">Your account</h2>
   <p class="sec-sub" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
     <span>This information pre-fills every campaign, press release, and outreach email. Keep it up to date.</span>
-    <button class="btn btn-outline btn-sm" onclick="fillTestAccount()" style="font-size:11px;">&#9889; Fill with test data</button>
+    <button class="btn btn-outline btn-sm" onclick="fillTestAccount()" style="font-size:11px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Fill with test data</button>
   </p>
 
   <div id="acct-complete-banner" style="display:none;margin-bottom:1.5rem;"></div>
@@ -417,8 +450,23 @@ textarea{resize:vertical;line-height:1.6;}
   <div style="border:1.5px solid var(--border);border-radius:12px;padding:1.25rem 1.5rem;margin-bottom:1.5rem;background:var(--white);">
     <div style="font-size:12px;font-weight:500;color:var(--muted);margin-bottom:1rem;">OPTIONAL</div>
     <div class="g2">
-      <div class="full"><label>Business logo URL</label><input type="text" id="acct-logo-e" placeholder="https://yourbusiness.com/logo.png"/></div>
-      <div class="full"><label>Social media handles</label><input type="text" id="acct-social-e" placeholder="e.g. @yourbrand on Instagram"/></div>
+      <!-- Logo upload edit -->
+      <div class="full">
+        <label>Business logo</label>
+        <div id="logo-drop-zone-e" onclick="document.getElementById('acct-logo-file-e').click()" ondragover="event.preventDefault();this.style.borderColor='var(--gold)';this.style.background='var(--gold-light)';" ondragleave="this.style.borderColor='var(--border)';this.style.background='';" ondrop="handleLogoDrop(event,'acct-logo-e')" style="border:2px dashed var(--border);border-radius:10px;padding:16px;text-align:center;cursor:pointer;margin-top:6px;transition:all 0.2s;">
+          <div id="logo-drop-preview-e" style="display:none;"><img id="acct-logo-img-e" style="max-height:60px;max-width:200px;border-radius:6px;" src=""/><div style="font-size:11px;color:var(--muted);margin-top:4px;">Click or drag to replace</div></div>
+          <div id="logo-drop-empty-e"><div style="margin-bottom:6px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M12 8v8m-4-4 4-4 4 4"/></svg></div><div style="font-size:12px;font-weight:500;color:var(--black);">Drag &amp; drop or click to upload logo</div><div style="font-size:11px;color:var(--muted);">PNG, JPG, SVG, WebP</div></div>
+          <input type="file" id="acct-logo-file-e" accept="image/*" style="display:none;" onchange="handleLogoFile(event,'acct-logo-e')"/>
+          <input type="hidden" id="acct-logo-e"/>
+        </div>
+      </div>
+      <!-- Social handles edit -->
+      <div><label><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg> Facebook</label><input type="text" id="acct-fb-e" placeholder="facebook.com/yourbrand"/></div>
+      <div><label><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg> Instagram</label><input type="text" id="acct-ig-e" placeholder="@yourbrand"/></div>
+      <div><label><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="#0a0a0a" stroke="none"/></svg> YouTube</label><input type="text" id="acct-yt-e" placeholder="youtube.com/@yourbrand"/></div>
+      <div><label><svg width="14" height="14" viewBox="0 0 24 24" fill="#0a0a0a"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg> X (Twitter)</label><input type="text" id="acct-x-e" placeholder="@yourbrand"/></div>
+      <div><label><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg> LinkedIn</label><input type="text" id="acct-li-e" placeholder="linkedin.com/company/yourbrand"/></div>
+      <div><label><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85m5.5-6.42c-.11 3.5-.83 4.86-3.2 4.86"/><path d="M9 12a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm8 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" fill="#0a0a0a" stroke="none"/></svg> Reddit</label><input type="text" id="acct-reddit-e" placeholder="r/yourbrand"/></div>
     </div>
   </div>
 
@@ -478,7 +526,7 @@ textarea{resize:vertical;line-height:1.6;}
   <!-- Path tabs -->
   <div style="display:flex;border-bottom:2px solid var(--border);margin-bottom:1.5rem;overflow-x:auto;gap:0;">
     <div class="dash-tab active" id="dtab-all" onclick="switchDashTab('all',this)">All</div>
-    <div class="dash-tab" id="dtab-pr" onclick="switchDashTab('Press Release',this)">&#128240; Press</div>
+    <div class="dash-tab" id="dtab-pr" onclick="switchDashTab('Press Release',this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v2"/><path d="M4 11h8"/><path d="M4 7h4"/><path d="M4 15h8"/><path d="M2 17l2 2 4-4"/></svg> Press</div>
     <div class="dash-tab" id="dtab-story" onclick="switchDashTab('Editorial Pitch',this)">&#128161; Story</div>
     <div class="dash-tab" id="dtab-pod" onclick="switchDashTab('Podcast Pitch',this)">&#127911; Podcast</div>
     <div class="dash-tab" id="dtab-local" onclick="switchDashTab('Local Media',this)">&#127968; Local</div>
@@ -604,7 +652,7 @@ textarea{resize:vertical;line-height:1.6;}
       &#10003; Your account information has been pre-filled below. Review and adjust anything specific to this campaign.
     </div>
     <div style="display:flex;align-items:center;justify-content:flex-end;margin-bottom:8px;">
-      <button class="btn btn-outline btn-sm" onclick="fillTestCampaign()" style="font-size:11px;">&#9889; Fill with test data</button>
+      <button class="btn btn-outline btn-sm" onclick="fillTestCampaign()" style="font-size:11px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Fill with test data</button>
     </div>
 
     <div style="background:var(--gold-light);border:1.5px solid var(--gold);border-radius:12px;padding:1.25rem 1.5rem;margin-bottom:1.5rem;">
@@ -625,8 +673,14 @@ textarea{resize:vertical;line-height:1.6;}
       <div><label>Company name</label><input type="text" id="cp-co" placeholder="e.g. Acme Co"/></div>
       <div><label>Website</label><input type="text" id="cp-web" placeholder="e.g. yourbusiness.com"/></div>
       <div class="full"><label>Contact email</label><input type="text" id="cp-email" placeholder="e.g. hello@yourbusiness.com"/></div>
-      <div class="full"><label>What your business does</label><textarea id="cp-what" style="min-height:65px;" placeholder="A brief description of your business and what you offer"></textarea></div>
-      <div class="full"><label>Your unique angle <span style="font-size:10px;font-weight:400;text-transform:none;">(what makes you different)</span></label><textarea id="cp-angle" style="min-height:65px;" placeholder="e.g. We are the only certified carbon-neutral brand in our category"></textarea></div>
+      <div class="full"><label style="display:flex;align-items:center;justify-content:space-between;">What your business does <div class="wfm-wrap">
+            <button class="wfm-link" onclick="writeForMe('cp-what',this)"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Write for me</button>
+            <div class="wfm-spinner-row" id="wfm-spin-cp-what"><span class="wfm-spin"></span><span id="wfm-label-cp-what">Writing...</span></div>
+          </div></label><textarea id="cp-what" style="min-height:65px;" placeholder="A brief description of your business and what you offer"></textarea></div>
+      <div class="full"><label style="display:flex;align-items:center;justify-content:space-between;gap:8px;"><span>Your unique angle <span style="font-size:10px;font-weight:400;text-transform:none;">(what makes you different)</span></span><div class="wfm-wrap">
+            <button class="wfm-link" onclick="writeForMe('cp-angle',this)"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Write for me</button>
+            <div class="wfm-spinner-row" id="wfm-spin-cp-angle"><span class="wfm-spin"></span><span id="wfm-label-cp-angle">Writing...</span></div>
+          </div></label><textarea id="cp-angle" style="min-height:65px;" placeholder="e.g. We are the only certified carbon-neutral brand in our category"></textarea></div>
       <div class="full"><label>Additional campaign notes <span style="font-size:10px;font-weight:400;text-transform:none;">(optional — awards, milestones, launch dates)</span></label><textarea id="cp-extra" style="min-height:55px;" placeholder="e.g. Just won Best New Brand at the 2025 Design Awards, launching nationally on 15 May"></textarea></div>
     </div>
     <div class="btn-row" style="margin-top:1.5rem;">
@@ -714,11 +768,11 @@ textarea{resize:vertical;line-height:1.6;}
 
     <div id="cp-pr-collapsed">
       <div class="notice notice-gold" style="margin-bottom:1.5rem;">
-        <strong>&#128240; Generate your press release</strong><br/>
+        <strong><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v2"/><path d="M4 11h8"/><path d="M4 7h4"/><path d="M4 15h8"/><path d="M2 17l2 2 4-4"/></svg> Generate your press release</strong><br/>
         Answer 3 short questions. The AI uses your account profile and campaign details to write a professional press release instantly. Approve it and download the PDF straight away.
       </div>
       <div style="display:flex;justify-content:flex-end;margin-bottom:10px;">
-        <button class="btn btn-outline btn-sm" onclick="fillTestPRQuestions()" style="font-size:11px;">&#9889; Fill with test data</button>
+        <button class="btn btn-outline btn-sm" onclick="fillTestPRQuestions()" style="font-size:11px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Fill with test data</button>
       </div>
 
       <!-- 3 Questions -->
@@ -726,7 +780,10 @@ textarea{resize:vertical;line-height:1.6;}
         <div style="border:1.5px solid var(--border);border-radius:12px;padding:1.25rem;background:var(--white);">
           <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
             <div style="width:28px;height:28px;border-radius:50%;background:var(--black);color:var(--white);font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;">1</div>
-            <label style="margin:0;font-size:13px;text-transform:none;letter-spacing:0;color:var(--black);font-weight:500;">What is the specific news or announcement for this campaign?</label>
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex:1;"><label style="margin:0;font-size:13px;text-transform:none;letter-spacing:0;color:var(--black);font-weight:500;">What is the specific news or announcement for this campaign?</label><div class="wfm-wrap">
+            <button class="wfm-link" onclick="writeForMe('cp-q1',this)"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Write for me</button>
+            <div class="wfm-spinner-row" id="wfm-spin-cp-q1"><span class="wfm-spin"></span><span id="wfm-label-cp-q1">Writing...</span></div>
+          </div></div>
           </div>
           <textarea id="cp-q1" style="min-height:80px;" placeholder="e.g. We are launching Australia's first AI-powered fashion photography platform that replaces traditional photo shoots at a fraction of the cost. We go live on 15 May 2025."></textarea>
         </div>
@@ -734,7 +791,10 @@ textarea{resize:vertical;line-height:1.6;}
         <div style="border:1.5px solid var(--border);border-radius:12px;padding:1.25rem;background:var(--white);">
           <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
             <div style="width:28px;height:28px;border-radius:50%;background:var(--black);color:var(--white);font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;">2</div>
-            <label style="margin:0;font-size:13px;text-transform:none;letter-spacing:0;color:var(--black);font-weight:500;">What is the key outcome or benefit for your customers?</label>
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex:1;"><label style="margin:0;font-size:13px;text-transform:none;letter-spacing:0;color:var(--black);font-weight:500;">What is the key outcome or benefit for your customers?</label><div class="wfm-wrap">
+            <button class="wfm-link" onclick="writeForMe('cp-q2',this)"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Write for me</button>
+            <div class="wfm-spinner-row" id="wfm-spin-cp-q2"><span class="wfm-spin"></span><span id="wfm-label-cp-q2">Writing...</span></div>
+          </div></div>
           </div>
           <textarea id="cp-q2" style="min-height:80px;" placeholder="e.g. Fashion brands can now produce 20 campaign images with video in 72 hours for $15 per look -- versus weeks of production and $10,000+ for a traditional shoot."></textarea>
         </div>
@@ -742,7 +802,10 @@ textarea{resize:vertical;line-height:1.6;}
         <div style="border:1.5px solid var(--border);border-radius:12px;padding:1.25rem;background:var(--white);">
           <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
             <div style="width:28px;height:28px;border-radius:50%;background:var(--black);color:var(--white);font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;">3</div>
-            <label style="margin:0;font-size:13px;text-transform:none;letter-spacing:0;color:var(--black);font-weight:500;">What do you want media and readers to do after reading this?</label>
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex:1;"><label style="margin:0;font-size:13px;text-transform:none;letter-spacing:0;color:var(--black);font-weight:500;">What do you want media and readers to do after reading this?</label><div class="wfm-wrap">
+            <button class="wfm-link" onclick="writeForMe('cp-q3',this)"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Write for me</button>
+            <div class="wfm-spinner-row" id="wfm-spin-cp-q3"><span class="wfm-spin"></span><span id="wfm-label-cp-q3">Writing...</span></div>
+          </div></div>
           </div>
           <textarea id="cp-q3" style="min-height:80px;" placeholder="e.g. Visit nxxgenstudio.com to start a free trial. We are also available for interviews and can provide behind-the-scenes access to our studio for journalists."></textarea>
         </div>
@@ -808,7 +871,7 @@ textarea{resize:vertical;line-height:1.6;}
   <div id="hub-pr-section" style="margin-bottom:1.5rem;padding:1rem 1.25rem;border-radius:12px;border:1.5px solid var(--border);background:var(--white);">
     <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;">
       <div>
-        <div style="font-size:13px;font-weight:500;color:var(--black);" id="hub-pr-label">&#128240; Press release</div>
+        <div style="font-size:13px;font-weight:500;color:var(--black);" id="hub-pr-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v2"/><path d="M4 11h8"/><path d="M4 7h4"/><path d="M4 15h8"/><path d="M2 17l2 2 4-4"/></svg> Press release</div>
         <div style="font-size:12px;color:var(--muted);margin-top:2px;" id="hub-pr-sub"></div>
       </div>
       <div id="hub-pr-actions"></div>
@@ -820,7 +883,7 @@ textarea{resize:vertical;line-height:1.6;}
   <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:.75rem;font-weight:500;">Choose your outreach path</div>
   <div class="camp-paths">
     <div class="camp-path" onclick="launchPath('A')">
-      <div class="camp-path-icon">&#128240;</div>
+      <div class="camp-path-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v2"/><path d="M4 11h8"/><path d="M4 7h4"/><path d="M4 15h8"/><path d="M2 17l2 2 4-4"/></svg></div>
       <div class="camp-path-title">Reach press &amp; media</div>
       <div class="camp-path-desc">Send your press release to targeted outlets and media</div>
     </div>
@@ -902,7 +965,7 @@ textarea{resize:vertical;line-height:1.6;}
   <div class="path-cards" style="grid-template-columns:1fr;max-width:580px;">
     <div class="path-card" id="card-a" onclick="selectPath('A')">
       <div style="display:flex;align-items:flex-start;gap:14px;">
-        <div class="path-icon" style="flex-shrink:0;">&#128240;</div>
+        <div class="path-icon" style="flex-shrink:0;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v2"/><path d="M4 11h8"/><path d="M4 7h4"/><path d="M4 15h8"/><path d="M2 17l2 2 4-4"/></svg></div>
         <div>
           <div class="path-title">Send a press release to the press</div>
           <div class="path-desc">Generate a professional press release, find the right outlets, and send a focused outreach email with the release attached.</div>
@@ -1100,7 +1163,7 @@ textarea{resize:vertical;line-height:1.6;}
   <div style="margin-bottom:1rem;">
     <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;font-weight:500;">Have an existing press release? <span style="font-weight:400;text-transform:none;letter-spacing:0;">(optional -- upload it and we will use it alongside your hooks)</span></div>
     <div class="upload-zone" id="upload-zone" onclick="document.getElementById('upload-file').click()" ondragover="event.preventDefault();this.classList.add('drag')" ondragleave="this.classList.remove('drag')" ondrop="handleDrop(event)">
-      <div style="font-size:24px;margin-bottom:8px;">&#128196;</div>
+      <div style="font-size:24px;margin-bottom:8px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
       <div style="font-size:13px;color:var(--muted);">Click to upload or drag and drop your press release</div>
       <div style="font-size:11px;color:var(--muted);margin-top:4px;opacity:0.7;">Accepts .pdf, .docx, .txt -- optional</div>
       <input type="file" id="upload-file" style="display:none;" accept=".txt,.pdf,.docx,.doc" onchange="handleFileUpload(this)"/>
@@ -1395,7 +1458,7 @@ textarea{resize:vertical;line-height:1.6;}
   <div style="margin-bottom:1rem;">
     <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;font-weight:500;">Media kit or speaker bio <span style="font-weight:400;text-transform:none;letter-spacing:0;">(optional -- upload to add more context)</span></div>
     <div class="upload-zone" id="pod-upload-zone" onclick="document.getElementById('pod-upload-file').click()" ondragover="event.preventDefault();this.classList.add('drag')" ondragleave="this.classList.remove('drag')" ondrop="handlePodDrop(event)">
-      <div style="font-size:24px;margin-bottom:8px;">&#128196;</div>
+      <div style="font-size:24px;margin-bottom:8px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
       <div style="font-size:13px;color:var(--muted);">Click to upload or drag and drop your media kit or speaker bio</div>
       <div style="font-size:11px;color:var(--muted);margin-top:4px;opacity:0.7;">Accepts .pdf, .docx, .txt -- optional</div>
       <input type="file" id="pod-upload-file" style="display:none;" accept=".txt,.pdf,.docx,.doc" onchange="handlePodUpload(this)"/>
@@ -1901,7 +1964,140 @@ textarea{resize:vertical;line-height:1.6;}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script>
 // ============================================================
-// TEST DATA HELPERS
+// WRITE FOR ME — AI field completion
+// ============================================================
+var wfmWebCache = null; // cached website content for session
+var wfmFetching = false;
+var wfmQueue = []; // pending callbacks waiting for website fetch
+
+function getWebsiteForWFM(onReady) {
+  // Get website URL from whichever form is currently active
+  var webEl = document.getElementById('cp-web') || document.getElementById('acct-web') || document.getElementById('acct-web-e');
+  var url = webEl ? webEl.value.trim() : '';
+  if (!url && userAccount) url = userAccount.web || '';
+
+  if (wfmWebCache) { onReady(wfmWebCache); return; }
+  if (!url) { onReady(''); return; }
+
+  if (wfmFetching) { wfmQueue.push(onReady); return; }
+  wfmFetching = true;
+  wfmQueue.push(onReady);
+
+  fetchWebsiteContent(url, function(content) {
+    wfmWebCache = content ? content.substring(0, 2000) : '';
+    wfmFetching = false;
+    wfmQueue.forEach(function(cb){ cb(wfmWebCache); });
+    wfmQueue = [];
+  }, function() {
+    wfmWebCache = '';
+    wfmFetching = false;
+    wfmQueue.forEach(function(cb){ cb(''); });
+    wfmQueue = [];
+  });
+}
+
+function getWFMContext() {
+  var acct = userAccount || {};
+  var get = function(id) {
+    var el = document.getElementById(id);
+    return el ? el.value.trim() : '';
+  };
+  return {
+    fname: get('cp-name') || get('acct-fname') || acct.fname || '',
+    co: get('cp-co') || get('acct-co') || acct.co || '',
+    pos: get('cp-pos') || get('acct-pos') || acct.pos || '',
+    web: get('cp-web') || get('acct-web') || acct.web || '',
+    what: get('cp-what') || get('acct-what') || acct.what || '',
+    angle: get('cp-angle') || acct.angle || '',
+    kp1: get('acct-kp1') || acct.kp1 || '',
+    kp2: get('acct-kp2') || acct.kp2 || '',
+    kp3: get('acct-kp3') || acct.kp3 || '',
+    campName: get('camp-name-input') || '',
+    campGoal: get('camp-goal-input') || '',
+    q1: get('cp-q1') || '',
+    q2: get('cp-q2') || ''
+  };
+}
+
+function buildWFMPrompt(fieldId, ctx, websiteContent) {
+  var biz = ctx.co || 'the company';
+  var web = websiteContent ? '\n\nFrom their website: ' + websiteContent : '';
+  var base = 'Company: ' + biz + (ctx.pos ? ', ' + ctx.pos : '') + (ctx.what ? '\nWhat they do: ' + ctx.what : '') + (ctx.angle ? '\nUnique angle: ' + ctx.angle : '') + web;
+
+  var prompts = {
+    // Account fields
+    'acct-what': 'Write 1-2 sentences describing what this business does. Be specific, professional, and avoid marketing fluff. Use third person.\n\n' + base + '\n\nReturn ONLY the description, nothing else. Max 40 words.',
+    'acct-kp1': 'Write one clear sentence describing what this business does -- their core product or service. Professional, specific, factual. Third person.\n\n' + base + '\n\nReturn ONLY the sentence. Max 30 words.',
+    'acct-kp2': 'Write one sentence describing who this business serves -- their target customer. Be specific about who they are and what they need.\n\n' + base + '\n\nReturn ONLY the sentence. Max 30 words.',
+    'acct-kp3': 'Write one sentence describing what makes this business different from competitors. Focus on their genuine differentiator.\n\n' + base + '\n\nReturn ONLY the sentence. Max 30 words.',
+    // Campaign fields
+    'cp-what': 'Write 1-2 sentences describing what this business does for a PR campaign context. Professional and specific.\n\n' + base + (ctx.campName ? '\nCampaign: ' + ctx.campName : '') + '\n\nReturn ONLY the description. Max 40 words.',
+    'cp-angle': 'Write one sentence stating what makes this business uniquely different -- their strongest differentiator for media pitching.\n\n' + base + '\n\nReturn ONLY the sentence. Max 25 words.',
+    // PR questions
+    'cp-q1': 'Write 2-3 sentences answering: "What is the specific news or announcement for this campaign?" -- be concrete and newsworthy.\n\n' + base + (ctx.campName ? '\nCampaign name: ' + ctx.campName : '') + (ctx.campGoal ? '\nCampaign goal: ' + ctx.campGoal : '') + '\n\nReturn ONLY the answer. Max 60 words.',
+    'cp-q2': 'Write 1-2 sentences answering: "What is the key outcome or benefit for your customers?" -- be specific about value delivered.\n\n' + base + (ctx.q1 ? '\nThe announcement: ' + ctx.q1 : '') + '\n\nReturn ONLY the answer. Max 40 words.',
+    'cp-q3': 'Write 1-2 sentences answering: "What do you want media and readers to do after reading this?" -- include a clear call to action.\n\n' + base + (ctx.q1 ? '\nThe announcement: ' + ctx.q1 : '') + (ctx.web ? '\nWebsite: ' + ctx.web : '') + '\n\nReturn ONLY the answer. Max 35 words.'
+  };
+
+  return prompts[fieldId] || null;
+}
+
+function writeForMe(fieldId, btnEl) {
+  var el = document.getElementById(fieldId);
+  if (!el) return;
+
+  // Show spinner, hide button
+  var spinRow = document.getElementById('wfm-spin-' + fieldId);
+  var spinLabel = document.getElementById('wfm-label-' + fieldId);
+  if (spinRow) spinRow.style.display = 'flex';
+  btnEl.style.display = 'none';
+
+  var ctx = getWFMContext();
+
+  getWebsiteForWFM(function(websiteContent) {
+    var prompt = buildWFMPrompt(fieldId, ctx, websiteContent);
+    if (!prompt) {
+      if (spinRow) spinRow.style.display = 'none';
+      btnEl.style.display = 'inline-flex';
+      return;
+    }
+
+    // Use fast low-token API call -- 150 tokens max for speed
+    fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-5',
+        max_tokens: 150,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    })
+    .then(function(r){ return r.json(); })
+    .then(function(data) {
+      var text = '';
+      if (data.content && data.content[0]) text = data.content[0].text || '';
+      text = text.trim().replace(/^["']|["']$/g,'').trim();
+      if (text) {
+        el.value = text;
+        el.classList.add('wfm-filled');
+        setTimeout(function(){ el.classList.remove('wfm-filled'); }, 800);
+        // Auto-resize textarea
+        if (el.tagName === 'TEXTAREA') {
+          el.style.height = 'auto';
+          el.style.height = Math.min(el.scrollHeight, 200) + 'px';
+        }
+      }
+    })
+    .catch(function(){})
+    .finally(function(){
+      if (spinRow) spinRow.style.display = 'none';
+      btnEl.style.display = 'inline-flex';
+      if (spinLabel) spinLabel.textContent = 'Writing...';
+    });
+  });
+}
+
+
 // ============================================================
 var TEST_PROFILES = [
   {
@@ -2056,7 +2252,7 @@ function toggleDevMode() {
   renderUsageCounter();
   var btn = document.getElementById('dev-mode-btn');
   if (btn) {
-    btn.textContent = next ? '&#128275; Dev mode ON' : '&#128274; Dev mode OFF';
+    btn.textContent = next ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></svg> Dev mode ON' : '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Dev mode OFF';
     btn.style.background = next ? '#2d6a4f' : '';
     btn.style.color = next ? '#fff' : '';
     btn.style.borderColor = next ? '#2d6a4f' : '';
@@ -2314,8 +2510,21 @@ function saveAccount(isOnboarding) {
     kp1: document.getElementById('acct-kp1' + suffix).value.trim(),
     kp2: document.getElementById('acct-kp2' + suffix).value.trim(),
     kp3: document.getElementById('acct-kp3' + suffix).value.trim(),
-    logo: document.getElementById('acct-logo' + suffix).value.trim(),
-    social: document.getElementById('acct-social' + suffix).value.trim(),
+    logo: document.getElementById('acct-logo' + suffix) ? document.getElementById('acct-logo' + suffix).value.trim() : '',
+    fb: document.getElementById('acct-fb' + suffix) ? document.getElementById('acct-fb' + suffix).value.trim() : '',
+    ig: document.getElementById('acct-ig' + suffix) ? document.getElementById('acct-ig' + suffix).value.trim() : '',
+    yt: document.getElementById('acct-yt' + suffix) ? document.getElementById('acct-yt' + suffix).value.trim() : '',
+    x:  document.getElementById('acct-x' + suffix) ? document.getElementById('acct-x' + suffix).value.trim() : '',
+    li: document.getElementById('acct-li' + suffix) ? document.getElementById('acct-li' + suffix).value.trim() : '',
+    reddit: document.getElementById('acct-reddit' + suffix) ? document.getElementById('acct-reddit' + suffix).value.trim() : '',
+    social: [
+      document.getElementById('acct-fb' + suffix) && document.getElementById('acct-fb' + suffix).value.trim() ? 'Facebook: ' + document.getElementById('acct-fb' + suffix).value.trim() : '',
+      document.getElementById('acct-ig' + suffix) && document.getElementById('acct-ig' + suffix).value.trim() ? 'Instagram: ' + document.getElementById('acct-ig' + suffix).value.trim() : '',
+      document.getElementById('acct-yt' + suffix) && document.getElementById('acct-yt' + suffix).value.trim() ? 'YouTube: ' + document.getElementById('acct-yt' + suffix).value.trim() : '',
+      document.getElementById('acct-x' + suffix) && document.getElementById('acct-x' + suffix).value.trim() ? 'X: ' + document.getElementById('acct-x' + suffix).value.trim() : '',
+      document.getElementById('acct-li' + suffix) && document.getElementById('acct-li' + suffix).value.trim() ? 'LinkedIn: ' + document.getElementById('acct-li' + suffix).value.trim() : '',
+      document.getElementById('acct-reddit' + suffix) && document.getElementById('acct-reddit' + suffix).value.trim() ? 'Reddit: ' + document.getElementById('acct-reddit' + suffix).value.trim() : ''
+    ].filter(Boolean).join(' | '),
     created: userAccount ? userAccount.created : new Date().toISOString(),
     updated: new Date().toISOString()
   };
@@ -2377,13 +2586,66 @@ function updateAccountCompleteBanner() {
 
 function populateAccountEditForm() {
   if (!userAccount) return;
-  var fields = ['fname','lname','pos','phone','email','co','web','what','kp1','kp2','kp3','logo','social'];
+  var fields = ['fname','lname','pos','phone','email','co','web','what','kp1','kp2','kp3'];
   fields.forEach(function(f) {
     var el = document.getElementById('acct-' + f + '-e');
     if (el) el.value = userAccount[f] || '';
   });
+  // Individual social fields
+  ['fb','ig','yt','x','li','reddit'].forEach(function(f) {
+    var el = document.getElementById('acct-' + f + '-e');
+    if (el) el.value = userAccount[f] || '';
+  });
+  // Logo preview
+  if (userAccount.logo) {
+    var logoInput = document.getElementById('acct-logo-e');
+    if (logoInput) logoInput.value = userAccount.logo;
+    showLogoPreview(userAccount.logo, '-e');
+  }
   updateAccountCompleteBanner();
 }
+
+function handleLogoFile(event, fieldId) {
+  var file = event.target.files[0];
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var dataUrl = e.target.result;
+    var input = document.getElementById(fieldId);
+    if (input) input.value = dataUrl;
+    var suffix = fieldId.includes('-e') ? '-e' : '';
+    showLogoPreview(dataUrl, suffix);
+  };
+  reader.readAsDataURL(file);
+}
+
+function handleLogoDrop(event, fieldId) {
+  event.preventDefault();
+  var suffix = fieldId.includes('-e') ? '-e' : '';
+  var zone = document.getElementById('logo-drop-zone' + suffix);
+  if (zone) { zone.style.borderColor = ''; zone.style.background = ''; }
+  var file = event.dataTransfer.files[0];
+  if (!file || !file.type.startsWith('image/')) { alert('Please drop an image file.'); return; }
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var dataUrl = e.target.result;
+    var input = document.getElementById(fieldId);
+    if (input) input.value = dataUrl;
+    showLogoPreview(dataUrl, suffix);
+  };
+  reader.readAsDataURL(file);
+}
+
+function showLogoPreview(src, suffix) {
+  var img = document.getElementById('acct-logo-img' + suffix);
+  var preview = document.getElementById('logo-drop-preview' + suffix);
+  var empty = document.getElementById('logo-drop-empty' + suffix);
+  if (img) img.src = src;
+  if (preview) preview.style.display = 'block';
+  if (empty) empty.style.display = 'none';
+}
+
+
 
 function toggleAccountDropdown() {
   var dd = document.getElementById('acct-dropdown');
@@ -2798,7 +3060,7 @@ function renderCampaignsDashboard() {
     return;
   }
 
-  var branchIcons = ['&#128240;','&#128161;','&#127911;','&#127968;','&#127760;'];
+  var branchIcons = ['<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v2"/><path d="M4 11h8"/><path d="M4 7h4"/><path d="M4 15h8"/><path d="M2 17l2 2 4-4"/></svg>','&#128161;','&#127911;','&#127968;','&#127760;'];
   var branchLabels = ['Press','Story','Podcast','Local','Community'];
   var branchPaths = ['Press Release','Editorial Pitch','Podcast Pitch','Local Media','Reddit Outreach'];
 
@@ -3536,7 +3798,7 @@ function renderHubPRSection() {
       '<button class="btn btn-outline btn-sm" style="margin-left:6px;" onclick="editHubPR()">Regenerate</button>';
     preview.textContent = pr;
   } else {
-    label.innerHTML = '&#128240; Press release';
+    label.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v2"/><path d="M4 11h8"/><path d="M4 7h4"/><path d="M4 15h8"/><path d="M2 17l2 2 4-4"/></svg> Press release';
     sub.textContent = 'No press release yet -- generate one to use across all outreach paths';
     actions.innerHTML = '<button class="btn btn-gold btn-sm" onclick="goGeneratePR()">Generate now</button>';
     preview.style.display = 'none';
@@ -3640,6 +3902,8 @@ function showNewCampaignForm() {
   document.getElementById('cp-pr-collapsed').style.display = 'block';
   document.getElementById('cp-pr-review').style.display = 'none';
   document.getElementById('cp-pr-approved').style.display = 'none';
+  wfmWebCache = null; // reset website cache for new company context
+  wfmQueue = [];
   // Reset 3-question PR fields
   ['cp-q1','cp-q2','cp-q3'].forEach(function(id){
     var el = document.getElementById(id); if(el) el.value='';
@@ -4459,7 +4723,7 @@ function renderFoundPlatforms(list) {
     } else if (isRevealed || sel) {
       html += '<button class="reveal-btn used" style="margin-top:6px;" onclick="selectRevealedPlatform(\'' + safeName + '\')">Select &rarr;</button>';
     } else {
-      html += '<button class="reveal-btn" style="margin-top:6px;" onclick="requestRevealToken(\'' + safeName + '\')">&#128274; Reveal &amp; select</button>';
+      html += '<button class="reveal-btn" style="margin-top:6px;" onclick="requestRevealToken(\'' + safeName + '\')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Reveal &amp; select</button>';
     }
     html += '</div>';
     html += '</div>';
@@ -6127,7 +6391,7 @@ function renderLocalOutlets(list, filter) {
     el.innerHTML = '<div style="padding:1rem;color:var(--muted);font-size:13px;">No outlets match this filter.</div>';
     return;
   }
-  var typeIcons = { newspaper:'&#128240;', online:'&#127760;', radio:'&#128251;', tv:'&#128250;', community:'&#127968;', council:'&#127963;' };
+  var typeIcons = { newspaper:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v2"/><path d="M4 11h8"/><path d="M4 7h4"/><path d="M4 15h8"/><path d="M2 17l2 2 4-4"/></svg>', online:'&#127760;', radio:'&#128251;', tv:'&#128250;', community:'&#127968;', council:'&#127963;' };
   var contacted = getContactedOutlets();
   var html = '';
   filtered.forEach(function(p) {
@@ -6138,7 +6402,7 @@ function renderLocalOutlets(list, filter) {
     for (var i = 0; i < p.s; i++) stars += '&#9733;';
     for (var i = p.s; i < 5; i++) stars += '&#9734;';
     var safe = p.n.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
-    var icon = typeIcons[p.type] || '&#128240;';
+    var icon = typeIcons[p.type] || '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v2"/><path d="M4 11h8"/><path d="M4 7h4"/><path d="M4 15h8"/><path d="M2 17l2 2 4-4"/></svg>';
     var rowClass = 'plat-item' + (sel ? ' sel' : '') + (alreadyContacted ? ' already-contacted' : '');
     html += '<div class="' + rowClass + '">';
     html += '<div style="flex:1;">';
@@ -6162,7 +6426,7 @@ function renderLocalOutlets(list, filter) {
     if (alreadyContacted || isRevealed || sel) {
       html += '<button class="reveal-btn used" style="margin-top:6px;" onclick="selectLocalOutlet(\'' + safe + '\')">Select &rarr;</button>';
     } else {
-      html += '<button class="reveal-btn" style="margin-top:6px;" onclick="selectLocalOutlet(\'' + safe + '\')">&#128274; Reveal &amp; select</button>';
+      html += '<button class="reveal-btn" style="margin-top:6px;" onclick="selectLocalOutlet(\'' + safe + '\')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Reveal &amp; select</button>';
     }
     html += '</div></div>';
   });
@@ -6292,7 +6556,7 @@ function initApp() {
     setTimeout(function() {
       var btn = document.getElementById('dev-mode-btn');
       if (btn) {
-        btn.textContent = '&#128275; Dev mode ON';
+        btn.textContent = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></svg> Dev mode ON';
         btn.style.background = '#2d6a4f';
         btn.style.color = '#fff';
         btn.style.borderColor = '#2d6a4f';
