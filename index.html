@@ -1,4 +1,4 @@
-=<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
@@ -270,6 +270,8 @@ textarea{resize:vertical;line-height:1.6;}
         <div class="acct-dd-item" onclick="showScreen('s-account');closeAccountDropdown()">&#128100; My account</div>
         <div class="acct-dd-item" onclick="goHome();closeAccountDropdown()">&#128196; My campaigns</div>
         <div class="acct-dd-item" onclick="showScreen('s-dashboard');closeAccountDropdown()">&#128202; Outreach dashboard</div>
+        <div class="acct-dd-divider"></div>
+        <div class="acct-dd-item" onclick="toggleDevMode()" id="dev-mode-btn" style="font-size:12px;color:var(--muted);">&#128274; Dev mode OFF</div>
         <div class="acct-dd-divider"></div>
         <div class="acct-dd-item danger" onclick="confirmClearAccount()">&#128683; Clear account data</div>
       </div>
@@ -1926,14 +1928,50 @@ function hasUsageRemaining() {
   return getUsageCount() < DAILY_LIMIT;
 }
 
+var DEV_MODE_KEY = 'op_dev_mode';
+
+function isDevMode() {
+  try { return localStorage.getItem(DEV_MODE_KEY) === 'true'; } catch(e) { return false; }
+}
+
+function toggleDevMode() {
+  var next = !isDevMode();
+  try { localStorage.setItem(DEV_MODE_KEY, next.toString()); } catch(e) {}
+  renderUsageCounter();
+  var btn = document.getElementById('dev-mode-btn');
+  if (btn) {
+    btn.textContent = next ? '&#128275; Dev mode ON' : '&#128274; Dev mode OFF';
+    btn.style.background = next ? '#2d6a4f' : '';
+    btn.style.color = next ? '#fff' : '';
+    btn.style.borderColor = next ? '#2d6a4f' : '';
+    btn.style.fontWeight = next ? '600' : '';
+  }
+}
+
 function renderUsageCounter() {
+  var pipsEl = document.getElementById('usage-pips');
+  var countEl = document.getElementById('usage-count');
+  var counterEl = document.getElementById('usage-counter');
+
+  if (isDevMode()) {
+    if (countEl) countEl.textContent = '\u221e';
+    if (counterEl) { counterEl.style.opacity = '1'; counterEl.title = 'Dev mode -- unlimited'; }
+    if (pipsEl) {
+      pipsEl.innerHTML = '';
+      for (var i = 0; i < 10; i++) {
+        var p = document.createElement('div');
+        p.className = 'usage-pip used';
+        p.style.background = '#2d6a4f';
+        pipsEl.appendChild(p);
+      }
+    }
+    return;
+  }
+
   var count = getUsageCount();
   var remaining = DAILY_LIMIT - count;
-  // Update count label
-  var countEl = document.getElementById('usage-count');
   if (countEl) countEl.textContent = count + '/' + DAILY_LIMIT;
-  // Update pips
-  var pipsEl = document.getElementById('usage-pips');
+  if (counterEl) counterEl.style.opacity = count >= DAILY_LIMIT ? '0.7' : '1';
   if (!pipsEl) return;
   pipsEl.innerHTML = '';
   for (var i = 0; i < DAILY_LIMIT; i++) {
@@ -1946,12 +1984,6 @@ function renderUsageCounter() {
     }
     pipsEl.appendChild(pip);
   }
-  // Update counter colour based on usage
-  var counter = document.getElementById('usage-counter');
-  if (counter) {
-    counter.style.opacity = count >= DAILY_LIMIT ? '0.7' : '1';
-  }
-  // Update reset time label in modal
   var resetLabel = document.getElementById('usage-resets-label');
   if (resetLabel) {
     var now = new Date();
@@ -1963,15 +1995,17 @@ function renderUsageCounter() {
 }
 
 function checkUsageBeforeGenerate(onAllowed) {
+  if (isDevMode()) { onAllowed(); return; }
   if (!hasUsageRemaining()) {
     renderUsageCounter();
     document.getElementById('usage-limit-modal').style.display = 'flex';
     return;
   }
-  // Allowed -- increment and proceed
   incrementUsage();
   onAllowed();
 }
+
+
 
 // ============================================================
 // INDUSTRY CARD SELECTOR
@@ -6101,6 +6135,19 @@ function initApp() {
   editingCampId = null;
   renderUsageCounter();
   checkFirstRun();
+  // Restore dev mode button label if active
+  if (isDevMode()) {
+    setTimeout(function() {
+      var btn = document.getElementById('dev-mode-btn');
+      if (btn) {
+        btn.textContent = '&#128275; Dev mode ON';
+        btn.style.background = '#2d6a4f';
+        btn.style.color = '#fff';
+        btn.style.borderColor = '#2d6a4f';
+        btn.style.fontWeight = '600';
+      }
+    }, 100);
+  }
   // Wire up s-account screen to populate when shown
   var origShowScreen = showScreen;
 }
