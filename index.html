@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -183,7 +184,24 @@ textarea{resize:vertical;line-height:1.6;}
 .dash-tick.sent{background:#d8f3dc;color:#2d6a4f;}
 .dash-tick.pending{background:#fff3cd;color:#856404;}
 .dash-tick.replied{background:#e8f4fd;color:#1565c0;}
-.wfm-link{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:600;color:var(--gold);cursor:pointer;letter-spacing:0.3px;margin-top:4px;padding:2px 0;border:none;background:none;text-decoration:none;transition:opacity 0.15s;font-family:inherit;}
+.accord{border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:10px;background:var(--white);}
+.accord-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;cursor:pointer;user-select:none;transition:background 0.15s;}
+.accord-header:hover{background:var(--off);}
+.accord-left{display:flex;align-items:center;gap:10px;}
+.accord-status{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:11px;font-weight:700;}
+.accord-status.complete{background:#d8f3dc;color:#2d6a4f;}
+.accord-status.incomplete{background:#fde8e8;color:#c1121f;}
+.accord-title{font-size:14px;font-weight:500;color:var(--black);}
+.accord-subtitle{font-size:11px;color:var(--muted);margin-top:1px;}
+.accord-chevron{transition:transform 0.2s;flex-shrink:0;color:var(--muted);}
+.accord-chevron.open{transform:rotate(180deg);}
+.accord-body{display:none;padding:0 16px 16px;border-top:1px solid var(--border);}
+.accord-body.open{display:block;}
+.accord-field{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);}
+.accord-field:last-child{border-bottom:none;}
+.accord-field-label{font-size:11px;color:var(--muted);width:90px;flex-shrink:0;padding-top:1px;}
+.accord-field-value{font-size:13px;color:var(--black);flex:1;line-height:1.5;}
+.accord-field-value.missing{color:#c1121f;font-style:italic;font-size:12px;}align-items:center;gap:4px;font-size:10px;font-weight:600;color:var(--gold);cursor:pointer;letter-spacing:0.3px;margin-top:4px;padding:2px 0;border:none;background:none;text-decoration:none;transition:opacity 0.15s;font-family:inherit;}
 .wfm-link:hover{opacity:0.7;}
 .wfm-wrap{display:flex;flex-direction:column;}
 .wfm-spinner-row{display:none;align-items:center;gap:5px;font-size:10px;color:var(--muted);margin-top:3px;}
@@ -860,50 +878,85 @@ textarea{resize:vertical;line-height:1.6;}
     </div>
     <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
       <span id="hub-status-pill" class="camp-status"></span>
-      <button class="btn btn-outline btn-sm" onclick="editCampaign()">Edit campaign</button>
+      <button class="btn btn-outline btn-sm" onclick="editCampaign()">Edit</button>
     </div>
   </div>
 
-  <!-- Profile card -->
-  <div style="background:var(--off);border:1.5px solid var(--border);border-radius:12px;padding:1rem 1.25rem;margin-bottom:1rem;" id="hub-profile-summary"></div>
-
-  <!-- Press release card -->
-  <div id="hub-pr-section" style="margin-bottom:1.5rem;padding:1rem 1.25rem;border-radius:12px;border:1.5px solid var(--border);background:var(--white);">
-    <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;">
-      <div>
-        <div style="font-size:13px;font-weight:500;color:var(--black);" id="hub-pr-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v2"/><path d="M4 11h8"/><path d="M4 7h4"/><path d="M4 15h8"/><path d="M2 17l2 2 4-4"/></svg> Press release</div>
-        <div style="font-size:12px;color:var(--muted);margin-top:2px;" id="hub-pr-sub"></div>
+  <!-- ACCORDION 1: Company information -->
+  <div class="accord" id="accord-company">
+    <div class="accord-header" onclick="toggleAccord('accord-company')">
+      <div class="accord-left">
+        <div class="accord-status incomplete" id="accord-company-status"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>
+        <div>
+          <div class="accord-title">Company information</div>
+          <div class="accord-subtitle" id="accord-company-sub">Loading...</div>
+        </div>
       </div>
-      <div id="hub-pr-actions"></div>
+      <svg class="accord-chevron" id="chev-company" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
     </div>
-    <div id="hub-pr-preview" style="display:none;margin-top:10px;" class="pr-box"></div>
+    <div class="accord-body" id="accord-company-body">
+      <div class="accord-field"><div class="accord-field-label">Name</div><div class="accord-field-value" id="af-name"></div></div>
+      <div class="accord-field"><div class="accord-field-label">Company</div><div class="accord-field-value" id="af-co"></div></div>
+      <div class="accord-field"><div class="accord-field-label">Website</div><div class="accord-field-value" id="af-web"></div></div>
+      <div class="accord-field"><div class="accord-field-label">Email</div><div class="accord-field-value" id="af-email"></div></div>
+      <div class="accord-field"><div class="accord-field-label">About</div><div class="accord-field-value" id="af-what"></div></div>
+      <div style="margin-top:10px;">
+        <button class="btn btn-outline btn-sm" onclick="editCampaign()">Edit company info</button>
+      </div>
+    </div>
   </div>
 
-  <!-- Outreach paths -->
-  <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:.75rem;font-weight:500;">Choose your outreach path</div>
+  <!-- ACCORDION 2: Press release -->
+  <div class="accord" id="accord-pr">
+    <div class="accord-header" onclick="toggleAccord('accord-pr')">
+      <div class="accord-left">
+        <div class="accord-status incomplete" id="accord-pr-status"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>
+        <div>
+          <div class="accord-title">Press release</div>
+          <div class="accord-subtitle" id="accord-pr-sub">No press release yet</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <div id="hub-pr-actions"></div>
+        <svg class="accord-chevron" id="chev-pr" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+    </div>
+    <div class="accord-body" id="accord-pr-body">
+      <div id="hub-pr-preview" class="pr-box" style="display:none;max-height:300px;overflow-y:auto;margin-bottom:10px;"></div>
+      <div id="accord-pr-empty" style="font-size:13px;color:var(--muted);padding:8px 0;">Generate a press release to use across all outreach paths. Once approved it pre-fills automatically.</div>
+      <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;">
+        <button class="btn btn-gold btn-sm" onclick="goGeneratePR()">Generate press release</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Divider -->
+  <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);font-weight:500;margin:1.5rem 0 .75rem;">Choose your outreach path</div>
+
+  <!-- 5 Path cards -->
   <div class="camp-paths">
     <div class="camp-path" onclick="launchPath('A')">
-      <div class="camp-path-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v2"/><path d="M4 11h8"/><path d="M4 7h4"/><path d="M4 15h8"/><path d="M2 17l2 2 4-4"/></svg></div>
+      <div class="camp-path-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v2"/><path d="M4 11h8"/><path d="M4 7h4"/><path d="M4 15h8"/></svg></div>
       <div class="camp-path-title">Reach press &amp; media</div>
-      <div class="camp-path-desc">Send your press release to targeted outlets and media</div>
+      <div class="camp-path-desc">Send your press release to targeted outlets</div>
     </div>
     <div class="camp-path" onclick="launchPath('B')">
-      <div class="camp-path-icon">&#128161;</div>
+      <div class="camp-path-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
       <div class="camp-path-title">Pitch a story angle</div>
-      <div class="camp-path-desc">Develop and pitch a story idea to journalists and editors</div>
+      <div class="camp-path-desc">Pitch a story idea to journalists and editors</div>
     </div>
     <div class="camp-path" onclick="launchPath('C')">
-      <div class="camp-path-icon">&#127911;</div>
+      <div class="camp-path-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></div>
       <div class="camp-path-title">Pitch a podcast</div>
       <div class="camp-path-desc">Craft a guest pitch or collaboration proposal</div>
     </div>
     <div class="camp-path" onclick="launchPath('D')">
-      <div class="camp-path-icon">&#127760;</div>
+      <div class="camp-path-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
       <div class="camp-path-title">Reach communities</div>
-      <div class="camp-path-desc">Reddit community outreach and authentic discussion posts</div>
+      <div class="camp-path-desc">Reddit outreach and community posts</div>
     </div>
     <div class="camp-path" style="grid-column:1/-1;" onclick="launchPath('E')">
-      <div class="camp-path-icon">&#127968;</div>
+      <div class="camp-path-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
       <div class="camp-path-title">Local media outreach</div>
       <div class="camp-path-desc">Target hyperlocal press -- suburb, borough, or district level</div>
     </div>
@@ -3120,38 +3173,120 @@ function openCampaign(id) {
   var camp = campaigns.find(function(c){ return c.id === id; });
   if (!camp) return;
   activeCampaign = camp;
-  // Populate hub screen
   document.getElementById('hub-eyebrow').textContent = 'Campaign';
   document.getElementById('hub-title').textContent = camp.name;
   document.getElementById('hub-goal').textContent = camp.goal || '';
   var sp = document.getElementById('hub-status-pill');
   sp.textContent = camp.status === 'active' ? 'Active' : camp.status === 'completed' ? 'Completed' : 'Draft';
   sp.className = 'camp-status ' + (camp.status || 'draft');
-  // Profile summary
-  var p = camp.profile || {};
-  document.getElementById('hub-profile-summary').innerHTML =
-    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px 16px;font-size:12px;">' +
-    '<div><span style="color:var(--muted);">Name</span><br><strong>' + (p.name||'—') + (p.pos ? ', ' + p.pos : '') + '</strong></div>' +
-    '<div><span style="color:var(--muted);">Company</span><br><strong>' + (p.co||'—') + '</strong></div>' +
-    '<div><span style="color:var(--muted);">Website</span><br><strong>' + (p.web||'—') + '</strong></div>' +
-    '<div><span style="color:var(--muted);">Email</span><br><strong>' + (p.email||'—') + '</strong></div>' +
-    '</div>' +
-    (p.what ? '<div style="font-size:12px;color:var(--muted);margin-top:8px;">' + p.what + '</div>' : '');
-  // Render log and PR section
+  // Render accordions + PR + log
+  renderHubAccordions();
   renderHubLog();
   renderHubPRSection();
-  // Pre-load press release into session state so all paths can use it
+  // Pre-load press release into session state
   if (camp.savedContent && camp.savedContent.pressRelease) {
     state.pressRelease = camp.savedContent.pressRelease;
     state.prApproved = true;
   }
-  // Set campaign to active if still draft
   if (camp.status === 'draft') {
     camp.status = 'active';
     saveCampaignsToStorage();
   }
   showScreen('s-hub');
 }
+
+function toggleAccord(id) {
+  var body = document.getElementById(id + '-body');
+  var chev = document.getElementById('chev-' + id.replace('accord-',''));
+  if (!body) return;
+  var isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  if (chev) chev.classList.toggle('open', !isOpen);
+}
+
+function renderHubAccordions() {
+  if (!activeCampaign) return;
+  var p = activeCampaign.profile || {};
+  var acct = userAccount || {};
+
+  // ── ACCORDION 1: Company information ──
+  var name  = p.name  || acct.fname && acct.lname ? [acct.fname, acct.lname].filter(Boolean).join(' ') : '';
+  var co    = p.co    || acct.co    || '';
+  var web   = p.web   || acct.web   || '';
+  var email = p.email || acct.email || '';
+  var what  = p.what  || acct.what  || '';
+
+  var companyFields = [
+    { label:'Name',    val: name  },
+    { label:'Company', val: co    },
+    { label:'Website', val: web   },
+    { label:'Email',   val: email },
+    { label:'About',   val: what  }
+  ];
+  var companyComplete = name && co && web && email && what;
+
+  var TICK  = '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+  var CROSS = '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+
+  // Status indicator
+  var cStatus = document.getElementById('accord-company-status');
+  if (cStatus) {
+    cStatus.innerHTML = companyComplete ? TICK : CROSS;
+    cStatus.className = 'accord-status ' + (companyComplete ? 'complete' : 'incomplete');
+  }
+  var cSub = document.getElementById('accord-company-sub');
+  if (cSub) cSub.textContent = companyComplete ? 'All information complete' : 'Some fields missing — click to review';
+
+  // Populate fields
+  companyFields.forEach(function(f) {
+    var el = document.getElementById('af-' + f.label.toLowerCase());
+    if (!el) return;
+    if (f.val) {
+      el.textContent = f.val;
+      el.className = 'accord-field-value';
+    } else {
+      el.textContent = 'Not filled in';
+      el.className = 'accord-field-value missing';
+    }
+  });
+
+  // ── ACCORDION 2: Press release ──
+  var pr = (activeCampaign.savedContent || {}).pressRelease;
+  var prStatus = document.getElementById('accord-pr-status');
+  var prSub    = document.getElementById('accord-pr-sub');
+  var prEmpty  = document.getElementById('accord-pr-empty');
+  var prPreview = document.getElementById('hub-pr-preview');
+
+  if (prStatus) {
+    prStatus.innerHTML = pr ? TICK : CROSS;
+    prStatus.className = 'accord-status ' + (pr ? 'complete' : 'incomplete');
+  }
+  if (prSub) prSub.textContent = pr ? 'Approved and ready — pre-fills all outreach paths' : 'Not yet generated';
+  if (prEmpty) prEmpty.style.display = pr ? 'none' : 'block';
+  if (prPreview) {
+    if (pr) {
+      prPreview.textContent = pr;
+      prPreview.style.display = 'block';
+    } else {
+      prPreview.style.display = 'none';
+    }
+  }
+
+  // Open company accordion by default if incomplete, PR accordion if company is done
+  if (!companyComplete) {
+    var body = document.getElementById('accord-company-body');
+    var chev = document.getElementById('chev-company');
+    if (body) { body.classList.add('open'); }
+    if (chev) { chev.classList.add('open'); }
+  } else if (!pr) {
+    var body = document.getElementById('accord-pr-body');
+    var chev = document.getElementById('chev-pr');
+    if (body) { body.classList.add('open'); }
+    if (chev) { chev.classList.add('open'); }
+  }
+}
+
+
 
 function renderHubLog() {
   if (!activeCampaign) return;
@@ -3785,23 +3920,16 @@ function downloadCampaignDraftPR() {
 function renderHubPRSection() {
   if (!activeCampaign) return;
   var pr = (activeCampaign.savedContent || {}).pressRelease;
-  var label = document.getElementById('hub-pr-label');
-  var sub = document.getElementById('hub-pr-sub');
   var actions = document.getElementById('hub-pr-actions');
-  var preview = document.getElementById('hub-pr-preview');
-  if (pr) {
-    label.innerHTML = '<span style="color:#2d6a4f;">&#10003;</span> Press release ready';
-    sub.textContent = 'Approved and saved -- pre-fills into all outreach paths automatically';
-    actions.innerHTML =
-      '<button class="btn btn-outline btn-sm" onclick="toggleHubPRPreview()">View</button>' +
-      '<button class="btn btn-gold btn-sm" style="margin-left:6px;" onclick="downloadHubPRasPDF()">&#8595; Download PDF</button>' +
-      '<button class="btn btn-outline btn-sm" style="margin-left:6px;" onclick="editHubPR()">Regenerate</button>';
-    preview.textContent = pr;
-  } else {
-    label.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v2"/><path d="M4 11h8"/><path d="M4 7h4"/><path d="M4 15h8"/><path d="M2 17l2 2 4-4"/></svg> Press release';
-    sub.textContent = 'No press release yet -- generate one to use across all outreach paths';
-    actions.innerHTML = '<button class="btn btn-gold btn-sm" onclick="goGeneratePR()">Generate now</button>';
-    preview.style.display = 'none';
+  if (actions) {
+    if (pr) {
+      actions.innerHTML =
+        '<button class="btn btn-outline btn-sm" style="font-size:11px;" onclick="toggleHubPRPreview()">View</button>' +
+        '<button class="btn btn-gold btn-sm" style="margin-left:6px;font-size:11px;" onclick="downloadHubPRasPDF()">&#8595; PDF</button>' +
+        '<button class="btn btn-outline btn-sm" style="margin-left:6px;font-size:11px;" onclick="editHubPR()">Regenerate</button>';
+    } else {
+      actions.innerHTML = '';
+    }
   }
 }
 
@@ -3817,7 +3945,7 @@ function downloadHubPRasPDF() {
   var safe = function(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); };
 
   var html = '<!DOCTYPE html><html><head><meta charset="UTF-8"/>' +
-    '<title>' + safe(co) + ' -- Press Release</title>' +
+    '<title>PRESS_RELEASE_' + safe(co).replace(/ /g, '_') + '</title>' +
     '<style>' +
     '* { box-sizing: border-box; margin: 0; padding: 0; }' +
     'html, body { background: #fff; }' +
@@ -3846,8 +3974,15 @@ function downloadHubPRasPDF() {
 }
 
 function toggleHubPRPreview() {
+  // Make sure PR accordion is open
+  var body = document.getElementById('accord-pr-body');
+  var chev = document.getElementById('chev-pr');
+  if (body && !body.classList.contains('open')) {
+    body.classList.add('open');
+    if (chev) chev.classList.add('open');
+  }
   var el = document.getElementById('hub-pr-preview');
-  el.style.display = el.style.display === 'none' ? 'block' : 'none';
+  if (el) el.style.display = el.style.display === 'none' ? 'block' : 'none';
 }
 
 function goGeneratePR() {
@@ -5311,7 +5446,7 @@ function downloadPRasPDF() {
   var safe = function(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); };
 
   var html = '<!DOCTYPE html><html><head><meta charset="UTF-8"/>' +
-    '<title>' + safe(co) + ' -- Press Release</title>' +
+    '<title>PRESS_RELEASE_' + safe(co).replace(/ /g, '_') + '</title>' +
     '<style>' +
     '* { box-sizing: border-box; margin: 0; padding: 0; }' +
     'html, body { background: #fff; }' +
