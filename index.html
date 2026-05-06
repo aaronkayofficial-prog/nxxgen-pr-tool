@@ -6300,8 +6300,7 @@ function doGenerateEmail() {
     state.reusingEmail = false;
     state.lastEmailBody = '';
     var rn = document.getElementById('reuse-email-notice');
-    if (rn) rn.remove();
-    document.getElementById('email-preview').value = finalText;
+    if (rn) rn.remove();    document.getElementById('email-preview').value = finalText;
     document.getElementById('email-preview-wrap').style.display = 'block';
     document.getElementById('copy-confirm').style.display = 'none';
     document.getElementById('log-inline-confirm').style.display = 'none';
@@ -6425,38 +6424,71 @@ function saveLogEntryToCampaign(entry) {
 }
 
 function logAndSendAnother() {
-  // Outreach already auto-logged on outlet selection -- just reset for next outlet
-  state.lastEmailBody = document.getElementById('email-preview').value;
+  // Save email body for reuse, reset log entry
+  state.lastEmailBody = (document.getElementById('email-preview') ? document.getElementById('email-preview').value : '') || '';
   state.reusingEmail = true;
   state.currentLogEntryId = null;
-  // Clear recipient fields only
-  document.getElementById('e-editor').value = '';
-  var _ew = document.getElementById('e-editor-wrap'); if(_ew) _ew.style.display = '';
-  document.getElementById('e-contact').value = '';
-  if (document.getElementById('email-auto-label')) document.getElementById('email-auto-label').textContent = '';
-  document.getElementById('log-outlet-inline').value = '';
-  document.getElementById('log-journalist-inline').value = '';
-  document.getElementById('log-email-inline').value = '';
-  document.getElementById('log-inline-confirm').style.display = 'none';
-  document.getElementById('copy-confirm').style.display = 'none';
-  document.getElementById('email-preview-wrap').style.display = 'none';
-  // Reset platform selection visually
+
+  // Reset recipient fields
+  var editorEl = document.getElementById('e-editor');
+  if (editorEl) editorEl.value = '';
+  var editorWrap = document.getElementById('e-editor-wrap');
+  if (editorWrap) editorWrap.style.display = '';
+  var contactEl = document.getElementById('e-contact');
+  if (contactEl) contactEl.value = '';
+  var autoLabel = document.getElementById('email-auto-label');
+  if (autoLabel) autoLabel.textContent = '';
+
+  // Reset hidden log inputs
+  var logOutlet = document.getElementById('log-outlet-inline');
+  if (logOutlet) logOutlet.value = '';
+  var logJournalist = document.getElementById('log-journalist-inline');
+  if (logJournalist) logJournalist.value = '';
+  var logEmail = document.getElementById('log-email-inline');
+  if (logEmail) logEmail.value = '';
+
+  // Hide email wrap + confirms
+  var emailWrap = document.getElementById('email-preview-wrap');
+  if (emailWrap) emailWrap.style.display = 'none';
+  var copyConf = document.getElementById('copy-confirm');
+  if (copyConf) copyConf.style.display = 'none';
+
+  // Reset outlet selection
   state.selectedPlatform = null;
-  document.getElementById('plat-btn').style.display = 'none';
-  document.getElementById('plat-sel-pill').style.display = 'none';
-  if (state.foundPlatforms && state.foundPlatforms.length) renderFoundPlatforms(state.foundPlatforms);
+
+  // Reset sticky footer
+  var platBtn = document.getElementById('plat-btn');
+  if (platBtn) platBtn.style.display = 'none';
+  var platPill = document.getElementById('plat-sel-pill');
+  if (platPill) platPill.innerHTML = '<div class="outlet-none-selected">Select an outlet from the list above</div>';
+
+  // Re-render outlet list without selection highlight
+  if (state.foundPlatforms && state.foundPlatforms.length) {
+    renderFoundPlatforms(state.foundPlatforms);
+  }
+
+  // For Path B, go back to s3 (outlet selection)
+  // For all paths, s3 is the right destination
   showScreen('s3');
-  // Show reuse banner
+
+  // Show reuse banner inside the panel, above the results
   setTimeout(function() {
+    // Remove any existing notice
     var existing = document.getElementById('reuse-email-notice');
-    if (!existing) {
+    if (existing) existing.remove();
+    // Insert inside the panel, above the results div
+    var resultsEl = document.getElementById('plat-list');
+    var panelEl = document.getElementById('plat-panel');
+    if (panelEl && resultsEl) {
       var notice = document.createElement('div');
       notice.id = 'reuse-email-notice';
-      notice.className = 'notice notice-gold';
-      notice.style.marginBottom = '1rem';
-      notice.innerHTML = '<strong>&#128260; Sending to another outlet</strong><br/>Your email is saved. Pick a new outlet -- the same content will pre-load so you only need to update the recipient details.';
-      var list = document.getElementById('plat-list');
-      if (list && list.parentNode) list.parentNode.insertBefore(notice, list);
+      notice.style.cssText = 'padding:10px 14px;background:#fffdf2;border-bottom:1px solid #f0d060;display:flex;align-items:center;gap:10px;';
+      notice.innerHTML =
+        '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#b8860b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>' +
+        '<div><div style="font-size:12px;font-weight:600;color:#7a5c00;">Sending to another outlet</div>' +
+        '<div style="font-size:11px;color:#a07800;margin-top:1px;">Your email is saved. Select a new outlet — it will pre-fill automatically.</div></div>';
+      // Insert before the results
+      resultsEl.parentNode.insertBefore(notice, resultsEl);
     }
   }, 150);
 }
