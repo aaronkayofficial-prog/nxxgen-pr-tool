@@ -1,5 +1,5 @@
 async function verifyToken(token) {
-  const res = await fetch('https://regular-pup-97.clerk.accounts.dev/oauth/userinfo', {
+  const res = await fetch('https://clerk.pressreachout.com/oauth/userinfo', {
     headers: { Authorization: 'Bearer ' + token }
   });
   if (!res.ok) return null;
