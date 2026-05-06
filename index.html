@@ -1819,7 +1819,7 @@ textarea{resize:vertical;line-height:1.6;}
   </div>
 
   <div class="g2">
-    <div><label>Editor name <span style="font-size:10px;font-weight:400;text-transform:none;">(if known)</span></label><input type="text" id="e-editor" placeholder="e.g. Sarah Jones"/></div>
+    <div id="e-editor-wrap"><label>Editor name <span style="font-size:10px;font-weight:400;text-transform:none;">(if known)</span></label><input type="text" id="e-editor" placeholder="e.g. Sarah Jones"/></div>
     <div>
       <label>Their email address <span style="font-size:10px;font-weight:400;text-transform:none;color:var(--gold);" id="email-auto-label"></span></label>
       <input type="text" id="e-contact" placeholder="e.g. editorial@mumbrella.com.au"/>
@@ -2043,7 +2043,7 @@ textarea{resize:vertical;line-height:1.6;}
   </div>
 
   <div class="g2">
-    <div><label>Journalist or editor name <span style="font-size:10px;font-weight:400;text-transform:none;">(if known)</span></label><input type="text" id="loc-editor" placeholder="e.g. Jane Smith"/></div>
+    <div id="loc-editor-wrap"><label>Journalist or editor name <span style="font-size:10px;font-weight:400;text-transform:none;">(if known)</span></label><input type="text" id="loc-editor" placeholder="e.g. Jane Smith"/></div>
     <div><label>Their email <span style="font-size:10px;font-weight:400;text-transform:none;" id="loc-email-auto"></span></label><input type="text" id="loc-contact" placeholder="e.g. news@localgazette.com.au"/></div>
     <div class="full"><label>Any additional local detail to include? <span style="font-size:10px;font-weight:400;text-transform:none;">(optional)</span></label><textarea id="loc-extra" style="min-height:60px;" placeholder="e.g. We are offering readers a 20% discount in opening week, or we are hosting a community open day on Saturday 10 May"></textarea></div>
   </div>
@@ -5394,11 +5394,16 @@ function selectRevealedPlatform(name) {
   // Auto-fill email + editor fields
   var emailField = document.getElementById('e-contact');
   if (emailField && plat.e) emailField.value = plat.e;
+
+  var editorName = plat.isPodcast ? (plat.host || '') : (plat.editor || '');
   var editorField = document.getElementById('e-editor');
-  if (editorField) {
-    if (plat.isPodcast && plat.host) editorField.value = plat.host;
-    else { editorField.value = plat.editor || ''; editorField.placeholder = 'e.g. Editor at ' + plat.n; }
+  var editorWrap = document.getElementById('e-editor-wrap');
+  if (editorField) editorField.value = editorName;
+  if (editorWrap) {
+    // Show field only if a name is known, hide if empty
+    editorWrap.style.display = editorName ? '' : 'none';
   }
+
   var autoLabel = document.getElementById('email-auto-label');
   if (autoLabel && plat.e) autoLabel.textContent = '(contact revealed)';
 
@@ -5486,6 +5491,12 @@ function _doSelectLocalOutlet(outlet) {
     var locAuto = document.getElementById('loc-email-auto');
     if (locAuto) locAuto.textContent = '(contact revealed)';
   }
+  // Show editor name field only if a name is known
+  var locEditorWrap = document.getElementById('loc-editor-wrap');
+  var locEditorField = document.getElementById('loc-editor');
+  var editorName = outlet.editor || outlet.contact || '';
+  if (locEditorField) locEditorField.value = editorName;
+  if (locEditorWrap) locEditorWrap.style.display = editorName ? '' : 'none';
   var locSub = document.getElementById('loc-email-sub');
   if (locSub) locSub.textContent = 'A community-focused email written for ' + outlet.n;
   renderLocalOutlets(locState.outlets, locState.locFilter);
@@ -5638,6 +5649,7 @@ function reachAnotherOutlet() {
   state.selectedPlatform = null;
   state.selectedPitch = '';
   document.getElementById('e-editor').value = '';
+  var _ew = document.getElementById('e-editor-wrap'); if(_ew) _ew.style.display = '';
   document.getElementById('e-contact').value = '';
   document.getElementById('e-pitch').value = '';
   document.getElementById('email-auto-label').textContent = '';
@@ -6064,6 +6076,7 @@ function logAndSendAnother() {
   state.currentLogEntryId = null; // new outlet will get its own log entry
   // Clear recipient fields only
   document.getElementById('e-editor').value = '';
+  var _ew = document.getElementById('e-editor-wrap'); if(_ew) _ew.style.display = '';
   document.getElementById('e-contact').value = '';
   if (document.getElementById('email-auto-label')) document.getElementById('email-auto-label').textContent = '';
   document.getElementById('log-outlet-inline').value = '';
