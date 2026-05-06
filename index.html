@@ -1710,6 +1710,13 @@ textarea{resize:vertical;line-height:1.6;}
     </span>
   </div>
   <div id="plat-search-done" style="display:none;" class="notice notice-success" style="margin-bottom:12px;"></div>
+  <div id="deep-search-wrap" style="display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap;">
+    <button id="deep-search-btn" class="btn btn-outline btn-sm" style="display:none;font-size:11px;" onclick="runDeepSearch()">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px;vertical-align:middle;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      Find more with AI
+    </button>
+    <div id="deep-search-note" style="font-size:11px;color:var(--muted);display:none;">Results load instantly from our curated database. Click to discover more with AI.</div>
+  </div>
   <div id="plat-filter-row" style="display:none;">
     <div class="chips" id="plat-filters" style="margin-bottom:12px;">
       <div class="chip on" onclick="filterPlats('all',this)">All</div>
@@ -4075,55 +4082,119 @@ var state = {
 };
 
 var PLATFORMS = [
-  {n:'PR Newswire',u:'prnewswire.com',e:'clientservices@prnewswire.com',t:'Major Wire',r:'AU,UK,US',c:'',paid:true,s:5},
-  {n:'Business Wire',u:'businesswire.com',e:'info@businesswire.com',t:'Major Wire',r:'UK,US',c:'',paid:true,s:5},
-  {n:'GlobeNewswire',u:'globenewswire.com',e:'support@globenewswire.com',t:'Major Wire',r:'UK,US',c:'',paid:true,s:5},
-  {n:'EIN Presswire',u:'einpresswire.com',e:'support@einpresswire.com',t:'Major Wire',r:'AU,UK,US',c:'',paid:true,s:4},
-  {n:'Accesswire',u:'accesswire.com',e:'clients@accesswire.com',t:'Major Wire',r:'UK,US',c:'',paid:true,s:4},
-  {n:'AAP Newswire',u:'aap.com.au',e:'aap@aap.com.au',t:'Australia',r:'AU',c:'AU',paid:true,s:5},
-  {n:'Medianet Australia',u:'medianet.com.au',e:'info@medianet.com.au',t:'Australia',r:'AU',c:'AU',paid:true,s:4},
-  {n:'Mumbrella',u:'mumbrella.com.au',e:'editorial@mumbrella.com.au',t:'Australia',r:'AU',c:'AU',paid:true,s:4},
-  {n:'SmartCompany',u:'smartcompany.com.au',e:'editorial@smartcompany.com.au',t:'Australia',r:'AU',c:'AU',paid:false,s:4},
-  {n:'StartupSmart',u:'startupsmart.com.au',e:'editor@startupsmart.com.au',t:'Australia',r:'AU',c:'AU',paid:false,s:3},
-  {n:'Dynamic Business',u:'dynamicbusiness.com.au',e:'editor@dynamicbusiness.com.au',t:'Australia',r:'AU',c:'AU',paid:false,s:3},
-  {n:'Anthill Online',u:'anthillonline.com',e:'editor@anthillonline.com',t:'Australia',r:'AU',c:'AU',paid:false,s:3},
-  {n:'Ragtrader',u:'ragtrader.com.au',e:'editorial@ragtrader.com.au',t:'Fashion AU',r:'AU',c:'Fashion',paid:false,s:4},
-  {n:'Inside Retail AU',u:'insideretail.com.au',e:'editorial@insideretail.com.au',t:'Fashion AU',r:'AU',c:'Fashion',paid:true,s:4},
-  {n:'Retail Biz AU',u:'retailbiz.com.au',e:'editor@retailbiz.com.au',t:'Fashion AU',r:'AU',c:'Fashion',paid:false,s:3},
-  {n:'Fashion Quarterly',u:'fashionquarterly.co.nz',e:'editor@fashionquarterly.co.nz',t:'Fashion AU',r:'AU',c:'Fashion',paid:false,s:3},
-  {n:'Vogue Business',u:'voguebusiness.com',e:'pitches@voguebusiness.com',t:'Fashion Global',r:'AU,UK,US',c:'Fashion',paid:false,s:5},
-  {n:'Business of Fashion',u:'businessoffashion.com',e:'editorial@businessoffashion.com',t:'Fashion Global',r:'AU,UK,US',c:'Fashion',paid:false,s:5},
-  {n:'Fashion Network',u:'fashionnetwork.com',e:'press@fashionnetwork.com',t:'Fashion Global',r:'AU,UK,US',c:'Fashion',paid:false,s:4},
-  {n:'Fashion United',u:'fashionunited.com',e:'press@fashionunited.com',t:'Fashion Global',r:'AU,UK,US',c:'Fashion',paid:false,s:4},
-  {n:'Hypebeast',u:'hypebeast.com',e:'editorial@hypebeast.com',t:'Fashion Global',r:'AU,UK,US',c:'Fashion',paid:false,s:5},
-  {n:'Who What Wear',u:'whowhatwear.com',e:'tips@whowhatwear.com',t:'Fashion Global',r:'AU,UK,US',c:'Fashion',paid:false,s:4},
-  {n:'Glossy',u:'glossy.co',e:'tips@glossy.co',t:'Fashion US',r:'US',c:'Fashion',paid:false,s:4},
-  {n:'The Interline',u:'theinterline.com',e:'editorial@theinterline.com',t:'Fashion Tech',r:'AU,UK,US',c:'Fashion',paid:false,s:4},
-  {n:'Drapers Online',u:'drapersonline.com',e:'editorial@drapersonline.com',t:'Fashion UK',r:'UK',c:'Fashion',paid:false,s:4},
-  {n:'WWD',u:'wwd.com',e:'tips@wwd.com',t:'Fashion US',r:'US',c:'Fashion',paid:false,s:5},
-  {n:'Fashionista',u:'fashionista.com',e:'tips@fashionista.com',t:'Fashion US',r:'US',c:'Fashion',paid:false,s:4},
-  {n:'Retail Dive',u:'retaildive.com',e:'editorial@retaildive.com',t:'Retail US',r:'US',c:'Fashion',paid:false,s:4},
-  {n:'Sourcing Journal',u:'sourcingjournalonline.com',e:'editorial@sourcingjournalonline.com',t:'Fashion US',r:'US',c:'Fashion',paid:false,s:4},
-  {n:'TechCrunch',u:'techcrunch.com',e:'tips@techcrunch.com',t:'Tech Global',r:'AU,UK,US',c:'Tech',paid:false,s:5},
-  {n:'VentureBeat',u:'venturebeat.com',e:'editorial@venturebeat.com',t:'Tech Global',r:'AU,UK,US',c:'Tech',paid:false,s:5},
-  {n:'The Next Web',u:'thenextweb.com',e:'tips@thenextweb.com',t:'Tech Global',r:'UK,US',c:'Tech',paid:false,s:5},
-  {n:'Wired',u:'wired.com',e:'tips@wired.com',t:'Tech Global',r:'UK,US',c:'Tech',paid:false,s:5},
-  {n:'HackerNoon',u:'hackernoon.com',e:'stories@hackernoon.com',t:'Tech Global',r:'AU,UK,US',c:'Tech',paid:false,s:4},
-  {n:'Product Hunt',u:'producthunt.com',e:'hello@producthunt.com',t:'Tech Global',r:'US',c:'Tech',paid:false,s:4},
-  {n:'Crunchbase News',u:'crunchbase.com',e:'editorial@crunchbase.com',t:'Tech US',r:'US',c:'Tech',paid:false,s:4},
-  {n:'Startup Daily AU',u:'startupdaily.net',e:'editor@startupdaily.net',t:'Tech AU',r:'AU',c:'Tech',paid:false,s:3},
-  {n:'Which-50',u:'which-50.com',e:'editor@which-50.com',t:'Tech AU',r:'AU',c:'Tech',paid:false,s:3},
-  {n:'CMO Australia',u:'cmo.com.au',e:'editorial@cmo.com.au',t:'Tech AU',r:'AU',c:'Tech',paid:false,s:3},
-  {n:'Cision UK',u:'cision.com/uk',e:'info@cision.com',t:'Wire UK',r:'UK',c:'UK',paid:true,s:5},
-  {n:'PR Fire UK',u:'prfire.com',e:'hello@prfire.com',t:'UK',r:'UK',c:'UK',paid:true,s:4},
-  {n:'ResponseSource',u:'responsesource.com',e:'support@responsesource.com',t:'UK',r:'UK',c:'UK',paid:true,s:4},
-  {n:'Pressat UK',u:'pressat.co.uk',e:'hello@pressat.co.uk',t:'UK',r:'UK',c:'UK',paid:true,s:3},
-  {n:'PRLog',u:'prlog.org',e:'support@prlog.org',t:'Free Wire',r:'AU,UK,US',c:'',paid:false,s:3},
-  {n:'OpenPR',u:'openpr.com',e:'support@openpr.com',t:'Free Wire',r:'AU,UK,US',c:'',paid:false,s:3},
-  {n:'Medium',u:'medium.com',e:'hello@medium.com',t:'Content',r:'AU,UK,US',c:'',paid:false,s:4},
-  {n:'LinkedIn Articles',u:'linkedin.com',e:'',t:'Content',r:'AU,UK,US',c:'',paid:false,s:4},
-  {n:'Substack',u:'substack.com',e:'',t:'Content',r:'AU,UK,US',c:'',paid:false,s:3}
+  {n:'PR Newswire',u:'prnewswire.com',e:'clientservices@prnewswire.com',t:'Wire',r:'AU,UK,US',c:'',paid:true,s:5,desc:"Global's largest press release distribution network"},
+  {n:'Business Wire',u:'businesswire.com',e:'info@businesswire.com',t:'Wire',r:'UK,US',c:'',paid:true,s:5,desc:"Berkshire Hathaway global wire service"},
+  {n:'GlobeNewswire',u:'globenewswire.com',e:'support@globenewswire.com',t:'Wire',r:'UK,US',c:'',paid:true,s:5,desc:"NASDAQ official press release distribution"},
+  {n:'EIN Presswire',u:'einpresswire.com',e:'support@einpresswire.com',t:'Wire',r:'AU,UK,US',c:'',paid:true,s:4,desc:"Affordable global wire with strong SEO indexing"},
+  {n:'Accesswire',u:'accesswire.com',e:'clients@accesswire.com',t:'Wire',r:'UK,US',c:'',paid:true,s:4,desc:"Modern wire service with analytics dashboard"},
+  {n:'PRLog',u:'prlog.org',e:'support@prlog.org',t:'Wire',r:'AU,UK,US',c:'',paid:false,s:3,desc:"Free press release distribution with SEO"},
+  {n:'OpenPR',u:'openpr.com',e:'support@openpr.com',t:'Wire',r:'AU,UK,US',c:'',paid:false,s:3,desc:"Free global PR distribution platform"},
+  {n:'AAP Newswire',u:'aap.com.au',e:'aap@aap.com.au',t:'Wire',r:'AU',c:'AU',paid:true,s:5,desc:"Australia premier national newswire"},
+  {n:'Medianet Australia',u:'medianet.com.au',e:'info@medianet.com.au',t:'Wire',r:'AU',c:'AU',paid:true,s:5,desc:"Leading Australian PR distribution platform"},
+  {n:'Mumbrella',u:'mumbrella.com.au',e:'editorial@mumbrella.com.au',t:'Trade',r:'AU',c:'AU',paid:false,s:5,desc:"Australia top marketing and media industry news"},
+  {n:'SmartCompany',u:'smartcompany.com.au',e:'editorial@smartcompany.com.au',t:'Business',r:'AU',c:'AU',paid:false,s:4,desc:"Leading Australian SME and startup news"},
+  {n:'StartupSmart',u:'startupsmart.com.au',e:'editor@startupsmart.com.au',t:'Business',r:'AU',c:'AU',paid:false,s:4,desc:"Australian startup and innovation news"},
+  {n:'Dynamic Business',u:'dynamicbusiness.com.au',e:'editor@dynamicbusiness.com.au',t:'Business',r:'AU',c:'AU',paid:false,s:3,desc:"SME news and business advice Australia"},
+  {n:'Australian Financial Review',u:'afr.com',e:'tips@afr.com',t:'Business',r:'AU',c:'AU',paid:false,s:5,desc:"Australia premier financial and business newspaper"},
+  {n:'The Sydney Morning Herald',u:'smh.com.au',e:'newsdesk@smh.com.au',t:'News',r:'AU',c:'AU',paid:false,s:5,desc:"Australia oldest and most-read daily newspaper"},
+  {n:'The Age',u:'theage.com.au',e:'newsdesk@theage.com.au',t:'News',r:'AU',c:'AU',paid:false,s:4,desc:"Melbourne leading news publication"},
+  {n:'Sky News Business',u:'skynews.com.au',e:'news@skynews.com.au',t:'News',r:'AU',c:'AU',paid:false,s:4,desc:"Australian business and financial news TV and digital"},
+  {n:'Inside Small Business',u:'insidesmallbusiness.com.au',e:'editor@insidesmallbusiness.com.au',t:'Business',r:'AU',c:'AU',paid:false,s:3,desc:"Small business news and advice Australia"},
+  {n:'Ragtrader',u:'ragtrader.com.au',e:'editorial@ragtrader.com.au',t:'Trade',r:'AU',c:'Fashion',paid:false,s:5,desc:"Australia premier fashion industry trade publication"},
+  {n:'Inside Retail AU',u:'insideretail.com.au',e:'editorial@insideretail.com.au',t:'Trade',r:'AU',c:'Fashion',paid:false,s:5,desc:"Australia and NZ retail industry news and analysis"},
+  {n:'Retail Biz AU',u:'retailbiz.com.au',e:'editor@retailbiz.com.au',t:'Trade',r:'AU',c:'Fashion',paid:false,s:4,desc:"Australian retail business news"},
+  {n:'Fashion Journal',u:'fashionjournal.com.au',e:'editorial@fashionjournal.com.au',t:'Consumer',r:'AU',c:'Fashion',paid:false,s:4,desc:"Leading Australian fashion consumer magazine"},
+  {n:'Broadsheet',u:'broadsheet.com.au',e:'editorial@broadsheet.com.au',t:'Lifestyle',r:'AU',c:'Fashion',paid:false,s:4,desc:"Lifestyle, fashion and food for urban Australians"},
+  {n:'Vogue Australia',u:'vogue.com.au',e:'editorial@vogue.com.au',t:'Consumer',r:'AU',c:'Fashion',paid:false,s:5,desc:"Australia top fashion consumer magazine"},
+  {n:'Harpers Bazaar AU',u:'harpersbazaar.com.au',e:'editorial@harpersbazaar.com.au',t:'Consumer',r:'AU',c:'Fashion',paid:false,s:4,desc:"Luxury fashion and lifestyle for Australian women"},
+  {n:'Vogue Business',u:'voguebusiness.com',e:'pitches@voguebusiness.com',t:'Trade',r:'AU,UK,US',c:'Fashion',paid:false,s:5,desc:"Fashion industry business and technology global coverage"},
+  {n:'Business of Fashion',u:'businessoffashion.com',e:'editorial@businessoffashion.com',t:'Trade',r:'AU,UK,US',c:'Fashion',paid:false,s:5,desc:"Global fashion industry intelligence platform"},
+  {n:'Fashion Network',u:'fashionnetwork.com',e:'press@fashionnetwork.com',t:'Trade',r:'AU,UK,US',c:'Fashion',paid:false,s:4,desc:"International fashion business news network"},
+  {n:'Fashion United',u:'fashionunited.com',e:'press@fashionunited.com',t:'Trade',r:'AU,UK,US',c:'Fashion',paid:false,s:4,desc:"Global fashion industry jobs and news platform"},
+  {n:'Hypebeast',u:'hypebeast.com',e:'editorial@hypebeast.com',t:'Consumer',r:'AU,UK,US',c:'Fashion',paid:false,s:5,desc:"Streetwear, sneakers and fashion culture"},
+  {n:'WWD',u:'wwd.com',e:'tips@wwd.com',t:'Trade',r:'US',c:'Fashion',paid:false,s:5,desc:"Womens Wear Daily global fashion industry bible"},
+  {n:'Fashionista',u:'fashionista.com',e:'tips@fashionista.com',t:'Consumer',r:'US',c:'Fashion',paid:false,s:4,desc:"Fashion news, careers and industry coverage"},
+  {n:'The Interline',u:'theinterline.com',e:'editorial@theinterline.com',t:'Trade',r:'AU,UK,US',c:'Fashion',paid:false,s:4,desc:"Fashion technology and digital transformation"},
+  {n:'Drapers Online',u:'drapersonline.com',e:'editorial@drapersonline.com',t:'Trade',r:'UK',c:'Fashion',paid:false,s:4,desc:"UK fashion trade news and retail insight"},
+  {n:'Retail Gazette UK',u:'retailgazette.co.uk',e:'editorial@retailgazette.co.uk',t:'Trade',r:'UK',c:'Fashion',paid:false,s:4,desc:"UK retail industry news and analysis"},
+  {n:'TechCrunch',u:'techcrunch.com',e:'tips@techcrunch.com',t:'Global',r:'AU,UK,US',c:'Tech',paid:false,s:5,desc:"World leading technology startup news"},
+  {n:'VentureBeat',u:'venturebeat.com',e:'editorial@venturebeat.com',t:'Global',r:'AU,UK,US',c:'Tech',paid:false,s:5,desc:"AI and enterprise technology news"},
+  {n:'The Next Web',u:'thenextweb.com',e:'tips@thenextweb.com',t:'Global',r:'UK,US',c:'Tech',paid:false,s:5,desc:"Technology, innovation and startup culture"},
+  {n:'Wired',u:'wired.com',e:'tips@wired.com',t:'Global',r:'UK,US',c:'Tech',paid:false,s:5,desc:"Technology and its intersection with culture"},
+  {n:'HackerNoon',u:'hackernoon.com',e:'stories@hackernoon.com',t:'Global',r:'AU,UK,US',c:'Tech',paid:false,s:4,desc:"Developer and tech community publication"},
+  {n:'Product Hunt',u:'producthunt.com',e:'hello@producthunt.com',t:'Global',r:'US',c:'Tech',paid:false,s:5,desc:"Launch platform for new tech products"},
+  {n:'Startup Daily AU',u:'startupdaily.net',e:'editor@startupdaily.net',t:'AU',r:'AU',c:'Tech',paid:false,s:4,desc:"Australian startup and technology ecosystem news"},
+  {n:'Which-50',u:'which-50.com',e:'editor@which-50.com',t:'AU',r:'AU',c:'Tech',paid:false,s:3,desc:"Digital transformation and enterprise tech AU"},
+  {n:'iTnews',u:'itnews.com.au',e:'editorial@itnews.com.au',t:'AU',r:'AU',c:'Tech',paid:false,s:4,desc:"IT industry news for Australian enterprise"},
+  {n:'ZDNet',u:'zdnet.com',e:'editorial@zdnet.com',t:'Global',r:'AU,UK,US',c:'Tech',paid:false,s:4,desc:"Technology news and analysis globally"},
+  {n:'The Australian',u:'theaustralian.com.au',e:'technology@theaustralian.com.au',t:'AU',r:'AU',c:'Tech',paid:false,s:4,desc:"National broadsheet with strong tech and business section"},
+  {n:'Health Times AU',u:'healthtimes.com.au',e:'editorial@healthtimes.com.au',t:'AU',r:'AU',c:'Health',paid:false,s:4,desc:"Australian healthcare professional news"},
+  {n:'Mamamia',u:'mamamia.com.au',e:'editorial@mamamia.com.au',t:'AU',r:'AU',c:'Health',paid:false,s:4,desc:"Women health, lifestyle and wellness AU"},
+  {n:'Body+Soul',u:'bodyandsoul.com.au',e:'editorial@bodyandsoul.com.au',t:'AU',r:'AU',c:'Health',paid:false,s:4,desc:"Health and wellness consumer magazine AU"},
+  {n:'Women Health AU',u:'womenshealth.com.au',e:'editorial@womenshealth.com.au',t:'Consumer',r:'AU',c:'Health',paid:false,s:4,desc:"Women health and fitness magazine"},
+  {n:'Men Health AU',u:'menshealth.com.au',e:'editorial@menshealth.com.au',t:'Consumer',r:'AU',c:'Health',paid:false,s:4,desc:"Men health, fitness and lifestyle"},
+  {n:'MedCity News',u:'medcitynews.com',e:'editorial@medcitynews.com',t:'Global',r:'US',c:'Health',paid:false,s:4,desc:"Healthcare innovation and health tech news"},
+  {n:'Hospitality Magazine AU',u:'hospitalitymagazine.com.au',e:'editorial@hospitalitymagazine.com.au',t:'Trade',r:'AU',c:'Food',paid:false,s:5,desc:"Australian hospitality industry news"},
+  {n:'Australian Food News',u:'australianfoodnews.com.au',e:'editorial@australianfoodnews.com.au',t:'Trade',r:'AU',c:'Food',paid:false,s:4,desc:"Food industry news for Australian professionals"},
+  {n:'Food & Drink Business AU',u:'foodandbeverage.com.au',e:'editor@foodandbeverage.com.au',t:'Trade',r:'AU',c:'Food',paid:false,s:4,desc:"Food and beverage manufacturing industry AU"},
+  {n:'Delicious AU',u:'delicious.com.au',e:'editorial@delicious.com.au',t:'Consumer',r:'AU',c:'Food',paid:false,s:4,desc:"Premium food and recipe consumer magazine AU"},
+  {n:'Gourmet Traveller',u:'gourmettraveller.com.au',e:'editorial@gourmettraveller.com.au',t:'Consumer',r:'AU',c:'Food',paid:false,s:4,desc:"Fine dining, food and luxury travel AU"},
+  {n:'Eater',u:'eater.com',e:'tips@eater.com',t:'Global',r:'US',c:'Food',paid:false,s:4,desc:"Food and restaurant culture globally"},
+  {n:'Travel Weekly AU',u:'travelweekly.com.au',e:'editorial@travelweekly.com.au',t:'Trade',r:'AU',c:'Food',paid:false,s:4,desc:"Australian travel industry trade news"},
+  {n:'Finder AU',u:'finder.com.au',e:'editorial@finder.com.au',t:'Consumer',r:'AU',c:'Finance',paid:false,s:5,desc:"Australia largest financial comparison platform"},
+  {n:'Money Magazine AU',u:'moneymag.com.au',e:'editorial@moneymag.com.au',t:'Consumer',r:'AU',c:'Finance',paid:false,s:4,desc:"Personal finance and investment news AU"},
+  {n:'Stockhead',u:'stockhead.com.au',e:'editorial@stockhead.com.au',t:'AU',r:'AU',c:'Finance',paid:false,s:4,desc:"ASX small-cap stocks and investment news"},
+  {n:'Finextra',u:'finextra.com',e:'editorial@finextra.com',t:'Global',r:'UK,AU',c:'Finance',paid:false,s:4,desc:"Fintech and financial services technology news"},
+  {n:'Entrepreneur',u:'entrepreneur.com',e:'submissions@entrepreneur.com',t:'Global',r:'AU,UK,US',c:'Startup',paid:false,s:5,desc:"Entrepreneurship, startup and small business global"},
+  {n:'Inc.',u:'inc.com',e:'tips@inc.com',t:'Global',r:'US',c:'Startup',paid:false,s:5,desc:"Entrepreneurship and startup success stories US"},
+  {n:'Fast Company',u:'fastcompany.com',e:'tips@fastcompany.com',t:'Global',r:'US',c:'Startup',paid:false,s:5,desc:"Innovation, design and business news"},
+  {n:'Forbes',u:'forbes.com',e:'tips@forbes.com',t:'Global',r:'AU,UK,US',c:'Startup',paid:false,s:5,desc:"Global business and entrepreneurship publication"},
+  {n:'Anthill Online',u:'anthillonline.com',e:'editor@anthillonline.com',t:'AU',r:'AU',c:'Startup',paid:false,s:3,desc:"Australian startup, innovation and entrepreneur news"},
+  {n:'The Startup Magazine',u:'thestartupmagazine.com',e:'submissions@thestartupmagazine.com',t:'Global',r:'AU,UK,US',c:'Startup',paid:false,s:3,desc:"Startup advice, stories and industry news"},
+  {n:'Renew Economy',u:'reneweconomy.com.au',e:'editorial@reneweconomy.com.au',t:'AU',r:'AU',c:'Sustainability',paid:false,s:5,desc:"Clean energy and climate policy Australia"},
+  {n:'The Conversation AU',u:'theconversation.com',e:'editorial@theconversation.com',t:'AU',r:'AU',c:'Sustainability',paid:false,s:4,desc:"Academic and expert-driven news analysis AU"},
+  {n:'Green Queen Media',u:'greenqueen.com.hk',e:'hello@greenqueen.com.hk',t:'Global',r:'AU,UK,US',c:'Sustainability',paid:false,s:4,desc:"Sustainable food, lifestyle and green economy"},
+  {n:'Cision UK',u:'cision.com/uk',e:'info@cision.com',t:'Wire',r:'UK',c:'UK',paid:true,s:5,desc:"UK leading PR software and distribution"},
+  {n:'PR Fire UK',u:'prfire.com',e:'hello@prfire.com',t:'Wire',r:'UK',c:'UK',paid:true,s:4,desc:"UK press release distribution service"},
+  {n:'ResponseSource',u:'responsesource.com',e:'support@responsesource.com',t:'Wire',r:'UK',c:'UK',paid:true,s:4,desc:"UK journalist request and PR distribution"},
+  {n:'The Guardian',u:'theguardian.com',e:'tips@theguardian.com',t:'News',r:'UK',c:'UK',paid:false,s:5,desc:"Global progressive news and analysis"},
+  {n:'The Telegraph',u:'telegraph.co.uk',e:'news@telegraph.co.uk',t:'News',r:'UK',c:'UK',paid:false,s:5,desc:"UK conservative broadsheet newspaper"},
+  {n:'City A.M.',u:'cityam.com',e:'editorial@cityam.com',t:'Business',r:'UK',c:'UK',paid:false,s:4,desc:"London free financial and business newspaper"},
+  {n:'Medium',u:'medium.com',e:'hello@medium.com',t:'Content',r:'AU,UK,US',c:'',paid:false,s:4,desc:"Self-publishing and editorial content platform"},
+  {n:'LinkedIn Articles',u:'linkedin.com',e:'',t:'Content',r:'AU,UK,US',c:'',paid:false,s:4,desc:"Professional content publishing and networking"},
+  {n:'Substack',u:'substack.com',e:'',t:'Content',r:'AU,UK,US',c:'',paid:false,s:3,desc:"Email newsletter and paid subscription platform"}
 ];
+
+// ── Industry keyword map for fast local matching ──
+var INDUSTRY_OUTLET_MAP = {
+  'fashion':       ['Fashion','Retail','Luxury','E-commerce','Beauty','Consumer','Lifestyle'],
+  'retail':        ['Fashion','Retail','Consumer','E-commerce'],
+  'beauty':        ['Fashion','Lifestyle','Consumer','Health'],
+  'technology':    ['Tech','Startup','Innovation','AI'],
+  'tech':          ['Tech','Startup','Innovation'],
+  'ai':            ['Tech','Innovation','Startup'],
+  'software':      ['Tech','Startup'],
+  'health':        ['Health','Wellness','Lifestyle'],
+  'wellness':      ['Health','Lifestyle','Consumer'],
+  'healthcare':    ['Health','Trade'],
+  'food':          ['Food','Hospitality','Lifestyle'],
+  'hospitality':   ['Food','Hospitality','Lifestyle','Travel'],
+  'travel':        ['Food','Travel','Lifestyle'],
+  'beverage':      ['Food','Trade'],
+  'finance':       ['Finance','Fintech','Business'],
+  'fintech':       ['Finance','Tech','Startup'],
+  'business':      ['Business','Startup','AU'],
+  'startup':       ['Startup','Business','Tech'],
+  'sustainability':['Sustainability','Environment','Consumer'],
+  'environment':   ['Sustainability'],
+  'media':         ['Trade','Content','Business'],
+  'marketing':     ['Trade','Business','Startup'],
+  'property':      ['Business','Finance','AU'],
+  'real estate':   ['Business','Finance','AU'],
+  'education':     ['Business','AU','Sustainability'],
+  'fitness':       ['Health','Lifestyle','Consumer'],
+  'ecommerce':     ['Fashion','Tech','Retail','Startup']
+};
 
 // ---- NAVIGATION ----
 function showScreen(id) {
@@ -4686,98 +4757,212 @@ function renderFoundPodcasts(list) {
   el.innerHTML = html;
 }
 
+// ── OUTLET SEARCH CACHE ──
+var OUTLET_CACHE_KEY = 'op_outlet_cache';
+var outletSessionCache = {}; // in-memory: key = industry+path+country
+
+function getOutletCacheKey(primary, path, countries) {
+  return (primary + '|' + path + '|' + (countries||[]).join(',')).toLowerCase().replace(/\s+/g,'_');
+}
+
+function loadOutletCache() {
+  try {
+    var raw = localStorage.getItem(OUTLET_CACHE_KEY);
+    return raw ? JSON.parse(raw) : {};
+  } catch(e) { return {}; }
+}
+
+function saveOutletCache(key, results) {
+  try {
+    var cache = loadOutletCache();
+    cache[key] = { results: results, ts: Date.now() };
+    // Keep last 20 searches only
+    var keys = Object.keys(cache);
+    if (keys.length > 20) {
+      var oldest = keys.sort(function(a,b){ return cache[a].ts - cache[b].ts; })[0];
+      delete cache[oldest];
+    }
+    localStorage.setItem(OUTLET_CACHE_KEY, JSON.stringify(cache));
+  } catch(e) {}
+}
+
+function getLocalOutletResults(primary, countries) {
+  // Layer 2: fast local matching from curated database
+  var primaryLower = (primary || '').toLowerCase();
+  var countryArr = countries || [];
+  var countryMap = {'Australia':'AU','United Kingdom':'UK','United States':'US','Canada':'US','New Zealand':'AU','Global':''};
+  var codes = countryArr.map(function(c){ return countryMap[c] || ''; }).filter(Boolean);
+
+  // Find matching industry keywords
+  var matchTags = [];
+  Object.keys(INDUSTRY_OUTLET_MAP).forEach(function(kw) {
+    if (primaryLower.indexOf(kw) > -1) {
+      matchTags = matchTags.concat(INDUSTRY_OUTLET_MAP[kw]);
+    }
+  });
+  // Always include general outlets
+  matchTags = matchTags.concat(['Wire','AU','Business','Content']);
+  matchTags = matchTags.filter(function(v,i,a){ return a.indexOf(v) === i; }); // unique
+
+  var results = PLATFORMS.filter(function(p) {
+    // Country match
+    var countryOk = codes.length === 0 || countryArr.indexOf('Global') > -1 ||
+      codes.some(function(code){ return p.r.indexOf(code) > -1; });
+    // Industry/type match
+    var typeOk = matchTags.length === 0 || matchTags.some(function(tag){
+      return (p.t||'').indexOf(tag) > -1 || (p.c||'').indexOf(tag) > -1 || (p.desc||'').toLowerCase().indexOf(tag.toLowerCase()) > -1;
+    });
+    return countryOk && typeOk;
+  });
+
+  // If too few, add top general outlets
+  if (results.length < 8) {
+    PLATFORMS.forEach(function(p) {
+      if (results.indexOf(p) === -1 && p.s >= 4) results.push(p);
+    });
+  }
+
+  // Sort by stars
+  results.sort(function(a,b){ return b.s - a.s; });
+  return results.slice(0, 40);
+}
+
 function searchIndustryPlatforms() {
   var t = state.targeting;
   var primary = t.primary;
   var secondary = t.secondary || '';
-  var countries = (t.countries && t.countries.length > 0) ? t.countries.join(', ') : 'Global';
+  var countries = t.countries && t.countries.length > 0 ? t.countries : ['Global'];
   var pref = t.pref || 'both';
-  var media = (t.media && t.media.length > 0) ? t.media.join(', ') : 'News and Press Release';
+  var path = state.path || 'A';
+
+  var cacheKey = getOutletCacheKey(primary + (secondary ? '+' + secondary : ''), path, countries);
+
+  // ── LAYER 1: Session memory ──
+  if (outletSessionCache[cacheKey]) {
+    showOutletResults(outletSessionCache[cacheKey], pref, primary, countries, true, false);
+    return;
+  }
+
+  // ── LAYER 2: localStorage cache (valid for 24h) ──
+  var stored = loadOutletCache();
+  if (stored[cacheKey] && (Date.now() - stored[cacheKey].ts) < 24 * 60 * 60 * 1000) {
+    var cached = stored[cacheKey].results;
+    outletSessionCache[cacheKey] = cached;
+    showOutletResults(cached, pref, primary, countries, true, false);
+    return;
+  }
+
+  // ── LAYER 2: Local curated database (instant) ──
+  var localResults = getLocalOutletResults(primary, countries);
+  if (pref === 'free') localResults = localResults.filter(function(p){ return !p.paid; });
+  if (pref === 'paid') localResults = localResults.filter(function(p){ return p.paid; });
+  outletSessionCache[cacheKey] = localResults;
+  saveOutletCache(cacheKey, localResults);
+  showOutletResults(localResults, pref, primary, countries, false, true);
+  // Layer 3 offered as optional button — no auto AI call
+}
+
+function showOutletResults(list, pref, primary, countries, fromCache, offerDeepSearch) {
+  var filtered = list.slice();
+  if (pref === 'free') filtered = filtered.filter(function(p){ return !p.paid; });
+  if (pref === 'paid') filtered = filtered.filter(function(p){ return p.paid; });
+  filtered.sort(function(a,b){ return b.s - a.s; });
+
+  state.foundPlatforms = filtered;
+  renderFoundPlatforms(filtered);
+
+  var banner = document.getElementById('plat-search-banner');
+  if (banner) banner.style.display = 'none';
+
+  var done = document.getElementById('plat-search-done');
+  if (done) {
+    done.textContent = (fromCache ? '⚡ ' : '✓ ') + filtered.length + ' outlets matched to "' + primary + '" in ' + countries.join(', ');
+    done.style.display = 'block';
+  }
+
+  document.getElementById('plat-filter-row').style.display = 'block';
+
+  // Offer deep search button
+  var deepBtn = document.getElementById('deep-search-btn');
+  var deepNote = document.getElementById('deep-search-note');
+  if (deepBtn) deepBtn.style.display = offerDeepSearch ? 'inline-flex' : 'none';
+  if (deepNote) deepNote.style.display = offerDeepSearch ? 'block' : 'none';
+
+  var sub = document.getElementById('s3-sub');
+  if (sub) sub.textContent = filtered.length + ' outlets matched. Select one to reveal their contact and begin outreach.';
+}
+
+function runDeepSearch() {
+  // Layer 3: AI-powered deep search (opt-in only)
+  var t = state.targeting;
+  var primary = t.primary;
+  var secondary = t.secondary || '';
+  var countries = t.countries && t.countries.length > 0 ? t.countries.join(', ') : 'Global';
+  var pref = t.pref || 'both';
   var prefText = pref === 'free' ? 'free to submit only' : pref === 'paid' ? 'paid distribution only' : 'free and paid';
 
-  var prompt = 'You are a specialist PR researcher with deep knowledge of media outlets worldwide. Generate a comprehensive list of up to 50 real, named, currently active media outlets, trade publications, PR distribution platforms, and websites that accept press releases within the ' + primary + ' sector' + (secondary ? ' and the ' + secondary + ' crossover niche' : '') + '.\n\nInclude both niche industry-specific platforms AND broader media channels that have a proven track record of featuring ' + primary + ' content.\n\nUSER CRITERIA (apply all of these):\n- PRIMARY INDUSTRY: ' + primary + '\n- SECONDARY INDUSTRY: ' + (secondary || 'none') + '\n- TARGET COUNTRIES: ' + countries + ' (focus on outlets with strong readership or based in these countries)\n- PLATFORM TYPE: ' + prefText + '\n- COVERAGE TYPE WANTED: ' + media + '\n\nFor each outlet include:\n1. Exact platform/outlet name\n2. Real website URL\n3. Best known editorial or press submission email (use press@, editorial@, news@, contact@ formats based on the outlet -- leave blank if genuinely unknown)\n4. Whether submission is free or paid\n5. Relevance star rating 1-5 for ' + primary + ' in ' + countries + '\n6. What content types they accept: press releases, guest articles, case studies, news stories\n7. One sentence description of their focus and why they are relevant to ' + primary + (secondary ? ' and ' + secondary : '') + '\n\nInclude a mix of:\n- Specialist trade journals and magazines for ' + primary + '\n- Industry news websites and portals\n- PR wire distribution services\n- General media outlets with ' + primary + ' sections or beats\n- Influential newsletters or online publications in this space\n- Relevant journalists or editors who cover ' + primary + '\n\nIMPORTANT: Only include platforms that genuinely cover ' + primary + '. Every entry must be a real, named platform. Do not invent platforms.\n\nReturn ONLY a raw JSON array. No text before or after. No markdown. No code fences. Start immediately with [ :\n[{"n":"Exact Platform Name","u":"realwebsite.com","e":"editorial@realwebsite.com","t":"Trade Publication","r":"AU","paid":false,"s":5,"content_type":"Press releases, news","desc":"Covers ' + primary + ' with focus on..."}]';
+  var deepBtn = document.getElementById('deep-search-btn');
+  if (deepBtn) { deepBtn.textContent = 'Searching...'; deepBtn.disabled = true; }
+  var banner = document.getElementById('plat-search-banner');
+  if (banner) { banner.style.display = 'flex'; }
+
+  var prompt = 'Generate up to 30 real, currently active media outlets for the ' + primary + ' sector' +
+    (secondary ? ' with ' + secondary + ' crossover' : '') + ' in ' + countries + '.' +
+    ' Include trade publications, industry news sites, and PR channels. Type: ' + prefText + '.' +
+    ' Return ONLY a JSON array: [{"n":"Name","u":"domain.com","e":"email@domain.com","t":"Type","r":"AU","paid":false,"s":5,"desc":"One sentence why relevant"}]' +
+    ' Only real platforms. No invented outlets.';
 
   callAPIWithSearch(prompt, function(text) {
-    document.getElementById('plat-search-banner').style.display = 'none';
+    if (banner) banner.style.display = 'none';
     try {
-      var clean = text.trim();
-      // Strip any markdown or preamble
-      clean = clean.replace(/^```json\s*/i,'').replace(/^```\s*/i,'').replace(/```\s*$/,'').trim();
-      // Find the JSON array
-      var start = clean.indexOf('[');
-      var end = clean.lastIndexOf(']');
-      if (start === -1 || end === -1 || end <= start) throw new Error('No JSON array found');
-      clean = clean.substring(start, end + 1);
-      var found = JSON.parse(clean);
-      if (!Array.isArray(found) || found.length === 0) throw new Error('Empty array');
-
-      // Validate and normalise
-      found = found.filter(function(p) { return p && p.n && p.u; });
-      found.forEach(function(p) {
+      var clean = text.trim().replace(/^```json\s*/i,'').replace(/^```\s*/i,'').replace(/```\s*$/,'').trim();
+      var start = clean.indexOf('['); var end = clean.lastIndexOf(']');
+      if (start === -1 || end === -1) throw new Error('No array');
+      var found = JSON.parse(clean.substring(start, end + 1));
+      found = found.filter(function(p){ return p && p.n && p.u; });
+      found.forEach(function(p){
         p.s = Math.min(5, Math.max(1, parseInt(p.s) || 3));
-        p.paid = (p.paid === true || p.paid === 'true' || p.paid === 'yes');
-        p.e = p.e || '';
-        p.desc = p.desc || '';
-        p.content_type = p.content_type || media;
-        p.t = p.t || primary;
-        p.r = p.r || countries.split(',')[0].trim();
-        p.c = primary;
+        p.paid = (p.paid === true || p.paid === 'true');
       });
-
-      // Apply paid/free filter
-      if (pref === 'free') found = found.filter(function(p) { return !p.paid; });
-      else if (pref === 'paid') found = found.filter(function(p) { return p.paid; });
-      if (found.length === 0) throw new Error('No platforms after filter');
-
-      // Sort by stars descending
-      found.sort(function(a, b) { return b.s - a.s; });
-      state.foundPlatforms = found;
-      renderFoundPlatforms(found);
-
-      var doneBanner = document.getElementById('plat-search-done');
-      doneBanner.textContent = '\u2713 Found ' + found.length + ' outlets for "' + primary + '"' + (secondary ? ' + "' + secondary + '"' : '') + ' in ' + countries;
-      doneBanner.style.display = 'block';
-      document.getElementById('plat-filter-row').style.display = 'block';
-      var sub = document.getElementById('s3-sub');
-      if (sub) sub.textContent = found.length + ' outlets matched to your selections, ranked by relevance. Click one to select it.';
-
+      if (pref === 'free') found = found.filter(function(p){ return !p.paid; });
+      if (pref === 'paid') found = found.filter(function(p){ return p.paid; });
+      found.sort(function(a,b){ return b.s - a.s; });
+      // Merge with existing, dedupe
+      var existing = state.foundPlatforms || [];
+      var names = existing.map(function(p){ return p.n.toLowerCase(); });
+      found = found.filter(function(p){ return names.indexOf(p.n.toLowerCase()) === -1; });
+      var merged = existing.concat(found).sort(function(a,b){ return b.s - a.s; });
+      var cacheKey = getOutletCacheKey(primary + (secondary ? '+' + secondary : ''), state.path || 'A', t.countries || []);
+      outletSessionCache[cacheKey] = merged;
+      saveOutletCache(cacheKey, merged);
+      state.foundPlatforms = merged;
+      renderFoundPlatforms(merged);
+      var done = document.getElementById('plat-search-done');
+      if (done) done.textContent = '✓ ' + merged.length + ' outlets — including ' + found.length + ' newly discovered';
+      if (deepBtn) { deepBtn.textContent = '✓ Deep search complete'; deepBtn.disabled = true; }
     } catch(e) {
-      console.error('Platform search parse error:', e, 'Raw text:', text.substring(0, 500));
-      document.getElementById('plat-search-done').style.display = 'block';
-      document.getElementById('plat-search-done').textContent = 'Search returned unexpected format -- showing best matches from our database.';
-      document.getElementById('plat-filter-row').style.display = 'block';
-      fallbackPlatforms();
+      if (deepBtn) { deepBtn.textContent = '⚡ Try deep search'; deepBtn.disabled = false; }
     }
-  }, function(err) {
-    console.error('Platform search API error:', err);
-    document.getElementById('plat-search-banner').style.display = 'none';
-    document.getElementById('plat-search-done').style.display = 'block';
-    document.getElementById('plat-search-done').textContent = 'API error: ' + err + ' -- showing best matches from our database.';
-    document.getElementById('plat-filter-row').style.display = 'block';
-    fallbackPlatforms();
-  }, function(statusMsg) {
-    document.getElementById('plat-search-status').textContent = statusMsg;
+  }, function() {
+    if (banner) banner.style.display = 'none';
+    if (deepBtn) { deepBtn.textContent = '⚡ Try deep search'; deepBtn.disabled = false; }
+  }, function(msg) {
+    var statusEl = document.getElementById('plat-search-status');
+    if (statusEl) statusEl.textContent = msg;
   });
 }
 
 function fallbackPlatforms() {
   var t = state.targeting;
-  var pref = t.pref || 'both';
   var countries = t.countries || [];
-  var list = PLATFORMS.slice();
-  if (countries.length > 0 && countries.indexOf('Global') === -1) {
-    var cmap = {'Australia':'AU','United Kingdom':'UK','United States':'US','Canada':'US','New Zealand':'AU','Europe':'UK'};
-    var codes = countries.map(function(c) { return cmap[c] || ''; }).filter(Boolean);
-    if (codes.length) list = list.filter(function(p) { return codes.some(function(code) { return p.r.indexOf(code) > -1; }); });
-  }
-  if (pref === 'free') list = list.filter(function(p) { return !p.paid; });
-  if (pref === 'paid') list = list.filter(function(p) { return p.paid; });
-  list.sort(function(a,b) { return b.s - a.s; });
+  var pref = t.pref || 'both';
+  var list = getLocalOutletResults(t.primary, countries);
+  if (pref === 'free') list = list.filter(function(p){ return !p.paid; });
+  if (pref === 'paid') list = list.filter(function(p){ return p.paid; });
   state.foundPlatforms = list;
   renderFoundPlatforms(list);
-  var sub = document.getElementById('s3-sub');
-  if (sub) sub.textContent = list.length + ' platforms from our database. Click one to select it.';
 }
+
 
 function maskEmail(email) {
   if (!email) return '&#9679;&#9679;&#9679;&#9679;@&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;.com';
