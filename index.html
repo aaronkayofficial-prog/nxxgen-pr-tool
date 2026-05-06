@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -160,11 +161,7 @@ textarea{resize:vertical;line-height:1.6;}
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--black);color:var(--white);font-size:12px;padding:9px 16px;border-radius:20px;opacity:0;transition:opacity 0.25s ease,transform 0.25s ease;pointer-events:none;z-index:999;white-space:nowrap;max-width:90vw;text-align:center;}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 .toast.warn{background:#7a5c00;}
-.usage-limit-modal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.6);z-index:300;align-items:center;justify-content:center;}
-.usage-limit-box{background:var(--white);border-radius:16px;padding:2rem;max-width:420px;width:90%;margin:auto;position:relative;top:50%;transform:translateY(-50%);text-align:center;}
-.usage-limit-icon{font-size:40px;margin-bottom:1rem;}
-.usage-limit-title{font-size:20px;font-weight:500;color:var(--black);margin-bottom:8px;}
-.usage-limit-sub{font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:1.5rem;}
+
 .usage-resets{font-size:12px;color:var(--muted);margin-top:1rem;}border-radius:12px;padding:1.25rem 1.5rem;background:var(--white);cursor:pointer;transition:all 0.2s;position:relative;overflow:hidden;}
 .camp-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--border);}
 .camp-card.active::before{background:var(--gold);}
@@ -333,15 +330,6 @@ textarea{resize:vertical;line-height:1.6;}
   </div>
 </div>
 
-
-  <div class="usage-limit-box">
-    <div class="usage-limit-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg></div>
-    <div class="usage-limit-title">Daily limit reached</div>
-    <div class="usage-limit-sub">You have used all 10 of your daily outreach emails. Your limit resets at midnight. Upgrade your plan for higher daily limits and unlimited outreach.</div>
-    <button class="btn btn-primary" onclick="document.getElementById('usage-limit-modal').style.display='none'">Got it</button>
-    <div class="usage-resets" id="usage-resets-label"></div>
-  </div>
-</div>
 
 <div class="wrap">
 
@@ -2639,7 +2627,7 @@ function checkUsageBeforeGenerate(onAllowed) {
   if (isDevMode()) { onAllowed(); return; }
   if (!hasUsageRemaining()) {
     renderUsageCounter();
-    document.getElementById('usage-limit-modal').style.display = 'flex';
+    showToast('Daily limit reached — resets at midnight', 'warn', 5000);
     return;
   }
   incrementUsage();
@@ -5633,7 +5621,7 @@ var pendingRevealName = null;
 function requestRevealToken(name) {
   if (!hasUsageRemaining()) {
     renderUsageCounter();
-    document.getElementById('usage-limit-modal').style.display = 'flex';
+    showToast('Daily limit reached — resets at midnight', 'warn', 5000);
     return;
   }
   pendingRevealName = name;
