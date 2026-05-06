@@ -91,6 +91,15 @@ textarea{resize:vertical;line-height:1.6;}
 .token-confirm-box{background:var(--white);border-radius:16px;padding:2rem;max-width:400px;width:90%;margin:auto;position:relative;top:50%;transform:translateY(-50%);text-align:center;}
 
 .plat-item{display:flex;align-items:center;gap:12px;padding:11px 15px;border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.1s;}
+.outlet-panel{display:flex;flex-direction:column;border:1.5px solid var(--border);border-radius:14px;overflow:hidden;background:var(--white);margin-top:10px;}
+.outlet-panel-filters{padding:10px 14px;border-bottom:1px solid var(--border);background:var(--off);display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.outlet-panel-count{font-size:11px;color:var(--muted);margin-left:auto;white-space:nowrap;}
+.outlet-panel-results{overflow-y:auto;max-height:400px;}
+.outlet-panel-sticky{border-top:2px solid var(--border);background:var(--white);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;position:sticky;bottom:0;}
+.outlet-selected-name{font-size:13px;font-weight:500;color:var(--black);}
+.outlet-selected-meta{font-size:11px;color:var(--muted);margin-top:1px;}
+.outlet-none-selected{font-size:13px;color:var(--muted);font-style:italic;}
+@media(max-width:600px){.outlet-panel-results{max-height:280px;}}
 .plat-item:last-child{border-bottom:none;}
 .plat-item:hover{background:var(--off);}
 .plat-item.sel{background:var(--gold-light);border-left:3px solid var(--gold);}
@@ -1717,19 +1726,40 @@ textarea{resize:vertical;line-height:1.6;}
     </button>
     <div id="deep-search-note" style="font-size:11px;color:var(--muted);display:none;">Results load instantly from our curated database. Click to discover more with AI.</div>
   </div>
+  <!-- Outlet panel: filters + scrollable results + sticky footer -->
   <div id="plat-filter-row" style="display:none;">
-    <div class="chips" id="plat-filters" style="margin-bottom:12px;">
-      <div class="chip on" onclick="filterPlats('all',this)">All</div>
-      <div class="chip" onclick="filterPlats('Free',this)">Free only</div>
-      <div class="chip" onclick="filterPlats('Paid',this)">Paid only</div>
-      <div class="chip" onclick="filterPlats('Top',this)">Top rated</div>
+    <div class="outlet-panel" id="plat-panel">
+      <!-- Filter bar -->
+      <div class="outlet-panel-filters">
+        <div class="chips" id="plat-filters" style="margin:0;">
+          <div class="chip on" onclick="filterPlats('all',this)">All</div>
+          <div class="chip" onclick="filterPlats('Free',this)">Free</div>
+          <div class="chip" onclick="filterPlats('Paid',this)">Paid</div>
+          <div class="chip" onclick="filterPlats('Top',this)">Top rated</div>
+        </div>
+        <div class="outlet-panel-count" id="plat-panel-count"></div>
+      </div>
+      <!-- Scrollable results -->
+      <div class="outlet-panel-results" id="plat-list"></div>
+      <!-- Sticky footer: selected + continue -->
+      <div class="outlet-panel-sticky">
+        <div style="flex:1;min-width:0;">
+          <div id="plat-sel-pill">
+            <div class="outlet-none-selected">Select an outlet from the list above</div>
+          </div>
+        </div>
+        <div style="flex-shrink:0;display:flex;gap:8px;align-items:center;">
+          <button class="btn btn-outline btn-sm" onclick="showScreen('s2c')">&#8592; Back</button>
+          <button class="btn btn-primary" id="plat-btn" onclick="continueFromPlatforms()" style="display:none;">Continue &rarr;</button>
+        </div>
+      </div>
     </div>
   </div>
-  <div class="plat-list" id="plat-list"></div>
-  <div id="plat-sel-pill" style="display:none;margin-top:10px;"></div>
-  <div class="btn-row">
-    <button class="btn btn-primary" id="plat-btn" onclick="continueFromPlatforms()" style="display:none;" id="plat-continue-btn">Continue with this selection &rarr;</button>
-    <button class="btn btn-outline" onclick="showScreen('s2c')">&#8592; Back</button>
+  <!-- Shown before results load -->
+  <div id="plat-panel-placeholder" style="display:none;">
+    <div class="btn-row" style="margin-top:1rem;">
+      <button class="btn btn-outline" onclick="showScreen('s2c')">&#8592; Back</button>
+    </div>
   </div>
 </div>
 
@@ -1951,22 +1981,29 @@ textarea{resize:vertical;line-height:1.6;}
   </div>
   <div id="loc-search-done" style="display:none;" class="notice notice-success" style="margin-bottom:12px;"></div>
 
-  <div id="loc-filter-row" style="display:none;">
-    <div class="chips" id="loc-filters" style="margin-bottom:12px;">
-      <div class="chip on" onclick="filtLocal('all',this)">All</div>
-      <div class="chip" onclick="filtLocal('newspaper',this)">Newspapers</div>
-      <div class="chip" onclick="filtLocal('online',this)">Online &amp; Digital</div>
-      <div class="chip" onclick="filtLocal('radio',this)">Radio &amp; TV</div>
-      <div class="chip" onclick="filtLocal('community',this)">Community</div>
+  <div class="outlet-panel" id="loc-panel">
+    <div class="outlet-panel-filters">
+      <div class="chips" id="loc-filters" style="margin:0;">
+        <div class="chip on" onclick="filtLocal('all',this)">All</div>
+        <div class="chip" onclick="filtLocal('newspaper',this)">Newspapers</div>
+        <div class="chip" onclick="filtLocal('online',this)">Online &amp; Digital</div>
+        <div class="chip" onclick="filtLocal('radio',this)">Radio &amp; TV</div>
+        <div class="chip" onclick="filtLocal('community',this)">Community</div>
+      </div>
+      <div class="outlet-panel-count" id="loc-panel-count"></div>
     </div>
-  </div>
-
-  <div class="plat-list" id="loc-list"></div>
-  <div id="loc-sel-pill" style="display:none;margin-top:10px;"></div>
-
-  <div class="btn-row">
-    <button class="btn btn-primary" id="loc-cont-btn" onclick="showScreen('sloc3')" style="display:none;">Continue with this outlet &rarr;</button>
-    <button class="btn btn-outline" onclick="showScreen('sloc1')">&#8592; Back</button>
+    <div class="outlet-panel-results" id="loc-list"></div>
+    <div class="outlet-panel-sticky">
+      <div style="flex:1;min-width:0;">
+        <div id="loc-sel-pill">
+          <div class="outlet-none-selected">Select a local outlet from the list above</div>
+        </div>
+      </div>
+      <div style="flex-shrink:0;display:flex;gap:8px;align-items:center;">
+        <button class="btn btn-outline btn-sm" onclick="showScreen('sloc1')">&#8592; Back</button>
+        <button class="btn btn-primary" id="loc-cont-btn" onclick="showScreen('sloc3')" style="display:none;">Continue &rarr;</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -4933,8 +4970,8 @@ function showOutletResults(list, pref, primary, countries, fromCache, offerDeepS
   }
 
   document.getElementById('plat-filter-row').style.display = 'block';
-
-  // Offer deep search button
+  var countEl = document.getElementById('plat-panel-count');
+  if (countEl) countEl.textContent = filtered.length + ' outlet' + (filtered.length !== 1 ? 's' : '');
   var deepBtn = document.getElementById('deep-search-btn');
   var deepNote = document.getElementById('deep-search-note');
   // Only show "Find more" button if we fell back to curated DB (AI failed)
@@ -5195,20 +5232,23 @@ function cancelRevealToken() {
 }
 
 function selectRevealedPlatform(name) {
-  // Select platform without consuming another token (already revealed or already contacted)
   var plat = (state.foundPlatforms || []).find(function(p) { return p.n === name; });
   if (!plat) plat = PLATFORMS.find(function(p) { return p.n === name; });
   if (!plat) return;
   state.selectedPlatform = plat;
-  // Show continue button
-  document.getElementById('plat-btn').style.display = 'inline-flex';
+
+  // Update sticky footer
   var pill = document.getElementById('plat-sel-pill');
-  var pillLabel = plat.isPodcast
-    ? '&#127911; ' + plat.n + (plat.host ? ' -- Host: ' + plat.host : '')
-    : '&#10003; ' + plat.n + ' -- ' + plat.t;
-  pill.innerHTML = '<div class="sel-pill">' + pillLabel + '</div>';
-  pill.style.display = 'block';
-  // Auto-fill email + editor
+  if (pill) {
+    pill.innerHTML =
+      '<div class="outlet-selected-name">&#10003; ' + plat.n + '</div>' +
+      '<div class="outlet-selected-meta">' + (plat.t || '') + (plat.u ? ' &nbsp;&bull;&nbsp; ' + plat.u : '') + '</div>';
+  }
+  // Show continue button
+  var btn = document.getElementById('plat-btn');
+  if (btn) btn.style.display = 'inline-flex';
+
+  // Auto-fill email + editor fields
   var emailField = document.getElementById('e-contact');
   if (emailField && plat.e) emailField.value = plat.e;
   var editorField = document.getElementById('e-editor');
@@ -5218,8 +5258,16 @@ function selectRevealedPlatform(name) {
   }
   var autoLabel = document.getElementById('email-auto-label');
   if (autoLabel && plat.e) autoLabel.textContent = '(contact revealed)';
-  // Re-render to show selected state
+
+  // Re-render list to show selected state
   if (state.foundPlatforms && state.foundPlatforms.length) renderFoundPlatforms(state.foundPlatforms);
+
+  // Scroll sticky footer into view
+  var panel = document.getElementById('plat-panel');
+  if (panel) {
+    var sticky = panel.querySelector('.outlet-panel-sticky');
+    if (sticky) sticky.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
 }
 
 // Override selectPlatform to route through token system
@@ -5280,16 +5328,30 @@ function selectLocalOutlet(name) {
 
 function _doSelectLocalOutlet(outlet) {
   locState.selectedOutlet = outlet;
-  document.getElementById('loc-cont-btn').style.display = 'inline-flex';
+  // Update sticky footer
   var pill = document.getElementById('loc-sel-pill');
-  pill.innerHTML = '<div class="sel-pill">&#10003; ' + outlet.n + ' -- ' + (outlet.coverage || outlet.type) + '</div>';
-  pill.style.display = 'block';
-  if (outlet.e) {
-    document.getElementById('loc-contact').value = outlet.e;
-    document.getElementById('loc-email-auto').textContent = '(contact revealed)';
+  if (pill) {
+    pill.innerHTML =
+      '<div class="outlet-selected-name">&#10003; ' + outlet.n + '</div>' +
+      '<div class="outlet-selected-meta">' + (outlet.coverage || outlet.type || '') + (outlet.u ? ' &nbsp;&bull;&nbsp; ' + outlet.u : '') + '</div>';
   }
-  document.getElementById('loc-email-sub').textContent = 'A community-focused email written for ' + outlet.n;
+  var btn = document.getElementById('loc-cont-btn');
+  if (btn) btn.style.display = 'inline-flex';
+  if (outlet.e) {
+    var locContact = document.getElementById('loc-contact');
+    if (locContact) locContact.value = outlet.e;
+    var locAuto = document.getElementById('loc-email-auto');
+    if (locAuto) locAuto.textContent = '(contact revealed)';
+  }
+  var locSub = document.getElementById('loc-email-sub');
+  if (locSub) locSub.textContent = 'A community-focused email written for ' + outlet.n;
   renderLocalOutlets(locState.outlets, locState.locFilter);
+  // Scroll sticky into view
+  var panel = document.getElementById('loc-panel');
+  if (panel) {
+    var sticky = panel.querySelector('.outlet-panel-sticky');
+    if (sticky) sticky.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
 }
 
 // Reset revealed outlets on full reset — state.revealedOutlets = {} is handled in resetAll via state re-init
@@ -6041,7 +6103,7 @@ function testJump(screen) {
     document.getElementById('loc-sel-pill').style.display = 'none';
     document.getElementById('loc-search-done').style.display = 'none';
     document.getElementById('loc-search-done').className = 'notice notice-success';
-    document.getElementById('loc-filter-row').style.display = 'none';
+    /* loc-filter-row removed */
     document.getElementById('loc-search-banner').style.display = 'block';
     document.getElementById('loc-search-status').textContent = 'Searching for local media covering Surry Hills, Sydney...';
     document.getElementById('loc-results-sub').textContent = 'Finding local newspapers and community outlets for Surry Hills, Sydney...';
@@ -6758,7 +6820,7 @@ function submitLocalTargeting() {
   document.getElementById('loc-cont-btn').style.display = 'none';
   document.getElementById('loc-sel-pill').style.display = 'none';
   document.getElementById('loc-search-done').style.display = 'none';
-  document.getElementById('loc-filter-row').style.display = 'none';
+  /* loc-filter-row removed */
   document.getElementById('loc-search-banner').style.display = 'block';
 
   // Build location string for subtitle and search
@@ -6803,7 +6865,7 @@ function searchLocalMedia(country, state, city, hyper, lga) {
       var d = document.getElementById('loc-search-done');
       d.textContent = '\u2713 Found ' + found.length + ' local outlets covering ' + (hyper || city);
       d.style.display = 'block';
-      document.getElementById('loc-filter-row').style.display = 'block';
+      var locPanel = document.getElementById('loc-panel'); if(locPanel) locPanel.style.display = 'flex';
       document.getElementById('loc-results-sub').textContent = found.length + ' local outlets found, ranked by relevance. Click one to select it.';
     } catch(e) {
       document.getElementById('loc-search-done').textContent = 'Could not parse results. Please try again.';
@@ -6825,6 +6887,9 @@ function renderLocalOutlets(list, filter) {
   if (filter && filter !== 'all') {
     filtered = filtered.filter(function(p) { return p.type === filter; });
   }
+  // Update count
+  var countEl = document.getElementById('loc-panel-count');
+  if (countEl) countEl.textContent = filtered.length + ' outlet' + (filtered.length !== 1 ? 's' : '');
   var el = document.getElementById('loc-list');
   if (!filtered.length) {
     el.innerHTML = '<div style="padding:1rem;color:var(--muted);font-size:13px;">No outlets match this filter.</div>';
