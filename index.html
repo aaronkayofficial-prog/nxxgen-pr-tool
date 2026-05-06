@@ -1533,7 +1533,7 @@ textarea{resize:vertical;line-height:1.6;}
 
   <!-- PROPOSED EPISODE / COLLAB TITLE -->
   <div style="background:var(--gold-light);border:1.5px solid var(--gold);border-radius:12px;padding:1.25rem 1.5rem;margin-bottom:1.5rem;">
-    <label style="color:var(--gold);">Proposed episode title or collaboration concept</label>
+    <div style="display:flex;align-items:center;justify-content:space-between;"><label style="color:var(--gold);">Proposed episode title or collaboration concept</label><div class="wfm-wrap"><button class="wfm-link" onclick="writeForMe('pod-title',this)"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Write for me</button><div class="wfm-spinner-row" id="wfm-spin-pod-title"><span class="wfm-spin"></span><span id="wfm-label-pod-title">Writing...</span></div></div></div>
     <textarea id="pod-title" style="min-height:75px;font-size:15px;font-weight:500;" placeholder="e.g. Write it like a podcast episode title -- specific, punchy, and interesting to that show's audience"></textarea>
     <div style="font-size:11px;color:var(--muted);margin-top:6px;">Write it like a podcast episode title -- punchy, specific, and interesting to the show's audience.</div>
   </div>
@@ -1543,23 +1543,23 @@ textarea{resize:vertical;line-height:1.6;}
     <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:12px;font-weight:500;">Tell us about your pitch</div>
     <div style="display:flex;flex-direction:column;gap:12px;">
       <div>
-        <label>What is the core topic or story you want to discuss?</label>
+        <div style="display:flex;align-items:center;justify-content:space-between;"><label>What is the core topic or story you want to discuss?</label><div class="wfm-wrap"><button class="wfm-link" onclick="writeForMe('pod-hook-1',this)"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Write for me</button><div class="wfm-spinner-row" id="wfm-spin-pod-hook-1"><span class="wfm-spin"></span><span id="wfm-label-pod-hook-1">Writing...</span></div></div></div>
         <textarea id="pod-hook-1" style="min-height:85px;" placeholder="e.g. What is the core topic or story you want to discuss on the podcast? Be specific about the insight or angle"></textarea>
       </div>
       <div>
-        <label>Why are you the right person to speak on this? What is your authority or experience?</label>
+        <div style="display:flex;align-items:center;justify-content:space-between;"><label>Why are you the right person to speak on this? What is your authority or experience?</label><div class="wfm-wrap"><button class="wfm-link" onclick="writeForMe('pod-hook-2',this)"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Write for me</button><div class="wfm-spinner-row" id="wfm-spin-pod-hook-2"><span class="wfm-spin"></span><span id="wfm-label-pod-hook-2">Writing...</span></div></div></div>
         <textarea id="pod-hook-2" style="min-height:85px;" placeholder="e.g. What is your background, experience, or credentials that make you the right person to speak on this topic?"></textarea>
       </div>
       <div>
-        <label>What will the audience take away? What will they learn or gain?</label>
+        <div style="display:flex;align-items:center;justify-content:space-between;"><label>What will the audience take away? What will they learn or gain?</label><div class="wfm-wrap"><button class="wfm-link" onclick="writeForMe('pod-hook-3',this)"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Write for me</button><div class="wfm-spinner-row" id="wfm-spin-pod-hook-3"><span class="wfm-spin"></span><span id="wfm-label-pod-hook-3">Writing...</span></div></div></div>
         <textarea id="pod-hook-3" style="min-height:85px;" placeholder="e.g. What will the audience walk away with? What will they learn, understand, or be able to do after listening?"></textarea>
       </div>
       <div>
-        <label>Why does this topic matter right now? What is the timely angle?</label>
+        <div style="display:flex;align-items:center;justify-content:space-between;"><label>Why does this topic matter right now? What is the timely angle?</label><div class="wfm-wrap"><button class="wfm-link" onclick="writeForMe('pod-hook-4',this)"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Write for me</button><div class="wfm-spinner-row" id="wfm-spin-pod-hook-4"><span class="wfm-spin"></span><span id="wfm-label-pod-hook-4">Writing...</span></div></div></div>
         <textarea id="pod-hook-4" style="min-height:85px;" placeholder="e.g. Why is this topic especially relevant or urgent right now? What is the timely angle?"></textarea>
       </div>
       <div>
-        <label>Any previous podcast appearances, speaking experience, or media coverage? <span style="font-size:10px;font-weight:400;text-transform:none;">(optional)</span></label>
+        <div style="display:flex;align-items:center;justify-content:space-between;"><label>Any previous podcast appearances, speaking experience, or media coverage? <span style="font-size:10px;font-weight:400;text-transform:none;">(optional)</span></label><div class="wfm-wrap"><button class="wfm-link" onclick="writeForMe('pod-hook-5',this)"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Write for me</button><div class="wfm-spinner-row" id="wfm-spin-pod-hook-5"><span class="wfm-spin"></span><span id="wfm-label-pod-hook-5">Writing...</span></div></div></div>
         <textarea id="pod-hook-5" style="min-height:75px;" placeholder="e.g. Previous podcast appearances, speaking experience, media features, publications, or other credentials (optional)"></textarea>
       </div>
     </div>
@@ -1567,7 +1567,7 @@ textarea{resize:vertical;line-height:1.6;}
 
   <!-- KEY TALKING POINTS -->
   <div style="margin-bottom:1.5rem;">
-    <label>Your key quote or soundbite <span style="font-size:10px;font-weight:400;text-transform:none;">(the line that sums up your point of view)</span></label>
+    <div style="display:flex;align-items:center;justify-content:space-between;"><label>Your key quote or soundbite <span style="font-size:10px;font-weight:400;text-transform:none;">(the line that sums up your point of view)</span></label><div class="wfm-wrap"><button class="wfm-link" onclick="writeForMe('pod-quote',this)"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Write for me</button><div class="wfm-spinner-row" id="wfm-spin-pod-quote"><span class="wfm-spin"></span><span id="wfm-label-pod-quote">Writing...</span></div></div></div>
     <textarea id="pod-quote" style="min-height:75px;" placeholder="e.g. The one bold, quotable line that sums up your entire point of view on this topic"></textarea>
   </div>
 
@@ -2260,6 +2260,14 @@ function buildWFMPrompt(fieldId, ctx, websiteContent) {
     // Campaign fields
     'cp-what': 'Write 1-2 sentences describing what this business does for a PR campaign context. Professional and specific.\n\n' + base + (ctx.campName ? '\nCampaign: ' + ctx.campName : '') + '\n\nReturn ONLY the description. Max 40 words.',
     'cp-angle': 'Write one sentence stating what makes this business uniquely different -- their strongest differentiator for media pitching.\n\n' + base + '\n\nReturn ONLY the sentence. Max 25 words.',
+    // Podcast pitch fields
+    'pod-title': 'Write one punchy podcast episode title for a collaboration pitch. Write it exactly as a real episode title -- specific, intriguing, audience-first.\n\nCompany: ' + biz + (ctx.what ? '\nWhat they do: ' + ctx.what.substring(0,100) : '') + (ctx.angle ? '\nExpert angle: ' + ctx.angle.substring(0,80) : '') + web + '\n\nReturn ONLY the episode title. Max 12 words.',
+    'pod-hook-1': 'Write 2-3 sentences describing the core topic or story for a podcast pitch. Be specific about the insight, not just the subject area.\n\nCompany: ' + biz + (ctx.what ? '\nWhat they do: ' + ctx.what.substring(0,100) : '') + (ctx.angle ? '\nKey angle: ' + ctx.angle.substring(0,80) : '') + web + '\n\nReturn ONLY the answer. Max 60 words.',
+    'pod-hook-2': 'Write 2-3 sentences explaining why the founder/spokesperson of this company is the right person to speak on this topic. Focus on lived experience and authority, not job title.\n\nCompany: ' + biz + (ctx.what ? '\nWhat they do: ' + ctx.what.substring(0,100) : '') + (ctx.pos ? '\nRole: ' + ctx.pos : '') + (ctx.angle ? '\nAngle: ' + ctx.angle.substring(0,80) : '') + web + '\n\nReturn ONLY the answer. Max 55 words.',
+    'pod-hook-3': 'Write 2-3 sentences describing what the podcast audience will take away. Focus on concrete, actionable value -- what they will be able to do or think differently after listening.\n\nCompany: ' + biz + (ctx.what ? '\nWhat they do: ' + ctx.what.substring(0,100) : '') + (ctx.angle ? '\nTopic angle: ' + ctx.angle.substring(0,80) : '') + web + '\n\nReturn ONLY the answer. Max 55 words.',
+    'pod-hook-4': 'Write 2-3 sentences explaining why this topic is especially relevant right now. What trend, shift, or moment makes this timely and urgent for a podcast audience today?\n\nCompany: ' + biz + (ctx.what ? '\nWhat they do: ' + ctx.what.substring(0,100) : '') + (ctx.angle ? '\nAngle: ' + ctx.angle.substring(0,80) : '') + web + '\n\nReturn ONLY the answer. Max 55 words.',
+    'pod-hook-5': 'Write 1-2 sentences listing relevant speaking credentials, podcast experience, or media coverage that would establish credibility for a podcast pitch. If unknown, suggest the type of credentials that would be relevant.\n\nCompany: ' + biz + (ctx.pos ? '\nRole: ' + ctx.pos : '') + (ctx.what ? '\nWhat they do: ' + ctx.what.substring(0,80) : '') + web + '\n\nReturn ONLY the answer. Max 40 words.',
+    'pod-quote': 'Write one bold, memorable soundbite that sums up the speaker\'s core point of view. Something a podcast host would quote in their show notes or a listener would screenshot.\n\nCompany: ' + biz + (ctx.what ? '\nWhat they do: ' + ctx.what.substring(0,100) : '') + (ctx.angle ? '\nStrongest angle: ' + ctx.angle.substring(0,80) : '') + web + '\n\nReturn ONLY the quote without quotation marks. Max 30 words.',
     // Story pitch fields
     'pitch-headline': 'Write one punchy editorial story headline for a journalist pitch. Write it exactly as a published article headline -- specific, newsy, active voice.\n\nCompany: ' + biz + (ctx.what ? ', ' + ctx.what.substring(0,80) : '') + (ctx.angle ? ', angle: ' + ctx.angle.substring(0,60) : '') + web + '\n\nReturn ONLY the headline. Max 15 words.',
     'b-hook-1': 'Write 2 sentences for a media pitch answering: "What is the core story or announcement?" Be specific and newsworthy.\n\nCompany: ' + biz + (ctx.what ? '\nWhat they do: ' + ctx.what.substring(0,100) : '') + (ctx.angle ? '\nAngle: ' + ctx.angle.substring(0,80) : '') + web + '\n\nReturn ONLY the answer. Max 50 words.',
