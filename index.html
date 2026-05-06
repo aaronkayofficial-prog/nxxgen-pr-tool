@@ -1592,8 +1592,6 @@ textarea{resize:vertical;line-height:1.6;}
     <button class="btn btn-outline" onclick="showScreen('s1')">&#8592; Back</button>
   </div>
 </div>
-
-<!-- SCREEN 2C: MEDIA TARGETING -->
 <div class="screen" id="s2c">
   <div class="back-link" id="s2c-back" onclick="goBackFromTargeting()">&#8592; Back</div>
   <div class="eyebrow" id="s2c-eyebrow">Step 3 of 5 -- Target Media</div>
@@ -2065,7 +2063,13 @@ textarea{resize:vertical;line-height:1.6;}
 
   <!-- What the business does locally -->
   <div style="margin-bottom:1.25rem;">
-    <label>What does your business do and why is it relevant to this local area?</label>
+    <div style="display:flex;align-items:center;justify-content:space-between;">
+      <label>What does your business do and why is it relevant to this local area?</label>
+      <div class="wfm-wrap">
+        <button class="wfm-link" onclick="writeForMe('loc-what',this)"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Write for me</button>
+        <div class="wfm-spinner-row" id="wfm-spin-loc-what"><span class="wfm-spin"></span><span id="wfm-label-loc-what">Writing...</span></div>
+      </div>
+    </div>
     <textarea id="loc-what" style="min-height:80px;" placeholder="e.g. Describe what your business does and why it is specifically relevant to this local area -- are you based there, do you serve locals, do you employ people from the area?"></textarea>
   </div>
 
@@ -2091,7 +2095,13 @@ textarea{resize:vertical;line-height:1.6;}
   </div>
 
   <div style="margin-bottom:1.5rem;">
-    <label>Describe your local story in more detail</label>
+    <div style="display:flex;align-items:center;justify-content:space-between;">
+      <label>Describe your local story in more detail</label>
+      <div class="wfm-wrap">
+        <button class="wfm-link" onclick="writeForMe('loc-story',this)"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Write for me</button>
+        <div class="wfm-spinner-row" id="wfm-spin-loc-story"><span class="wfm-spin"></span><span id="wfm-label-loc-story">Writing...</span></div>
+      </div>
+    </div>
     <textarea id="loc-story" style="min-height:90px;" placeholder="e.g. Tell the human story -- why here, why now, what does this mean for the local community, what gap are you filling, what inspired you to do this in this area?"></textarea>
   </div>
 
@@ -2167,19 +2177,48 @@ textarea{resize:vertical;line-height:1.6;}
   <div class="gen-row" id="loc-email-spinner" style="display:none;"><div class="spinner"></div> Generating your local outreach email...</div>
 
   <div id="loc-email-wrap" style="display:none;margin-top:1.5rem;">
-    <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Your local outreach email</div>
-    <div id="loc-email-out" style="font-size:14px;line-height:1.9;white-space:pre-wrap;color:var(--text);font-family:Georgia,serif;padding-bottom:1rem;border-bottom:1px solid var(--border);"></div>
+    <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Your local outreach email — edit before sending</div>
+    <textarea id="loc-email-out" style="width:100%;min-height:320px;font-size:13px;line-height:1.85;font-family:Georgia,serif;color:var(--text);border:1.5px solid var(--gold);border-radius:10px;padding:14px 16px;background:#fffdf9;resize:vertical;"></textarea>
     <div class="btn-row" style="margin-top:1rem;">
       <button class="btn btn-gold" onclick="copyLocEmail()" id="copy-loc-btn">Copy email</button>
-      <button class="btn btn-outline" onclick="generateLocalEmail()">Regenerate</button>
+      <button class="btn btn-outline" onclick="generateLocalEmail()">&#8635; Get another version</button>
     </div>
-    <div class="notice notice-success" id="loc-copy-ok" style="display:none;margin-top:8px;">&#10003; Copied -- paste into Gmail or Outlook.</div>
-    <div style="margin-top:1.5rem;padding:1.25rem 1.5rem;background:var(--off);border:1.5px solid var(--border);border-radius:12px;">
-      <div style="font-size:13px;font-weight:500;color:var(--black);margin-bottom:5px;">&#127919; Want to reach another local outlet?</div>
-      <div style="font-size:12px;color:var(--muted);margin-bottom:12px;">Your profile and local story are saved. Go back to the outlet list and pick a different publication.</div>
-      <div class="btn-row" style="margin-top:0;">
-        <button class="btn btn-primary" onclick="reachAnotherLocal()">Reach another local outlet &rarr;</button>
-        <button class="btn btn-outline btn-sm" onclick="resetAll()">Start completely over</button>
+    <div class="notice notice-success" id="loc-copy-ok" style="display:none;margin-top:8px;">&#10003; Copied — paste into Gmail or Outlook.</div>
+
+    <!-- Send checklist for local outreach -->
+    <div style="margin-top:1.5rem;border:1.5px solid var(--border);border-radius:14px;overflow:hidden;">
+      <div style="background:var(--black);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;">
+        <div style="font-size:13px;font-weight:600;color:var(--white);">How to send this local outreach</div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.5);">This tool does not send email — you send from your own account</div>
+      </div>
+      <div style="background:var(--white);padding:4px 0;">
+        <div class="send-step" id="loc-step-1">
+          <div class="send-step-check" onclick="toggleSendStep('loc-step-1')"></div>
+          <div style="flex:1;"><div class="send-step-label">Copy the contact email address</div><div class="send-step-value" id="loc-step-contact-display">—</div></div>
+          <button class="send-step-btn" onclick="copyLocStepValue('loc-contact','loc-step-1-btn','loc-step-1')" id="loc-step-1-btn">Copy</button>
+        </div>
+        <div class="send-step" id="loc-step-2">
+          <div class="send-step-check" onclick="toggleSendStep('loc-step-2')"></div>
+          <div style="flex:1;"><div class="send-step-label">Copy the subject line</div><div class="send-step-value" id="loc-step-subject-display">Generate your email first</div></div>
+          <button class="send-step-btn" onclick="copyLocSubject('loc-step-2')" id="loc-step-2-btn">Copy</button>
+        </div>
+        <div class="send-step" id="loc-step-3">
+          <div class="send-step-check" onclick="toggleSendStep('loc-step-3')"></div>
+          <div style="flex:1;"><div class="send-step-label">Copy the email body</div><div class="send-step-value">Paste into Gmail, Outlook, Mail or any email client</div></div>
+          <button class="send-step-btn" onclick="copyLocEmail();toggleSendStep('loc-step-3')" id="loc-step-3-btn">Copy</button>
+        </div>
+        <div class="send-step" id="loc-step-4" style="border-bottom:none;">
+          <div class="send-step-check" onclick="toggleSendStep('loc-step-4')"></div>
+          <div style="flex:1;"><div class="send-step-label">Open your email and send</div><div class="send-step-value">Compose a new email, paste the details above, and send</div></div>
+          <a id="loc-mailto-btn" class="send-step-btn" style="text-decoration:none;" href="#" onclick="openLocMailto();return false;">Open Mail</a>
+        </div>
+      </div>
+      <div style="background:var(--off);border-top:1px solid var(--border);padding:10px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;">
+        <div style="display:flex;align-items:center;gap:7px;">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#2d6a4f" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          <span style="font-size:12px;color:#2d6a4f;font-weight:500;">Saved to your outreach dashboard</span>
+        </div>
+        <button class="btn btn-gold btn-sm" onclick="reachAnotherLocal()">Send to another local outlet &rarr;</button>
       </div>
     </div>
   </div>
@@ -2260,6 +2299,26 @@ function buildWFMPrompt(fieldId, ctx, websiteContent) {
     // Campaign fields
     'cp-what': 'Write 1-2 sentences describing what this business does for a PR campaign context. Professional and specific.\n\n' + base + (ctx.campName ? '\nCampaign: ' + ctx.campName : '') + '\n\nReturn ONLY the description. Max 40 words.',
     'cp-angle': 'Write one sentence stating what makes this business uniquely different -- their strongest differentiator for media pitching.\n\n' + base + '\n\nReturn ONLY the sentence. Max 25 words.',
+    // Local media fields
+    'loc-what': (function() {
+      var locStr = [
+        document.getElementById('loc-hyper') ? document.getElementById('loc-hyper').value.trim() : '',
+        document.getElementById('loc-city-val') ? document.getElementById('loc-city-val').value.trim() : '',
+        document.getElementById('loc-state') ? document.getElementById('loc-state').value.trim() : ''
+      ].filter(Boolean).join(', ');
+      return 'Write 2-3 sentences explaining what this business does and why it is specifically relevant to the local area. Focus on local connection: based there, serves local customers, employs locals, contributes to the community.\n\nCompany: ' + biz + (ctx.what ? '\nWhat they do: ' + ctx.what.substring(0,120) : '') + (locStr ? '\nLocal area: ' + locStr : '') + web + '\n\nReturn ONLY the answer. Max 60 words. Warm, local, community-focused.';
+    })(),
+    'loc-story': (function() {
+      var locStr = [
+        document.getElementById('loc-hyper') ? document.getElementById('loc-hyper').value.trim() : '',
+        document.getElementById('loc-city-val') ? document.getElementById('loc-city-val').value.trim() : '',
+        document.getElementById('loc-state') ? document.getElementById('loc-state').value.trim() : ''
+      ].filter(Boolean).join(', ');
+      var locWhat = document.getElementById('loc-what') ? document.getElementById('loc-what').value.trim() : '';
+      var angles = [];
+      document.querySelectorAll('#loc-angle-chips .chip.on').forEach(function(c){ angles.push(c.textContent.trim()); });
+      return 'Write a compelling 3-4 sentence local human interest story for a media pitch. Cover: why this is happening here and now, what it means for the local community, and what makes it genuinely newsworthy for local readers.\n\nCompany: ' + biz + (ctx.what ? '\nWhat they do: ' + ctx.what.substring(0,100) : '') + (locStr ? '\nLocal area: ' + locStr : '') + (locWhat ? '\nLocal relevance: ' + locWhat.substring(0,100) : '') + (angles.length ? '\nStory angles: ' + angles.join(', ') : '') + web + '\n\nReturn ONLY the story. Max 80 words. Human, warm, community-first.';
+    })(),
     // Podcast pitch fields
     'pod-title': 'Write one punchy podcast episode title for a collaboration pitch. Write it exactly as a real episode title -- specific, intriguing, audience-first.\n\nCompany: ' + biz + (ctx.what ? '\nWhat they do: ' + ctx.what.substring(0,100) : '') + (ctx.angle ? '\nExpert angle: ' + ctx.angle.substring(0,80) : '') + web + '\n\nReturn ONLY the episode title. Max 12 words.',
     'pod-hook-1': 'Write 2-3 sentences describing the core topic or story for a podcast pitch. Be specific about the insight, not just the subject area.\n\nCompany: ' + biz + (ctx.what ? '\nWhat they do: ' + ctx.what.substring(0,100) : '') + (ctx.angle ? '\nKey angle: ' + ctx.angle.substring(0,80) : '') + web + '\n\nReturn ONLY the answer. Max 60 words.',
@@ -5132,7 +5191,7 @@ function renderFoundPodcasts(list) {
   el.innerHTML = html;
 }
 
-// ── PITCH STORY: auto-attach campaign press release ──
+
 function preFillPitchPR() {
   var pr = '';
   // First check campaign saved content, then session state
@@ -5746,6 +5805,8 @@ function _doSelectLocalOutlet(outlet) {
     if (locContact) locContact.value = outlet.e;
     var locAuto = document.getElementById('loc-email-auto');
     if (locAuto) locAuto.textContent = '(contact revealed)';
+    var locContactDisp = document.getElementById('loc-step-contact-display');
+    if (locContactDisp) locContactDisp.textContent = outlet.e;
   }
   // Show editor name field only if a name is known
   var locEditorWrap = document.getElementById('loc-editor-wrap');
@@ -5949,23 +6010,95 @@ function reachAnotherReddit() {
   showScreen('srd2');
 }
 
-function reachAnotherLocal() {
-  // Keep locState profile and story, just clear the selected outlet
-  locState.selectedOutlet = null;
-  document.getElementById('loc-contact').value = '';
-  document.getElementById('loc-editor').value = '';
-  document.getElementById('loc-email-wrap').style.display = 'none';
-  document.getElementById('loc-email-auto').textContent = '';
-  document.getElementById('loc-cont-btn').style.display = 'none';
-  document.getElementById('loc-sel-pill').style.display = 'none';
-  // Re-render outlet list without selection
-  if (locState.outlets && locState.outlets.length) {
-    renderLocalOutlets(locState.outlets);
+// ── LOCAL SEND CHECKLIST ──
+function updateLocSendChecklist() {
+  var contactEl = document.getElementById('loc-contact');
+  var contactDisp = document.getElementById('loc-step-contact-display');
+  if (contactEl && contactDisp) contactDisp.textContent = contactEl.value.trim() || 'Enter contact email above';
+  var outEl = document.getElementById('loc-email-out');
+  var emailText = outEl ? (outEl.value || '') : '';
+  var subjectLine = '';
+  emailText.split('\n').slice(0,5).forEach(function(l){ if (l.match(/^subject:/i)) subjectLine = l.replace(/^subject:\s*/i,'').trim(); });
+  var subjDisp = document.getElementById('loc-step-subject-display');
+  if (subjDisp && subjectLine) subjDisp.textContent = subjectLine;
+  var mailBtn = document.getElementById('loc-mailto-btn');
+  if (mailBtn) {
+    var contact = contactEl ? contactEl.value.trim() : '';
+    mailBtn.href = 'mailto:' + encodeURIComponent(contact) + '?subject=' + encodeURIComponent(subjectLine);
   }
-  showScreen('sloc2');
+  ['loc-step-1','loc-step-2','loc-step-3','loc-step-4'].forEach(function(id){
+    var el = document.getElementById(id); if (el) el.classList.remove('done');
+  });
 }
 
-// ---- PITCH IDEAS ----
+function copyLocStepValue(inputId, btnId, stepId) {
+  var el = document.getElementById(inputId);
+  if (!el || !el.value.trim()) return;
+  navigator.clipboard.writeText(el.value.trim()).then(function() {
+    var btn = document.getElementById(btnId);
+    if (btn) { btn.textContent = '\u2713 Copied'; btn.classList.add('copied'); setTimeout(function(){ btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000); }
+    toggleSendStep(stepId);
+  });
+}
+
+function copyLocSubject(stepId) {
+  var outEl = document.getElementById('loc-email-out');
+  var emailText = outEl ? (outEl.value || '') : '';
+  var subjectLine = '';
+  emailText.split('\n').slice(0,5).forEach(function(l){ if (l.match(/^subject:/i)) subjectLine = l.replace(/^subject:\s*/i,'').trim(); });
+  if (!subjectLine && emailText) subjectLine = emailText.split('\n')[0].trim();
+  if (!subjectLine) return;
+  navigator.clipboard.writeText(subjectLine).then(function() {
+    var btn = document.getElementById('loc-step-2-btn');
+    if (btn) { btn.textContent = '\u2713 Copied'; btn.classList.add('copied'); setTimeout(function(){ btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000); }
+    var disp = document.getElementById('loc-step-subject-display');
+    if (disp) disp.textContent = subjectLine;
+    toggleSendStep(stepId);
+  });
+}
+
+function openLocMailto() {
+  var contact = document.getElementById('loc-contact') ? document.getElementById('loc-contact').value.trim() : '';
+  var outEl = document.getElementById('loc-email-out');
+  var emailText = outEl ? (outEl.value || '') : '';
+  var subjectLine = '';
+  emailText.split('\n').slice(0,5).forEach(function(l){ if (l.match(/^subject:/i)) subjectLine = l.replace(/^subject:\s*/i,'').trim(); });
+  window.open('mailto:' + encodeURIComponent(contact) + '?subject=' + encodeURIComponent(subjectLine), '_blank');
+  toggleSendStep('loc-step-4');
+}
+
+function reachAnotherLocal() {
+  // Keep locState profile and story — just reset selection and UI
+  locState.selectedOutlet = null;
+  document.getElementById('loc-email-wrap').style.display = 'none';
+  var locContact = document.getElementById('loc-contact'); if (locContact) locContact.value = '';
+  var locEditor = document.getElementById('loc-editor'); if (locEditor) locEditor.value = '';
+  var locEditorWrap = document.getElementById('loc-editor-wrap'); if (locEditorWrap) locEditorWrap.style.display = '';
+  var locAuto = document.getElementById('loc-email-auto'); if (locAuto) locAuto.textContent = '';
+  var locExtra = document.getElementById('loc-extra'); if (locExtra) locExtra.value = '';
+  var contBtn = document.getElementById('loc-cont-btn'); if (contBtn) contBtn.style.display = 'none';
+  var pill = document.getElementById('loc-sel-pill');
+  if (pill) pill.innerHTML = '<div class="outlet-none-selected">Select a local outlet from the list above</div>';
+  if (locState.outlets && locState.outlets.length) renderLocalOutlets(locState.outlets, locState.locFilter);
+  showScreen('sloc2');
+  // Show reuse notice inside the panel
+  setTimeout(function() {
+    var existing = document.getElementById('loc-reuse-notice');
+    if (existing) existing.remove();
+    var listEl = document.getElementById('loc-list');
+    if (listEl && listEl.parentNode) {
+      var notice = document.createElement('div');
+      notice.id = 'loc-reuse-notice';
+      notice.style.cssText = 'padding:10px 14px;background:#fffdf2;border-bottom:1px solid #f0d060;display:flex;align-items:center;gap:10px;';
+      notice.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#b8860b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>' +
+        '<div><div style="font-size:12px;font-weight:600;color:#7a5c00;">Sending to another local outlet</div>' +
+        '<div style="font-size:11px;color:#a07800;margin-top:1px;">Your local story is saved — select a new outlet to generate a fresh email.</div></div>';
+      listEl.parentNode.insertBefore(notice, listEl);
+    }
+  }, 150);
+}
+
+
 // ---- WEBSITE FETCH ----
 function fetchWebsiteContent(url, onSuccess, onFail) {
   if (!url) { onFail('No URL'); return; }
@@ -7536,9 +7669,12 @@ function doGenerateLocalEmail() {
 
   callAPIFast(prompt, function(text) {
     document.getElementById('loc-email-spinner').style.display = 'none';
-    document.getElementById('loc-email-out').textContent = text;
+    var outEl = document.getElementById('loc-email-out');
+    if (outEl) outEl.value = text;
     document.getElementById('loc-email-wrap').style.display = 'block';
     document.getElementById('loc-copy-ok').style.display = 'none';
+    // Update local send checklist
+    updateLocSendChecklist();
     document.getElementById('loc-email-wrap').scrollIntoView({ behavior:'smooth', block:'nearest' });
   }, function() {
     document.getElementById('loc-email-spinner').style.display = 'none';
@@ -7547,13 +7683,16 @@ function doGenerateLocalEmail() {
 }
 
 function copyLocEmail() {
-  var text = document.getElementById('loc-email-out').textContent;
+  var outEl = document.getElementById('loc-email-out');
+  var text = outEl ? (outEl.value || outEl.textContent) : '';
   var btn = document.getElementById('copy-loc-btn');
   var ok = document.getElementById('loc-copy-ok');
   navigator.clipboard.writeText(text).then(function() {
-    btn.textContent = '\u2713 Copied!'; btn.style.background='#2d6a4f'; btn.style.borderColor='#2d6a4f';
-    ok.style.display = 'block';
-    setTimeout(function() { btn.textContent='Copy email'; btn.style.background=''; btn.style.borderColor=''; }, 2500);
+    if (btn) { btn.textContent = '\u2713 Copied!'; btn.style.background='#2d6a4f'; btn.style.borderColor='#2d6a4f'; btn.style.color='#fff'; }
+    if (ok) ok.style.display = 'block';
+    setTimeout(function() { if (btn) { btn.textContent='Copy email'; btn.style.background=''; btn.style.borderColor=''; btn.style.color=''; } }, 2500);
+  }).catch(function() {
+    if (outEl && outEl.select) { outEl.select(); document.execCommand('copy'); }
   });
 }
 function resetAll() {
