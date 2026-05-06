@@ -308,7 +308,7 @@ textarea{resize:vertical;line-height:1.6;}
   <div class="token-confirm-box">
     <div style="font-size:36px;margin-bottom:12px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
     <div style="font-size:18px;font-weight:500;color:var(--black);margin-bottom:8px;" id="token-confirm-outlet"></div>
-    <div style="font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:6px;" id="token-confirm-msg"></div>
+    <div style="font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:6px;" id="token-confirm-msg">Selecting this outlet reveals their contact email, uses 1 daily token, and automatically logs this outreach to your campaign dashboard.</div>
     <div style="font-size:12px;color:var(--gold);font-weight:500;margin-bottom:1.5rem;" id="token-confirm-remaining"></div>
     <div class="btn-row" style="justify-content:center;">
       <button class="btn btn-primary" id="token-confirm-yes" onclick="confirmRevealToken()">Reveal &amp; start outreach</button>
@@ -1790,27 +1790,23 @@ textarea{resize:vertical;line-height:1.6;}
     </div>
     <div class="notice notice-success" id="copy-confirm" style="display:none;margin-top:10px;">&#10003; Copied -- paste into Gmail or Outlook with Cmd+V / Ctrl+V.</div>
 
-    <!-- Log & reuse box -->
-    <div style="margin-top:1.5rem;padding:1.25rem 1.5rem;background:var(--off);border:1.5px solid var(--border);border-radius:12px;">
-      <div style="font-size:13px;font-weight:500;color:var(--black);margin-bottom:4px;">&#128203; Save this outreach to your campaign</div>
-      <div style="font-size:12px;color:var(--muted);margin-bottom:12px;">Log who you sent this to so you have a full record. Then send the same pitch to another outlet in one click.</div>
+    <!-- Auto-log confirmation box -->
+    <div style="margin-top:1.5rem;padding:1.25rem 1.5rem;background:#f0faf4;border:1.5px solid #2d6a4f;border-radius:12px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2d6a4f" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        <div style="font-size:13px;font-weight:500;color:#2d6a4f;">Outreach automatically logged</div>
+      </div>
+      <div style="font-size:12px;color:#2d6a4f;margin-bottom:12px;opacity:0.85;">This outreach has been saved to your campaign dashboard. Add the journalist name below to complete the record.</div>
       <div class="g2" style="margin-bottom:10px;">
-        <div><label style="font-size:11px;">Outlet sent to</label><input type="text" id="log-outlet-inline" placeholder="e.g. Mumbrella, Ragtrader"/></div>
-        <div><label style="font-size:11px;">Journalist / editor name</label><input type="text" id="log-journalist-inline" placeholder="e.g. Sarah Jones or Editor"/></div>
-        <div><label style="font-size:11px;">Their email</label><input type="text" id="log-email-inline" placeholder="e.g. sarah@mumbrella.com.au"/></div>
-        <div><label style="font-size:11px;">Status</label>
-          <div class="chips" id="log-inline-status-chips" style="margin-top:6px;">
-            <div class="chip on" onclick="setInlineLogStatus('sent',this)">Sent</div>
-            <div class="chip" onclick="setInlineLogStatus('pending',this)">Pending</div>
-            <div class="chip" onclick="setInlineLogStatus('replied',this)">Replied</div>
-          </div>
-        </div>
+        <div><label style="font-size:11px;">Journalist / editor name</label><input type="text" id="log-journalist-inline" placeholder="e.g. Sarah Jones or leave as Editor ✍️"/></div>
+        <div><label style="font-size:11px;">Their email</label><input type="text" id="log-email-inline" placeholder="auto-filled from outlet"/></div>
+        <div style="display:none;"><input type="text" id="log-outlet-inline"/></div>
       </div>
       <div class="btn-row" style="margin-top:0;">
-        <button class="btn btn-primary" onclick="logAndKeep()">&#10003; Log this outreach</button>
-        <button class="btn btn-gold" onclick="logAndSendAnother()">Log &amp; send to another outlet &rarr;</button>
+        <button class="btn btn-outline btn-sm" onclick="updateLogJournalist()">Update record</button>
+        <button class="btn btn-gold" onclick="logAndSendAnother()">Send to another outlet &rarr;</button>
       </div>
-      <div class="notice notice-success" id="log-inline-confirm" style="display:none;margin-top:8px;">&#10003; Logged to campaign timeline.</div>
+      <div class="notice notice-success" id="log-inline-confirm" style="display:none;margin-top:8px;">&#10003; Record updated.</div>
     </div>
 
     <div class="divider"></div>
@@ -4078,7 +4074,8 @@ var state = {
   podMediaKit: null,
   websiteContent: null,
   currentScreen: 's0',
-  revealedOutlets: {}
+  revealedOutlets: {},
+  currentLogEntryId: null
 };
 
 var PLATFORMS = [
@@ -5131,15 +5128,66 @@ function requestRevealToken(name) {
 function confirmRevealToken() {
   document.getElementById('token-confirm-modal').style.display = 'none';
   if (!pendingRevealName) return;
-  // Consume token
+  // 1. Consume token
   incrementUsage();
-  // Mark outlet as revealed in session
+  // 2. Mark as revealed
   state.revealedOutlets = state.revealedOutlets || {};
   state.revealedOutlets[pendingRevealName] = true;
-  // Now select it
+  // 3. Select the platform
   selectRevealedPlatform(pendingRevealName);
+  // 4. Auto-create outreach log entry immediately
+  autoCreateOutreachLog(pendingRevealName);
   pendingRevealName = null;
 }
+
+function autoCreateOutreachLog(outletName) {
+  if (!activeCampaign) return;
+  var plat = (state.foundPlatforms || []).find(function(p){ return p.n === outletName; });
+  if (!plat) plat = PLATFORMS.find(function(p){ return p.n === outletName; });
+  var pathLabels = { A:'Press Release', B:'Editorial Pitch', C:'Podcast Pitch', D:'Reddit Outreach', E:'Local Media' };
+  var entry = {
+    id: genId(),
+    outlet: outletName,
+    journalist: (plat && plat.editor) ? plat.editor : 'Editor ✍️',
+    contactEmail: (plat && plat.e) ? plat.e : '',
+    path: pathLabels[state.path] || 'Press Release',
+    status: 'pending',
+    date: new Date().toISOString(),
+    emailText: '',
+    notes: 'Contact revealed — outreach in progress'
+  };
+  // Store the entry ID so we can update it with the email later
+  state.currentLogEntryId = entry.id;
+  saveLogEntryToCampaign(entry);
+  renderHubLog();
+  // Show subtle confirmation
+  var confirm = document.getElementById('log-inline-confirm');
+  if (confirm) {
+    confirm.textContent = '✓ Outreach logged — email will be saved automatically when generated';
+    confirm.style.display = 'block';
+    setTimeout(function(){ confirm.style.display = 'none'; }, 4000);
+  }
+}
+
+function updateCurrentLogEntry(emailText, journalist, contactEmail, status) {
+  // Called after email is generated — updates the auto-created log entry with email content
+  if (!activeCampaign || !state.currentLogEntryId) return;
+  var log = activeCampaign.outreachLog || [];
+  var entry = log.find(function(e){ return e.id === state.currentLogEntryId; });
+  if (!entry) return;
+  if (emailText) entry.emailText = emailText;
+  if (journalist) entry.journalist = journalist;
+  if (contactEmail) entry.contactEmail = contactEmail;
+  if (status) entry.status = status;
+  entry.notes = [entry.journalist, entry.contactEmail].filter(Boolean).join(' · ');
+  loadCampaigns();
+  var idx = campaigns.findIndex(function(c){ return c.id === activeCampaign.id; });
+  if (idx > -1) campaigns[idx] = activeCampaign;
+  saveCampaignsToStorage();
+  renderHubLog();
+}
+
+
 
 function cancelRevealToken() {
   document.getElementById('token-confirm-modal').style.display = 'none';
@@ -5207,6 +5255,22 @@ function selectLocalOutlet(name) {
       state.revealedOutlets = state.revealedOutlets || {};
       state.revealedOutlets[name] = true;
       _doSelectLocalOutlet(outlet);
+      // Auto-log local outlet selection
+      var pathLabels = { A:'Press Release', B:'Editorial Pitch', C:'Podcast Pitch', D:'Reddit Outreach', E:'Local Media' };
+      var entry = {
+        id: genId(),
+        outlet: outlet.n,
+        journalist: outlet.editor || 'Editor ✍️',
+        contactEmail: outlet.e || '',
+        path: 'Local Media',
+        status: 'pending',
+        date: new Date().toISOString(),
+        emailText: '',
+        notes: 'Local contact revealed — outreach in progress'
+      };
+      state.currentLogEntryId = entry.id;
+      saveLogEntryToCampaign(entry);
+      renderHubLog();
       pendingRevealName = null;
       document.getElementById('token-confirm-yes').onclick = confirmRevealToken;
     };
@@ -5631,28 +5695,33 @@ function doGenerateEmail() {
 
     callAPI(prompt, function(text) {
       document.getElementById('email-spinner').style.display = 'none';
-      // If reusing, pre-load saved email body then let user pick new outlet
       var finalText = (state.reusingEmail && state.lastEmailBody) ? state.lastEmailBody : text;
       state.reusingEmail = false;
       state.lastEmailBody = '';
-      // Remove reuse banner if present
       var rn = document.getElementById('reuse-email-notice');
       if (rn) rn.remove();
       document.getElementById('email-preview').value = finalText;
       document.getElementById('email-preview-wrap').style.display = 'block';
       document.getElementById('copy-confirm').style.display = 'none';
       document.getElementById('log-inline-confirm').style.display = 'none';
-      // Pre-fill log fields from selected platform
+
+      // AUTO-UPDATE the log entry with the generated email
+      var journalist = document.getElementById('e-editor') ? document.getElementById('e-editor').value.trim() : '';
+      var contactEmail = state.selectedPlatform ? (state.selectedPlatform.e || '') : '';
+      updateCurrentLogEntry(finalText, journalist || 'Editor ✍️', contactEmail, 'sent');
+
+      // Pre-fill log fields (still shown for editing journalist name)
       if (state.selectedPlatform) {
-        document.getElementById('log-outlet-inline').value = state.selectedPlatform.n || '';
-        document.getElementById('log-email-inline').value = state.selectedPlatform.e || '';
+        var outletEl = document.getElementById('log-outlet-inline');
+        var emailEl = document.getElementById('log-email-inline');
+        if (outletEl) outletEl.value = state.selectedPlatform.n || '';
+        if (emailEl) emailEl.value = state.selectedPlatform.e || '';
       }
-      var editorVal = document.getElementById('e-editor').value.trim();
-      if (editorVal) document.getElementById('log-journalist-inline').value = editorVal;
-      // Reset status chips
-      document.querySelectorAll('#log-inline-status-chips .chip').forEach(function(c){ c.classList.remove('on'); });
-      var firstChip = document.querySelector('#log-inline-status-chips .chip');
-      if (firstChip) { firstChip.classList.add('on'); inlineLogStatus = 'sent'; }
+      if (journalist) {
+        var jEl = document.getElementById('log-journalist-inline');
+        if (jEl) jEl.value = journalist;
+      }
+
       if (state.pressRelease) {
         document.getElementById('pr-not-ready').style.display = 'none';
         document.getElementById('pr-pdf-btns').style.display = 'block';
@@ -5789,24 +5858,15 @@ function setInlineLogStatus(s, el) {
   el.classList.add('on');
 }
 
-function buildLogEntryFromInline() {
-  var outlet = document.getElementById('log-outlet-inline').value.trim() || (state.selectedPlatform ? state.selectedPlatform.n : '');
-  var journalist = document.getElementById('log-journalist-inline').value.trim();
-  var contactEmail = document.getElementById('log-email-inline').value.trim();
-  var emailText = document.getElementById('email-preview').value.trim();
-  var pathLabels = { A:'Press Release', B:'Editorial Pitch', C:'Podcast Pitch', D:'Reddit Outreach', E:'Local Media' };
-  return {
-    id: genId(),
-    outlet: outlet || 'Unknown outlet',
-    journalist: journalist || 'Editor',
-    contactEmail: contactEmail,
-    path: pathLabels[state.path] || 'Press Release',
-    status: inlineLogStatus,
-    date: new Date().toISOString(),
-    emailText: emailText,
-    notes: [journalist, contactEmail].filter(Boolean).join(' · ')
-  };
+function updateLogJournalist() {
+  var journalist = document.getElementById('log-journalist-inline') ? document.getElementById('log-journalist-inline').value.trim() : '';
+  var contactEmail = document.getElementById('log-email-inline') ? document.getElementById('log-email-inline').value.trim() : '';
+  var emailText = document.getElementById('email-preview') ? document.getElementById('email-preview').value.trim() : '';
+  updateCurrentLogEntry(emailText, journalist, contactEmail, 'sent');
+  var conf = document.getElementById('log-inline-confirm');
+  if (conf) { conf.style.display = 'block'; setTimeout(function(){ conf.style.display = 'none'; }, 2500); }
 }
+
 
 function saveLogEntryToCampaign(entry) {
   if (!activeCampaign) return;
@@ -5836,6 +5896,7 @@ function logAndSendAnother() {
   // Store email body for reuse
   state.lastEmailBody = document.getElementById('email-preview').value;
   state.reusingEmail = true;
+  state.currentLogEntryId = null; // new outlet will get its own log entry
   // Clear recipient fields only
   document.getElementById('e-editor').value = '';
   document.getElementById('e-contact').value = '';
