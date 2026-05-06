@@ -91,7 +91,17 @@ textarea{resize:vertical;line-height:1.6;}
 .token-confirm-box{background:var(--white);border-radius:16px;padding:2rem;max-width:400px;width:90%;margin:auto;position:relative;top:50%;transform:translateY(-50%);text-align:center;}
 
 .plat-item{display:flex;align-items:center;gap:12px;padding:11px 15px;border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.1s;}
-.outlet-panel{display:flex;flex-direction:column;border:1.5px solid var(--border);border-radius:14px;overflow:hidden;background:var(--white);margin-top:10px;}
+.send-step{display:flex;align-items:center;gap:12px;padding:11px 16px;border-bottom:1px solid var(--border);transition:background 0.15s;}
+.send-step.done{background:#f8fffa;}
+.send-step-check{width:22px;height:22px;border-radius:50%;border:2px solid var(--border);flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;background:var(--white);}
+.send-step.done .send-step-check{background:#2d6a4f;border-color:#2d6a4f;}
+.send-step.done .send-step-check::after{content:'';display:block;width:5px;height:9px;border:2px solid #fff;border-top:none;border-left:none;transform:rotate(45deg);margin-top:-2px;}
+.send-step-label{font-size:13px;font-weight:500;color:var(--black);margin-bottom:2px;}
+.send-step.done .send-step-label{text-decoration:line-through;color:var(--muted);}
+.send-step-value{font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:280px;}
+.send-step-btn{flex-shrink:0;font-size:11px;font-weight:600;padding:5px 12px;border-radius:6px;border:1.5px solid var(--border);background:var(--white);cursor:pointer;color:var(--black);transition:all 0.15s;white-space:nowrap;}
+.send-step-btn:hover{background:var(--black);color:var(--white);border-color:var(--black);}
+.send-step-btn.copied{background:#2d6a4f;color:#fff;border-color:#2d6a4f;}flex-direction:column;border:1.5px solid var(--border);border-radius:14px;overflow:hidden;background:var(--white);margin-top:10px;}
 .outlet-panel-filters{padding:10px 14px;border-bottom:1px solid var(--border);background:var(--off);display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
 .outlet-panel-count{font-size:11px;color:var(--muted);margin-left:auto;white-space:nowrap;}
 .outlet-panel-results{overflow-y:auto;max-height:400px;}
@@ -1203,7 +1213,7 @@ textarea{resize:vertical;line-height:1.6;}
 
   <!-- PROPOSED STORY HEADLINE -->
   <div style="background:var(--gold-light);border:1.5px solid var(--gold);border-radius:12px;padding:1.25rem 1.5rem;margin-bottom:1.5rem;">
-    <label style="color:var(--gold);">Proposed story headline you would like to pitch</label>
+    <div style="display:flex;align-items:center;justify-content:space-between;"><label style="color:var(--gold);">Proposed story headline you would like to pitch</label><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;"><div class="wfm-wrap"><button class="wfm-link" onclick="writeForMe('pitch-headline',this)"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Write for me</button><div class="wfm-spinner-row" id="wfm-spin-pitch-headline"><span class="wfm-spin"></span><span id="wfm-label-pitch-headline">Writing...</span></div></div></div></div>
     <textarea id="pitch-headline" style="min-height:80px;font-size:15px;font-weight:500;" placeholder="e.g. Write it like a journalist would -- punchy, specific, and interesting to the publication's readers"></textarea>
     <div style="font-size:11px;color:var(--muted);margin-top:6px;">Make it punchy and editorial -- write it like a journalist would write the headline of the story.</div>
   </div>
@@ -1213,23 +1223,23 @@ textarea{resize:vertical;line-height:1.6;}
     <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:12px;font-weight:500;">News hooks -- tell us what you want to pitch</div>
     <div style="display:flex;flex-direction:column;gap:12px;">
       <div>
-        <label>News hook 1 -- What is the core story or announcement?</label>
+        <div style="display:flex;align-items:center;justify-content:space-between;"><label>News hook 1 -- What is the core story or announcement?</label><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;"><div class="wfm-wrap"><button class="wfm-link" onclick="writeForMe('b-hook-1',this)"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Write for me</button><div class="wfm-spinner-row" id="wfm-spin-b-hook-1"><span class="wfm-spin"></span><span id="wfm-label-b-hook-1">Writing...</span></div></div></div></div>
         <textarea id="b-hook-1" style="min-height:85px;" placeholder="e.g. What is the core story, announcement, or insight? What is the single most interesting or surprising thing about what you do or what has happened?"></textarea>
       </div>
       <div>
-        <label>News hook 2 -- Why does this matter right now?</label>
+        <div style="display:flex;align-items:center;justify-content:space-between;"><label>News hook 2 -- Why does this matter right now?</label><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;"><div class="wfm-wrap"><button class="wfm-link" onclick="writeForMe('b-hook-2',this)"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Write for me</button><div class="wfm-spinner-row" id="wfm-spin-b-hook-2"><span class="wfm-spin"></span><span id="wfm-label-b-hook-2">Writing...</span></div></div></div></div>
         <textarea id="b-hook-2" style="min-height:85px;" placeholder="e.g. What problem exists in your industry right now that makes your story timely? Why does this matter to readers today?"></textarea>
       </div>
       <div>
-        <label>News hook 3 -- What is the bigger industry trend or problem this connects to?</label>
+        <div style="display:flex;align-items:center;justify-content:space-between;"><label>News hook 3 -- What is the bigger industry trend or problem this connects to?</label><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;"><div class="wfm-wrap"><button class="wfm-link" onclick="writeForMe('b-hook-3',this)"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Write for me</button><div class="wfm-spinner-row" id="wfm-spin-b-hook-3"><span class="wfm-spin"></span><span id="wfm-label-b-hook-3">Writing...</span></div></div></div></div>
         <textarea id="b-hook-3" style="min-height:85px;" placeholder="e.g. What bigger trend, shift, or movement does your story connect to? What is the wider industry context?"></textarea>
       </div>
       <div>
-        <label>News hook 4 -- Any data, stats, or proof points?</label>
+        <div style="display:flex;align-items:center;justify-content:space-between;"><label>News hook 4 -- Any data, stats, or proof points?</label><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;"><div class="wfm-wrap"><button class="wfm-link" onclick="writeForMe('b-hook-4',this)"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Write for me</button><div class="wfm-spinner-row" id="wfm-spin-b-hook-4"><span class="wfm-spin"></span><span id="wfm-label-b-hook-4">Writing...</span></div></div></div></div>
         <textarea id="b-hook-4" style="min-height:85px;" placeholder="e.g. Any numbers, stats, results, or proof points that add credibility to your story"></textarea>
       </div>
       <div>
-        <label>News hook 5 -- Any human interest angle, quote, or personal story?</label>
+        <div style="display:flex;align-items:center;justify-content:space-between;"><label>News hook 5 -- Any human interest angle, quote, or personal story?</label><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;"><div class="wfm-wrap"><button class="wfm-link" onclick="writeForMe('b-hook-5',this)"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Write for me</button><div class="wfm-spinner-row" id="wfm-spin-b-hook-5"><span class="wfm-spin"></span><span id="wfm-label-b-hook-5">Writing...</span></div></div></div></div>
         <textarea id="b-hook-5" style="min-height:85px;" placeholder="e.g. Is there a personal story, founder journey, or human element that makes this more compelling?"></textarea>
       </div>
     </div>
@@ -1237,21 +1247,46 @@ textarea{resize:vertical;line-height:1.6;}
 
   <!-- KEY QUOTE -->
   <div style="margin-bottom:1.5rem;">
-    <label>Your key quote <span style="font-size:10px;font-weight:400;text-transform:none;">(the line you want the journalist to use)</span></label>
+    <div style="display:flex;align-items:center;justify-content:space-between;"><label>Your key quote <span style="font-size:10px;font-weight:400;text-transform:none;">(the line you want the journalist to use)</span></label><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;"><div class="wfm-wrap"><button class="wfm-link" onclick="writeForMe('b-quote',this)"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Write for me</button><div class="wfm-spinner-row" id="wfm-spin-b-quote"><span class="wfm-spin"></span><span id="wfm-label-b-quote">Writing...</span></div></div></div></div>
     <textarea id="b-quote" style="min-height:75px;" placeholder="e.g. The bold statement or opinion you want to be quoted on -- your point of view on where the industry is heading"></textarea>
   </div>
 
   <div class="divider"></div>
 
-  <!-- UPLOAD OPTION -->
+  <!-- PRESS RELEASE SECTION — auto-filled from campaign or upload -->
   <div style="margin-bottom:1rem;">
-    <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;font-weight:500;">Have an existing press release? <span style="font-weight:400;text-transform:none;letter-spacing:0;">(optional -- upload it and we will use it alongside your hooks)</span></div>
-    <div class="upload-zone" id="upload-zone" onclick="document.getElementById('upload-file').click()" ondragover="event.preventDefault();this.classList.add('drag')" ondragleave="this.classList.remove('drag')" ondrop="handleDrop(event)">
-      <div style="font-size:24px;margin-bottom:8px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
-      <div style="font-size:13px;color:var(--muted);">Click to upload or drag and drop your press release</div>
-      <div style="font-size:11px;color:var(--muted);margin-top:4px;opacity:0.7;">Accepts .pdf, .docx, .txt -- optional</div>
-      <input type="file" id="upload-file" style="display:none;" accept=".txt,.pdf,.docx,.doc" onchange="handleFileUpload(this)"/>
+    <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;font-weight:500;">Press release <span style="font-weight:400;text-transform:none;letter-spacing:0;">(auto-attached from your campaign — used alongside your hooks)</span></div>
+
+    <!-- Auto-attached PR (shown when campaign has one) -->
+    <div id="pr-auto-attached" style="display:none;">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:#f0faf4;border:1.5px solid #2d6a4f;border-radius:10px;margin-bottom:8px;">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2d6a4f" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          <div>
+            <div style="font-size:13px;font-weight:500;color:#2d6a4f;">Press release attached from your campaign</div>
+            <div style="font-size:11px;color:#2d6a4f;opacity:0.8;margin-top:1px;" id="pr-auto-label">Ready to use</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:6px;align-items:center;">
+          <button class="btn btn-outline btn-sm" style="font-size:11px;" onclick="togglePRPreviewInPitch()">View</button>
+          <button class="btn btn-outline btn-sm" style="font-size:11px;" onclick="downloadCampaignDraftPR()">&#8595; PDF</button>
+          <button class="btn btn-outline btn-sm" style="font-size:11px;color:var(--muted);" onclick="replacePRInPitch()">Replace</button>
+        </div>
+      </div>
+      <!-- Collapsible PR preview -->
+      <div id="pr-pitch-preview" style="display:none;background:var(--off);border:1px solid var(--border);border-radius:8px;padding:12px 14px;font-family:Georgia,serif;font-size:12px;line-height:1.7;white-space:pre-wrap;max-height:220px;overflow-y:auto;margin-bottom:8px;"></div>
     </div>
+
+    <!-- Upload zone (shown when no campaign PR, or when replacing) -->
+    <div id="pr-upload-zone-wrap">
+      <div class="upload-zone" id="upload-zone" onclick="document.getElementById('upload-file').click()" ondragover="event.preventDefault();this.classList.add('drag')" ondragleave="this.classList.remove('drag')" ondrop="handleDrop(event)">
+        <div style="margin-bottom:8px;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
+        <div style="font-size:13px;color:var(--muted);">Click to upload or drag and drop your press release</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:4px;opacity:0.7;">Accepts .pdf, .docx, .txt -- optional</div>
+        <input type="file" id="upload-file" style="display:none;" accept=".txt,.pdf,.docx,.doc" onchange="handleFileUpload(this)"/>
+      </div>
+    </div>
+
     <div class="gen-row" id="upload-spinner" style="display:none;"><div class="spinner"></div> Extracting text from file...</div>
     <div class="notice notice-success" id="upload-ok" style="display:none;"></div>
     <div class="notice notice-error" id="upload-err" style="display:none;"></div>
@@ -1790,17 +1825,25 @@ textarea{resize:vertical;line-height:1.6;}
 <div class="screen" id="s4">
   <div class="back-link" onclick="showScreen('s3')">&#8592; Back</div>
   <div class="eyebrow">Step 4 of 5 -- Pitch Ideas</div>
-  <h2 class="sec-title">Generate pitch ideas</h2>
-  <p class="sec-sub">3-5 story angles tailored to <strong id="s4-plat">this platform</strong>. Click Use this pitch to auto-fill your outreach email.</p>
-  <label>Any specific angle to emphasise? <span style="font-size:10px;font-weight:400;text-transform:none;">(optional)</span></label>
-  <input type="text" id="pitch-angle" placeholder="e.g. AI cost savings for emerging Australian fashion brands" style="margin-bottom:4px;"/>
-  <div class="btn-row" style="margin-top:12px;">
-    <button class="btn btn-primary" onclick="generatePitches()">Generate pitch ideas &rarr;</button>
-  </div>
-  <div class="gen-row" id="pitch-spinner" style="display:none;"><div class="spinner"></div> <span id="pitch-status">Reading your website...</span></div>
+  <h2 class="sec-title">Five pitch ideas for <span id="s4-plat">this publication</span></h2>
+  <p class="sec-sub">Tailored to the publication's audience and your story. Select one or write your own below.</p>
+
+  <!-- Spinner shown while generating -->
+  <div class="gen-row" id="pitch-spinner" style="display:none;margin-bottom:1rem;"><div class="spinner"></div> <span id="pitch-status">Generating your pitch ideas...</span></div>
+
+  <!-- The 5 pitch cards -->
   <div class="pitch-cards" id="pitch-cards"></div>
+
+  <!-- Write your own (always shown below the cards) -->
+  <div id="pitch-own-section" style="display:none;margin-top:1.25rem;border-top:1.5px solid var(--border);padding-top:1.25rem;">
+    <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);font-weight:500;margin-bottom:8px;">Or write your own pitch angle</div>
+    <textarea id="pitch-own-text" style="min-height:80px;" placeholder="Describe your own story angle or paste an existing pitch..."></textarea>
+    <button class="btn btn-outline btn-sm" style="margin-top:8px;" onclick="useOwnPitch()">Use this pitch &rarr;</button>
+  </div>
+
   <div id="pitch-continue-row" style="display:none;" class="btn-row">
     <button class="btn btn-primary" onclick="document.getElementById('e-pitch-field').style.display='block';showScreen('s5');">Continue to outreach email &rarr;</button>
+    <button class="btn btn-outline btn-sm" onclick="generatePitches()">Regenerate</button>
   </div>
 </div>
 
@@ -1839,40 +1882,109 @@ textarea{resize:vertical;line-height:1.6;}
 
     <div class="btn-row" style="margin-top:1rem;">
       <button class="btn btn-gold" onclick="copyEmail()" id="copy-btn">Copy email</button>
-      <button class="btn btn-outline" onclick="doGenerateEmail()">Regenerate</button>
+      <button class="btn btn-outline" onclick="doGenerateEmail()" id="email-regen-btn">&#8635; Get another version</button>
+    </div>
+    <!-- Story pitch: request changes to regenerate -->
+    <div id="email-regen-story" style="display:none;margin-top:10px;padding:10px 14px;background:var(--off);border:1.5px solid var(--border);border-radius:10px;">
+      <div style="font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Request changes before regenerating</div>
+      <textarea id="email-regen-notes" style="min-height:60px;font-size:12px;" placeholder="e.g. make it shorter, more casual, lead with the data point, reference their recent article on X..."></textarea>
+      <div style="margin-top:6px;display:flex;gap:8px;">
+        <button class="btn btn-primary btn-sm" onclick="regenStoryEmail()">Regenerate with these changes</button>
+        <button class="btn btn-outline btn-sm" onclick="doGenerateEmail()">Fresh version (ignore notes)</button>
+      </div>
     </div>
     <div class="notice notice-success" id="copy-confirm" style="display:none;margin-top:10px;">&#10003; Copied -- paste into Gmail or Outlook with Cmd+V / Ctrl+V.</div>
 
-    <!-- Auto-log confirmation box -->
-    <div style="margin-top:1.5rem;padding:1.25rem 1.5rem;background:#f0faf4;border:1.5px solid #2d6a4f;border-radius:12px;">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2d6a4f" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-        <div style="font-size:13px;font-weight:500;color:#2d6a4f;">Outreach automatically logged</div>
-      </div>
-      <div style="font-size:12px;color:#2d6a4f;margin-bottom:12px;opacity:0.85;">This outreach has been saved to your campaign dashboard. Add the journalist name below to complete the record.</div>
-      <div class="g2" style="margin-bottom:10px;">
-        <div><label style="font-size:11px;">Journalist / editor name</label><input type="text" id="log-journalist-inline" placeholder="e.g. Sarah Jones or leave as Editor ✍️"/></div>
-        <div><label style="font-size:11px;">Their email</label><input type="text" id="log-email-inline" placeholder="auto-filled from outlet"/></div>
-        <div style="display:none;"><input type="text" id="log-outlet-inline"/></div>
-      </div>
-      <div class="btn-row" style="margin-top:0;">
-        <button class="btn btn-outline btn-sm" onclick="updateLogJournalist()">Update record</button>
-        <button class="btn btn-gold" onclick="logAndSendAnother()">Send to another outlet &rarr;</button>
-      </div>
-      <div class="notice notice-success" id="log-inline-confirm" style="display:none;margin-top:8px;">&#10003; Record updated.</div>
+    <!-- Hidden inputs kept for internal use -->
+    <div style="display:none;">
+      <input type="text" id="log-outlet-inline"/>
+      <input type="text" id="log-journalist-inline"/>
+      <input type="text" id="log-email-inline"/>
+      <div id="log-inline-confirm"></div>
     </div>
 
-    <div class="divider"></div>
-    <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Press release attachment</div>
-    <p style="font-size:13px;color:var(--muted);margin-bottom:12px;">Download your press release as a PDF to attach to the email before sending.</p>
-    <div id="pr-pdf-area">
-      <div id="pr-not-ready" class="notice notice-gold" style="display:none;">&#9203; Your press release is still generating -- it will be available to download shortly.</div>
-      <div id="pr-pdf-btns" style="display:none;">
-        <button class="btn btn-primary" onclick="downloadPRasPDF()">&#8595; Download press release as PDF</button>
-        <p style="font-size:12px;color:var(--muted);margin-top:8px;">A print dialog will open automatically. Select <strong>Save as PDF</strong> as the destination and click Save. No file path or browser info will appear on the document.</p>
+    <!-- ── SEND CHECKLIST ── -->
+    <div style="margin-top:1.5rem;border:1.5px solid var(--border);border-radius:14px;overflow:hidden;">
+
+      <!-- Header — label changes by path -->
+      <div style="background:var(--black);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;">
+        <div style="font-size:13px;font-weight:600;color:var(--white);letter-spacing:0.3px;" id="checklist-title">How to send this outreach</div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.5);">This tool does not send email &mdash; you send from your own account</div>
       </div>
-      <div class="notice notice-success" id="pr-pdf-confirm" style="display:none;margin-top:10px;">&#10003; PDF ready -- attach it to your email before sending.</div>
+
+      <!-- Steps -->
+      <div style="background:var(--white);padding:4px 0;">
+
+        <!-- Step 1: Copy contact email -->
+        <div class="send-step" id="step-1">
+          <div class="send-step-check" onclick="toggleSendStep('step-1')"></div>
+          <div style="flex:1;">
+            <div class="send-step-label">Copy the contact email address</div>
+            <div class="send-step-value" id="step-contact-display">—</div>
+          </div>
+          <button class="send-step-btn" onclick="copyStepValue('e-contact','step-1-btn','step-1')" id="step-1-btn">Copy</button>
+        </div>
+
+        <!-- Step 2: Copy subject line -->
+        <div class="send-step" id="step-2">
+          <div class="send-step-check" onclick="toggleSendStep('step-2')"></div>
+          <div style="flex:1;">
+            <div class="send-step-label">Copy the subject line</div>
+            <div class="send-step-value" id="step-subject-display">Generate your email first to see the subject line</div>
+          </div>
+          <button class="send-step-btn" onclick="copySubjectLine('step-2')" id="step-2-btn">Copy</button>
+        </div>
+
+        <!-- Step 3: Copy email body -->
+        <div class="send-step" id="step-3">
+          <div class="send-step-check" onclick="toggleSendStep('step-3')"></div>
+          <div style="flex:1;">
+            <div class="send-step-label">Copy the email body</div>
+            <div class="send-step-value">Paste into Gmail, Outlook, Mail or any email client</div>
+          </div>
+          <button class="send-step-btn" onclick="copyEmail();toggleSendStep('step-3')" id="step-3-btn">Copy</button>
+        </div>
+
+        <!-- Step 4: Download PR PDF -->
+        <div class="send-step" id="step-4" id="step-pr-row">
+          <div class="send-step-check" onclick="toggleSendStep('step-4')"></div>
+          <div style="flex:1;">
+            <div class="send-step-label">Download the press release PDF</div>
+            <div class="send-step-value" id="step-pr-status">Attach it to your email as a PDF file</div>
+          </div>
+          <button class="send-step-btn" id="step-4-btn" onclick="downloadPRasPDF();toggleSendStep('step-4')" style="display:none;">Download</button>
+          <span id="step-pr-na" style="font-size:11px;color:var(--muted);padding:6px 10px;">No PR yet</span>
+        </div>
+
+        <!-- Step 5: Open your email client -->
+        <div class="send-step" id="step-5" style="border-bottom:none;">
+          <div class="send-step-check" onclick="toggleSendStep('step-5')"></div>
+          <div style="flex:1;">
+            <div class="send-step-label">Open your email and send</div>
+            <div class="send-step-value">Compose a new email, paste in the details above, attach the PDF, and send</div>
+          </div>
+          <a id="step-mailto-btn" class="send-step-btn" style="text-decoration:none;" href="#" onclick="openMailto();return false;">Open Mail</a>
+        </div>
+
+      </div>
+
+      <!-- Footer: auto-logged + send another -->
+      <div style="background:var(--off);border-top:1px solid var(--border);padding:10px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;">
+        <div style="display:flex;align-items:center;gap:7px;">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#2d6a4f" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          <span style="font-size:12px;color:#2d6a4f;font-weight:500;">Saved to your outreach dashboard</span>
+        </div>
+        <button class="btn btn-gold btn-sm" onclick="logAndSendAnother()">Send to another outlet &rarr;</button>
+      </div>
     </div>
+
+    <!-- Hidden PDF area for state management -->
+    <div id="pr-pdf-area" style="display:none;">
+      <div id="pr-not-ready"></div>
+      <div id="pr-pdf-btns"></div>
+      <div id="pr-pdf-confirm"></div>
+    </div>
+
   </div>
 </div>
 
@@ -2148,6 +2260,14 @@ function buildWFMPrompt(fieldId, ctx, websiteContent) {
     // Campaign fields
     'cp-what': 'Write 1-2 sentences describing what this business does for a PR campaign context. Professional and specific.\n\n' + base + (ctx.campName ? '\nCampaign: ' + ctx.campName : '') + '\n\nReturn ONLY the description. Max 40 words.',
     'cp-angle': 'Write one sentence stating what makes this business uniquely different -- their strongest differentiator for media pitching.\n\n' + base + '\n\nReturn ONLY the sentence. Max 25 words.',
+    // Story pitch fields
+    'pitch-headline': 'Write one punchy editorial story headline for a journalist pitch. Write it exactly as a published article headline -- specific, newsy, active voice.\n\nCompany: ' + biz + (ctx.what ? ', ' + ctx.what.substring(0,80) : '') + (ctx.angle ? ', angle: ' + ctx.angle.substring(0,60) : '') + web + '\n\nReturn ONLY the headline. Max 15 words.',
+    'b-hook-1': 'Write 2 sentences for a media pitch answering: "What is the core story or announcement?" Be specific and newsworthy.\n\nCompany: ' + biz + (ctx.what ? '\nWhat they do: ' + ctx.what.substring(0,100) : '') + (ctx.angle ? '\nAngle: ' + ctx.angle.substring(0,80) : '') + web + '\n\nReturn ONLY the answer. Max 50 words.',
+    'b-hook-2': 'Write 2 sentences answering: "Why does this story matter right now?" -- the timely problem or trend that makes it relevant today.\n\nCompany: ' + biz + (ctx.what ? '\nWhat they do: ' + ctx.what.substring(0,100) : '') + web + '\n\nReturn ONLY the answer. Max 45 words.',
+    'b-hook-3': 'Write 2 sentences describing the bigger industry trend or problem this story connects to. What wider shift does it reflect?\n\nCompany: ' + biz + (ctx.what ? '\nWhat they do: ' + ctx.what.substring(0,100) : '') + (ctx.angle ? '\nAngle: ' + ctx.angle.substring(0,80) : '') + web + '\n\nReturn ONLY the answer. Max 45 words.',
+    'b-hook-4': 'Suggest 1-2 compelling data points, statistics, or proof points for this story pitch. If exact numbers are unknown, suggest the type of data that would strengthen it.\n\nCompany: ' + biz + (ctx.what ? '\nWhat they do: ' + ctx.what.substring(0,100) : '') + (ctx.angle ? '\nDifferentiator: ' + ctx.angle.substring(0,80) : '') + web + '\n\nReturn ONLY the answer. Max 40 words.',
+    'b-hook-5': 'Write 2 sentences suggesting a human interest angle or personal story that would make this pitch compelling to a journalist.\n\nCompany: ' + biz + (ctx.what ? '\nWhat they do: ' + ctx.what.substring(0,100) : '') + web + '\n\nReturn ONLY the answer. Max 45 words.',
+    'b-quote': 'Write a bold, quotable statement a founder would say about their business story -- opinionated and memorable enough for a journalist to want to quote.\n\nCompany: ' + biz + (ctx.what ? '\nWhat they do: ' + ctx.what.substring(0,100) : '') + (ctx.angle ? '\nStrongest differentiator: ' + ctx.angle.substring(0,80) : '') + web + '\n\nReturn ONLY the quote without quotation marks. Max 35 words.',
     // PR questions
     'cp-q1': 'Write 2-3 sentences answering: "What is the specific news or announcement for this campaign?" -- be concrete and newsworthy.\n\n' + base + (ctx.campName ? '\nCampaign name: ' + ctx.campName : '') + (ctx.campGoal ? '\nCampaign goal: ' + ctx.campGoal : '') + '\n\nReturn ONLY the answer. Max 60 words.',
     'cp-q2': 'Write 1-2 sentences answering: "What is the key outcome or benefit for your customers?" -- be specific about value delivered.\n\n' + base + (ctx.q1 ? '\nThe announcement: ' + ctx.q1 : '') + '\n\nReturn ONLY the answer. Max 40 words.',
@@ -2820,6 +2940,93 @@ function syncAccountToCampaignForm() {
 
 // ---- OUTREACH DASHBOARD ----
 var currentDashTab = 'all';
+// ── SEND CHECKLIST ──
+function toggleSendStep(stepId) {
+  var el = document.getElementById(stepId);
+  if (el) el.classList.toggle('done');
+}
+
+function copyStepValue(inputId, btnId, stepId) {
+  var el = document.getElementById(inputId);
+  if (!el || !el.value.trim()) return;
+  navigator.clipboard.writeText(el.value.trim()).then(function() {
+    var btn = document.getElementById(btnId);
+    if (btn) { btn.textContent = '\u2713 Copied'; btn.classList.add('copied'); setTimeout(function(){ btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000); }
+    toggleSendStep(stepId);
+  }).catch(function(){
+    var tmp = document.createElement('textarea');
+    tmp.value = el.value.trim();
+    document.body.appendChild(tmp); tmp.select(); document.execCommand('copy'); document.body.removeChild(tmp);
+    toggleSendStep(stepId);
+  });
+}
+
+function copySubjectLine(stepId) {
+  var emailText = document.getElementById('email-preview') ? document.getElementById('email-preview').value : '';
+  var subjectLine = '';
+  var lines = emailText.split('\n');
+  for (var i = 0; i < Math.min(lines.length, 5); i++) {
+    if (lines[i].match(/^subject:/i)) { subjectLine = lines[i].replace(/^subject:\s*/i,'').trim(); break; }
+  }
+  if (!subjectLine && lines.length > 0) subjectLine = lines[0].trim();
+  if (!subjectLine) return;
+  navigator.clipboard.writeText(subjectLine).then(function() {
+    var btn = document.getElementById('step-2-btn');
+    if (btn) { btn.textContent = '\u2713 Copied'; btn.classList.add('copied'); setTimeout(function(){ btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000); }
+    var disp = document.getElementById('step-subject-display');
+    if (disp) disp.textContent = subjectLine;
+    toggleSendStep(stepId);
+  });
+}
+
+function openMailto() {
+  var contact = document.getElementById('e-contact') ? document.getElementById('e-contact').value.trim() : '';
+  var emailText = document.getElementById('email-preview') ? document.getElementById('email-preview').value : '';
+  var subjectLine = '';
+  emailText.split('\n').slice(0,5).forEach(function(l){ if (l.match(/^subject:/i)) subjectLine = l.replace(/^subject:\s*/i,'').trim(); });
+  window.open('mailto:' + encodeURIComponent(contact) + '?subject=' + encodeURIComponent(subjectLine), '_blank');
+  toggleSendStep('step-5');
+}
+
+function updateSendChecklist() {
+  // Update checklist title based on path
+  var titleEl = document.getElementById('checklist-title');
+  if (titleEl) {
+    titleEl.textContent = state.path === 'B' ? 'How to send this story pitch'
+      : state.path === 'C' ? 'How to send this podcast pitch'
+      : 'How to send this press release';
+  }
+  // Show "request changes" section only for story pitch (Path B)
+  var regenStory = document.getElementById('email-regen-story');
+  if (regenStory) regenStory.style.display = state.path === 'B' ? 'block' : 'none';
+  var regenBtn = document.getElementById('email-regen-btn');
+  if (regenBtn) regenBtn.style.display = state.path === 'B' ? 'none' : 'inline-flex'; // replaced by full regen block on B
+
+  var contactEl = document.getElementById('e-contact');
+  var contactDisp = document.getElementById('step-contact-display');
+  if (contactEl && contactDisp) contactDisp.textContent = contactEl.value.trim() || 'Enter contact email above';
+  var hasPR = !!(state.pressRelease || (activeCampaign && activeCampaign.savedContent && activeCampaign.savedContent.pressRelease));
+  var dlBtn = document.getElementById('step-4-btn');
+  var naLabel = document.getElementById('step-pr-na');
+  if (dlBtn) dlBtn.style.display = hasPR ? 'block' : 'none';
+  if (naLabel) naLabel.style.display = hasPR ? 'none' : 'inline';
+  var prStatus = document.getElementById('step-pr-status');
+  if (prStatus) prStatus.textContent = hasPR ? 'Attach it to your email as a PDF file' : 'Generate a press release in your campaign first';
+  // Reset step completion state
+  ['step-1','step-2','step-3','step-4','step-5'].forEach(function(id){
+    var el = document.getElementById(id);
+    if (el) el.classList.remove('done');
+  });
+  // Pre-fill subject display from email
+  var emailText = document.getElementById('email-preview') ? document.getElementById('email-preview').value : '';
+  if (emailText) {
+    var subjectLine = '';
+    emailText.split('\n').slice(0,5).forEach(function(l){ if (l.match(/^subject:/i)) subjectLine = l.replace(/^subject:\s*/i,'').trim(); });
+    var disp = document.getElementById('step-subject-display');
+    if (disp && subjectLine) disp.textContent = subjectLine;
+  }
+}
+
 var pendingFollowUp = null; // { entry, campaignId }
 var fuStatus = 'sent';
 
@@ -3776,6 +3983,7 @@ function launchPath(path) {
       showScreen('s2a');
     }
   } else if (path === 'B') {
+    preFillPitchPR();
     showScreen('s2b');
   } else if (path === 'C') {
     showScreen('s2pod');
@@ -3792,29 +4000,6 @@ function launchPath(path) {
   }
 
   showSavedContentBanner();
-}
-
-function autoLogAfterEmail() {
-  // Called after email is generated -- prompt user to log this outreach
-  if (!activeCampaign || !state.selectedPlatform) return;
-  var banner = document.createElement('div');
-  banner.className = 'notice notice-gold';
-  banner.style.marginTop = '1rem';
-  banner.innerHTML = '&#128203; <strong>Log this outreach to your campaign?</strong> ' +
-    '<button class="btn btn-primary btn-sm" style="margin-left:8px;" onclick="quickLog()">Log it</button>';
-  var wrap = document.getElementById('email-preview-wrap');
-  if (wrap && !document.getElementById('auto-log-banner')) {
-    banner.id = 'auto-log-banner';
-    wrap.appendChild(banner);
-  }
-}
-
-function quickLog() {
-  if (!activeCampaign || !state.selectedPlatform) return;
-  document.getElementById('log-outlet').value = state.selectedPlatform.n;
-  var pathLabels = { A:'Press Release', B:'Editorial Pitch', C:'Podcast Pitch', D:'Reddit Outreach', E:'Local Media' };
-  document.getElementById('log-path').value = pathLabels[state.path] || 'Press Release';
-  showAddLogModal();
 }
 
 // ---- CAMPAIGN PRESS RELEASE ----
@@ -4802,10 +4987,15 @@ function submitTargeting() {
     showScreen('s3');
     searchPodcasts();
   } else {
-    document.getElementById('s3-title').textContent = 'Choose your target platform';
-    document.getElementById('s3-eyebrow').textContent = 'Step 4 of 5 -- Platforms';
-    document.getElementById('plat-search-status').textContent = 'Searching for PR platforms in ' + primary + '...';
-    document.getElementById('s3-sub').textContent = 'Finding platforms matched to your selections...';
+    var isStory = state.path === 'B';
+    document.getElementById('s3-title').textContent = isStory ? 'Choose your target publication' : 'Choose your target platform';
+    document.getElementById('s3-eyebrow').textContent = isStory ? 'Step 4 of 5 -- Publications' : 'Step 4 of 5 -- Platforms';
+    document.getElementById('plat-search-status').textContent = isStory
+      ? 'Finding publications that cover ' + primary + ' stories...'
+      : 'Searching for PR platforms in ' + primary + '...';
+    document.getElementById('s3-sub').textContent = isStory
+      ? 'Select a publication to pitch your story to. Results are tailored to editorial story coverage.'
+      : 'Finding platforms matched to your selections...';
     showScreen('s3');
     searchIndustryPlatforms();
   }
@@ -4934,7 +5124,57 @@ function renderFoundPodcasts(list) {
   el.innerHTML = html;
 }
 
-// ── OUTLET SEARCH CACHE ──
+// ── PITCH STORY: auto-attach campaign press release ──
+function preFillPitchPR() {
+  var pr = '';
+  // First check campaign saved content, then session state
+  if (activeCampaign && activeCampaign.savedContent && activeCampaign.savedContent.pressRelease) {
+    pr = activeCampaign.savedContent.pressRelease;
+  } else if (state.pressRelease) {
+    pr = state.pressRelease;
+  }
+
+  var autoBlock = document.getElementById('pr-auto-attached');
+  var uploadWrap = document.getElementById('pr-upload-zone-wrap');
+  var preview = document.getElementById('pr-pitch-preview');
+  var label = document.getElementById('pr-auto-label');
+
+  if (pr && autoBlock && uploadWrap) {
+    // Show the green attached bar, hide upload zone
+    autoBlock.style.display = 'block';
+    uploadWrap.style.display = 'none';
+    if (preview) preview.textContent = pr;
+    if (label) {
+      var words = pr.trim().split(/\s+/).length;
+      label.textContent = words + ' words -- ready to use alongside your pitch hooks';
+    }
+    // Also set it as the uploaded content so continuePitchStory picks it up
+    state.uploadedPR = pr;
+  } else if (autoBlock && uploadWrap) {
+    // No PR — show upload zone
+    autoBlock.style.display = 'none';
+    uploadWrap.style.display = 'block';
+  }
+}
+
+function togglePRPreviewInPitch() {
+  var preview = document.getElementById('pr-pitch-preview');
+  if (!preview) return;
+  preview.style.display = preview.style.display === 'none' ? 'block' : 'none';
+  var btn = event && event.target;
+  if (btn) btn.textContent = preview.style.display === 'none' ? 'View' : 'Hide';
+}
+
+function replacePRInPitch() {
+  // Let user upload a different PR
+  var autoBlock = document.getElementById('pr-auto-attached');
+  var uploadWrap = document.getElementById('pr-upload-zone-wrap');
+  if (autoBlock) autoBlock.style.display = 'none';
+  if (uploadWrap) uploadWrap.style.display = 'block';
+  state.uploadedPR = '';
+}
+
+
 var OUTLET_CACHE_KEY = 'op_outlet_cache';
 var outletSessionCache = {}; // in-memory: key = industry+path+country
 
@@ -5033,13 +5273,18 @@ function searchIndustryPlatforms() {
   if (banner) banner.style.display = 'flex';
   if (statusEl) statusEl.textContent = 'Finding the best ' + primary + ' outlets in ' + countryStr + '...';
 
-  var prompt = 'You are a specialist PR researcher. Generate up to 40 real, currently active media outlets, trade publications, and PR channels for the ' + primary + ' industry' +
-    (secondary ? ' with ' + secondary + ' crossover' : '') + ' in ' + countryStr + '.' +
-    ' Platform type: ' + prefText + '.' +
-    ' Requirements: Real outlets only. Include a mix of trade publications, industry news sites, PR wires, and relevant media channels.' +
-    ' For each outlet provide the editorial submission email where known.' +
-    ' Return ONLY a valid JSON array, no markdown, no preamble, starting immediately with [' +
-    '\n[{"n":"Outlet Name","u":"domain.com","e":"editorial@domain.com","t":"Trade Publication","r":"AU","paid":false,"s":5,"desc":"One sentence about why relevant for ' + primary + '"}]';
+  var isStoryPitch = state.path === 'B';
+  var prompt = isStoryPitch
+    ? 'You are a specialist PR researcher. Generate up to 40 real, currently active editorial publications, trade magazines, and news sites that would cover a story pitch in the ' + primary + ' sector' +
+      (secondary ? ' with ' + secondary + ' crossover' : '') + ' in ' + countryStr + '.' +
+      ' Focus on: editorial publications with named journalists, trade magazines, industry news sites, and consumer media that run feature stories. Exclude basic PR wires.' +
+      ' Return ONLY a valid JSON array starting with [' +
+      '\n[{"n":"Publication Name","u":"domain.com","e":"editorial@domain.com","t":"Trade Publication","r":"AU","paid":false,"s":5,"desc":"One sentence about editorial focus and why relevant for a ' + primary + ' story pitch"}]'
+    : 'You are a specialist PR researcher. Generate up to 40 real, currently active media outlets, trade publications, and PR channels for the ' + primary + ' sector' +
+      (secondary ? ' with ' + secondary + ' crossover' : '') + ' in ' + countryStr + '.' +
+      ' Include a mix of trade publications, industry news sites, and PR distribution channels. Type: ' + prefText + '.' +
+      ' Return ONLY a valid JSON array starting with [' +
+      '\n[{"n":"Outlet Name","u":"domain.com","e":"editorial@domain.com","t":"Trade Publication","r":"AU","paid":false,"s":5,"desc":"One sentence about why relevant for ' + primary + '"}]';
 
   callAPIWithSearch(prompt, function(text) {
     if (banner) banner.style.display = 'none';
@@ -5406,6 +5651,9 @@ function selectRevealedPlatform(name) {
 
   var autoLabel = document.getElementById('email-auto-label');
   if (autoLabel && plat.e) autoLabel.textContent = '(contact revealed)';
+  // Update send checklist contact display
+  var contactDisp = document.getElementById('step-contact-display');
+  if (contactDisp && plat.e) contactDisp.textContent = plat.e;
 
   // Re-render list to show selected state
   if (state.foundPlatforms && state.foundPlatforms.length) renderFoundPlatforms(state.foundPlatforms);
@@ -5622,7 +5870,13 @@ function continueFromPlatforms() {
     showScreen('s5');
   } else {
     document.getElementById('s4-plat').textContent = state.selectedPlatform.n;
+    document.getElementById('pitch-cards').innerHTML = '';
+    document.getElementById('pitch-continue-row').style.display = 'none';
+    var ownSection = document.getElementById('pitch-own-section');
+    if (ownSection) ownSection.style.display = 'none';
     showScreen('s4');
+    // Auto-generate immediately
+    setTimeout(function(){ generatePitches(); }, 80);
   }
 }
 
@@ -5730,67 +5984,115 @@ function fetchWebsiteContent(url, onSuccess, onFail) {
 }
 
 function generatePitches() {
-  if (!state.selectedPlatform) { alert('No platform selected. Please go back and select one.'); return; }
+  if (!state.selectedPlatform) return;
   var p = state.profile;
   var sel = state.selectedPlatform;
-  var angle = document.getElementById('pitch-angle').value.trim();
   var ps = state.pitchStory || {};
+  var acct = userAccount || {};
   var spinEl = document.getElementById('pitch-spinner');
   var statusEl = document.getElementById('pitch-status');
 
   document.getElementById('pitch-cards').innerHTML = '';
   document.getElementById('pitch-continue-row').style.display = 'none';
-  spinEl.style.display = 'flex';
-  if (statusEl) statusEl.textContent = 'Reading ' + (p.web || 'your website') + '...';
+  var ownSection = document.getElementById('pitch-own-section');
+  if (ownSection) ownSection.style.display = 'none';
+  if (spinEl) spinEl.style.display = 'flex';
+  if (statusEl) statusEl.textContent = 'Generating five pitch ideas for ' + sel.n + '...';
 
-  function buildAndGenerate(websiteContent) {
-    if (statusEl) statusEl.textContent = 'Generating pitch ideas...';
+  // Build tight context — no website fetch
+  var co = p.co || acct.co || 'the company';
+  var what = (p.what || acct.what || '').substring(0, 120);
+  var angle = (p.angle || acct.kp3 || '').substring(0, 100);
+  var kp1 = (acct.kp1 || '').substring(0, 100);
+  var kp2 = (acct.kp2 || '').substring(0, 100);
 
-    // Build rich context from all available sources
-    var storyContext = '';
-    if (ps.headline) storyContext += 'Proposed story headline: ' + ps.headline + '\n';
-    if (ps.hooks && ps.hooks.length) storyContext += 'News hooks:\n' + ps.hooks.map(function(h,i){return (i+1)+'. '+h;}).join('\n') + '\n';
-    if (ps.quote) storyContext += 'Key quote: "' + ps.quote + '"\n';
-    if (state.pressRelease) storyContext += '\nExisting press release (summary):\n' + state.pressRelease.substring(0, 500) + '...\n';
-
-    var websiteSection = websiteContent ? '\nLive content from ' + p.web + ':\n' + websiteContent + '\n' : '';
-
-    var prompt = 'Generate exactly 5 specific, compelling story pitch ideas for ' + p.co + ' to pitch to ' + sel.n + ' (' + sel.u + '), a ' + sel.t + ' publication.\n\n' +
-      '=== BRAND PROFILE ===\n' +
-      'Company: ' + p.co + '\n' +
-      'What they do: ' + p.what + '\n' +
-      'Unique angle: ' + p.angle + '\n' +
-      (p.extra ? 'Additional info: ' + p.extra + '\n' : '') +
-      websiteSection +
-      (storyContext ? '\n=== STORY THEY WANT TO PITCH ===\n' + storyContext : '') +
-      (angle ? '\nAdditional focus: ' + angle + '\n' : '') +
-      '\n=== INSTRUCTIONS ===\n' +
-      'Use ALL the above -- the brand profile, website content, and story hooks -- to generate 5 highly specific, editorial pitch ideas tailored to ' + sel.n + '\'s audience and editorial style.\n' +
-      'Each pitch should feel like a real journalist story angle, not a press release. Draw on real details from the website and hooks above.\n\n' +
-      'Format EXACTLY as follows:\nPITCH 1\nHeadline: [punchy editorial headline]\nBody: [2-3 sentences making the case for the story]\n\nPITCH 2\nHeadline: [headline]\nBody: [2-3 sentences]\n\nContinue through PITCH 5. No asterisks or markdown.';
-
-    callAPI(prompt, function(text) {
-      spinEl.style.display = 'none';
-      renderPitchCards(text);
-    }, function() {
-      spinEl.style.display = 'none';
-      alert('Could not generate pitches. Please try again.');
-    });
+  // Story hooks from s2b if filled
+  var hooksLines = '';
+  if (ps.hooks && ps.hooks.length) {
+    hooksLines = 'Story hooks: ' + ps.hooks.slice(0,3).map(function(h){ return h.substring(0,80); }).join(' / ');
+  }
+  var prSnippet = '';
+  var pr = (activeCampaign && activeCampaign.savedContent && activeCampaign.savedContent.pressRelease) || state.pressRelease || '';
+  if (pr) {
+    prSnippet = 'Press release headline/context: ' + pr.split('\n').filter(function(l){ return l.trim().length > 0; }).slice(1,3).join(' ').substring(0,150);
   }
 
-  // Try fetching website first -- proceed with or without it
-  if (p.web) {
-    fetchWebsiteContent(p.web, function(content) {
-      state.websiteContent = content;
-      buildAndGenerate(content);
-    }, function() {
-      // Website fetch failed -- generate without it
-      buildAndGenerate(state.websiteContent || '');
-    });
-  } else {
-    buildAndGenerate(state.websiteContent || '');
-  }
+  var lines = [
+    'Generate exactly 5 strong, editorial story pitch ideas for ' + co + ' to pitch to ' + sel.n + (sel.t ? ' (' + sel.t + ')' : '') + '.',
+    '',
+    'Company: ' + co,
+    what ? 'What they do: ' + what : '',
+    angle ? 'Differentiator: ' + angle : '',
+    kp1 ? 'Key point: ' + kp1 : '',
+    hooksLines || '',
+    prSnippet || '',
+    '',
+    'Think like a senior PR strategist. Each idea should:',
+    '- Feel like a real published article in ' + sel.n,
+    '- Be tailored to ' + sel.n + '\'s specific audience and editorial tone',
+    '- Be newsworthy, timely, and media-ready -- not a veiled advertisement',
+    '- Draw on the company\'s real differentiators and story',
+    '',
+    'Format EXACTLY (repeat 5 times):',
+    'PITCH 1',
+    'Headline: [punchy editorial headline as it would appear published]',
+    'Body: [2-3 sentences making the case for why this story matters to ' + sel.n + '\'s readers]',
+    '',
+    'PITCH 2',
+    'Headline: ...',
+    'Body: ...',
+    '',
+    'Continue through PITCH 5. Plain text only. No asterisks. No markdown.'
+  ].filter(Boolean).join('\n');
+
+  // Use higher token limit for 5 pitches — but still faster than callAPI's 4000
+  fetch('/api/chat', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-5',
+      max_tokens: 1200,
+      messages: [{ role: 'user', content: lines }]
+    })
+  }).then(function(r){ return r.json(); })
+  .then(function(data) {
+    if (spinEl) spinEl.style.display = 'none';
+    if (data.error) { renderPitchError(); return; }
+    var text = (data.content || []).map(function(c){ return c.text || ''; }).join('').trim();
+    renderPitchCards(text);
+    // Show "write your own" below the cards
+    if (ownSection) ownSection.style.display = 'block';
+  }).catch(function() {
+    if (spinEl) spinEl.style.display = 'none';
+    renderPitchError();
+  });
 }
+
+function renderPitchError() {
+  var container = document.getElementById('pitch-cards');
+  if (container) container.innerHTML =
+    '<div style="padding:1rem;border:1.5px dashed var(--border);border-radius:10px;text-align:center;color:var(--muted);">' +
+    'Could not generate pitch ideas. ' +
+    '<button class="btn btn-outline btn-sm" style="margin-left:8px;" onclick="generatePitches()">Try again</button></div>';
+  var ownSection = document.getElementById('pitch-own-section');
+  if (ownSection) ownSection.style.display = 'block';
+}
+
+function useOwnPitch() {
+  var text = document.getElementById('pitch-own-text') ? document.getElementById('pitch-own-text').value.trim() : '';
+  if (!text) { alert('Please write your pitch angle first.'); return; }
+  state.selectedPitch = text;
+  document.getElementById('e-pitch').value = text;
+  // Deselect any AI pitch
+  document.querySelectorAll('.pitch-card').forEach(function(c){ c.classList.remove('sel'); });
+  document.querySelectorAll('.pitch-use').forEach(function(b){ b.textContent = 'Use this pitch \u2192'; b.classList.remove('used'); });
+  // Show continue
+  document.getElementById('pitch-continue-row').style.display = 'flex';
+  document.getElementById('e-pitch-field').style.display = 'block';
+  showScreen('s5');
+}
+
+
 
 function renderPitchCards(text) {
   var blocks = text.split(/PITCH\s+\d+/i).filter(function(b) { return b.trim().length > 10; });
@@ -5816,6 +6118,8 @@ function renderPitchCards(text) {
   });
   container.innerHTML = html;
   document.getElementById('pitch-continue-row').style.display = 'flex';
+  var ownSection = document.getElementById('pitch-own-section');
+  if (ownSection) ownSection.style.display = 'block';
 }
 
 function usePitch(idx) {
@@ -5843,127 +6147,190 @@ function generateEmail() {
 function doGenerateEmail() {
   var p = state.profile;
   var sel = state.selectedPlatform;
-  var editor = document.getElementById('e-editor').value.trim() || 'Editor ✍️';
-  var contact = document.getElementById('e-contact').value.trim();
+  var editorEl = document.getElementById('e-editor');
+  var contactEl = document.getElementById('e-contact');
+  var editor = editorEl ? editorEl.value.trim() : '';
+  var contact = contactEl ? contactEl.value.trim() : '';
+  var recipient = editor || 'Editor';
 
   document.getElementById('email-spinner').style.display = 'flex';
   document.getElementById('email-preview-wrap').style.display = 'none';
 
-  function buildEmail(websiteContent) {
-    var webSection = websiteContent ? '\n\nLive content from ' + p.web + ' (use for accuracy and brand voice):\n' + websiteContent + '\n' : '';
-    var boilerplate = '\n\nAbout ' + p.co + '\n' + p.co + ' is ' + p.what + '. ' + p.angle + (p.extra ? '\n' + p.extra : '') + '\nContact: ' + p.web + ' | ' + p.email + '\nNote: Full press release attached.';
-    var prompt;
+  var profileLines = [
+    'Sender: ' + (p.name||'') + (p.pos ? ', ' + p.pos : '') + ' at ' + (p.co||''),
+    'What they do: ' + (p.what||'').substring(0, 120),
+    p.angle ? 'Differentiator: ' + p.angle.substring(0, 100) : ''
+  ].filter(Boolean).join('\n');
 
-    if (state.path === 'A') {
-      var prSummary = state.pressRelease ? 'The press release covers: ' + state.pressRelease.substring(0, 500) + '...' : 'A press release about ' + p.co + ' and ' + p.what;
-      prompt = 'Write a short, professional press release outreach email from ' + p.name + (p.pos ? ', ' + p.pos : '') + ' at ' + p.co + ' to ' + editor + ' at ' + sel.n + (contact ? ' (' + contact + ')' : '') + '.\n\n' +
-        '=== BRAND INFO ===\n' +
-        'Company: ' + p.co + '\nWhat they do: ' + p.what + '\nUnique angle: ' + p.angle +
-        webSection +
-        '\n=== PRESS RELEASE ===\n' + prSummary +
-        '\n\nStructure exactly:\n1. SUBJECT LINE -- newsy and direct\n2. OPENING -- one sentence why this is relevant to ' + sel.n + '\'s readers\n3. THE NEWS -- 2-3 short paragraphs on key news, industry significance, why now\n4. CALL TO ACTION -- invite them to read attached release and reach out\n5. SIGN OFF:\n' + p.name + (p.pos ? '\n' + p.pos : '') + '\n' + boilerplate +
-        '\n\nNo asterisks, no markdown, plain text only.';
-    } else if (state.path === 'C') {
-    // Path C -- podcast / collaboration pitch
-    var pp = state.podcastPitch || {};
-    var typeLabels = { guest: 'guest appearance', collab: 'content collaboration', sponsor: 'sponsorship or partnership' };
-    var pitchType = typeLabels[pp.type] || 'podcast pitch';
-    var podHooks = (pp.hooks || []).map(function(h,i){return (i+1)+'. '+h;}).join('\n');
-    prompt = 'Write a professional ' + pitchType + ' outreach email from ' + p.name + (p.pos ? ', ' + p.pos : '') + ' at ' + p.co + ' to the host or producer of ' + sel.n + (contact ? ' (' + contact + ')' : '') + '.\n\n' +
-      '=== BRAND / PERSON INFO ===\n' +
-      'Name: ' + p.name + (p.pos ? ', ' + p.pos : '') + '\n' +
-      'Company: ' + p.co + '\nWhat they do: ' + p.what + '\nUnique angle: ' + p.angle +
-      webSection +
-      '\n=== THE PITCH ===\n' +
-      'Type of pitch: ' + pitchType + '\n' +
-      (pp.title ? 'Proposed episode / collaboration title: ' + pp.title + '\n' : '') +
-      (podHooks ? 'Hooks and talking points:\n' + podHooks + '\n' : '') +
-      (pp.quote ? 'Key quote / soundbite: "' + pp.quote + '"\n' : '') +
-      (pp.mediaKit ? '\nMedia kit / bio context:\n' + pp.mediaKit.substring(0, 400) + '\n' : '') +
-      '\nStructure exactly:\n' +
-      '1. SUBJECT LINE -- specific and compelling, referencing the episode concept\n' +
-      '2. OPENING -- one sentence showing genuine knowledge of ' + sel.n + ' and why this pitch fits their audience\n' +
-      '3. THE PITCH -- 2-3 paragraphs: who ' + p.name + ' is, why they are the right voice on this topic, what the audience will get out of it, and why now\n' +
-      '4. SUGGESTED TALKING POINTS -- 3-4 bullet points of specific topics or questions to discuss\n' +
-      '5. SOCIAL PROOF -- one sentence on any previous appearances, coverage, or credentials\n' +
-      '6. CALL TO ACTION -- friendly and low pressure\n' +
-      '7. SIGN OFF:\n' + p.name + (p.pos ? '\n' + p.pos : '') + '\n' + boilerplate +
-      '\n\nNo asterisks, no markdown, plain text only. Warm, professional, and genuine in tone.';
+  var outletLine = 'Outlet: ' + sel.n + (sel.t ? ' (' + sel.t + ')' : '') + (contact ? ' -- contact: ' + contact : '');
+  var signOff = (p.name||'') + (p.pos ? '\n' + p.pos + ', ' + (p.co||'') : '\n' + (p.co||'')) + (p.web ? '\n' + p.web : '') + (p.email ? '\n' + p.email : '');
+  var prompt = '';
+
+  if (state.path === 'A') {
+    var prSnippet = '';
+    if (state.pressRelease) {
+      prSnippet = state.pressRelease.split('\n').filter(function(l){ return l.trim().length > 0; }).slice(0,4).join('\n').substring(0,300);
     } else {
-      // Path B -- pitch a story
-      var ps = state.pitchStory || {};
-      var pitchHeadline = ps.headline || state.selectedPitch || '';
-      var hooks = ps.hooks || [];
-      var pitchQuote = ps.quote || '';
-      var hooksText = hooks.length > 0 ? hooks.map(function(h, i) { return 'Hook ' + (i+1) + ': ' + h; }).join('\n') : '';
-      var prContext = state.pressRelease ? '\nPress release context:\n' + state.pressRelease.substring(0, 500) + '...' : '';
-      prompt = 'Write a professional editorial pitch email from ' + p.name + (p.pos ? ', ' + p.pos : '') + ' at ' + p.co + ' to ' + editor + ' at ' + sel.n + (contact ? ' (' + contact + ')' : '') + '.\n\n' +
-        '=== BRAND INFO ===\n' +
-        'Company: ' + p.co + '\nWhat they do: ' + p.what + '\nUnique angle: ' + p.angle +
-        webSection +
-        '\n=== THE STORY TO PITCH ===\n' +
-        (pitchHeadline ? 'Proposed headline: ' + pitchHeadline + '\n' : '') +
-        (hooksText ? 'Story hooks:\n' + hooksText + '\n' : '') +
-        (pitchQuote ? 'Key quote: "' + pitchQuote + '"\n' : '') +
-        prContext +
-        '\n\nStructure exactly:\n1. SUBJECT LINE -- punchy and editorial\n2. OPENING -- one sentence about ' + sel.n + ' and why this story fits perfectly\n3. THE PITCH -- 2-3 paragraphs making the case for the story using the hooks above. Write as a journalist pitching to an editor.\n4. THE ANGLE -- what makes this unique and why ' + sel.n + '\'s readers care\n5. CALL TO ACTION -- low pressure\n6. SIGN OFF:\n' + p.name + (p.pos ? '\n' + p.pos : '') + '\n' + boilerplate +
-        '\n\nNo asterisks, no markdown, plain text only.';
+      prSnippet = 'Announcement from ' + (p.co||'the company') + ' about ' + (p.what || 'their latest news');
     }
+    prompt = [
+      'Write a press release pitch email to ' + recipient + ' at ' + sel.n + '.',
+      '', profileLines, outletLine,
+      'Press release excerpt: ' + prSnippet,
+      '',
+      'FORMAT -- plain text, no markdown:',
+      'Subject: [one punchy subject line]',
+      '',
+      '[Opening: one sentence why this is relevant to ' + sel.n + ' readers]',
+      '',
+      '[Body: 2 short paragraphs -- the news and why it matters now]',
+      '',
+      '[CTA: one sentence inviting them to read the attached release]',
+      '',
+      signOff,
+      '',
+      'Under 200 words. Professional, direct, no waffle.'
+    ].join('\n');
 
-    callAPI(prompt, function(text) {
-      document.getElementById('email-spinner').style.display = 'none';
-      var finalText = (state.reusingEmail && state.lastEmailBody) ? state.lastEmailBody : text;
-      state.reusingEmail = false;
-      state.lastEmailBody = '';
-      var rn = document.getElementById('reuse-email-notice');
-      if (rn) rn.remove();
-      document.getElementById('email-preview').value = finalText;
-      document.getElementById('email-preview-wrap').style.display = 'block';
-      document.getElementById('copy-confirm').style.display = 'none';
-      document.getElementById('log-inline-confirm').style.display = 'none';
+  } else if (state.path === 'C') {
+    var pp = state.podcastPitch || {};
+    var pitchLines = [
+      pp.title ? 'Proposed topic: ' + pp.title : '',
+      pp.hooks && pp.hooks.length ? 'Key hooks: ' + pp.hooks.slice(0,2).join(' / ') : '',
+      pp.quote ? 'Soundbite: "' + pp.quote + '"' : ''
+    ].filter(Boolean).join('\n');
+    prompt = [
+      'Write a podcast guest pitch email to the host/producer of ' + sel.n + '.',
+      '', profileLines, outletLine, pitchLines,
+      '',
+      'FORMAT -- plain text, no markdown:',
+      'Subject: [specific, references the episode concept]',
+      '',
+      '[Opening: one sentence showing you know the podcast]',
+      '',
+      '[2 paragraphs: who you are, why you fit their audience, what the episode covers]',
+      '',
+      '[3 bullet talking points]',
+      '',
+      '[Friendly CTA]',
+      '',
+      signOff,
+      '',
+      'Under 220 words. Warm, genuine, not salesy.'
+    ].join('\n');
 
-      // AUTO-UPDATE the log entry with the generated email
-      var journalist = document.getElementById('e-editor') ? document.getElementById('e-editor').value.trim() : '';
-      var contactEmail = state.selectedPlatform ? (state.selectedPlatform.e || '') : '';
-      updateCurrentLogEntry(finalText, journalist || 'Editor ✍️', contactEmail, 'sent');
-
-      // Pre-fill log fields (still shown for editing journalist name)
-      if (state.selectedPlatform) {
-        var outletEl = document.getElementById('log-outlet-inline');
-        var emailEl = document.getElementById('log-email-inline');
-        if (outletEl) outletEl.value = state.selectedPlatform.n || '';
-        if (emailEl) emailEl.value = state.selectedPlatform.e || '';
-      }
-      if (journalist) {
-        var jEl = document.getElementById('log-journalist-inline');
-        if (jEl) jEl.value = journalist;
-      }
-
-      if (state.pressRelease) {
-        document.getElementById('pr-not-ready').style.display = 'none';
-        document.getElementById('pr-pdf-btns').style.display = 'block';
-      }
-      document.getElementById('email-preview-wrap').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    }, function() {
-      document.getElementById('email-spinner').style.display = 'none';
-      alert('Could not generate email. Please try again.');
-    });
-  }
-
-  // Use cached website content if available, otherwise fetch fresh
-  if (state.websiteContent) {
-    buildEmail(state.websiteContent);
-  } else if (p.web) {
-    fetchWebsiteContent(p.web, function(content) {
-      state.websiteContent = content;
-      buildEmail(content);
-    }, function() {
-      buildEmail('');
-    });
   } else {
-    buildEmail('');
+    // Path B — story pitch email
+    // Distinct from press release: founder-as-expert voice, personalised, confident, conversational
+    var ps = state.pitchStory || {};
+    var acct = userAccount || {};
+
+    // Selected pitch idea (from step 4) is the primary angle
+    var pitchAngle = state.selectedPitch || ps.headline || '';
+    var hook1 = ps.hooks && ps.hooks[0] ? ps.hooks[0].substring(0,120) : '';
+    var hook2 = ps.hooks && ps.hooks[1] ? ps.hooks[1].substring(0,100) : '';
+    var founderQuote = ps.quote || '';
+
+    // Build founder authority line — position + company + what makes them the right voice
+    var founderName = p.name || acct.fname || 'the founder';
+    var founderPos = p.pos || acct.pos || 'Founder';
+    var coName = p.co || acct.co || 'the company';
+    var whatTheyDo = (p.what || acct.what || '').substring(0,100);
+    var differentiator = (p.angle || acct.kp1 || '').substring(0,90);
+    var kp2 = (acct.kp2 || '').substring(0,80);
+
+    prompt = [
+      'Write a story pitch email from ' + founderName + ' (' + founderPos + ' at ' + coName + ') to ' + recipient + ' at ' + sel.n + '.',
+      '',
+      '=== WHO IS PITCHING ===',
+      'Name: ' + founderName + ', ' + founderPos + ' at ' + coName,
+      whatTheyDo ? 'What they do: ' + whatTheyDo : '',
+      differentiator ? 'What makes them the right voice: ' + differentiator : '',
+      kp2 ? 'Their expertise: ' + kp2 : '',
+      founderQuote ? 'Their signature quote: "' + founderQuote + '"' : '',
+      '',
+      '=== THE STORY TO PITCH ===',
+      pitchAngle ? 'Angle: ' + pitchAngle : '',
+      hook1 ? 'Core hook: ' + hook1 : '',
+      hook2 ? 'Why it matters now: ' + hook2 : '',
+      '',
+      '=== OUTLET ===',
+      outletLine,
+      '',
+      '=== TONE ===',
+      'This is NOT a press release email. This is a personal pitch from a founder who has a genuine point of view.',
+      'Tone: confident, warm, direct, conversational. Write as if ' + founderName + ' is writing it themselves.',
+      'Position them as an expert and interesting voice -- not as a company promoting a product.',
+      'The journalist should feel like they are hearing from someone worth talking to.',
+      '',
+      'FORMAT -- plain text, no markdown, no section headers in the email itself:',
+      'Subject: [specific, intriguing -- reads like a story headline not a PR subject line]',
+      '',
+      '[Opening: one personalised sentence showing genuine awareness of ' + sel.n + ' -- reference their coverage, audience, or a specific angle they cover]',
+      '',
+      '[Paragraph 2: who ' + founderName + ' is and why they are the right person to speak on this topic -- their authority, experience, or unique position. Confident but not boastful.]',
+      '',
+      '[Paragraph 3: the story itself -- the specific angle, why it is timely and relevant to ' + sel.n + "'s readers. Make it feel like a real story, not an announcement.]",
+      '',
+      '[Closing: low-pressure offer -- happy to share more, provide data, or jump on a call. One sentence.]',
+      '',
+      signOff,
+      '',
+      'Under 220 words. No corporate language. No "I am reaching out". No "I hope this email finds you well".',
+      'Write it as a real person with something genuinely interesting to say.'
+    ].filter(Boolean).join('\n');
   }
+
+  // Path B story pitches need slightly more room for personality-driven copy
+  var maxTok = (state.path === 'B') ? 900 : 700;
+  fetch('/api/chat', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-5',
+      max_tokens: maxTok,
+      messages: [{ role: 'user', content: prompt }]
+    })
+  }).then(function(r){ return r.json(); })
+  .then(function(data) {
+    document.getElementById('email-spinner').style.display = 'none';
+    if (data.error) { alert('Could not generate email. Please try again.'); return; }
+    var text = (data.content || []).map(function(c){ return c.text || ''; }).join('').trim();
+    var finalText = (state.reusingEmail && state.lastEmailBody) ? state.lastEmailBody : text;
+    state.reusingEmail = false;
+    state.lastEmailBody = '';
+    var rn = document.getElementById('reuse-email-notice');
+    if (rn) rn.remove();
+    document.getElementById('email-preview').value = finalText;
+    document.getElementById('email-preview-wrap').style.display = 'block';
+    document.getElementById('copy-confirm').style.display = 'none';
+    document.getElementById('log-inline-confirm').style.display = 'none';
+    var journalist = editorEl ? editorEl.value.trim() : '';
+    var contactEmail = state.selectedPlatform ? (state.selectedPlatform.e || '') : '';
+    updateCurrentLogEntry(finalText, journalist || 'Editor', contactEmail, 'sent');
+    if (state.selectedPlatform) {
+      var outletEl = document.getElementById('log-outlet-inline');
+      var emailEl = document.getElementById('log-email-inline');
+      if (outletEl) outletEl.value = state.selectedPlatform.n || '';
+      if (emailEl) emailEl.value = state.selectedPlatform.e || '';
+    }
+    if (journalist) {
+      var jEl = document.getElementById('log-journalist-inline');
+      if (jEl) jEl.value = journalist;
+    }
+    if (state.pressRelease) {
+      document.getElementById('pr-not-ready').style.display = 'none';
+      document.getElementById('pr-pdf-btns').style.display = 'block';
+    }
+    document.getElementById('email-preview-wrap').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    // Update send checklist with latest state
+    updateSendChecklist();
+  }).catch(function() {
+    document.getElementById('email-spinner').style.display = 'none';
+    alert('Could not generate email. Please try again.');
+  });
 }
+
 
 function downloadPRasPDF() {
   if (!state.pressRelease) { alert('No press release available to download yet.'); return; }
@@ -6035,13 +6402,15 @@ function setInlineLogStatus(s, el) {
   el.classList.add('on');
 }
 
-function updateLogJournalist() {
-  var journalist = document.getElementById('log-journalist-inline') ? document.getElementById('log-journalist-inline').value.trim() : '';
-  var contactEmail = document.getElementById('log-email-inline') ? document.getElementById('log-email-inline').value.trim() : '';
-  var emailText = document.getElementById('email-preview') ? document.getElementById('email-preview').value.trim() : '';
-  updateCurrentLogEntry(emailText, journalist, contactEmail, 'sent');
-  var conf = document.getElementById('log-inline-confirm');
-  if (conf) { conf.style.display = 'block'; setTimeout(function(){ conf.style.display = 'none'; }, 2500); }
+function regenStoryEmail() {
+  // Append change notes to the pitch field so doGenerateEmail picks them up
+  var notes = document.getElementById('email-regen-notes') ? document.getElementById('email-regen-notes').value.trim() : '';
+  if (notes) {
+    var pitchEl = document.getElementById('e-pitch');
+    var existing = pitchEl ? pitchEl.value.trim() : '';
+    if (pitchEl) pitchEl.value = (existing ? existing + '\n\n' : '') + 'Changes requested: ' + notes;
+  }
+  doGenerateEmail();
 }
 
 
@@ -6055,25 +6424,11 @@ function saveLogEntryToCampaign(entry) {
   saveCampaignsToStorage();
 }
 
-function logAndKeep() {
-  var outlet = document.getElementById('log-outlet-inline').value.trim();
-  if (!outlet && !state.selectedPlatform) { alert('Please enter the outlet name before logging.'); return; }
-  var entry = buildLogEntryFromInline();
-  saveLogEntryToCampaign(entry);
-  renderHubLog();
-  document.getElementById('log-inline-confirm').style.display = 'block';
-  setTimeout(function(){ document.getElementById('log-inline-confirm').style.display = 'none'; }, 3000);
-}
-
 function logAndSendAnother() {
-  // Log first, then reset for next outlet
-  var entry = buildLogEntryFromInline();
-  saveLogEntryToCampaign(entry);
-  renderHubLog();
-  // Store email body for reuse
+  // Outreach already auto-logged on outlet selection -- just reset for next outlet
   state.lastEmailBody = document.getElementById('email-preview').value;
   state.reusingEmail = true;
-  state.currentLogEntryId = null; // new outlet will get its own log entry
+  state.currentLogEntryId = null;
   // Clear recipient fields only
   document.getElementById('e-editor').value = '';
   var _ew = document.getElementById('e-editor-wrap'); if(_ew) _ew.style.display = '';
@@ -6107,6 +6462,24 @@ function logAndSendAnother() {
 }
 
 // ---- API ----
+// Fast email generation — 700 tokens max, no system prompt overhead
+function callAPIFast(prompt, onSuccess, onError) {
+  fetch('/api/chat', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-5',
+      max_tokens: 700,
+      messages: [{ role: 'user', content: prompt }]
+    })
+  }).then(function(r){ return r.json(); })
+  .then(function(data) {
+    if (data.error) { if(onError) onError(data.error.message); return; }
+    var text = (data.content || []).map(function(c){ return c.text || ''; }).join('').trim();
+    onSuccess(text);
+  }).catch(function(e){ if(onError) onError(e.message); });
+}
+
 function callAPI(prompt, onSuccess, onError) {
   fetch('/api/chat', {
     method: 'POST',
@@ -7083,38 +7456,51 @@ function generateLocalEmail() {
 function doGenerateLocalEmail() {
   var p = state.profile;
   var outlet = locState.selectedOutlet;
-  var editor = document.getElementById('loc-editor').value.trim() || 'Editor ✍️';
-  var contact = document.getElementById('loc-contact').value.trim();
-  var extra = document.getElementById('loc-extra').value.trim();
-  var locStr = [locState.hyper, locState.city, locState.state, locState.country].filter(function(x) { return x; }).join(', ');
+  var editor = document.getElementById('loc-editor') ? document.getElementById('loc-editor').value.trim() : '';
+  var contact = document.getElementById('loc-contact') ? document.getElementById('loc-contact').value.trim() : '';
+  var extra = document.getElementById('loc-extra') ? document.getElementById('loc-extra').value.trim() : '';
+  var locStr = [locState.hyper, locState.city, locState.state].filter(Boolean).join(', ');
+  var recipient = editor || 'Editor ✍️';
 
   document.getElementById('loc-email-spinner').style.display = 'flex';
   document.getElementById('loc-email-wrap').style.display = 'none';
 
-  var prompt = 'Write a short, warm, community-focused press outreach email from ' + (p.name || 'a local business owner') + (p.pos ? ', ' + p.pos : '') + (p.co ? ' at ' + p.co : '') + ' to ' + editor + ' at ' + outlet.n + (contact ? ' (' + contact + ')' : '') + '.\n\n' +
-    'LOCATION: ' + locStr + '\n' +
-    'OUTLET COVERAGE AREA: ' + (outlet.coverage || locStr) + '\n' +
-    'BUSINESS CONTEXT: ' + locState.what + '\n' +
-    'LOCAL STORY: ' + locState.story + '\n' +
-    'LOCAL ANGLES: ' + locState.angles.join(', ') + '\n' +
-    (extra ? 'ADDITIONAL DETAILS: ' + extra + '\n' : '') +
-    (p.what ? 'ABOUT THE BUSINESS: ' + p.what + '\n' : '') +
-    '\nThis is LOCAL community outreach -- not a national PR pitch. Write it accordingly:\n\n' +
-    '1. SUBJECT LINE -- local, specific, community-focused (mention the area by name)\n' +
-    '2. OPENING -- one sentence showing genuine connection to ' + (locState.hyper || locState.city) + ' and why ' + outlet.n + ' readers will care\n' +
-    '3. THE LOCAL STORY -- 2-3 short paragraphs telling the community story. Emphasise: local connection, community contribution, why local readers should care. Human interest over business metrics.\n' +
-    '4. WHAT YOU ARE OFFERING -- interview availability, photos, community event access, exclusive local detail\n' +
-    '5. CALL TO ACTION -- warm and approachable, invite them to get in touch\n' +
-    '6. SIGN OFF:\n' + (p.name || 'Kind regards') + (p.pos ? '\n' + p.pos : '') + (p.co ? '\n' + p.co : '') + '\n' + (p.email || '') + '\n' + (p.web || '') + '\n\n' +
-    'Tone: warm, personal, genuinely local. NOT a corporate press release. NOT industry jargon. Write like a real person from the community reaching out to a local journalist they respect.\nNo asterisks, no markdown, plain text only.';
+  var signOff = (p.name || 'Kind regards') + (p.pos ? '\n' + p.pos : '') + (p.co ? '\n' + p.co : '') + (p.email ? '\n' + p.email : '') + (p.web ? '\n' + p.web : '');
 
-  callAPIHighTokens(prompt, function(text) {
+  var prompt = [
+    'Write a community-focused local press outreach email to ' + recipient + ' at ' + outlet.n + (contact ? ' (' + contact + ')' : '') + '.',
+    '',
+    'Sender: ' + (p.name || 'a local business owner') + (p.pos ? ', ' + p.pos : '') + (p.co ? ' at ' + p.co : ''),
+    'Location: ' + locStr,
+    'Outlet covers: ' + (outlet.coverage || locStr),
+    'Business: ' + (locState.what || p.what || '').substring(0, 120),
+    'Local story: ' + (locState.story || '').substring(0, 150),
+    'Local angles: ' + (locState.angles || []).slice(0,2).join(', '),
+    extra ? 'Extra detail: ' + extra : '',
+    '',
+    'FORMAT — plain text, no markdown:',
+    'Subject: [local, specific, mentions ' + (locState.hyper || locState.city || 'the area') + ' by name]',
+    '',
+    '[Opening: one sentence — genuine local connection, why ' + outlet.n + ' readers care]',
+    '',
+    '[2 short paragraphs: the community story, human interest first, not corporate]',
+    '',
+    '[What you offer: interview, photos, access]',
+    '',
+    '[Warm CTA]',
+    '',
+    signOff,
+    '',
+    'Under 200 words. Warm, personal, genuinely local. Not a press release.'
+  ].filter(Boolean).join('\n');
+
+  callAPIFast(prompt, function(text) {
     document.getElementById('loc-email-spinner').style.display = 'none';
     document.getElementById('loc-email-out').textContent = text;
     document.getElementById('loc-email-wrap').style.display = 'block';
     document.getElementById('loc-copy-ok').style.display = 'none';
     document.getElementById('loc-email-wrap').scrollIntoView({ behavior:'smooth', block:'nearest' });
-  }, function(err) {
+  }, function() {
     document.getElementById('loc-email-spinner').style.display = 'none';
     alert('Could not generate email. Please try again.');
   });
