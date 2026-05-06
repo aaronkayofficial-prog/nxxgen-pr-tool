@@ -3508,7 +3508,10 @@ function renderCampaignsDashboard() {
     if (lastActivity) html += '<div class="camp-meta-stat">&#128336; Last: <strong>' + lastActivity + '</strong></div>';
     else if (created) html += '<div class="camp-meta-stat">&#128197; Created: <strong>' + created + '</strong></div>';
     html += '<div style="flex:1;"></div>';
+    html += '<div style="display:flex;align-items:center;gap:12px;">';
     html += '<div style="font-size:12px;color:var(--gold);font-weight:500;">Open campaign &rarr;</div>';
+    html += '<button onclick="event.stopPropagation();deleteCampaign(\'' + c.id + '\')" style="font-size:11px;color:var(--muted);background:none;border:none;cursor:pointer;padding:2px 4px;border-radius:4px;line-height:1;" title="Delete campaign">&#128465;</button>';
+    html += '</div>';
     html += '</div>'; // end meta
     html += '</div>'; // end card
   });
@@ -3517,6 +3520,17 @@ function renderCampaignsDashboard() {
 }
 
 
+
+function deleteCampaign(id) {
+  loadCampaigns();
+  var camp = campaigns.find(function(c){ return c.id === id; });
+  if (!camp) return;
+  if (!confirm('Delete "' + camp.name + '"?\n\nThis will permanently remove the campaign, its press release, and all outreach history. This cannot be undone.')) return;
+  campaigns = campaigns.filter(function(c){ return c.id !== id; });
+  saveCampaignsToStorage();
+  if (activeCampaign && activeCampaign.id === id) activeCampaign = null;
+  renderCampaignsDashboard();
+}
 
 function openCampaign(id) {
   loadCampaigns();
@@ -3532,7 +3546,6 @@ function openCampaign(id) {
   // Render accordions + PR + log
   renderHubAccordions();
   renderHubLog();
-  renderHubPRSection();
   // Pre-load press release into session state
   if (camp.savedContent && camp.savedContent.pressRelease) {
     state.pressRelease = camp.savedContent.pressRelease;
