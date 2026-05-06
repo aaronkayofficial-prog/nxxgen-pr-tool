@@ -4787,7 +4787,6 @@ function saveOutletCache(key, results) {
 }
 
 function getLocalOutletResults(primary, countries) {
-  // Layer 2: fast local matching from curated database
   var primaryLower = (primary || '').toLowerCase();
   var countryArr = countries || [];
   var countryMap = {'Australia':'AU','United Kingdom':'UK','United States':'US','Canada':'US','New Zealand':'AU','Global':''};
@@ -4796,54 +4795,53 @@ function getLocalOutletResults(primary, countries) {
   // Find matching industry keywords
   var matchTags = [];
   Object.keys(INDUSTRY_OUTLET_MAP).forEach(function(kw) {
-    if (primaryLower.indexOf(kw) > -1) {
+    if (primaryLower.length > 0 && primaryLower.indexOf(kw) > -1) {
       matchTags = matchTags.concat(INDUSTRY_OUTLET_MAP[kw]);
     }
   });
-  // Always include general outlets
-  matchTags = matchTags.concat(['Wire','AU','Business','Content']);
-  matchTags = matchTags.filter(function(v,i,a){ return a.indexOf(v) === i; }); // unique
+  // Always include general outlets regardless
+  matchTags = matchTags.concat(['Wire','AU','Business','Content','Startup','News']);
+  matchTags = matchTags.filter(function(v,i,a){ return a.indexOf(v) === i; });
 
   var results = PLATFORMS.filter(function(p) {
-    // Country match
     var countryOk = codes.length === 0 || countryArr.indexOf('Global') > -1 ||
-      codes.some(function(code){ return p.r.indexOf(code) > -1; });
-    // Industry/type match
+      codes.some(function(code){ return (p.r||'').indexOf(code) > -1; });
     var typeOk = matchTags.length === 0 || matchTags.some(function(tag){
-      return (p.t||'').indexOf(tag) > -1 || (p.c||'').indexOf(tag) > -1 || (p.desc||'').toLowerCase().indexOf(tag.toLowerCase()) > -1;
+      return (p.t||'').indexOf(tag) > -1 || (p.c||'').indexOf(tag) > -1;
     });
     return countryOk && typeOk;
   });
 
-  // If too few, add top general outlets
+  // If fewer than 8 results, pad with top-rated general outlets
   if (results.length < 8) {
     PLATFORMS.forEach(function(p) {
       if (results.indexOf(p) === -1 && p.s >= 4) results.push(p);
     });
   }
 
-  // Sort by stars
   results.sort(function(a,b){ return b.s - a.s; });
   return results.slice(0, 40);
 }
 
 function searchIndustryPlatforms() {
   var t = state.targeting;
-  var primary = t.primary;
+  var primary = t.primary || 'General Press';
   var secondary = t.secondary || '';
-  var countries = t.countries && t.countries.length > 0 ? t.countries : ['Global'];
+  var countries = t.countries && t.countries.length > 0 ? t.countries : ['Australia'];
   var pref = t.pref || 'both';
   var path = state.path || 'A';
+  var prefText = pref === 'free' ? 'free to submit only' : pref === 'paid' ? 'paid distribution only' : 'free and paid';
+  var countryStr = countries.join(', ');
 
   var cacheKey = getOutletCacheKey(primary + (secondary ? '+' + secondary : ''), path, countries);
 
-  // ── LAYER 1: Session memory ──
+  // ── LAYER 1: Session memory — instant ──
   if (outletSessionCache[cacheKey]) {
     showOutletResults(outletSessionCache[cacheKey], pref, primary, countries, true, false);
     return;
   }
 
-  // ── LAYER 2: localStorage cache (valid for 24h) ──
+  // ── LAYER 2: localStorage cache (valid 24h) — instant ──
   var stored = loadOutletCache();
   if (stored[cacheKey] && (Date.now() - stored[cacheKey].ts) < 24 * 60 * 60 * 1000) {
     var cached = stored[cacheKey].results;
@@ -4852,14 +4850,65 @@ function searchIndustryPlatforms() {
     return;
   }
 
-  // ── LAYER 2: Local curated database (instant) ──
-  var localResults = getLocalOutletResults(primary, countries);
-  if (pref === 'free') localResults = localResults.filter(function(p){ return !p.paid; });
-  if (pref === 'paid') localResults = localResults.filter(function(p){ return p.paid; });
-  outletSessionCache[cacheKey] = localResults;
-  saveOutletCache(cacheKey, localResults);
-  showOutletResults(localResults, pref, primary, countries, false, true);
-  // Layer 3 offered as optional button — no auto AI call
+  // ── LAYER 3: AI search — first time, best results ──
+  var banner = document.getElementById('plat-search-banner');
+  var statusEl = document.getElementById('plat-search-status');
+  if (banner) banner.style.display = 'flex';
+  if (statusEl) statusEl.textContent = 'Finding the best ' + primary + ' outlets in ' + countryStr + '...';
+
+  var prompt = 'You are a specialist PR researcher. Generate up to 40 real, currently active media outlets, trade publications, and PR channels for the ' + primary + ' industry' +
+    (secondary ? ' with ' + secondary + ' crossover' : '') + ' in ' + countryStr + '.' +
+    ' Platform type: ' + prefText + '.' +
+    ' Requirements: Real outlets only. Include a mix of trade publications, industry news sites, PR wires, and relevant media channels.' +
+    ' For each outlet provide the editorial submission email where known.' +
+    ' Return ONLY a valid JSON array, no markdown, no preamble, starting immediately with [' +
+    '\n[{"n":"Outlet Name","u":"domain.com","e":"editorial@domain.com","t":"Trade Publication","r":"AU","paid":false,"s":5,"desc":"One sentence about why relevant for ' + primary + '"}]';
+
+  callAPIWithSearch(prompt, function(text) {
+    if (banner) banner.style.display = 'none';
+    try {
+      var clean = text.trim().replace(/^```json\s*/i,'').replace(/^```\s*/i,'').replace(/```\s*$/,'').trim();
+      var start = clean.indexOf('['); var end = clean.lastIndexOf(']');
+      if (start === -1 || end === -1) throw new Error('No JSON array found');
+      var found = JSON.parse(clean.substring(start, end + 1));
+      found = found.filter(function(p){ return p && p.n && p.u; });
+      if (found.length === 0) throw new Error('Empty results');
+      found.forEach(function(p){
+        p.s = Math.min(5, Math.max(1, parseInt(p.s) || 3));
+        p.paid = (p.paid === true || p.paid === 'true');
+        p.e = p.e || '';
+        p.desc = p.desc || '';
+        p.t = p.t || primary;
+        p.r = p.r || countryStr.split(',')[0].trim();
+        p.c = primary;
+      });
+      if (pref === 'free') found = found.filter(function(p){ return !p.paid; });
+      if (pref === 'paid') found = found.filter(function(p){ return p.paid; });
+      found.sort(function(a,b){ return b.s - a.s; });
+      // Cache it
+      outletSessionCache[cacheKey] = found;
+      saveOutletCache(cacheKey, found);
+      showOutletResults(found, pref, primary, countries, false, false);
+    } catch(e) {
+      // ── LAYER 4: Curated fallback if AI fails ──
+      console.warn('AI search failed, using curated database:', e.message);
+      if (banner) banner.style.display = 'none';
+      var fallback = getLocalOutletResults(primary, countries);
+      if (pref === 'free') fallback = fallback.filter(function(p){ return !p.paid; });
+      if (pref === 'paid') fallback = fallback.filter(function(p){ return p.paid; });
+      showOutletResults(fallback, pref, primary, countries, false, true);
+    }
+  }, function(err) {
+    // ── LAYER 4: Curated fallback on API error ──
+    console.warn('API error, using curated database:', err);
+    if (banner) banner.style.display = 'none';
+    var fallback = getLocalOutletResults(primary, countries);
+    if (pref === 'free') fallback = fallback.filter(function(p){ return !p.paid; });
+    if (pref === 'paid') fallback = fallback.filter(function(p){ return p.paid; });
+    showOutletResults(fallback, pref, primary, countries, false, true);
+  }, function(msg) {
+    if (statusEl) statusEl.textContent = msg;
+  });
 }
 
 function showOutletResults(list, pref, primary, countries, fromCache, offerDeepSearch) {
@@ -4876,7 +4925,13 @@ function showOutletResults(list, pref, primary, countries, fromCache, offerDeepS
 
   var done = document.getElementById('plat-search-done');
   if (done) {
-    done.textContent = (fromCache ? '⚡ ' : '✓ ') + filtered.length + ' outlets matched to "' + primary + '" in ' + countries.join(', ');
+    if (fromCache) {
+      done.textContent = '⚡ ' + filtered.length + ' outlets for "' + primary + '" in ' + countries.join(', ') + ' — loaded from cache';
+    } else if (offerDeepSearch) {
+      done.textContent = '✓ ' + filtered.length + ' outlets matched — from our curated database (AI search unavailable)';
+    } else {
+      done.textContent = '✓ ' + filtered.length + ' outlets found by AI for "' + primary + '" in ' + countries.join(', ');
+    }
     done.style.display = 'block';
   }
 
@@ -4885,7 +4940,11 @@ function showOutletResults(list, pref, primary, countries, fromCache, offerDeepS
   // Offer deep search button
   var deepBtn = document.getElementById('deep-search-btn');
   var deepNote = document.getElementById('deep-search-note');
-  if (deepBtn) deepBtn.style.display = offerDeepSearch ? 'inline-flex' : 'none';
+  // Only show "Find more" button if we fell back to curated DB (AI failed)
+  if (deepBtn) {
+    deepBtn.style.display = offerDeepSearch ? 'inline-flex' : 'none';
+    if (offerDeepSearch) deepBtn.textContent = 'Try AI search instead';
+  }
   if (deepNote) deepNote.style.display = offerDeepSearch ? 'block' : 'none';
 
   var sub = document.getElementById('s3-sub');
