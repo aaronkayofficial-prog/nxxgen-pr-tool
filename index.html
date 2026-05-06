@@ -152,13 +152,14 @@ textarea{resize:vertical;line-height:1.6;}
 #ind-pill-zone .ind-pill-label{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:10px;}
 #ind-pill-zone .chips{gap:8px;}
 @media(max-width:700px){#industry-cards-grid{grid-template-columns:repeat(2,1fr)!important;}}align-items:center;gap:8px;font-size:12px;}
-.usage-label{color:var(--muted);font-weight:500;letter-spacing:.5px;text-transform:uppercase;font-size:10px;}
-.usage-pip-wrap{display:flex;gap:3px;align-items:center;}
-.usage-pip{width:14px;height:6px;border-radius:3px;background:var(--border);transition:background 0.3s;}
-.usage-pip.used{background:var(--gold);}
-.usage-pip.warn{background:#e67e22;}
-.usage-pip.full{background:#c1121f;}
-.usage-count{font-size:11px;font-weight:600;color:var(--black);min-width:32px;text-align:right;}
+.usage-badge{display:none;align-items:center;gap:5px;padding:4px 9px;border-radius:20px;font-size:11px;font-weight:600;cursor:default;border:1.5px solid transparent;}
+.usage-badge.warn{display:flex;background:#fff8e1;border-color:#f0c040;color:#7a5c00;}
+.usage-badge.critical{display:flex;background:#fff0f0;border-color:#e57373;color:#b71c1c;}
+.usage-badge.empty{display:flex;background:#fce4ec;border-color:#e91e63;color:#880e4f;}
+/* Toast notification */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--black);color:var(--white);font-size:12px;padding:9px 16px;border-radius:20px;opacity:0;transition:opacity 0.25s ease,transform 0.25s ease;pointer-events:none;z-index:999;white-space:nowrap;max-width:90vw;text-align:center;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.toast.warn{background:#7a5c00;}
 .usage-limit-modal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.6);z-index:300;align-items:center;justify-content:center;}
 .usage-limit-box{background:var(--white);border-radius:16px;padding:2rem;max-width:420px;width:90%;margin:auto;position:relative;top:50%;transform:translateY(-50%);text-align:center;}
 .usage-limit-icon{font-size:40px;margin-bottom:1rem;}
@@ -295,11 +296,7 @@ textarea{resize:vertical;line-height:1.6;}
     <div class="nav-item" id="nav-account" onclick="showScreen('s-account')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Account</div>
   </nav>
   <div style="display:flex;align-items:center;gap:12px;">
-    <div class="usage-counter" id="usage-counter" title="Daily outreach tokens remaining">
-      <div class="usage-label">Daily</div>
-      <div class="usage-pip-wrap" id="usage-pips"></div>
-      <div class="usage-count" id="usage-count">0/10</div>
-    </div>
+    <div id="usage-badge" class="usage-badge" title="Daily outreach tokens remaining"></div>
     <div class="progress-bar" id="progress-bar"></div>
     <div style="position:relative;">
       <div class="acct-avatar" id="acct-avatar" onclick="toggleAccountDropdown()" title="Account settings">?</div>
@@ -2225,6 +2222,7 @@ textarea{resize:vertical;line-height:1.6;}
 </div>
 
 </div><!-- /wrap -->
+<div class="toast" id="toast"></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
@@ -2535,6 +2533,8 @@ function incrementUsage() {
   data.count = Math.min(data.count + 1, DAILY_LIMIT);
   saveUsageData(data);
   renderUsageCounter();
+  var remaining = DAILY_LIMIT - data.count;
+  showTokenToast(remaining);
   return data.count;
 }
 
@@ -2562,51 +2562,78 @@ function toggleDevMode() {
   }
 }
 
+// ── TOAST NOTIFICATION ──
+var toastTimer = null;
+function showToast(msg, type, duration) {
+  var el = document.getElementById('toast');
+  if (!el) return;
+  el.textContent = msg;
+  el.className = 'toast' + (type ? ' ' + type : '');
+  // force reflow
+  el.offsetHeight;
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function() {
+    el.classList.remove('show');
+  }, duration || 3000);
+}
+
 function renderUsageCounter() {
-  var pipsEl = document.getElementById('usage-pips');
-  var countEl = document.getElementById('usage-count');
-  var counterEl = document.getElementById('usage-counter');
+  var badge = document.getElementById('usage-badge');
+  if (!badge) return;
 
   if (isDevMode()) {
-    if (countEl) countEl.textContent = '\u221e';
-    if (counterEl) { counterEl.style.opacity = '1'; counterEl.title = 'Dev mode -- unlimited'; }
-    if (pipsEl) {
-      pipsEl.innerHTML = '';
-      for (var i = 0; i < 10; i++) {
-        var p = document.createElement('div');
-        p.className = 'usage-pip used';
-        p.style.background = '#2d6a4f';
-        pipsEl.appendChild(p);
-      }
-    }
+    badge.className = 'usage-badge';
+    badge.style.display = 'none';
     return;
   }
 
   var count = getUsageCount();
   var remaining = DAILY_LIMIT - count;
-  if (countEl) countEl.textContent = count + '/' + DAILY_LIMIT;
-  if (counterEl) counterEl.style.opacity = count >= DAILY_LIMIT ? '0.7' : '1';
-  if (!pipsEl) return;
-  pipsEl.innerHTML = '';
-  for (var i = 0; i < DAILY_LIMIT; i++) {
-    var pip = document.createElement('div');
-    pip.className = 'usage-pip';
-    if (i < count) {
-      if (count >= DAILY_LIMIT) pip.classList.add('full');
-      else if (remaining <= 3) pip.classList.add('warn');
-      else pip.classList.add('used');
-    }
-    pipsEl.appendChild(pip);
+
+  // Badge: only show when 3 or fewer remain
+  if (remaining <= 0) {
+    badge.className = 'usage-badge empty';
+    badge.innerHTML = '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg> Limit reached';
+  } else if (remaining <= 2) {
+    badge.className = 'usage-badge critical';
+    badge.textContent = remaining + ' token' + (remaining === 1 ? '' : 's') + ' left today';
+  } else if (remaining <= 3) {
+    badge.className = 'usage-badge warn';
+    badge.textContent = remaining + ' tokens left today';
+  } else {
+    // Plenty remaining — hide badge entirely
+    badge.className = 'usage-badge';
+    badge.style.display = 'none';
+    return;
   }
+
+  // Update reset label in dropdown if it exists
   var resetLabel = document.getElementById('usage-resets-label');
   if (resetLabel) {
     var now = new Date();
     var midnight = new Date(now);
     midnight.setHours(24,0,0,0);
     var hoursLeft = Math.ceil((midnight - now) / 3600000);
-    resetLabel.textContent = 'Resets in approximately ' + hoursLeft + ' hour' + (hoursLeft !== 1 ? 's' : '');
+    resetLabel.textContent = 'Resets in ~' + hoursLeft + ' hour' + (hoursLeft !== 1 ? 's' : '');
   }
 }
+
+function showTokenToast(remaining) {
+  // Called after each token is consumed
+  if (isDevMode()) return;
+  if (remaining <= 0) {
+    showToast('Daily limit reached — resets at midnight', 'warn', 4000);
+  } else if (remaining === 1) {
+    showToast('1 outreach token left today', 'warn', 3500);
+  } else if (remaining <= 3) {
+    showToast(remaining + ' outreach tokens left today', '', 2500);
+  } else {
+    showToast('Token used — ' + remaining + ' remaining today', '', 2000);
+  }
+}
+
+
 
 function checkUsageBeforeGenerate(onAllowed) {
   if (isDevMode()) { onAllowed(); return; }
