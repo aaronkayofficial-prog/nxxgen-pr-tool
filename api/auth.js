@@ -13,7 +13,7 @@ export default async function handler(req, res) {
 
   try {
     // Verify Clerk token
-    const clerkRes = await fetch('https://regular-pup-97.clerk.accounts.dev/oauth/userinfo', {
+    const clerkRes = await fetch('https://clerk.pressreachout.com/oauth/userinfo', {
       headers: { Authorization: 'Bearer ' + token }
     });
     if (!clerkRes.ok) return res.status(401).json({ error: 'Invalid token' });
