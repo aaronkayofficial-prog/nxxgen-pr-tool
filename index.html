@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7745,6 +7744,7 @@ function resetAll() {
 function initApp() {
   renderPlatforms();
   loadCampaigns();
+  renderCampaignsDashboard(); // render immediately so campaigns show on load
   campCountries = [];
   campSecondaries = [];
   selectedCampCardIdx = -1;
