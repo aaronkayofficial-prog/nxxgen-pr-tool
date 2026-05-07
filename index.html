@@ -282,7 +282,7 @@ textarea{resize:vertical;line-height:1.6;}
 @media(max-width:600px){.camp-paths{grid-template-columns:1fr;}.path-cards,.g2{grid-template-columns:1fr;}.page-title{font-size:28px;}.wrap{padding:2rem 1.25rem 5rem;}}
 </style>
   <!-- Clerk Auth -->
-  <script async crossorigin="anonymous" data-clerk-publishable-key="pk_live_Y2xlcmsucHJlc3NyZWFjaG91dC5jb20k" src="https://clerk.pressreachout.com/npm/@clerk/clerk-js@latest/dist/clerk.browser.js"></script>
+  <script defer crossorigin="anonymous" data-clerk-publishable-key="pk_live_Y2xlcmsucHJlc3NyZWFjaG91dC5jb20k" src="https://clerk.pressreachout.com/npm/@clerk/clerk-js@latest/dist/clerk.browser.js"></script>
 </head>
 <body>
 
@@ -7778,8 +7778,10 @@ var clerkLoaded = false;
 async function initClerk() {
   var loadingEl = document.getElementById('auth-loading');
   try {
+    console.log('[Auth] Calling Clerk.load()...');
     await window.Clerk.load();
     clerkLoaded = true;
+    console.log('[Auth] Clerk loaded. Session:', window.Clerk.session ? window.Clerk.session.id : 'none');
 
     var session = window.Clerk.session;
     if (session) {
@@ -7787,6 +7789,7 @@ async function initClerk() {
     } else {
       // Show Clerk sign-in UI
       if (loadingEl) loadingEl.style.display = 'none';
+      console.log('[Auth] No session — mounting sign-in UI...');
       window.Clerk.mountSignIn(document.getElementById('clerk-mount'), {
         afterSignInUrl: window.location.href,
         afterSignUpUrl: window.location.href
@@ -7797,7 +7800,7 @@ async function initClerk() {
       });
     }
   } catch(e) {
-    console.error('Clerk init error:', e);
+    console.error('[Auth] Clerk init error:', e);
     // Fall back to localStorage mode
     if (loadingEl) loadingEl.style.display = 'none';
     initApp();
@@ -7923,25 +7926,37 @@ function addSignOutButton() {
 
 // ── START: Use Clerk if available, else fallback ──
 document.addEventListener('DOMContentLoaded', function() {
+  console.log('[Auth] DOMContentLoaded — waiting for Clerk...');
+  var pollStart = Date.now();
   var checkClerk = setInterval(function() {
     if (window.Clerk) {
       clearInterval(checkClerk);
+      console.log('[Auth] Clerk detected after ' + (Date.now() - pollStart) + 'ms');
       initClerk().then(function() {
         wrapWithSupabase();
         addSignOutButton();
       });
     }
   }, 100);
-  // Fallback after 5s if Clerk doesn't load
+  // Fallback after 10s if Clerk doesn't load
   setTimeout(function() {
     if (!clerkLoaded) {
       clearInterval(checkClerk);
-      console.warn('Clerk did not load — running in localStorage mode');
-      document.getElementById('s-auth').classList.remove('active');
-      initApp();
+      console.error('[Auth] Clerk failed to load after 10s — check network/CSP. Running in localStorage fallback mode.');
+      var loadingEl = document.getElementById('auth-loading');
+      if (loadingEl) {
+        loadingEl.innerHTML = '<div style="color:#c1121f;font-size:13px;margin-bottom:12px;">⚠️ Sign-in service failed to load.</div><button class="btn btn-outline btn-sm" onclick="window.location.reload()">Retry</button><br><br><button class="btn btn-primary btn-sm" onclick="skipAuthFallback()">Continue without sign-in</button>';
+        loadingEl.style.display = 'block';
+      }
     }
-  }, 5000);
+  }, 10000);
 });
+
+function skipAuthFallback() {
+  console.warn('[Auth] User chose localStorage fallback.');
+  document.getElementById('s-auth').classList.remove('active');
+  initApp();
+}
 
 function initApp() {
   renderPlatforms();
@@ -7969,7 +7984,10 @@ function initApp() {
   // Wire up s-account screen to populate when shown
   var origShowScreen = showScreen;
 }
-initApp();
+// NOTE: initApp() is NOT called here.
+// Auth flow: Clerk loads -> handleSignedIn() -> initApp()
+// Fallback: 10s timeout -> skipAuthFallback() -> initApp()
+// Calling initApp() here would bypass Clerk auth entirely.
 </script>
 </body>
 </html>
