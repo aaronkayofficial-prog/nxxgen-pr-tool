@@ -335,13 +335,13 @@ textarea{resize:vertical;line-height:1.6;}
 
 <!-- SCREEN: AUTH (Sign in / Sign up) -->
 <div class="screen active" id="s-auth">
-  <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--off);">
-    <div style="background:var(--white);border-radius:20px;padding:2.5rem 2rem;max-width:420px;width:90%;text-align:center;box-shadow:0 8px 40px rgba(0,0,0,0.08);">
-      <div style="font-size:28px;font-weight:700;color:var(--black);margin-bottom:4px;">Outreach <span style="color:var(--gold);">Platform</span></div>
-      <div style="font-size:13px;color:var(--muted);margin-bottom:2rem;">PR outreach, powered by AI</div>
-      <div id="clerk-mount" style="margin-bottom:1rem;"></div>
-      <div id="auth-loading" style="padding:2rem;color:var(--muted);font-size:13px;">Loading...</div>
+  <div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--off);padding:2rem;">
+    <div style="margin-bottom:2rem;text-align:center;">
+      <div style="font-family:'Playfair Display',serif;font-size:28px;font-weight:600;color:var(--black);">Outreach <span style="color:var(--gold);">Platform</span></div>
+      <div style="font-size:13px;color:var(--muted);margin-top:4px;">PR outreach, powered by AI</div>
     </div>
+    <div id="clerk-mount"></div>
+    <div id="auth-loading" style="padding:2rem;color:var(--muted);font-size:13px;">Loading...</div>
   </div>
 </div>
 
