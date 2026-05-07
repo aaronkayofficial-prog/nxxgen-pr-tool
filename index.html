@@ -425,10 +425,7 @@ textarea{resize:vertical;line-height:1.6;}
       </div>
       <div><label>Company name</label><input type="text" id="acct-co" placeholder="e.g. Acme Co, The Local Bakery"/></div>
       <div><label>Website</label><input type="text" id="acct-web" placeholder="e.g. yourbusiness.com"/></div>
-      <div class="full"><label style="display:flex;align-items:center;justify-content:space-between;">What your business does <div class="wfm-wrap">
-            <button class="wfm-link" onclick="writeForMe('acct-what',this)"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Write for me</button>
-            <div class="wfm-spinner-row" id="wfm-spin-acct-what"><span class="wfm-spin"></span><span id="wfm-label-acct-what">Writing...</span></div>
-          </div></label><textarea id="acct-what" style="min-height:75px;" placeholder="e.g. A sustainable skincare brand creating certified-organic products for conscious consumers across Australia and New Zealand"></textarea></div>
+      <div class="full"><label>What your business does <span style="font-size:10px;font-weight:400;text-transform:none;color:var(--muted);">(write this yourself — it powers all the AI fields below)</span></label><textarea id="acct-what" style="min-height:75px;" placeholder="e.g. A sustainable skincare brand creating certified-organic products for conscious consumers across Australia and New Zealand"></textarea></div>
     </div>
   </div>
 
@@ -544,7 +541,7 @@ textarea{resize:vertical;line-height:1.6;}
       </div>
       <div><label>Company name</label><input type="text" id="acct-co-e" placeholder="e.g. Acme Co"/></div>
       <div><label>Website</label><input type="text" id="acct-web-e" placeholder="e.g. yourbusiness.com"/></div>
-      <div class="full"><label>What your business does</label><textarea id="acct-what-e" style="min-height:75px;" placeholder="Describe your business in 1-2 sentences"></textarea></div>
+      <div class="full"><label>What your business does <span style="font-size:10px;font-weight:400;text-transform:none;color:var(--muted);">(write this yourself — it powers all the AI fields below)</span></label><textarea id="acct-what-e" style="min-height:75px;" placeholder="Describe your business in 1-2 sentences — this is used to generate all your AI content"></textarea></div>
     </div>
   </div>
 
@@ -2374,9 +2371,9 @@ function buildWFMPrompt(fieldId, ctx, websiteContent) {
   var prompts = {
     // Account fields
     'acct-what': 'Write 1-2 sentences describing what this business does. Be specific, professional, and avoid marketing fluff. Use third person.\n\n' + base + '\n\nReturn ONLY the description, nothing else. Max 40 words.',
-    'acct-kp1': 'Write one clear sentence describing what this business does -- their core product or service. Professional, specific, factual. Third person.\n\n' + base + '\n\nReturn ONLY the sentence. Max 30 words.',
-    'acct-kp2': 'Write one sentence describing who this business serves -- their target customer. Be specific about who they are and what they need.\n\n' + base + '\n\nReturn ONLY the sentence. Max 30 words.',
-    'acct-kp3': 'Write one sentence describing what makes this business different from competitors. Focus on their genuine differentiator.\n\n' + base + '\n\nReturn ONLY the sentence. Max 30 words.',
+    'acct-kp1': 'Write one clear sentence describing what this business does -- their core product or service. Base it closely on what they wrote about themselves. Professional, specific, factual. Third person.\n\n' + base + '\n\nReturn ONLY the sentence. Max 30 words.',
+    'acct-kp2': 'Write one sentence describing who this business serves -- their target customer. Draw from what they wrote about their business. Be specific about who they are and what they need.\n\n' + base + '\n\nReturn ONLY the sentence. Max 30 words.',
+    'acct-kp3': 'Write one sentence describing what makes this business different from competitors. Draw from what they wrote about their business to identify the genuine differentiator.\n\n' + base + '\n\nReturn ONLY the sentence. Max 30 words.',
     // Campaign fields
     'cp-what': 'Write 1-2 sentences describing what this business does for a PR campaign context. Professional and specific.\n\n' + base + (ctx.campName ? '\nCampaign: ' + ctx.campName : '') + '\n\nReturn ONLY the description. Max 40 words.',
     'cp-angle': 'Write one sentence stating what makes this business uniquely different -- their strongest differentiator for media pitching.\n\n' + base + '\n\nReturn ONLY the sentence. Max 25 words.',
