@@ -280,6 +280,37 @@ textarea{resize:vertical;line-height:1.6;}
 .kp-card{border:1.5px solid var(--border);border-radius:10px;padding:14px;background:var(--white);margin-bottom:8px;}
 .kp-label{font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--gold);margin-bottom:6px;}
 @media(max-width:600px){.camp-paths{grid-template-columns:1fr;}.path-cards,.g2{grid-template-columns:1fr;}.page-title{font-size:28px;}.wrap{padding:2rem 1.25rem 5rem;}}
+/* ── ACCOUNT SETUP WIZARD ── */
+#s-account-setup{background:var(--off);min-height:100vh;display:flex;flex-direction:column;}
+.wizard-header{background:var(--white);border-bottom:1px solid var(--border);padding:2rem 2rem 1.5rem;text-align:center;position:sticky;top:57px;z-index:50;}
+.wizard-brand{font-family:'Playfair Display',serif;font-size:22px;font-weight:600;color:var(--black);margin-bottom:2px;}
+.wizard-brand span{color:var(--gold);}
+.wizard-tagline{font-size:13px;color:var(--muted);margin-bottom:1.5rem;}
+.wizard-steps{display:flex;align-items:center;justify-content:center;gap:0;margin-bottom:1rem;}
+.wizard-step{display:flex;flex-direction:column;align-items:center;gap:6px;}
+.wizard-step-circle{width:32px;height:32px;border-radius:50%;border:2px solid var(--border);background:var(--white);color:var(--muted);font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;transition:all 0.3s;}
+.wizard-step.active .wizard-step-circle{border-color:var(--gold);background:var(--gold);color:var(--white);}
+.wizard-step.done .wizard-step-circle{border-color:var(--gold);background:var(--white);color:var(--gold);}
+.wizard-step-label{font-size:11px;font-weight:500;color:var(--muted);white-space:nowrap;transition:color 0.3s;}
+.wizard-step.active .wizard-step-label{color:var(--gold);font-weight:600;}
+.wizard-step.done .wizard-step-label{color:var(--text);}
+.wizard-step-line{width:48px;height:2px;background:var(--border);margin:0 4px;margin-bottom:18px;transition:background 0.3s;flex-shrink:0;}
+.wizard-step-line.done{background:var(--gold);}
+.wizard-progress-track{height:3px;background:var(--border);border-radius:2px;margin-top:1rem;}
+.wizard-progress-fill{height:3px;background:var(--gold);border-radius:2px;transition:width 0.4s ease;}
+.wizard-body{flex:1;display:flex;align-items:flex-start;justify-content:center;padding:2.5rem 1.5rem 4rem;}
+.wizard-pane{display:none;width:100%;max-width:580px;animation:fadeUp 0.25s ease;}
+.wizard-pane.active{display:block;}
+.wizard-pane-header{text-align:center;margin-bottom:2rem;}
+.wizard-pane-eyebrow{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:500;margin-bottom:6px;}
+.wizard-pane-title{font-family:'Playfair Display',serif;font-size:28px;font-weight:500;color:var(--black);margin-bottom:8px;}
+.wizard-pane-sub{font-size:14px;color:var(--muted);line-height:1.6;max-width:440px;margin:0 auto;}
+.wizard-fields{background:var(--white);border:1.5px solid var(--border);border-radius:16px;padding:1.75rem;margin-bottom:1.5rem;}
+.wizard-nav{display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.wizard-error{color:var(--error);font-size:13px;text-align:center;margin-top:-0.75rem;margin-bottom:1rem;padding:10px;background:var(--error-bg);border-radius:var(--radius);border:1px solid #ffb3b3;}
+.req{color:var(--gold);font-size:12px;}
+@media(max-width:600px){.wizard-step-line{width:20px;}.wizard-step-label{font-size:9px;}.wizard-body{padding:1.5rem 1rem 3rem;}.wizard-pane-title{font-size:22px;}.wizard-header{padding:1.25rem 1rem 1rem;}}
+
 
 /* Phone number field with country prefix */
 .phone-wrap{display:flex;align-items:stretch;border:1.5px solid var(--border);border-radius:var(--radius);overflow:hidden;background:var(--white);transition:border-color 0.2s;}
@@ -370,44 +401,90 @@ textarea{resize:vertical;line-height:1.6;}
 
 <!-- SCREEN: ACCOUNT SETUP (first-time onboarding) -->
 <div class="screen" id="s-account-setup">
-  <div style="text-align:center;margin-bottom:2rem;">
-    <div style="font-size:40px;margin-bottom:12px;"></div>
-    <div class="eyebrow">Welcome to Outreach Platform</div>
-    <h1 class="sec-title" style="font-size:30px;">Let's set up your account</h1>
-    <p class="sec-sub" style="margin:0 auto;">This information stays at your account level and pre-fills every campaign, press release, and outreach email automatically. You only do this once.</p>
-  </div>
 
-  <div style="background:var(--gold-light);border:1.5px solid var(--gold);border-radius:12px;padding:1.25rem 1.5rem;margin-bottom:1.5rem;">
-    <div style="font-size:12px;font-weight:500;color:var(--gold);margin-bottom:1rem;">YOUR PERSONAL DETAILS</div>
-    <div class="g2">
-      <div><label>First name</label><input type="text" id="acct-fname" placeholder="e.g. Jane"/></div>
-      <div><label>Last name</label><input type="text" id="acct-lname" placeholder="e.g. Smith"/></div>
-      <div><label>Your position / title</label><input type="text" id="acct-pos" placeholder="e.g. Founder, CEO, Marketing Director"/></div>
-      <div>
-        <label>Phone number</label>
-        <div class="phone-wrap" id="phone-wrap">
-          <div class="phone-prefix" id="phone-prefix" onclick="togglePhoneDropdown('')">
-            <span class="phone-prefix-flag" id="phone-flag">🌐</span>
-            <span class="phone-prefix-code" id="phone-code">+1</span>
-            <span class="phone-prefix-arrow">▼</span>
-            <div class="phone-dropdown" id="phone-dropdown">
-              <div class="phone-dropdown-search"><input type="text" placeholder="Search country..." oninput="filterPhoneCountries(this.value,'phone-dropdown')" onclick="event.stopPropagation()"/></div>
-              <div id="phone-dropdown-list"></div>
-            </div>
-          </div>
-          <input class="phone-input" type="tel" id="acct-phone" placeholder="400 000 000"/>
-        </div>
-        <input type="hidden" id="acct-phone-prefix" value="+61"/>
+  <!-- Wizard header -->
+  <div class="wizard-header">
+    <div class="wizard-brand">Outreach <span>Platform</span></div>
+    <div class="wizard-tagline">Let's set up your account — you only do this once</div>
+
+    <!-- Step indicator -->
+    <div class="wizard-steps">
+      <div class="wizard-step active" id="wstep-1">
+        <div class="wizard-step-circle" id="wcirc-1">1</div>
+        <div class="wizard-step-label">You</div>
       </div>
-      <div class="full"><label>Contact email</label><input type="text" id="acct-email" placeholder="e.g. jane@yourbusiness.com"/></div>
+      <div class="wizard-step-line" id="wline-1"></div>
+      <div class="wizard-step" id="wstep-2">
+        <div class="wizard-step-circle" id="wcirc-2">2</div>
+        <div class="wizard-step-label">Your Business</div>
+      </div>
+      <div class="wizard-step-line" id="wline-2"></div>
+      <div class="wizard-step" id="wstep-3">
+        <div class="wizard-step-circle" id="wcirc-3">3</div>
+        <div class="wizard-step-label">Your Story</div>
+      </div>
+      <div class="wizard-step-line" id="wline-3"></div>
+      <div class="wizard-step" id="wstep-4">
+        <div class="wizard-step-circle" id="wcirc-4">4</div>
+        <div class="wizard-step-label">Final Touches</div>
+      </div>
+    </div>
+
+    <!-- Progress bar -->
+    <div class="wizard-progress-track">
+      <div class="wizard-progress-fill" id="wizard-progress-fill" style="width:25%"></div>
     </div>
   </div>
 
-  <div style="border:1.5px solid var(--border);border-radius:12px;padding:1.25rem 1.5rem;margin-bottom:1.5rem;background:var(--white);">
-    <div style="font-size:12px;font-weight:500;color:var(--muted);margin-bottom:1rem;">YOUR BUSINESS</div>
-    <div class="g2">
-      <div class="full">
-        <label>Industry</label>
+  <!-- Wizard body -->
+  <div class="wizard-body">
+
+    <!-- ── STEP 1: YOU ── -->
+    <div class="wizard-pane active" id="wpane-1">
+      <div class="wizard-pane-header">
+        <div class="wizard-pane-eyebrow">Step 1 of 4</div>
+        <h2 class="wizard-pane-title">Tell us about you</h2>
+        <p class="wizard-pane-sub">Your name and contact details appear on every press release and outreach email.</p>
+      </div>
+      <div class="wizard-fields">
+        <div class="g2">
+          <div><label>First name <span class="req">*</span></label><input type="text" id="acct-fname" placeholder="e.g. Jane"/></div>
+          <div><label>Last name</label><input type="text" id="acct-lname" placeholder="e.g. Smith"/></div>
+          <div><label>Your position / title</label><input type="text" id="acct-pos" placeholder="e.g. Founder, CEO, Marketing Director"/></div>
+          <div>
+            <label>Phone number</label>
+            <div class="phone-wrap" id="phone-wrap">
+              <div class="phone-prefix" id="phone-prefix" onclick="togglePhoneDropdown('')">
+                <span class="phone-prefix-flag" id="phone-flag">🌐</span>
+                <span class="phone-prefix-code" id="phone-code">+1</span>
+                <span class="phone-prefix-arrow">▼</span>
+                <div class="phone-dropdown" id="phone-dropdown">
+                  <div class="phone-dropdown-search"><input type="text" placeholder="Search country..." oninput="filterPhoneCountries(this.value,'phone-dropdown')" onclick="event.stopPropagation()"/></div>
+                  <div id="phone-dropdown-list"></div>
+                </div>
+              </div>
+              <input class="phone-input" type="tel" id="acct-phone" placeholder="400 000 000"/>
+            </div>
+            <input type="hidden" id="acct-phone-prefix" value="+61"/>
+          </div>
+          <div class="full"><label>Contact email <span class="req">*</span></label><input type="text" id="acct-email" placeholder="e.g. jane@yourbusiness.com"/></div>
+        </div>
+      </div>
+      <div class="wizard-nav">
+        <div></div>
+        <button class="btn btn-primary" onclick="wizardNext(1)">Next — Your Business &rarr;</button>
+      </div>
+    </div>
+
+    <!-- ── STEP 2: YOUR BUSINESS ── -->
+    <div class="wizard-pane" id="wpane-2">
+      <div class="wizard-pane-header">
+        <div class="wizard-pane-eyebrow">Step 2 of 4</div>
+        <h2 class="wizard-pane-title">Your business</h2>
+        <p class="wizard-pane-sub">This information pre-fills every campaign, press release, and outreach email automatically.</p>
+      </div>
+      <div class="wizard-fields">
+        <label>Industry <span class="req">*</span></label>
         <div class="chips" id="acct-industry-chips" style="margin-top:8px;">
           <div class="chip" onclick="selectAcctIndustry(this,'Fashion, Retail &amp; Consumer')"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.38 18H3.62a1 1 0 0 1-.77-1.63L12 6l9.15 10.37A1 1 0 0 1 20.38 18z"/><path d="M12 6V3"/><circle cx="12" cy="2.5" r="1"/></svg> Fashion &amp; Retail</div>
           <div class="chip" onclick="selectAcctIndustry(this,'Technology &amp; Innovation')"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="7" width="10" height="10" rx="1"/><path d="M7 9H4M7 12H4M7 15H4M17 9h3M17 12h3M17 15h3M9 7V4M12 7V4M15 7V4M9 17v3M12 17v3M15 17v3"/></svg> Technology</div>
@@ -419,68 +496,107 @@ textarea{resize:vertical;line-height:1.6;}
           <div class="chip" onclick="selectAcctIndustry(this,'Energy, Environment &amp; Education')"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8C8 10 5.9 16.17 3.82 19.34a1 1 0 0 0 1.46 1.32C7.5 18.6 11 17 17 17c4-8 2-15 2-15"/><path d="M3 22c5-5 7-12 7-12"/></svg> Environment &amp; Education</div>
           <div class="chip" onclick="selectAcctIndustry(this,'Industry &amp; Infrastructure')"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20h20"/><path d="M2 20V8l6-4v4l6-4v4l6-4v16"/><path d="M10 20v-5h4v5"/></svg> Industry</div>
           <div class="chip" onclick="selectAcctIndustry(this,'Other')"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg> Other</div>
+          <div class="chip" onclick="selectAcctIndustry(this,'Automotive')"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/><path d="M12 3v6M4.22 7.22l4.24 4.24M3 12h6M4.22 16.78l4.24-4.24M12 21v-6M19.78 16.78l-4.24-4.24M21 12h-6M19.78 7.22l-4.24 4.24"/></svg> Automotive</div>
         </div>
         <input type="hidden" id="acct-industry"/>
         <input type="text" id="acct-industry-other" placeholder="Type your industry..." style="display:none;margin-top:8px;"/>
+
+        <div class="g2" style="margin-top:1.25rem;">
+          <div><label>Company name <span class="req">*</span></label><input type="text" id="acct-co" placeholder="e.g. Acme Co, The Local Bakery"/></div>
+          <div><label>Website</label><input type="text" id="acct-web" placeholder="e.g. yourbusiness.com"/></div>
+          <div class="full">
+            <label>What your business does <span style="font-size:10px;font-weight:400;text-transform:none;color:var(--muted);">(write this yourself — it powers all the AI fields below)</span></label>
+            <textarea id="acct-what" style="min-height:90px;" placeholder="e.g. A sustainable skincare brand creating certified-organic products for conscious consumers across Australia and New Zealand"></textarea>
+          </div>
+        </div>
       </div>
-      <div><label>Company name</label><input type="text" id="acct-co" placeholder="e.g. Acme Co, The Local Bakery"/></div>
-      <div><label>Website</label><input type="text" id="acct-web" placeholder="e.g. yourbusiness.com"/></div>
-      <div class="full"><label>What your business does <span style="font-size:10px;font-weight:400;text-transform:none;color:var(--muted);">(write this yourself — it powers all the AI fields below)</span></label><textarea id="acct-what" style="min-height:75px;" placeholder="e.g. A sustainable skincare brand creating certified-organic products for conscious consumers across Australia and New Zealand"></textarea></div>
+      <div class="wizard-nav">
+        <button class="btn btn-outline" onclick="wizardBack(2)">&larr; Back</button>
+        <button class="btn btn-primary" onclick="wizardNext(2)">Next — Your Story &rarr;</button>
+      </div>
     </div>
-  </div>
 
-  <div style="border:1.5px solid var(--border);border-radius:12px;padding:1.25rem 1.5rem;margin-bottom:1.5rem;background:var(--white);">
-    <div style="font-size:12px;font-weight:500;color:var(--muted);margin-bottom:4px;">THREE KEY POINTS ABOUT YOUR BUSINESS</div>
-    <div style="font-size:12px;color:var(--muted);margin-bottom:1rem;">These are your core USPs — What you do / Who you serve / What makes you different. They feed directly into press release generation.</div>
-    <div class="kp-card">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;"><div class="kp-label" style="margin-bottom:0;">Key point 1 — What you do</div><div class="wfm-wrap">
-            <button class="wfm-link" onclick="writeForMe('acct-kp1',this)"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Write for me</button>
-            <div class="wfm-spinner-row" id="wfm-spin-acct-kp1"><span class="wfm-spin"></span><span id="wfm-label-acct-kp1">Writing...</span></div>
-          </div></div>
-      <textarea id="acct-kp1" style="min-height:60px;border:none;padding:0;font-size:14px;" placeholder="e.g. We create certified-organic skincare products formulated by dermatologists and produced in Australia without harmful chemicals"></textarea>
+    <!-- ── STEP 3: YOUR STORY ── -->
+    <div class="wizard-pane" id="wpane-3">
+      <div class="wizard-pane-header">
+        <div class="wizard-pane-eyebrow">Step 3 of 4</div>
+        <h2 class="wizard-pane-title">Your story</h2>
+        <p class="wizard-pane-sub">Three sentences that define your brand. These feed directly into every press release and AI-generated content.</p>
+      </div>
+      <div class="wizard-fields">
+        <div class="kp-card">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+            <div class="kp-label" style="margin-bottom:0;">Key point 1 — What you do</div>
+            <div class="wfm-wrap">
+              <button class="wfm-link" onclick="writeForMe('acct-kp1',this)"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Write for me</button>
+              <div class="wfm-spinner-row" id="wfm-spin-acct-kp1"><span class="wfm-spin"></span><span id="wfm-label-acct-kp1">Writing...</span></div>
+            </div>
+          </div>
+          <textarea id="acct-kp1" style="min-height:70px;border:none;padding:0;font-size:14px;" placeholder="e.g. We create certified-organic skincare products formulated by dermatologists and produced in Australia without harmful chemicals"></textarea>
+        </div>
+        <div class="kp-card">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+            <div class="kp-label" style="margin-bottom:0;">Key point 2 — Who you serve</div>
+            <div class="wfm-wrap">
+              <button class="wfm-link" onclick="writeForMe('acct-kp2',this)"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Write for me</button>
+              <div class="wfm-spinner-row" id="wfm-spin-acct-kp2"><span class="wfm-spin"></span><span id="wfm-label-acct-kp2">Writing...</span></div>
+            </div>
+          </div>
+          <textarea id="acct-kp2" style="min-height:70px;border:none;padding:0;font-size:14px;" placeholder="e.g. We serve conscious consumers aged 25-45 who prioritise ingredient transparency, sustainability, and clinical effectiveness over brand prestige"></textarea>
+        </div>
+        <div class="kp-card">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+            <div class="kp-label" style="margin-bottom:0;">Key point 3 — What makes you different</div>
+            <div class="wfm-wrap">
+              <button class="wfm-link" onclick="writeForMe('acct-kp3',this)"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Write for me</button>
+              <div class="wfm-spinner-row" id="wfm-spin-acct-kp3"><span class="wfm-spin"></span><span id="wfm-label-acct-kp3">Writing...</span></div>
+            </div>
+          </div>
+          <textarea id="acct-kp3" style="min-height:70px;border:none;padding:0;font-size:14px;" placeholder="e.g. We are the only Australian skincare brand certified by three independent sustainability bodies, with zero plastic packaging and a carbon-neutral supply chain"></textarea>
+        </div>
+      </div>
+      <div class="wizard-nav">
+        <button class="btn btn-outline" onclick="wizardBack(3)">&larr; Back</button>
+        <button class="btn btn-primary" onclick="wizardNext(3)">Next — Final Touches &rarr;</button>
+      </div>
     </div>
-    <div class="kp-card">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;"><div class="kp-label" style="margin-bottom:0;">Key point 2 — Who you serve</div><div class="wfm-wrap">
-            <button class="wfm-link" onclick="writeForMe('acct-kp2',this)"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Write for me</button>
-            <div class="wfm-spinner-row" id="wfm-spin-acct-kp2"><span class="wfm-spin"></span><span id="wfm-label-acct-kp2">Writing...</span></div>
-          </div></div>
-      <textarea id="acct-kp2" style="min-height:60px;border:none;padding:0;font-size:14px;" placeholder="e.g. We serve conscious consumers aged 25-45 who prioritise ingredient transparency, sustainability, and clinical effectiveness over brand prestige"></textarea>
-    </div>
-    <div class="kp-card">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;"><div class="kp-label" style="margin-bottom:0;">Key point 3 — What makes you different</div><div class="wfm-wrap">
-            <button class="wfm-link" onclick="writeForMe('acct-kp3',this)"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Write for me</button>
-            <div class="wfm-spinner-row" id="wfm-spin-acct-kp3"><span class="wfm-spin"></span><span id="wfm-label-acct-kp3">Writing...</span></div>
-          </div></div>
-      <textarea id="acct-kp3" style="min-height:60px;border:none;padding:0;font-size:14px;" placeholder="e.g. We are the only Australian skincare brand certified by three independent sustainability bodies, with zero plastic packaging and a carbon-neutral supply chain"></textarea>
-    </div>
-  </div>
 
-  <div style="border:1.5px solid var(--border);border-radius:12px;padding:1.25rem 1.5rem;margin-bottom:1.5rem;background:var(--white);">
-    <div style="font-size:12px;font-weight:500;color:var(--muted);margin-bottom:1rem;">OPTIONAL EXTRAS</div>
-    <!-- Logo upload -->
-    <label>Business logo</label>
-    <div id="logo-drop-zone" onclick="document.getElementById('acct-logo-file').click()" ondragover="event.preventDefault();this.style.borderColor='var(--gold)';this.style.background='var(--gold-light)';" ondragleave="this.style.borderColor='var(--border)';this.style.background='';" ondrop="handleLogoDrop(event,'acct-logo')" style="border:2px dashed var(--border);border-radius:10px;padding:20px;text-align:center;cursor:pointer;margin-top:6px;margin-bottom:1.25rem;transition:all 0.2s;">
-      <div id="logo-drop-preview" style="display:none;"><img id="acct-logo-img" style="max-height:60px;max-width:200px;border-radius:6px;" src=""/><div style="font-size:11px;color:var(--muted);margin-top:6px;">Click or drag to replace</div></div>
-      <div id="logo-drop-empty"><div style="margin-bottom:8px;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M12 8v8m-4-4 4-4 4 4"/></svg></div><div style="font-size:13px;font-weight:500;color:var(--black);">Drag &amp; drop your logo here</div><div style="font-size:11px;color:var(--muted);margin-top:3px;">or click to browse -- PNG, JPG, SVG, WebP</div></div>
-      <input type="file" id="acct-logo-file" accept="image/*" style="display:none;" onchange="handleLogoFile(event,'acct-logo')"/>
-      <input type="hidden" id="acct-logo"/>
-    </div>
-    <!-- Social media handles -->
-    <div style="font-size:12px;font-weight:500;color:var(--muted);margin-bottom:10px;">SOCIAL MEDIA HANDLES <span style="font-size:10px;font-weight:400;text-transform:none;">(optional)</span></div>
-    <div class="g2">
-      <div><label><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg> Facebook</label><input type="text" id="acct-fb" placeholder="e.g. facebook.com/yourbrand"/></div>
-      <div><label><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg> Instagram</label><input type="text" id="acct-ig" placeholder="e.g. @yourbrand"/></div>
-      <div><label><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="#0a0a0a" stroke="none"/></svg> YouTube</label><input type="text" id="acct-yt" placeholder="e.g. youtube.com/@yourbrand"/></div>
-      <div><label><svg width="14" height="14" viewBox="0 0 24 24" fill="#0a0a0a"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg> X (Twitter)</label><input type="text" id="acct-x" placeholder="e.g. @yourbrand"/></div>
-      <div><label><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg> LinkedIn</label><input type="text" id="acct-li" placeholder="e.g. linkedin.com/company/yourbrand"/></div>
-      <div><label><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85m5.5-6.42c-.11 3.5-.83 4.86-3.2 4.86"/><path d="M9 12a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm8 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" fill="#0a0a0a" stroke="none"/></svg> Reddit</label><input type="text" id="acct-reddit" placeholder="e.g. r/yourbrand or u/yourusername"/></div>
-    </div>
-  </div>
+    <!-- ── STEP 4: FINAL TOUCHES ── -->
+    <div class="wizard-pane" id="wpane-4">
+      <div class="wizard-pane-header">
+        <div class="wizard-pane-eyebrow">Step 4 of 4</div>
+        <h2 class="wizard-pane-title">Final touches</h2>
+        <p class="wizard-pane-sub">Optional extras that make your outreach more professional. You can skip these and add them later.</p>
+      </div>
+      <div class="wizard-fields">
 
-  <div class="btn-row">
-    <button class="btn btn-primary" onclick="saveAccount(true)">Save account &amp; continue &rarr;</button>
-  </div>
+        <label>Business logo <span style="font-size:10px;font-weight:400;text-transform:none;color:var(--muted);">(appears on your press release PDF)</span></label>
+        <div id="logo-drop-zone" onclick="document.getElementById('acct-logo-file').click()" ondragover="event.preventDefault();this.style.borderColor='var(--gold)';this.style.background='var(--gold-light)';" ondragleave="this.style.borderColor='var(--border)';this.style.background='';" ondrop="handleLogoDrop(event,'acct-logo')" style="border:2px dashed var(--border);border-radius:10px;padding:24px;text-align:center;cursor:pointer;margin-top:6px;margin-bottom:1.5rem;transition:all 0.2s;">
+          <div id="logo-drop-preview" style="display:none;"><img id="acct-logo-img" style="max-height:60px;max-width:200px;border-radius:6px;" src=""/><div style="font-size:11px;color:var(--muted);margin-top:6px;">Click or drag to replace</div></div>
+          <div id="logo-drop-empty"><div style="margin-bottom:8px;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M12 8v8m-4-4 4-4 4 4"/></svg></div><div style="font-size:13px;font-weight:500;color:var(--black);">Drag &amp; drop your logo here</div><div style="font-size:11px;color:var(--muted);margin-top:3px;">or click to browse &mdash; PNG, JPG, SVG, WebP</div></div>
+          <input type="file" id="acct-logo-file" accept="image/*" style="display:none;" onchange="handleLogoFile(event,'acct-logo')"/>
+          <input type="hidden" id="acct-logo"/>
+        </div>
+
+        <div style="font-size:12px;font-weight:500;color:var(--muted);margin-bottom:10px;letter-spacing:0.5px;">SOCIAL MEDIA HANDLES</div>
+        <div class="g2">
+          <div><label><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg> Facebook</label><input type="text" id="acct-fb" placeholder="e.g. facebook.com/yourbrand"/></div>
+          <div><label><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg> Instagram</label><input type="text" id="acct-ig" placeholder="e.g. @yourbrand"/></div>
+          <div><label><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="#0a0a0a" stroke="none"/></svg> YouTube</label><input type="text" id="acct-yt" placeholder="e.g. youtube.com/@yourbrand"/></div>
+          <div><label><svg width="14" height="14" viewBox="0 0 24 24" fill="#0a0a0a"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg> X (Twitter)</label><input type="text" id="acct-x" placeholder="e.g. @yourbrand"/></div>
+          <div><label><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg> LinkedIn</label><input type="text" id="acct-li" placeholder="e.g. linkedin.com/company/yourbrand"/></div>
+          <div><label><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85m5.5-6.42c-.11 3.5-.83 4.86-3.2 4.86"/><path d="M9 12a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm8 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" fill="#0a0a0a" stroke="none"/></svg> Reddit</label><input type="text" id="acct-reddit" placeholder="e.g. r/yourbrand or u/yourusername"/></div>
+        </div>
+      </div>
+      <div class="wizard-nav">
+        <button class="btn btn-outline" onclick="wizardBack(4)">&larr; Back</button>
+        <button class="btn btn-primary" onclick="saveAccount(true)">Complete setup &rarr;</button>
+      </div>
+    </div>
+
+  </div><!-- /wizard-body -->
 </div>
+
 
 <!-- SCREEN: ACCOUNT SETTINGS (edit existing) -->
 <div class="screen" id="s-account">
@@ -535,6 +651,7 @@ textarea{resize:vertical;line-height:1.6;}
           <div class="chip" onclick="selectAcctIndustry(this,'Energy, Environment &amp; Education','-e')"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8C8 10 5.9 16.17 3.82 19.34a1 1 0 0 0 1.46 1.32C7.5 18.6 11 17 17 17c4-8 2-15 2-15"/><path d="M3 22c5-5 7-12 7-12"/></svg> Environment &amp; Education</div>
           <div class="chip" onclick="selectAcctIndustry(this,'Industry &amp; Infrastructure','-e')"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20h20"/><path d="M2 20V8l6-4v4l6-4v4l6-4v16"/><path d="M10 20v-5h4v5"/></svg> Industry</div>
           <div class="chip" onclick="selectAcctIndustry(this,'Other','-e')"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg> Other</div>
+          <div class="chip" onclick="selectAcctIndustry(this,'Automotive','-e')"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/><path d="M12 3v6M4.22 7.22l4.24 4.24M3 12h6M4.22 16.78l4.24-4.24M12 21v-6M19.78 16.78l-4.24-4.24M21 12h-6M19.78 7.22l-4.24 4.24"/></svg> Automotive</div>
         </div>
         <input type="hidden" id="acct-industry-e"/>
         <input type="text" id="acct-industry-other-e" placeholder="Type your industry..." style="display:none;margin-top:8px;"/>
@@ -808,7 +925,7 @@ textarea{resize:vertical;line-height:1.6;}
     <input type="hidden" id="cp-industry"/>
     <div style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);font-weight:500;margin-bottom:12px;">Primary industry</div>
 
-    <div id="cp-industry-cards-grid" style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:12px;">
+    <div id="cp-industry-cards-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:10px;margin-bottom:12px;">
       <div class="ind-card" id="cp-icard-0" onclick="selectCampCard(0)"><div class="ind-card-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.38 18H3.62a1 1 0 0 1-.77-1.63L12 6l9.15 10.37A1 1 0 0 1 20.38 18z"/><path d="M12 6V3"/><circle cx="12" cy="2.5" r="1"/></svg></div><div class="ind-card-title">Fashion, Retail &amp; Consumer</div><div class="ind-card-pills">Fashion &bull; Luxury &bull; E-commerce &bull; Beauty &bull; Consumer</div></div>
       <div class="ind-card" id="cp-icard-1" onclick="selectCampCard(1)"><div class="ind-card-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="7" width="10" height="10" rx="1"/><path d="M7 9H4M7 12H4M7 15H4M17 9h3M17 12h3M17 15h3M9 7V4M12 7V4M15 7V4M9 17v3M12 17v3M15 17v3"/></svg></div><div class="ind-card-title">Technology &amp; Innovation</div><div class="ind-card-pills">Tech &bull; AI &bull; Telecoms &bull; Gaming &bull; Biotech &bull; Cyber</div></div>
       <div class="ind-card" id="cp-icard-2" onclick="selectCampCard(2)"><div class="ind-card-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg></div><div class="ind-card-title">Health &amp; Life Sciences</div><div class="ind-card-pills">Healthcare &bull; Pharma &bull; Wellness &bull; Fitness &bull; Mental Health</div></div>
@@ -819,6 +936,7 @@ textarea{resize:vertical;line-height:1.6;}
       <div class="ind-card" id="cp-icard-7" onclick="selectCampCard(7)"><div class="ind-card-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8C8 10 5.9 16.17 3.82 19.34a1 1 0 0 0 1.46 1.32C7.5 18.6 11 17 17 17c4-8 2-15 2-15"/><path d="M3 22c5-5 7-12 7-12"/></svg></div><div class="ind-card-title">Energy, Environment &amp; Education</div><div class="ind-card-pills">Renewable &bull; Green &bull; Education &bull; Non-profit</div></div>
       <div class="ind-card" id="cp-icard-8" onclick="selectCampCard(8)"><div class="ind-card-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg></div><div class="ind-card-title">Business &amp; Startups</div><div class="ind-card-pills">Startups &bull; Entrepreneurship &bull; DTC &bull; B2B &bull; SaaS</div></div>
       <div class="ind-card" id="cp-icard-9" onclick="selectCampCard(9)"><div class="ind-card-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg></div><div class="ind-card-title">Other &amp; Niche</div><div class="ind-card-pills">Sports &bull; Luxury &bull; Social Enterprise &bull; Custom</div></div>
+      <div class="ind-card" id="cp-icard-10" onclick="selectCampCard(10)"><div class="ind-card-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/><path d="M12 3v6M4.22 7.22l4.24 4.24M3 12h6M4.22 16.78l4.24-4.24M12 21v-6M19.78 16.78l-4.24-4.24M21 12h-6M19.78 7.22l-4.24 4.24"/></svg></div><div class="ind-card-title">Automotive</div><div class="ind-card-pills">New Cars &bull; Aftermarket &bull; Car Care &bull; Motorsport &bull; EV &bull; Parts &amp; Accessories</div></div>
     </div>
 
     <div id="cp-ind-pill-zone" style="display:none;margin-bottom:1.25rem;padding:16px;background:var(--gold-light);border:1.5px solid var(--gold);border-radius:12px;">
@@ -1858,12 +1976,26 @@ textarea{resize:vertical;line-height:1.6;}
       Find more with AI
     </button>
     <div id="deep-search-note" style="font-size:11px;color:var(--muted);display:none;">Results load instantly from our curated database. Click to discover more with AI.</div>
+  <div style="margin-top:8px;display:flex;align-items:center;gap:8px;">
+    <input type="text" id="custom-outlet-search" placeholder="Search for a specific outlet or niche by name..." style="flex:1;padding:8px 12px;border:1.5px solid var(--border);border-radius:var(--radius);font-size:13px;font-family:'DM Sans',sans-serif;outline:none;" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'"/>
+    <button class="btn btn-outline btn-sm" onclick="searchCustomOutlet()" style="flex-shrink:0;">Find outlets</button>
+  </div>
   </div>
   <!-- Outlet panel: filters + scrollable results + sticky footer -->
   <div id="plat-filter-row" style="display:none;">
     <div class="outlet-panel" id="plat-panel">
       <!-- Filter bar -->
-      <div class="outlet-panel-filters">
+      <div class="outlet-panel-filters" style="flex-wrap:wrap;gap:8px;">
+        <div style="display:flex;align-items:center;gap:6px;width:100%;margin-bottom:4px;">
+          <div style="position:relative;flex:1;">
+            <svg style="position:absolute;left:9px;top:50%;transform:translateY(-50%);opacity:0.4;" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" id="plat-search-box" placeholder="Search by name, outlet, or keyword..." oninput="liveSearchOutlets(this.value)" style="width:100%;padding:7px 10px 7px 28px;border:1.5px solid var(--border);border-radius:var(--radius);font-size:13px;font-family:'DM Sans',sans-serif;outline:none;" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'"/>
+          </div>
+          <button class="btn btn-outline btn-sm" onclick="refreshOutletSearch()" title="Search again with AI" style="flex-shrink:0;white-space:nowrap;">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+            Search again
+          </button>
+        </div>
         <div class="chips" id="plat-filters" style="margin:0;">
           <div class="chip on" onclick="filterPlats('all',this)">All</div>
           <div class="chip" onclick="filterPlats('Free',this)">Free</div>
@@ -2755,7 +2887,9 @@ var IND_CHIPS = [
   // 8 Business
   ['Business &amp; Startups','Entrepreneurship','E-commerce &amp; DTC','B2B &amp; Enterprise','SaaS'],
   // 9 Other
-  ['Sports &amp; Esports','Luxury &amp; Premium','Social Enterprise','Arts &amp; Culture','__custom__']
+  ['Sports &amp; Esports','Luxury &amp; Premium','Social Enterprise','Arts &amp; Culture','__custom__'],
+  // 10 Automotive
+  ['New Cars &amp; Reviews','Aftermarket &amp; Parts','Car Care &amp; Detailing','Motorsport &amp; Racing','Electric Vehicles &amp; EV','4WD &amp; Off-Road','Performance &amp; Tuning','Classic &amp; Collector Cars','Automotive Retail &amp; Dealerships','Fleet &amp; Commercial Vehicles']
 ];
 
 var IND_NAMES = [
@@ -2768,13 +2902,14 @@ var IND_NAMES = [
   'Industry & Infrastructure',
   'Energy, Environment & Education',
   'Business & Startups',
-  'Other & Niche'
+  'Other & Niche',
+  'Automotive'
 ];
 
 function selectIndustryCard(idx) {
   selectedCardIdx = idx;
   // Highlight selected card, un-highlight others
-  for (var i = 0; i < 10; i++) {
+  for (var i = 0; i < 11; i++) {
     var card = document.getElementById('icard-' + i);
     if (card) card.classList.toggle('selected', i === idx);
   }
@@ -3853,7 +3988,7 @@ var campSecondaries = [];
 
 function selectCampCard(idx) {
   selectedCampCardIdx = idx;
-  for (var i = 0; i < 10; i++) {
+  for (var i = 0; i < 11; i++) {
     var card = document.getElementById('cp-icard-' + i);
     if (card) card.classList.toggle('selected', i === idx);
   }
@@ -3910,7 +4045,7 @@ function changeCampPrimaryIndustry() {
   document.getElementById('cp-ind-pill-zone').style.display = 'none';
   document.getElementById('cp-primary-selected-summary').style.display = 'none';
   document.getElementById('cp-secondary-section').style.display = 'none';
-  for (var i = 0; i < 10; i++) {
+  for (var i = 0; i < 11; i++) {
     var card = document.getElementById('cp-icard-' + i);
     if (card) card.classList.remove('selected');
   }
@@ -4592,7 +4727,7 @@ function showNewCampaignForm() {
   campSecondaries = [];
   selectedCampCardIdx = -1;
   // Reset card UI
-  for (var i = 0; i < 10; i++) {
+  for (var i = 0; i < 11; i++) {
     var card = document.getElementById('cp-icard-' + i);
     if (card) card.classList.remove('selected');
   }
@@ -4740,7 +4875,54 @@ var PLATFORMS = [
   {n:'City A.M.',u:'cityam.com',e:'editorial@cityam.com',t:'Business',r:'UK',c:'UK',paid:false,s:4,desc:"London free financial and business newspaper"},
   {n:'Medium',u:'medium.com',e:'hello@medium.com',t:'Content',r:'AU,UK,US',c:'',paid:false,s:4,desc:"Self-publishing and editorial content platform"},
   {n:'LinkedIn Articles',u:'linkedin.com',e:'',t:'Content',r:'AU,UK,US',c:'',paid:false,s:4,desc:"Professional content publishing and networking"},
-  {n:'Substack',u:'substack.com',e:'',t:'Content',r:'AU,UK,US',c:'',paid:false,s:3,desc:"Email newsletter and paid subscription platform"}
+  {n:'Substack',u:'substack.com',e:'',t:'Content',r:'AU,UK,US',c:'',paid:false,s:3,desc:"Email newsletter and paid subscription platform"},
+
+  // ── AUTOMOTIVE ──
+  {n:'WhichCar',u:'whichcar.com.au',e:'editorial@whichcar.com.au',t:'Consumer',r:'AU',c:'Auto',paid:false,s:5,desc:'Australian new car reviews, advice and buying guides'},
+  {n:'Drive.com.au',u:'drive.com.au',e:'editorial@drive.com.au',t:'Consumer',r:'AU',c:'Auto',paid:false,s:5,desc:'Australia largest new and used car media brand'},
+  {n:'CarExpert',u:'carexpert.com.au',e:'editorial@carexpert.com.au',t:'Consumer',r:'AU',c:'Auto',paid:false,s:5,desc:'Independent Australian new car news and reviews'},
+  {n:'CarsGuide',u:'carsguide.com.au',e:'editorial@carsguide.com.au',t:'Consumer',r:'AU',c:'Auto',paid:false,s:4,desc:'Australia car buying guide and reviews'},
+  {n:'GoAuto',u:'goauto.com.au',e:'editorial@goauto.com.au',t:'Trade',r:'AU',c:'Auto',paid:false,s:5,desc:'Australia premier automotive trade and consumer publication'},
+  {n:'Australian Motor',u:'australianmotor.com.au',e:'editorial@australianmotor.com.au',t:'Consumer',r:'AU',c:'Auto',paid:false,s:4,desc:'Australian automotive news and reviews'},
+  {n:'Motor Magazine AU',u:'motor.com.au',e:'editorial@motor.com.au',t:'Consumer',r:'AU',c:'Auto',paid:false,s:4,desc:'Performance and new car reviews for Australian enthusiasts'},
+  {n:'Wheels Magazine AU',u:'wheelsmagazine.com.au',e:'editorial@wheelsmagazine.com.au',t:'Consumer',r:'AU',c:'Auto',paid:false,s:5,desc:'Australia oldest and most respected car magazine'},
+  {n:'Street Machine',u:'streetmachine.com.au',e:'editorial@streetmachine.com.au',t:'Consumer',r:'AU',c:'Auto',paid:false,s:4,desc:'Australian performance, custom and muscle car culture'},
+  {n:'4WD Action',u:'4wdaction.com.au',e:'editorial@4wdaction.com.au',t:'Consumer',r:'AU',c:'Auto',paid:false,s:4,desc:'Australian 4x4 and off-road adventure publication'},
+  {n:'Unsealed 4X4',u:'unsealed4x4.com.au',e:'editorial@unsealed4x4.com.au',t:'Consumer',r:'AU',c:'Auto',paid:false,s:4,desc:'Practical 4WD, camping and adventure driving AU'},
+  {n:'Just Cars',u:'justcars.com.au',e:'editorial@justcars.com.au',t:'Trade',r:'AU',c:'Auto',paid:false,s:3,desc:'Australian used car classifieds and aftermarket news'},
+  {n:'Spanner',u:'spanner.com.au',e:'editorial@spanner.com.au',t:'Trade',r:'AU',c:'Auto',paid:false,s:4,desc:'Australian trade publication for auto service and repair industry'},
+  {n:'National Auto Industry',u:'nationalauto.com.au',e:'editor@nationalauto.com.au',t:'Trade',r:'AU',c:'Auto',paid:false,s:4,desc:'Australian automotive industry news for dealers and workshops'},
+  {n:'AutoMedia Australia',u:'automedia.com.au',e:'editorial@automedia.com.au',t:'Trade',r:'AU',c:'Auto',paid:false,s:3,desc:'Automotive accessories and aftermarket trade news AU'},
+  {n:'Supercars.net AU',u:'supercars.net',e:'editorial@supercars.net',t:'Consumer',r:'AU',c:'Auto',paid:false,s:3,desc:'Supercar and performance vehicle news globally'},
+  {n:'AussieMotoring',u:'aussiemotoring.com.au',e:'editorial@aussiemotoring.com.au',t:'Consumer',r:'AU',c:'Auto',paid:false,s:3,desc:'Motoring news, reviews and community for Australians'},
+  {n:'EV Central',u:'evcentral.com.au',e:'editorial@evcentral.com.au',t:'Consumer',r:'AU',c:'Auto',paid:false,s:4,desc:'Electric vehicle news and reviews for Australian buyers'},
+  {n:'The Driven AU',u:'thedriven.io',e:'editorial@thedriven.io',t:'Consumer',r:'AU',c:'Auto',paid:false,s:4,desc:'EV, clean transport and renewables in Australia'},
+  {n:'Motoring.com.au',u:'motoring.com.au',e:'editorial@motoring.com.au',t:'Consumer',r:'AU',c:'Auto',paid:false,s:4,desc:'Australian motoring news, reviews and advice'},
+  {n:'Automotive Management',u:'am-online.com',e:'editorial@am-online.com',t:'Trade',r:'UK',c:'Auto',paid:false,s:5,desc:'UK automotive retail and dealership management trade press'},
+  {n:'Autocar',u:'autocar.co.uk',e:'editorial@autocar.co.uk',t:'Consumer',r:'UK',c:'Auto',paid:false,s:5,desc:'UK oldest and most authoritative car magazine'},
+  {n:'Car Magazine UK',u:'carmagazine.co.uk',e:'editorial@carmagazine.co.uk',t:'Consumer',r:'UK',c:'Auto',paid:false,s:5,desc:'UK premier performance and new car consumer magazine'},
+  {n:'What Car?',u:'whatcar.com',e:'editorial@whatcar.com',t:'Consumer',r:'UK',c:'Auto',paid:false,s:4,desc:'UK car buying advice and reviews'},
+  {n:'Auto Express',u:'autoexpress.co.uk',e:'editorial@autoexpress.co.uk',t:'Consumer',r:'UK',c:'Auto',paid:false,s:5,desc:'UK largest weekly car news and reviews publication'},
+  {n:'Fleet News UK',u:'fleetnews.co.uk',e:'editorial@fleetnews.co.uk',t:'Trade',r:'UK',c:'Auto',paid:false,s:4,desc:'UK fleet industry news, management and policy'},
+  {n:'Aftermarket Magazine UK',u:'aftermarketonline.net',e:'editorial@aftermarketonline.net',t:'Trade',r:'UK',c:'Auto',paid:false,s:4,desc:'UK automotive aftermarket and parts trade publication'},
+  {n:'Car Dealer Magazine UK',u:'cardealermagazine.co.uk',e:'editorial@cardealermagazine.co.uk',t:'Trade',r:'UK',c:'Auto',paid:false,s:4,desc:'UK automotive retail news for dealers'},
+  {n:'Motor Trader UK',u:'motortrader.com',e:'editorial@motortrader.com',t:'Trade',r:'UK',c:'Auto',paid:false,s:4,desc:'UK used car and motor trade industry publication'},
+  {n:'MotorTrend',u:'motortrend.com',e:'editorial@motortrend.com',t:'Consumer',r:'US',c:'Auto',paid:false,s:5,desc:'US premier automotive media brand and awards'},
+  {n:'Car and Driver',u:'caranddriver.com',e:'editorial@caranddriver.com',t:'Consumer',r:'US',c:'Auto',paid:false,s:5,desc:'US leading new car reviews and comparison tests'},
+  {n:'Road & Track',u:'roadandtrack.com',e:'editorial@roadandtrack.com',t:'Consumer',r:'US',c:'Auto',paid:false,s:5,desc:'US automotive culture, performance and enthusiast magazine'},
+  {n:'Automotive News',u:'autonews.com',e:'editorial@autonews.com',t:'Trade',r:'US',c:'Auto',paid:false,s:5,desc:'US automotive industry trade publication for dealers and OEMs'},
+  {n:'Ward's Auto',u:'wardsauto.com',e:'editorial@wardsauto.com',t:'Trade',r:'US',c:'Auto',paid:false,s:5,desc:'US automotive data, industry analysis and trade news'},
+  {n:'Aftermarket Business World',u:'aftermarketbusiness.com',e:'editorial@aftermarketbusiness.com',t:'Trade',r:'US',c:'Auto',paid:false,s:4,desc:'US automotive aftermarket parts and accessories trade press'},
+  {n:'SEMA News',u:'sema.org/sema-news',e:'media@sema.org',t:'Trade',r:'US',c:'Auto',paid:false,s:5,desc:'Specialty Equipment Market Association — global aftermarket bible'},
+  {n:'Performance Racing Industry',u:'performanceracing.com',e:'editorial@performanceracing.com',t:'Trade',r:'US',c:'Auto',paid:false,s:4,desc:'US motorsport and performance parts trade publication'},
+  {n:'Hot Rod Magazine',u:'hotrod.com',e:'editorial@hotrod.com',t:'Consumer',r:'US',c:'Auto',paid:false,s:4,desc:'US performance, custom and muscle car culture'},
+  {n:'Popular Mechanics',u:'popularmechanics.com',e:'tips@popularmechanics.com',t:'Consumer',r:'US',c:'Auto',paid:false,s:4,desc:'US technology, automotive and DIY publication'},
+  {n:'Hagerty',u:'hagerty.com/media',e:'editorial@hagerty.com',t:'Consumer',r:'US',c:'Auto',paid:false,s:4,desc:'Classic and collector car culture and insurance media'},
+  {n:'Digital Trends Autos',u:'digitaltrends.com/cars',e:'tips@digitaltrends.com',t:'Consumer',r:'US',c:'Auto',paid:false,s:4,desc:'Automotive technology, EV and connected car coverage'},
+  {n:'Electrek',u:'electrek.co',e:'tips@electrek.co',t:'Consumer',r:'AU,UK,US',c:'Auto',paid:false,s:5,desc:'Electric vehicle and clean energy news globally'},
+  {n:'InsideEVs',u:'insideevs.com',e:'editorial@insideevs.com',t:'Consumer',r:'AU,UK,US',c:'Auto',paid:false,s:4,desc:'Electric vehicle news, reviews and data globally'},
+  {n:'Autoblog',u:'autoblog.com',e:'tips@autoblog.com',t:'Consumer',r:'US',c:'Auto',paid:false,s:4,desc:'US automotive news, reviews and buyer guides'},
+  {n:'The Autopian',u:'theautopian.com',e:'tips@theautopian.com',t:'Consumer',r:'US',c:'Auto',paid:false,s:4,desc:'Independent automotive journalism and enthusiast culture'},
 ];
 
 // ── Industry keyword map for fast local matching ──
@@ -4771,8 +4953,149 @@ var INDUSTRY_OUTLET_MAP = {
   'real estate':   ['Business','Finance','AU'],
   'education':     ['Business','AU','Sustainability'],
   'fitness':       ['Health','Lifestyle','Consumer'],
-  'ecommerce':     ['Fashion','Tech','Retail','Startup']
+  'ecommerce':     ['Fashion','Tech','Retail','Startup'],
+  'automotive':    ['Auto'],
+  'auto':          ['Auto'],
+  'car':           ['Auto'],
+  'cars':          ['Auto'],
+  'aftermarket':   ['Auto'],
+  'car care':      ['Auto'],
+  'motorsport':    ['Auto'],
+  'motoring':      ['Auto'],
+  'vehicle':       ['Auto'],
+  'ev':            ['Auto','Tech'],
+  'electric vehicle': ['Auto','Tech'],
+  'parts':         ['Auto'],
+  'accessories':   ['Auto']
 };
+
+
+// ============================================================
+// LIVE OUTLET & PODCAST SEARCH
+// ============================================================
+
+function liveSearchOutlets(query) {
+  var all = state.foundPlatforms || [];
+  if (!query || query.trim() === '') {
+    renderFoundPlatforms(all);
+    var ct = document.getElementById('plat-panel-count');
+    if (ct) ct.textContent = all.length + ' outlet' + (all.length !== 1 ? 's' : '');
+    return;
+  }
+  var q = query.toLowerCase();
+  var filtered = all.filter(function(p) {
+    return (p.n||'').toLowerCase().indexOf(q) > -1 ||
+           (p.desc||'').toLowerCase().indexOf(q) > -1 ||
+           (p.t||'').toLowerCase().indexOf(q) > -1 ||
+           (p.u||'').toLowerCase().indexOf(q) > -1;
+  });
+  renderFoundPlatforms(filtered);
+  var ct = document.getElementById('plat-panel-count');
+  if (ct) ct.textContent = filtered.length + ' match' + (filtered.length !== 1 ? 'es' : '');
+}
+
+function liveSearchPodcasts(query) {
+  var all = state.foundPlatforms || [];
+  if (!query || query.trim() === '') {
+    renderFoundPodcasts(all);
+    return;
+  }
+  var q = query.toLowerCase();
+  var filtered = all.filter(function(p) {
+    return (p.n||'').toLowerCase().indexOf(q) > -1 ||
+           (p.desc||'').toLowerCase().indexOf(q) > -1 ||
+           (p.host||'').toLowerCase().indexOf(q) > -1 ||
+           (p.t||'').toLowerCase().indexOf(q) > -1;
+  });
+  renderFoundPodcasts(filtered);
+}
+
+function refreshOutletSearch() {
+  // Clear cache for this key and re-run AI search
+  var t = state.targeting;
+  var primary = t.primary || 'General Press';
+  var path = state.path || 'A';
+  var countries = t.countries && t.countries.length > 0 ? t.countries : ['Australia'];
+  var cacheKey = getOutletCacheKey(primary + (t.secondary ? '+' + t.secondary : ''), path, countries);
+  // Clear from session and local cache
+  delete outletSessionCache[cacheKey];
+  var stored = loadOutletCache();
+  delete stored[cacheKey];
+  try { localStorage.setItem('outlet_cache_v2', JSON.stringify(stored)); } catch(e) {}
+  // Clear search box
+  var sb = document.getElementById('plat-search-box');
+  if (sb) sb.value = '';
+  // Re-run
+  searchIndustryPlatforms();
+}
+
+function searchCustomOutlet() {
+  var input = document.getElementById('custom-outlet-search');
+  if (!input || !input.value.trim()) return;
+  var query = input.value.trim();
+  var t = state.targeting;
+  var primary = t.primary || 'General';
+  var countries = t.countries && t.countries.length > 0 ? t.countries.join(', ') : 'Australia';
+
+  // Show loading state
+  var btn = input.nextElementSibling;
+  if (btn) { btn.textContent = 'Searching...'; btn.disabled = true; }
+  var banner = document.getElementById('plat-search-banner');
+  var statusEl = document.getElementById('plat-search-status');
+  if (banner) banner.style.display = 'flex';
+  if (statusEl) statusEl.textContent = 'Searching for "' + query + '" outlets...';
+
+  var prompt = 'You are a specialist PR researcher. The user is searching for media outlets, publications, or PR channels matching: "' + query + '"' +
+    ' in the ' + primary + ' sector in ' + countries + '.\n\n' +
+    'Find up to 30 real, currently active outlets that match this search. Be broad — include any relevant outlet type: trade press, consumer media, digital publications, newsletters, industry blogs, PR wires, podcasts-with-press-contact, YouTube channels with press emails, and any specialist niche outlet.\n\n' +
+    'Return ONLY a valid JSON array:\n' +
+    '[{"n":"Outlet Name","u":"domain.com","e":"editorial@domain.com","t":"Publication Type","r":"AU","paid":false,"s":5,"desc":"One sentence about what this outlet covers"}]';
+
+  callAPIWithSearch(prompt, function(text) {
+    if (banner) banner.style.display = 'none';
+    if (btn) { btn.textContent = 'Find outlets'; btn.disabled = false; }
+    try {
+      var clean = text.trim().replace(/^```json\s*/i,'').replace(/^```\s*/i,'').replace(/```\s*$/,'').trim();
+      var start = clean.indexOf('['); var end = clean.lastIndexOf(']');
+      if (start === -1 || end === -1) throw new Error('No JSON');
+      var found = JSON.parse(clean.substring(start, end + 1));
+      found = found.filter(function(p){ return p && p.n && p.u; });
+      if (!found.length) throw new Error('Empty');
+      found.forEach(function(p){
+        p.s = Math.min(5, Math.max(1, parseInt(p.s) || 3));
+        p.paid = (p.paid === true || p.paid === 'true');
+        p.c = p.c || primary;
+      });
+      // Merge with existing results, dedup by domain
+      var existing = state.foundPlatforms || [];
+      var existingUrls = existing.map(function(p){ return (p.u||'').toLowerCase(); });
+      var newOnes = found.filter(function(p){ return existingUrls.indexOf((p.u||'').toLowerCase()) === -1; });
+      var merged = found.concat(existing.filter(function(p){ return !found.some(function(f){ return f.u === p.u; }); }));
+      merged.sort(function(a,b){ return b.s - a.s; });
+      state.foundPlatforms = merged;
+      renderFoundPlatforms(merged);
+      var done = document.getElementById('plat-search-done');
+      if (done) {
+        done.textContent = '✓ Found ' + found.length + ' outlets for "' + query + '" — merged with ' + existing.length + ' existing results (' + merged.length + ' total)';
+        done.style.display = 'block';
+      }
+      var ct = document.getElementById('plat-panel-count');
+      if (ct) ct.textContent = merged.length + ' outlets';
+      // Clear input
+      if (input) input.value = '';
+    } catch(e) {
+      if (btn) { btn.textContent = 'Find outlets'; btn.disabled = false; }
+      if (banner) banner.style.display = 'none';
+      var done = document.getElementById('plat-search-done');
+      if (done) { done.textContent = 'Search failed — try a different keyword'; done.style.display = 'block'; }
+    }
+  }, function(err) {
+    if (btn) { btn.textContent = 'Find outlets'; btn.disabled = false; }
+    if (banner) banner.style.display = 'none';
+  }, function(msg) {
+    if (statusEl) statusEl.textContent = msg;
+  });
+}
 
 // ---- NAVIGATION ----
 function showScreen(id) {
@@ -5226,8 +5549,33 @@ function searchPodcasts() {
   var pitchType = pp.type || 'guest';
   var audText = podAudPref === 'niche' ? 'niche highly-engaged audiences' : podAudPref === 'large' ? 'large audiences 50k+ listeners' : 'any audience size';
 
-  // Smaller targeted prompt -- 20 results keeps response within token limits
-  var prompt = 'List 20 real, currently active podcasts specifically about "' + primary + '"' + (secondary ? ' or "' + secondary + '"' : '') + ' that are popular in ' + countries + ' and accept ' + pitchType + ' pitches.\n\nCriteria: ' + audText + '. Only include podcasts you know are real and active.\n\nRespond ONLY with a JSON array. No text before or after. Start your response with [ immediately:\n[{"n":"Podcast Name","u":"podcasturl.com","e":"contact@email.com","host":"Host Name","platform":"Spotify, Apple Podcasts","t":"niche","r":"' + (countries.split(',')[0].trim().substring(0,2).toUpperCase() || 'Global') + '","s":4,"desc":"One sentence why relevant for ' + primary + ' guests","accepts_guests":true}]';
+  // Build prompt — automotive gets deep specialist treatment
+  var primaryLowerPod = primary.toLowerCase();
+  var isAutoPod = ['automotive','aftermarket','car care','motorsport','new cars','detailing','tuning','4wd','fleet','classic car','performance','ev','electric vehicle','motoring','vehicle','parts','accessories','dealer'].some(function(t){ return primaryLowerPod.indexOf(t) > -1; });
+
+  var prompt;
+  if (isAutoPod) {
+    var autoFocus = secondary || primary;
+    prompt = 'You are a specialist automotive media researcher. List 40 real, currently active podcasts covering automotive topics relevant to: ' + autoFocus + '\n\n' +
+      'You MUST search across ALL of these automotive podcast categories:\n' +
+      '1. NEW CAR REVIEWS & MOTORING NEWS: general motoring, new car reveals, industry news\n' +
+      '2. AFTERMARKET & PARTS: modifications, accessories, parts industry, SEMA culture\n' +
+      '3. CAR CARE & DETAILING: detailing techniques, ceramic coatings, paint protection, car cleaning\n' +
+      '4. PERFORMANCE & MOTORSPORT: track cars, drag racing, circuit racing, rally, time attack\n' +
+      '5. ELECTRIC VEHICLES: EV reviews, charging, EV industry, clean transport\n' +
+      '6. 4WD & OVERLANDING: off-road adventures, 4x4 builds, overlanding, camping\n' +
+      '7. CLASSIC CARS & RESTORATION: vintage vehicles, restoration projects, concours, auctions\n' +
+      '8. AUTOMOTIVE BUSINESS & TRADE: dealership management, aftermarket business, industry news\n' +
+      '9. CAR CULTURE & ENTHUSIAST: general car enthusiasm, car meets, automotive lifestyle\n' +
+      '10. DIY & MECHANICS: home mechanics, workshop skills, maintenance tips\n\n' +
+      'Countries: ' + countries + '. Audience preference: ' + audText + '. Pitch type sought: ' + pitchType + '.\n\n' +
+      'For each podcast include the actual contact/submission email if known. If host name is known, include it.\n' +
+      'Include both interview-format shows AND solo-host shows that accept pitches.\n\n' +
+      'Respond ONLY with a JSON array. Start immediately with [:\n' +
+      '[{"n":"Podcast Name","u":"podcasturl.com","e":"contact@email.com","host":"Host Name","platform":"Spotify, Apple Podcasts","t":"niche","r":"AU","s":4,"desc":"What automotive sub-niche this covers and why relevant","accepts_guests":true}]';
+  } else {
+    prompt = 'List 20 real, currently active podcasts specifically about "' + primary + '"' + (secondary ? ' or "' + secondary + '"' : '') + ' that are popular in ' + countries + ' and accept ' + pitchType + ' pitches.\n\nCriteria: ' + audText + '. Only include podcasts you know are real and active.\n\nRespond ONLY with a JSON array. No text before or after. Start your response with [ immediately:\n[{"n":"Podcast Name","u":"podcasturl.com","e":"contact@email.com","host":"Host Name","platform":"Spotify, Apple Podcasts","t":"niche","r":"' + (countries.split(',')[0].trim().substring(0,2).toUpperCase() || 'Global') + '","s":4,"desc":"One sentence why relevant for ' + primary + ' guests","accepts_guests":true}]';
+  }
 
   callAPIHighTokens(prompt, function(text) {
     document.getElementById('plat-search-banner').style.display = 'none';
@@ -5267,6 +5615,14 @@ function searchPodcasts() {
       d.style.display = 'block';
       document.getElementById('plat-filter-row').style.display = 'block';
       document.getElementById('plat-filters').innerHTML = '<div class="chip on" onclick="filterPodcasts(\'all\',this)">All</div><div class="chip" onclick="filterPodcasts(\'top\',this)">Top rated</div><div class="chip" onclick="filterPodcasts(\'guests\',this)">Accepts guests</div>';
+      // Add search box to podcast panel
+      var searchRow = document.querySelector('#plat-panel .outlet-panel-filters');
+      if (searchRow && !document.getElementById('pod-search-box')) {
+        var searchDiv = document.createElement('div');
+        searchDiv.style.cssText = 'width:100%;display:flex;align-items:center;gap:6px;margin-bottom:4px;order:-1;';
+        searchDiv.innerHTML = '<div style="position:relative;flex:1;"><svg style="position:absolute;left:9px;top:50%;transform:translateY(-50%);opacity:0.4;" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input type="text" id="pod-search-box" placeholder="Search by podcast name or topic..." oninput="liveSearchPodcasts(this.value)" style="width:100%;padding:7px 10px 7px 28px;border:1.5px solid var(--border);border-radius:var(--radius);font-size:13px;font-family:\"DM Sans\",sans-serif;outline:none;" onfocus="this.style.borderColor=\'var(--gold)\'" onblur="this.style.borderColor=\'var(--border)\'"/></div><button class="btn btn-outline btn-sm" onclick="searchPodcasts()" style="flex-shrink:0;">Search again</button>';
+        searchRow.insertBefore(searchDiv, searchRow.firstChild);
+      }
       document.getElementById('s3-sub').textContent = found.length + ' podcasts matched to your niche. Click one to select it.';
     } catch(e) {
       // Show the raw response so we can debug
@@ -5432,6 +5788,10 @@ function getLocalOutletResults(primary, countries) {
       matchTags = matchTags.concat(INDUSTRY_OUTLET_MAP[kw]);
     }
   });
+  // Automotive gets dedicated Auto category surfaced
+  var autoTerms = ['automotive','auto ','aftermarket','car care','motorsport','new cars','detailing','tuning','4wd','fleet','classic car','performance','dealer','ev','electric vehicle','motoring','vehicle'];
+  var isAuto = autoTerms.some(function(t){ return primaryLower.indexOf(t) > -1; });
+  if (isAuto) { matchTags.push('Auto'); }
   // Always include general outlets regardless
   matchTags = matchTags.concat(['Wire','AU','Business','Content','Startup','News']);
   matchTags = matchTags.filter(function(v,i,a){ return a.indexOf(v) === i; });
@@ -5490,17 +5850,47 @@ function searchIndustryPlatforms() {
   if (statusEl) statusEl.textContent = 'Finding the best ' + primary + ' outlets in ' + countryStr + '...';
 
   var isStoryPitch = state.path === 'B';
-  var prompt = isStoryPitch
-    ? 'You are a specialist PR researcher. Generate up to 40 real, currently active editorial publications, trade magazines, and news sites that would cover a story pitch in the ' + primary + ' sector' +
+  var primaryLower = primary.toLowerCase();
+  var isAuto = ['automotive','aftermarket','car care','motorsport','new cars','detailing','tuning','4wd','fleet','classic car','performance','ev','electric vehicle','motoring','vehicle','parts','accessories','dealer'].some(function(t){ return primaryLower.indexOf(t) > -1; });
+
+  var prompt;
+  if (isAuto) {
+    // ── AUTOMOTIVE DEEP SEARCH — highly specific ──
+    var autoSubFocus = secondary || primary;
+    prompt = 'You are a specialist automotive PR researcher with deep knowledge of global motoring media. ' +
+      'Generate up to 60 real, currently active automotive media outlets, trade publications, consumer magazines, digital publications, and PR channels specifically covering: ' + autoSubFocus +
+      (secondary ? ' within the broader ' + primary + ' sector' : '') +
+      ' in ' + countryStr + '.\n\n' +
+      'You MUST include a comprehensive mix across ALL of these categories where relevant to the sub-focus:\n' +
+      '1. CONSUMER AUTOMOTIVE MEDIA: car review sites, motoring magazines, new car guides, road test publications\n' +
+      '2. AFTERMARKET & PARTS TRADE PRESS: parts suppliers, accessories retailers, workshop trade publications\n' +
+      '3. CAR CARE & DETAILING: detailing products, polishes, coatings, car wash, valeting trade and consumer press\n' +
+      '4. MOTORSPORT & PERFORMANCE: racing, track days, performance modifications, tuning publications\n' +
+      '5. ELECTRIC VEHICLE MEDIA: EV news sites, charging infrastructure, clean transport publications\n' +
+      '6. 4WD, OFFROAD & ADVENTURE: four-wheel drive, overlanding, camping with vehicles\n' +
+      '7. CLASSIC & COLLECTOR CARS: restoration, concours, auction, heritage vehicle publications\n' +
+      '8. AUTOMOTIVE RETAIL & DEALERSHIPS: dealer news, remarketing, automotive retail trade press\n' +
+      '9. FLEET & COMMERCIAL: fleet management, commercial vehicles, logistics, work utes\n' +
+      '10. DIGITAL & SOCIAL AUTOMOTIVE: YouTube channels with press inquiry emails, automotive blogs, enthusiast communities\n\n' +
+      'For AUSTRALIA specifically include: state-based motoring clubs (NRMA, RACV, RAA, RACQ, RAC), Motoring journalists association contacts, regional automotive media\n' +
+      'For UK specifically include: regional motoring press, dealer group publications, Fleet News, AM Online, Motor Trader\n' +
+      'For US specifically include: SEMA-affiliated publications, regional auto press, powersports media, aftermarket trade titles\n\n' +
+      'Type: ' + prefText + '. Be exhaustive — this user needs maximum reach in the automotive sector.\n\n' +
+      'Return ONLY a valid JSON array. No text before or after the array:\n' +
+      '[{"n":"Publication Name","u":"domain.com","e":"editorial@domain.com","t":"Trade/Consumer/Digital","r":"AU","paid":false,"s":5,"desc":"Specific description of what automotive content they cover and why relevant"}]';
+  } else if (isStoryPitch) {
+    prompt = 'You are a specialist PR researcher. Generate up to 40 real, currently active editorial publications, trade magazines, and news sites that would cover a story pitch in the ' + primary + ' sector' +
       (secondary ? ' with ' + secondary + ' crossover' : '') + ' in ' + countryStr + '.' +
       ' Focus on: editorial publications with named journalists, trade magazines, industry news sites, and consumer media that run feature stories. Exclude basic PR wires.' +
       ' Return ONLY a valid JSON array starting with [' +
-      '\n[{"n":"Publication Name","u":"domain.com","e":"editorial@domain.com","t":"Trade Publication","r":"AU","paid":false,"s":5,"desc":"One sentence about editorial focus and why relevant for a ' + primary + ' story pitch"}]'
-    : 'You are a specialist PR researcher. Generate up to 40 real, currently active media outlets, trade publications, and PR channels for the ' + primary + ' sector' +
+      '\n[{"n":"Publication Name","u":"domain.com","e":"editorial@domain.com","t":"Trade Publication","r":"AU","paid":false,"s":5,"desc":"One sentence about editorial focus and why relevant for a ' + primary + ' story pitch"}]';
+  } else {
+    prompt = 'You are a specialist PR researcher. Generate up to 40 real, currently active media outlets, trade publications, and PR channels for the ' + primary + ' sector' +
       (secondary ? ' with ' + secondary + ' crossover' : '') + ' in ' + countryStr + '.' +
       ' Include a mix of trade publications, industry news sites, and PR distribution channels. Type: ' + prefText + '.' +
       ' Return ONLY a valid JSON array starting with [' +
       '\n[{"n":"Outlet Name","u":"domain.com","e":"editorial@domain.com","t":"Trade Publication","r":"AU","paid":false,"s":5,"desc":"One sentence about why relevant for ' + primary + '"}]';
+  }
 
   callAPIWithSearch(prompt, function(text) {
     if (banner) banner.style.display = 'none';
@@ -7877,6 +8267,90 @@ function resetAll() {
 
 // ---- INIT ----
 
+
+
+// ============================================================
+// ACCOUNT SETUP WIZARD
+// ============================================================
+var currentWizardStep = 1;
+var WIZARD_TOTAL = 4;
+var WIZARD_PROGRESS = {1:25, 2:50, 3:75, 4:100};
+
+function wizardGoTo(step) {
+  // Hide all panes
+  for (var i = 1; i <= WIZARD_TOTAL; i++) {
+    var pane = document.getElementById('wpane-' + i);
+    var stepEl = document.getElementById('wstep-' + i);
+    var circ = document.getElementById('wcirc-' + i);
+    if (pane) pane.classList.remove('active');
+    if (stepEl) {
+      stepEl.classList.remove('active','done');
+      if (i < step) stepEl.classList.add('done');
+      if (i === step) stepEl.classList.add('active');
+    }
+    if (circ && i < step) {
+      circ.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+    } else if (circ) {
+      circ.textContent = i;
+    }
+    // Update connector lines
+    var line = document.getElementById('wline-' + i);
+    if (line) line.classList.toggle('done', i < step);
+  }
+  // Show current pane
+  var active = document.getElementById('wpane-' + step);
+  if (active) active.classList.add('active');
+  // Update progress bar
+  var fill = document.getElementById('wizard-progress-fill');
+  if (fill) fill.style.width = WIZARD_PROGRESS[step] + '%';
+  currentWizardStep = step;
+  // Scroll to top of wizard header
+  var header = document.querySelector('.wizard-header');
+  if (header) header.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function wizardNext(step) {
+  // Validate current step
+  if (step === 1) {
+    var fname = document.getElementById('acct-fname').value.trim();
+    var email = document.getElementById('acct-email').value.trim();
+    if (!fname) { showWizardError(1, 'Please enter your first name.'); return; }
+    if (!email) { showWizardError(1, 'Please enter your contact email.'); return; }
+    hideWizardError(1);
+  }
+  if (step === 2) {
+    var co = document.getElementById('acct-co').value.trim();
+    var industry = document.getElementById('acct-industry').value.trim();
+    if (!industry) { showWizardError(2, 'Please select your industry.'); return; }
+    if (!co) { showWizardError(2, 'Please enter your company name.'); return; }
+    hideWizardError(2);
+  }
+  wizardGoTo(step + 1);
+}
+
+function wizardBack(step) {
+  wizardGoTo(step - 1);
+}
+
+function showWizardError(step, msg) {
+  var errId = 'wizard-err-' + step;
+  var el = document.getElementById(errId);
+  if (!el) {
+    el = document.createElement('div');
+    el.id = errId;
+    el.className = 'wizard-error';
+    var nav = document.querySelector('#wpane-' + step + ' .wizard-nav');
+    if (nav) nav.parentNode.insertBefore(el, nav);
+  }
+  el.textContent = msg;
+  el.style.display = 'block';
+  setTimeout(function(){ el.style.display = 'none'; }, 4000);
+}
+
+function hideWizardError(step) {
+  var el = document.getElementById('wizard-err-' + step);
+  if (el) el.style.display = 'none';
+}
 
 // ============================================================
 // ACCOUNT INDUSTRY SELECTOR
