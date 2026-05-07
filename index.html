@@ -8813,27 +8813,65 @@ function addSignOutButton() {
 // ── START: Use Clerk if available, else fallback ──
 document.addEventListener('DOMContentLoaded', function() {
   console.log('[Auth] DOMContentLoaded — waiting for Clerk...');
+  var appLaunched = false;
+
+  // HARD FAILSAFE — if app hasn't launched within 8s for ANY reason, force it
+  setTimeout(function() {
+    if (!appLaunched) {
+      console.warn('[Auth] Hard failsafe triggered — forcing initApp()');
+      appLaunched = true;
+      var authEl = document.getElementById('s-auth');
+      if (authEl) authEl.classList.remove('active');
+      initApp();
+    }
+  }, 8000);
+
   var pollStart = Date.now();
   var checkClerk = setInterval(function() {
     if (window.Clerk) {
       clearInterval(checkClerk);
       console.log('[Auth] Clerk detected after ' + (Date.now() - pollStart) + 'ms');
+      // Wrap initClerk in its own timeout so it can never hang forever
+      var clerkDone = false;
+      var clerkTimer = setTimeout(function() {
+        if (!clerkDone && !appLaunched) {
+          console.warn('[Auth] initClerk timed out — forcing initApp()');
+          clerkDone = true;
+          appLaunched = true;
+          var authEl = document.getElementById('s-auth');
+          if (authEl) authEl.classList.remove('active');
+          initApp();
+        }
+      }, 6000);
       initClerk().then(function() {
-        wrapWithSupabase();
-        addSignOutButton();
+        clerkDone = true;
+        appLaunched = true;
+        clearTimeout(clerkTimer);
+        try { wrapWithSupabase(); } catch(e) {}
+        try { addSignOutButton(); } catch(e) {}
+      }).catch(function(e) {
+        clerkDone = true;
+        clearTimeout(clerkTimer);
+        console.error('[Auth] initClerk promise rejected:', e);
+        if (!appLaunched) {
+          appLaunched = true;
+          var authEl = document.getElementById('s-auth');
+          if (authEl) authEl.classList.remove('active');
+          initApp();
+        }
       });
     }
   }, 100);
-  // Fallback after 10s if Clerk doesn't load
+
+  // If Clerk JS never loads at all after 10s
   setTimeout(function() {
-    if (!clerkLoaded) {
+    if (!clerkLoaded && !appLaunched) {
       clearInterval(checkClerk);
-      console.error('[Auth] Clerk failed to load after 10s — check network/CSP. Running in localStorage fallback mode.');
-      var loadingEl = document.getElementById('auth-loading');
-      if (loadingEl) {
-        loadingEl.innerHTML = '<div style="color:#c1121f;font-size:13px;margin-bottom:12px;">⚠️ Sign-in service failed to load.</div><button class="btn btn-outline btn-sm" onclick="window.location.reload()">Retry</button><br><br><button class="btn btn-primary btn-sm" onclick="skipAuthFallback()">Continue without sign-in</button>';
-        loadingEl.style.display = 'block';
-      }
+      appLaunched = true;
+      console.error('[Auth] Clerk JS never loaded — running in localStorage mode');
+      var authEl = document.getElementById('s-auth');
+      if (authEl) authEl.classList.remove('active');
+      initApp();
     }
   }, 10000);
 });
