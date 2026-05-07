@@ -88,7 +88,7 @@ textarea{resize:vertical;line-height:1.6;}
 .reveal-btn:hover{opacity:0.85;}
 .reveal-btn.used{background:var(--gold);color:var(--white);}
 .token-confirm-modal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.55);z-index:300;align-items:center;justify-content:center;}
-.token-confirm-box{background:var(--white);border-radius:16px;padding:2rem;max-width:400px;width:90%;margin:auto;position:relative;top:50%;transform:translateY(-50%);text-align:center;}
+.token-confirm-box{background:var(--white);border-radius:16px;padding:2rem;max-width:400px;width:90%;text-align:center;box-shadow:0 8px 40px rgba(0,0,0,0.18);}
 
 .plat-item{display:flex;align-items:center;gap:12px;padding:11px 15px;border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.1s;}
 .send-step{display:flex;align-items:center;gap:12px;padding:11px 16px;border-bottom:1px solid var(--border);transition:background 0.15s;}
@@ -216,8 +216,8 @@ textarea{resize:vertical;line-height:1.6;}
 .accord-field:last-child{border-bottom:none;}
 .accord-field-label{font-size:11px;color:var(--muted);width:90px;flex-shrink:0;padding-top:1px;}
 .accord-field-value{font-size:13px;color:var(--black);flex:1;line-height:1.5;}
-.accord-field-value.missing{color:#c1121f;font-style:italic;font-size:12px;}align-items:center;gap:4px;font-size:10px;font-weight:600;color:var(--gold);cursor:pointer;letter-spacing:0.3px;margin-top:4px;padding:2px 0;border:none;background:none;text-decoration:none;transition:opacity 0.15s;font-family:inherit;}
-.wfm-link:hover{opacity:0.7;}
+.accord-field-value.missing{color:#c1121f;font-style:italic;font-size:12px;}align-items:center;gap:4px;font-size:11px;font-weight:600;color:var(--gold);cursor:pointer;letter-spacing:0.3px;padding:3px 8px;border:1.5px solid var(--gold);border-radius:20px;background:var(--gold-light);text-decoration:none;transition:all 0.15s;font-family:inherit;}
+.wfm-link:hover{background:var(--gold);color:var(--white);border-color:var(--gold);opacity:1;}
 .wfm-wrap{display:flex;flex-direction:column;}
 .wfm-spinner-row{display:none;align-items:center;gap:5px;font-size:10px;color:var(--muted);margin-top:3px;}
 .wfm-spin{width:9px;height:9px;border:1.5px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin .6s linear infinite;display:inline-block;flex-shrink:0;}
@@ -248,9 +248,16 @@ textarea{resize:vertical;line-height:1.6;}
 .camp-pr-badge{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:600;padding:3px 8px;border-radius:4px;text-transform:uppercase;letter-spacing:0.5px;}
 .camp-pr-badge.ready{background:#d8f3dc;color:#2d6a4f;}
 .camp-pr-badge.missing{background:var(--gold-light);color:var(--gold);}
-.camp-branch-icons{display:flex;gap:6px;align-items:center;}
-.camp-branch-pip{width:26px;height:26px;border-radius:6px;background:var(--off);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;title:'';}
-.camp-branch-pip.used{background:var(--gold-light);border-color:var(--gold);}
+.camp-branch-icons{display:flex;gap:6px;align-items:center;position:relative;}
+.camp-branch-pip{width:34px;height:34px;border-radius:8px;background:#f0f0f0;border:1.5px solid #e0e0e0;display:flex;align-items:center;justify-content:center;cursor:default;position:relative;transition:all 0.15s;}
+.camp-branch-pip svg{stroke:#bbb;transition:stroke 0.15s;}
+.camp-branch-pip.used{background:#e8f5e9;border-color:#81c784;}
+.camp-branch-pip.used svg{stroke:#2d6a4f;}
+.camp-branch-pip:hover .pip-tooltip{display:block;}
+.pip-tooltip{display:none;position:absolute;bottom:calc(100% + 7px);left:50%;transform:translateX(-50%);background:rgba(10,10,10,0.88);color:#fff;font-size:11px;font-weight:500;white-space:nowrap;padding:5px 9px;border-radius:6px;pointer-events:none;z-index:100;line-height:1.4;text-align:center;}
+.pip-tooltip::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:rgba(10,10,10,0.88);}
+.pip-tooltip .pip-count{font-size:10px;color:#a8d5a2;margin-top:1px;}
+.pip-tooltip .pip-count.none{color:#999;}
 /* Phase 2 -- Tabs */
 .camp-tabs{display:flex;gap:0;border-bottom:2px solid var(--border);margin-bottom:1.5rem;}
 .camp-tab{padding:8px 18px;font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;transition:all 0.15s;}
@@ -279,6 +286,10 @@ textarea{resize:vertical;line-height:1.6;}
 .onboard-num.done{background:var(--success);}
 .kp-card{border:1.5px solid var(--border);border-radius:10px;padding:14px;background:var(--white);margin-bottom:8px;}
 .kp-label{font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--gold);margin-bottom:6px;}
+
+/* PR supporting images drag & drop */
+.pr-drop-active{border-color:var(--gold)!important;background:var(--gold-light)!important;}
+.pr-drop-active svg{opacity:1!important;}
 @media(max-width:600px){.camp-paths{grid-template-columns:1fr;}.path-cards,.g2{grid-template-columns:1fr;}.page-title{font-size:28px;}.wrap{padding:2rem 1.25rem 5rem;}}
 /* ── ACCOUNT SETUP WIZARD ── */
 #s-account-setup{background:var(--off);min-height:100vh;display:flex;flex-direction:column;}
@@ -773,7 +784,7 @@ textarea{resize:vertical;line-height:1.6;}
 
   <!-- Follow-up reminder modal -->
   <div id="followup-modal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:300;align-items:center;justify-content:center;">
-    <div style="background:var(--white);border-radius:16px;padding:1.75rem;max-width:440px;width:90%;margin:auto;position:relative;top:50%;transform:translateY(-50%);">
+    <div style="background:var(--white);border-radius:16px;padding:1.75rem;max-width:440px;width:90%;box-shadow:0 8px 40px rgba(0,0,0,0.18);">
       <div style="font-size:16px;font-weight:500;margin-bottom:4px;">Follow up with <span id="fu-outlet-name"></span></div>
       <div style="font-size:12px;color:var(--muted);margin-bottom:1.25rem;" id="fu-original-date"></div>
       <label>Update status</label>
@@ -1151,9 +1162,30 @@ textarea{resize:vertical;line-height:1.6;}
       <div id="hub-pr-preview" class="pr-box" style="display:none;max-height:300px;overflow-y:auto;margin-bottom:10px;"></div>
       <div id="accord-pr-empty" style="font-size:13px;color:var(--muted);padding:8px 0;">Generate a press release to use across all outreach paths. Once approved it pre-fills automatically.</div>
       <!-- Supporting images for hub -->
-      <div id="hub-pr-images-wrap" style="display:none;margin-top:12px;border-top:1px solid var(--border);padding-top:12px;">
-        <div style="font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:4px;">Supporting images <span style="font-weight:400;text-transform:none;letter-spacing:0;">(optional — up to 4)</span></div>
-        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:8px;">
+      <div id="hub-pr-images-wrap" style="display:none;margin-top:16px;border-top:1px solid var(--border);padding-top:16px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+          <div>
+            <div style="font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted);">Supporting images</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:2px;">Optional — up to 4. Drag &amp; drop or click. Appear above the boilerplate in the press release PDF.</div>
+          </div>
+          <div style="font-size:11px;color:var(--muted);" id="pr-img-count">0 / 4 added</div>
+        </div>
+        <!-- Main drag & drop zone -->
+        <div id="pr-img-main-drop"
+          ondragover="event.preventDefault();event.stopPropagation();document.getElementById('pr-img-main-drop').classList.add('pr-drop-active');"
+          ondragleave="event.stopPropagation();document.getElementById('pr-img-main-drop').classList.remove('pr-drop-active');"
+          ondrop="event.preventDefault();event.stopPropagation();document.getElementById('pr-img-main-drop').classList.remove('pr-drop-active');handlePRMultiDrop(event);"
+          onclick="if(getPRSupportingImages().length<4)document.getElementById('pr-img-multi-input').click();"
+          style="border:2px dashed var(--border);border-radius:12px;padding:28px 20px;text-align:center;cursor:pointer;background:var(--off);transition:all 0.2s;margin-bottom:12px;">
+          <div id="pr-img-drop-prompt">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:8px;opacity:0.6;"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            <div style="font-size:14px;font-weight:500;color:var(--black);">Drag &amp; drop images here</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:4px;">or click to browse — PNG, JPG, WebP &nbsp;·&nbsp; Max 5MB each &nbsp;·&nbsp; Up to 4 images</div>
+          </div>
+          <input type="file" id="pr-img-multi-input" accept="image/*" multiple style="display:none;" onchange="handlePRMultiSelect(event)"/>
+        </div>
+        <!-- Image preview grid — shown when images added -->
+        <div id="pr-img-preview-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:0;">
           <div id="pr-img-slot-0"></div>
           <div id="pr-img-slot-1"></div>
           <div id="pr-img-slot-2"></div>
@@ -1219,7 +1251,7 @@ textarea{resize:vertical;line-height:1.6;}
 
 <!-- LOG OUTREACH MODAL -->
 <div id="log-modal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:200;align-items:center;justify-content:center;">
-  <div style="background:var(--white);border-radius:16px;padding:1.75rem;max-width:480px;width:90%;margin:auto;position:relative;top:50%;transform:translateY(-50%);">
+  <div style="background:var(--white);border-radius:16px;padding:1.75rem;max-width:480px;width:90%;box-shadow:0 8px 40px rgba(0,0,0,0.18);">
     <div style="font-size:16px;font-weight:500;margin-bottom:1.25rem;">Log outreach</div>
     <label>Outlet or platform</label>
     <input type="text" id="log-outlet" placeholder="e.g. Mumbrella, Ragtrader, Future of Fashion Podcast"/>
@@ -3720,7 +3752,7 @@ function renderCampaignsDashboard() {
     return;
   }
 
-  var branchIcons = ['<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h14a2 2 0 0 0 2-2V7l-5-5H6a2 2 0 0 0-2 2v4"/><path d="M14 2v5h5"/><path d="M3 15h7"/><path d="M3 11h3"/><path d="M3 19h7"/><path d="M2 8l2 2-2 2"/></svg>','<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M8 10h8"/><path d="M8 14h5"/></svg>','<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>','<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>','<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="9" r="2.5"/><path d="M6.5 19a5.5 5.5 0 0 1 11 0"/></svg>'];
+  var branchIcons = ['<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h14a2 2 0 0 0 2-2V7l-5-5H6a2 2 0 0 0-2 2v4"/><path d="M14 2v5h5"/><path d="M3 15h7"/><path d="M3 11h3"/><path d="M3 19h7"/><path d="M2 8l2 2-2 2"/></svg>','<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M8 10h8"/><path d="M8 14h5"/></svg>','<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>','<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>','<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="9" r="2.5"/><path d="M6.5 19a5.5 5.5 0 0 1 11 0"/></svg>'];
   var branchLabels = ['Press','Story','Podcast','Local','Community'];
   var branchPaths = ['Press Release','Editorial Pitch','Podcast Pitch','Local Media','Reddit Outreach'];
 
@@ -3753,7 +3785,14 @@ function renderCampaignsDashboard() {
     branchPaths.forEach(function(path, i) {
       var used = log.some(function(e){ return e.path === path; });
       var count = log.filter(function(e){ return e.path === path; }).length;
-      html += '<div class="camp-branch-pip ' + (used ? 'used' : '') + '" title="' + branchLabels[i] + ': ' + count + ' outreach' + (count!==1?'es':'') + '">' + branchIcons[i] + '</div>';
+      var tooltipCount = used
+        ? '<div class="pip-count">' + count + ' outreach' + (count!==1?'es':'') + ' done</div>'
+        : '<div class="pip-count none">No outreach yet</div>';
+      var pathFullName = ['Press Release','Story Pitch','Podcast Pitch','Local Media','Community Outreach'][i];
+      html += '<div class="camp-branch-pip ' + (used ? 'used' : '') + '">' +
+        branchIcons[i] +
+        '<div class="pip-tooltip">' + pathFullName + tooltipCount + '</div>' +
+        '</div>';
     });
     html += '</div>';
     html += '</div>';
@@ -4497,6 +4536,60 @@ function approveCampaignPR() {
   }, 2000);
 }
 
+
+// ── PR Multi-image drop & select ──
+function handlePRMultiDrop(event) {
+  var files = event.dataTransfer && event.dataTransfer.files ? Array.from(event.dataTransfer.files) : [];
+  processPRImageFiles(files);
+}
+
+function handlePRMultiSelect(event) {
+  var files = event.target.files ? Array.from(event.target.files) : [];
+  processPRImageFiles(files);
+  // Reset input so same file can be re-selected
+  event.target.value = '';
+}
+
+function processPRImageFiles(files) {
+  var imageFiles = files.filter(function(f){ return f.type.startsWith('image/'); });
+  if (!imageFiles.length) return;
+  // Find empty slots
+  imageFiles.forEach(function(file) {
+    if (file.size > 5 * 1024 * 1024) { alert(file.name + ' is over 5MB — skipped.'); return; }
+    var slot = prSupportingImages.indexOf(null);
+    if (slot === -1) { alert('All 4 image slots are full. Remove one to add more.'); return; }
+    var reader = new FileReader();
+    reader.onload = (function(s){ return function(e) {
+      prSupportingImages[s] = e.target.result;
+      renderPRImageSlot(s, e.target.result);
+      savePRImagesToActiveCampaign();
+      updatePRImageCount();
+      updatePRDropZonePrompt();
+    }; })(slot);
+    reader.readAsDataURL(file);
+  });
+}
+
+function updatePRImageCount() {
+  var count = prSupportingImages.filter(Boolean).length;
+  var el = document.getElementById('pr-img-count');
+  if (el) el.textContent = count + ' / 4 added';
+  // Update drop zone cursor
+  var zone = document.getElementById('pr-img-main-drop');
+  if (zone) zone.style.cursor = count >= 4 ? 'default' : 'pointer';
+}
+
+function updatePRDropZonePrompt() {
+  var count = prSupportingImages.filter(Boolean).length;
+  var prompt = document.getElementById('pr-img-drop-prompt');
+  if (!prompt) return;
+  if (count >= 4) {
+    prompt.innerHTML = '<div style="font-size:13px;color:var(--muted);">All 4 slots filled — remove an image below to add a different one.</div>';
+  } else if (count > 0) {
+    prompt.innerHTML = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:6px;opacity:0.5;"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><div style="font-size:13px;font-weight:500;color:var(--black);">Drop more images or click to browse</div><div style="font-size:11px;color:var(--muted);margin-top:3px;">' + (4 - count) + ' slot' + (4 - count !== 1 ? 's' : '') + ' remaining</div>';
+  }
+}
+
 // ── PR Supporting Images ──
 var prSupportingImages = [null, null, null, null]; // up to 4 slots
 
@@ -4538,6 +4631,8 @@ function removePRImage(slot) {
   prSupportingImages[slot] = null;
   renderPRImageSlot(slot, null);
   savePRImagesToActiveCampaign();
+  updatePRImageCount();
+  updatePRDropZonePrompt();
 }
 
 function renderPRImageSlot(slot, src) {
@@ -4590,6 +4685,8 @@ function initPRImageSlots(existingImages) {
   for (var i = 0; i < 4; i++) {
     renderPRImageSlot(i, prSupportingImages[i]);
   }
+  updatePRImageCount();
+  updatePRDropZonePrompt();
 }
 
 
