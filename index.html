@@ -8689,23 +8689,32 @@ async function handleSignedIn(session) {
     var token = await session.getToken();
     currentUser = { userId: session.user.id, email: session.user.primaryEmailAddress?.emailAddress, token: token };
 
-    // Sync user to Supabase
-    await fetch('/api/auth', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token }
-    });
-
-    // Load user profile from Supabase
-    var profileData = await apiData('getUser', {});
-    if (profileData) {
-      userAccount = profileData;
+    // Sync user to Supabase — non-blocking with 5s timeout, never stalls the app
+    var authTimeout = new Promise(function(_, reject){ setTimeout(function(){ reject(new Error('auth timeout')); }, 5000); });
+    try {
+      await Promise.race([
+        fetch('/api/auth', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token } }),
+        authTimeout
+      ]);
+    } catch(authErr) {
+      console.warn('[Auth] /api/auth call failed or timed out — continuing anyway:', authErr.message);
     }
 
-    // Hide auth screen, show app
+    // Load user profile from Supabase — non-blocking with 5s timeout
+    try {
+      var dataTimeout = new Promise(function(_, reject){ setTimeout(function(){ reject(new Error('data timeout')); }, 5000); });
+      var profileData = await Promise.race([ apiData('getUser', {}), dataTimeout ]);
+      if (profileData) userAccount = profileData;
+    } catch(dataErr) {
+      console.warn('[Auth] Profile load failed or timed out — continuing with localStorage:', dataErr.message);
+    }
+
+    // Always proceed — hide auth screen and launch app
     document.getElementById('s-auth').classList.remove('active');
     initApp();
   } catch(e) {
-    console.error('Sign-in error:', e);
+    console.error('[Auth] Sign-in error:', e);
+    document.getElementById('s-auth').classList.remove('active');
     initApp();
   }
 }
