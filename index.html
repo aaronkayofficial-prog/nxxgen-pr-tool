@@ -60,7 +60,7 @@ textarea{resize:vertical;line-height:1.6;}
 .path-card:hover{border-color:var(--gold);box-shadow:var(--shadow);}
 .path-card:hover::before,.path-card.on::before{background:var(--gold);}
 .path-card.on{border-color:var(--gold);background:var(--gold-light);}
-.path-icon{font-size:26px;margin-bottom:12px;}
+.path-icon{margin-bottom:12px;display:flex;align-items:center;}
 .path-title{font-family:'Playfair Display',serif;font-size:17px;font-weight:500;margin-bottom:7px;color:var(--black);}
 .path-desc{font-size:13px;color:var(--muted);line-height:1.6;}
 .path-tag{display:inline-block;margin-top:12px;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);font-weight:500;}
@@ -144,7 +144,7 @@ textarea{resize:vertical;line-height:1.6;}
 .ind-card:hover{border-color:var(--gold);transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,0.06);}
 .ind-card:hover::before,.ind-card.selected::before{background:var(--gold);}
 .ind-card.selected{border-color:var(--gold);background:var(--gold-light);}
-.ind-card-icon{font-size:22px;margin-bottom:6px;}
+.ind-card-icon{margin-bottom:8px;display:flex;align-items:center;justify-content:center;}
 .ind-card-title{font-size:12px;font-weight:600;color:var(--black);margin-bottom:5px;line-height:1.3;}
 .ind-card-pills{font-size:10px;color:var(--muted);line-height:1.5;}
 .ind-card-sub{display:none;}
@@ -176,7 +176,7 @@ textarea{resize:vertical;line-height:1.6;}
 .camp-paths{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:1.5rem;}
 .camp-path{border:1.5px solid var(--border);border-radius:10px;padding:1rem 1.25rem;cursor:pointer;transition:all 0.2s;background:var(--white);}
 .camp-path:hover{border-color:var(--gold);background:var(--gold-light);}
-.camp-path-icon{font-size:20px;margin-bottom:6px;}
+.camp-path-icon{margin-bottom:8px;display:flex;align-items:center;}
 .camp-path-title{font-size:13px;font-weight:500;color:var(--black);margin-bottom:3px;}
 .camp-path-desc{font-size:11px;color:var(--muted);line-height:1.5;}
 .log-item{display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);}
@@ -409,16 +409,16 @@ textarea{resize:vertical;line-height:1.6;}
       <div class="full">
         <label>Industry</label>
         <div class="chips" id="acct-industry-chips" style="margin-top:8px;">
-          <div class="chip" onclick="selectAcctIndustry(this,'Fashion, Retail &amp; Consumer')">👗 Fashion &amp; Retail</div>
-          <div class="chip" onclick="selectAcctIndustry(this,'Technology &amp; Innovation')">💻 Technology</div>
-          <div class="chip" onclick="selectAcctIndustry(this,'Health &amp; Wellness')">💊 Health &amp; Wellness</div>
-          <div class="chip" onclick="selectAcctIndustry(this,'Finance &amp; Professional Services')">📈 Finance</div>
-          <div class="chip" onclick="selectAcctIndustry(this,'Food, Hospitality &amp; Travel')">🍽 Food &amp; Hospitality</div>
-          <div class="chip" onclick="selectAcctIndustry(this,'Media, Arts &amp; Entertainment')">🎬 Media &amp; Arts</div>
-          <div class="chip" onclick="selectAcctIndustry(this,'Business &amp; Startups')">🚀 Business &amp; Startups</div>
-          <div class="chip" onclick="selectAcctIndustry(this,'Energy, Environment &amp; Education')">🌿 Environment &amp; Education</div>
-          <div class="chip" onclick="selectAcctIndustry(this,'Industry &amp; Infrastructure')">🏗 Industry</div>
-          <div class="chip" onclick="selectAcctIndustry(this,'Other')">✦ Other</div>
+          <div class="chip" onclick="selectAcctIndustry(this,'Fashion, Retail &amp; Consumer')"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.38 18H3.62a1 1 0 0 1-.77-1.63L12 6l9.15 10.37A1 1 0 0 1 20.38 18z"/><path d="M12 6V3"/><circle cx="12" cy="2.5" r="1"/></svg> Fashion &amp; Retail</div>
+          <div class="chip" onclick="selectAcctIndustry(this,'Technology &amp; Innovation')"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="7" width="10" height="10" rx="1"/><path d="M7 9H4M7 12H4M7 15H4M17 9h3M17 12h3M17 15h3M9 7V4M12 7V4M15 7V4M9 17v3M12 17v3M15 17v3"/></svg> Technology</div>
+          <div class="chip" onclick="selectAcctIndustry(this,'Health &amp; Wellness')"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg> Health &amp; Wellness</div>
+          <div class="chip" onclick="selectAcctIndustry(this,'Finance &amp; Professional Services')"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20h18"/><path d="M5 20V14"/><path d="M9 20V8"/><path d="M13 20V11"/><path d="M17 20V5"/></svg> Finance</div>
+          <div class="chip" onclick="selectAcctIndustry(this,'Food, Hospitality &amp; Travel')"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6h3v8"/></svg> Food &amp; Hospitality</div>
+          <div class="chip" onclick="selectAcctIndustry(this,'Media, Arts &amp; Entertainment')"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polygon points="10 8 16 12 10 16 10 8" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Media &amp; Arts</div>
+          <div class="chip" onclick="selectAcctIndustry(this,'Business &amp; Startups')"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg> Business &amp; Startups</div>
+          <div class="chip" onclick="selectAcctIndustry(this,'Energy, Environment &amp; Education')"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8C8 10 5.9 16.17 3.82 19.34a1 1 0 0 0 1.46 1.32C7.5 18.6 11 17 17 17c4-8 2-15 2-15"/><path d="M3 22c5-5 7-12 7-12"/></svg> Environment &amp; Education</div>
+          <div class="chip" onclick="selectAcctIndustry(this,'Industry &amp; Infrastructure')"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20h20"/><path d="M2 20V8l6-4v4l6-4v4l6-4v16"/><path d="M10 20v-5h4v5"/></svg> Industry</div>
+          <div class="chip" onclick="selectAcctIndustry(this,'Other')"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg> Other</div>
         </div>
         <input type="hidden" id="acct-industry"/>
         <input type="text" id="acct-industry-other" placeholder="Type your industry..." style="display:none;margin-top:8px;"/>
@@ -525,16 +525,16 @@ textarea{resize:vertical;line-height:1.6;}
       <div class="full">
         <label>Industry</label>
         <div class="chips" id="acct-industry-chips-e" style="margin-top:8px;">
-          <div class="chip" onclick="selectAcctIndustry(this,'Fashion, Retail &amp; Consumer','-e')">👗 Fashion &amp; Retail</div>
-          <div class="chip" onclick="selectAcctIndustry(this,'Technology &amp; Innovation','-e')">💻 Technology</div>
-          <div class="chip" onclick="selectAcctIndustry(this,'Health &amp; Wellness','-e')">💊 Health &amp; Wellness</div>
-          <div class="chip" onclick="selectAcctIndustry(this,'Finance &amp; Professional Services','-e')">📈 Finance</div>
-          <div class="chip" onclick="selectAcctIndustry(this,'Food, Hospitality &amp; Travel','-e')">🍽 Food &amp; Hospitality</div>
-          <div class="chip" onclick="selectAcctIndustry(this,'Media, Arts &amp; Entertainment','-e')">🎬 Media &amp; Arts</div>
-          <div class="chip" onclick="selectAcctIndustry(this,'Business &amp; Startups','-e')">🚀 Business &amp; Startups</div>
-          <div class="chip" onclick="selectAcctIndustry(this,'Energy, Environment &amp; Education','-e')">🌿 Environment &amp; Education</div>
-          <div class="chip" onclick="selectAcctIndustry(this,'Industry &amp; Infrastructure','-e')">🏗 Industry</div>
-          <div class="chip" onclick="selectAcctIndustry(this,'Other','-e')">✦ Other</div>
+          <div class="chip" onclick="selectAcctIndustry(this,'Fashion, Retail &amp; Consumer','-e')"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.38 18H3.62a1 1 0 0 1-.77-1.63L12 6l9.15 10.37A1 1 0 0 1 20.38 18z"/><path d="M12 6V3"/><circle cx="12" cy="2.5" r="1"/></svg> Fashion &amp; Retail</div>
+          <div class="chip" onclick="selectAcctIndustry(this,'Technology &amp; Innovation','-e')"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="7" width="10" height="10" rx="1"/><path d="M7 9H4M7 12H4M7 15H4M17 9h3M17 12h3M17 15h3M9 7V4M12 7V4M15 7V4M9 17v3M12 17v3M15 17v3"/></svg> Technology</div>
+          <div class="chip" onclick="selectAcctIndustry(this,'Health &amp; Wellness','-e')"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg> Health &amp; Wellness</div>
+          <div class="chip" onclick="selectAcctIndustry(this,'Finance &amp; Professional Services','-e')"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20h18"/><path d="M5 20V14"/><path d="M9 20V8"/><path d="M13 20V11"/><path d="M17 20V5"/></svg> Finance</div>
+          <div class="chip" onclick="selectAcctIndustry(this,'Food, Hospitality &amp; Travel','-e')"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6h3v8"/></svg> Food &amp; Hospitality</div>
+          <div class="chip" onclick="selectAcctIndustry(this,'Media, Arts &amp; Entertainment','-e')"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polygon points="10 8 16 12 10 16 10 8" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Media &amp; Arts</div>
+          <div class="chip" onclick="selectAcctIndustry(this,'Business &amp; Startups','-e')"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg> Business &amp; Startups</div>
+          <div class="chip" onclick="selectAcctIndustry(this,'Energy, Environment &amp; Education','-e')"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8C8 10 5.9 16.17 3.82 19.34a1 1 0 0 0 1.46 1.32C7.5 18.6 11 17 17 17c4-8 2-15 2-15"/><path d="M3 22c5-5 7-12 7-12"/></svg> Environment &amp; Education</div>
+          <div class="chip" onclick="selectAcctIndustry(this,'Industry &amp; Infrastructure','-e')"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20h20"/><path d="M2 20V8l6-4v4l6-4v4l6-4v16"/><path d="M10 20v-5h4v5"/></svg> Industry</div>
+          <div class="chip" onclick="selectAcctIndustry(this,'Other','-e')"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg> Other</div>
         </div>
         <input type="hidden" id="acct-industry-e"/>
         <input type="text" id="acct-industry-other-e" placeholder="Type your industry..." style="display:none;margin-top:8px;"/>
@@ -642,10 +642,10 @@ textarea{resize:vertical;line-height:1.6;}
   <div style="display:flex;border-bottom:2px solid var(--border);margin-bottom:1.5rem;overflow-x:auto;gap:0;">
     <div class="dash-tab active" id="dtab-all" onclick="switchDashTab('all',this)">All</div>
     <div class="dash-tab" id="dtab-pr" onclick="switchDashTab('Press Release',this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v2"/><path d="M4 11h8"/><path d="M4 7h4"/><path d="M4 15h8"/><path d="M2 17l2 2 4-4"/></svg> Press</div>
-    <div class="dash-tab" id="dtab-story" onclick="switchDashTab('Editorial Pitch',this)">&#128161; Story</div>
-    <div class="dash-tab" id="dtab-pod" onclick="switchDashTab('Podcast Pitch',this)">&#127911; Podcast</div>
-    <div class="dash-tab" id="dtab-local" onclick="switchDashTab('Local Media',this)">&#127968; Local</div>
-    <div class="dash-tab" id="dtab-reddit" onclick="switchDashTab('Reddit Outreach',this)">&#127760; Community</div>
+    <div class="dash-tab" id="dtab-story" onclick="switchDashTab('Editorial Pitch',this)"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M8 10h8"/><path d="M8 14h5"/></svg> Story</div>
+    <div class="dash-tab" id="dtab-pod" onclick="switchDashTab('Podcast Pitch',this)"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg> Podcast</div>
+    <div class="dash-tab" id="dtab-local" onclick="switchDashTab('Local Media',this)"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> Local</div>
+    <div class="dash-tab" id="dtab-reddit" onclick="switchDashTab('Reddit Outreach',this)"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="9" r="2.5"/><path d="M6.5 19a5.5 5.5 0 0 1 11 0"/></svg> Community</div>
   </div>
 
   <!-- Results count -->
@@ -809,16 +809,16 @@ textarea{resize:vertical;line-height:1.6;}
     <div style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);font-weight:500;margin-bottom:12px;">Primary industry</div>
 
     <div id="cp-industry-cards-grid" style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:12px;">
-      <div class="ind-card" id="cp-icard-0" onclick="selectCampCard(0)"><div class="ind-card-icon">&#128522;</div><div class="ind-card-title">Fashion, Retail &amp; Consumer</div><div class="ind-card-pills">Fashion &bull; Luxury &bull; E-commerce &bull; Beauty &bull; Consumer</div></div>
-      <div class="ind-card" id="cp-icard-1" onclick="selectCampCard(1)"><div class="ind-card-icon">&#128187;</div><div class="ind-card-title">Technology &amp; Innovation</div><div class="ind-card-pills">Tech &bull; AI &bull; Telecoms &bull; Gaming &bull; Biotech &bull; Cyber</div></div>
-      <div class="ind-card" id="cp-icard-2" onclick="selectCampCard(2)"><div class="ind-card-icon">&#128138;</div><div class="ind-card-title">Health &amp; Life Sciences</div><div class="ind-card-pills">Healthcare &bull; Pharma &bull; Wellness &bull; Fitness &bull; Mental Health</div></div>
-      <div class="ind-card" id="cp-icard-3" onclick="selectCampCard(3)"><div class="ind-card-icon">&#128200;</div><div class="ind-card-title">Finance &amp; Professional Services</div><div class="ind-card-pills">Finance &bull; Fintech &bull; Legal &bull; Real Estate &bull; Insurance</div></div>
-      <div class="ind-card" id="cp-icard-4" onclick="selectCampCard(4)"><div class="ind-card-icon">&#127916;</div><div class="ind-card-title">Media, Arts &amp; Entertainment</div><div class="ind-card-pills">Entertainment &bull; Publishing &bull; Art &bull; Marketing &bull; Creative</div></div>
-      <div class="ind-card" id="cp-icard-5" onclick="selectCampCard(5)"><div class="ind-card-icon">&#127859;</div><div class="ind-card-title">Food, Hospitality &amp; Travel</div><div class="ind-card-pills">Food &amp; Bev &bull; Hospitality &bull; Travel &bull; Agriculture</div></div>
-      <div class="ind-card" id="cp-icard-6" onclick="selectCampCard(6)"><div class="ind-card-icon">&#127981;</div><div class="ind-card-title">Industry &amp; Infrastructure</div><div class="ind-card-pills">Manufacturing &bull; Automotive &bull; Construction &bull; Logistics</div></div>
-      <div class="ind-card" id="cp-icard-7" onclick="selectCampCard(7)"><div class="ind-card-icon">&#127807;</div><div class="ind-card-title">Energy, Environment &amp; Education</div><div class="ind-card-pills">Renewable &bull; Green &bull; Education &bull; Non-profit</div></div>
-      <div class="ind-card" id="cp-icard-8" onclick="selectCampCard(8)"><div class="ind-card-icon">&#128640;</div><div class="ind-card-title">Business &amp; Startups</div><div class="ind-card-pills">Startups &bull; Entrepreneurship &bull; DTC &bull; B2B &bull; SaaS</div></div>
-      <div class="ind-card" id="cp-icard-9" onclick="selectCampCard(9)"><div class="ind-card-icon">&#127760;</div><div class="ind-card-title">Other &amp; Niche</div><div class="ind-card-pills">Sports &bull; Luxury &bull; Social Enterprise &bull; Custom</div></div>
+      <div class="ind-card" id="cp-icard-0" onclick="selectCampCard(0)"><div class="ind-card-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.38 18H3.62a1 1 0 0 1-.77-1.63L12 6l9.15 10.37A1 1 0 0 1 20.38 18z"/><path d="M12 6V3"/><circle cx="12" cy="2.5" r="1"/></svg></div><div class="ind-card-title">Fashion, Retail &amp; Consumer</div><div class="ind-card-pills">Fashion &bull; Luxury &bull; E-commerce &bull; Beauty &bull; Consumer</div></div>
+      <div class="ind-card" id="cp-icard-1" onclick="selectCampCard(1)"><div class="ind-card-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="7" width="10" height="10" rx="1"/><path d="M7 9H4M7 12H4M7 15H4M17 9h3M17 12h3M17 15h3M9 7V4M12 7V4M15 7V4M9 17v3M12 17v3M15 17v3"/></svg></div><div class="ind-card-title">Technology &amp; Innovation</div><div class="ind-card-pills">Tech &bull; AI &bull; Telecoms &bull; Gaming &bull; Biotech &bull; Cyber</div></div>
+      <div class="ind-card" id="cp-icard-2" onclick="selectCampCard(2)"><div class="ind-card-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg></div><div class="ind-card-title">Health &amp; Life Sciences</div><div class="ind-card-pills">Healthcare &bull; Pharma &bull; Wellness &bull; Fitness &bull; Mental Health</div></div>
+      <div class="ind-card" id="cp-icard-3" onclick="selectCampCard(3)"><div class="ind-card-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20h18"/><path d="M5 20V14"/><path d="M9 20V8"/><path d="M13 20V11"/><path d="M17 20V5"/></svg></div><div class="ind-card-title">Finance &amp; Professional Services</div><div class="ind-card-pills">Finance &bull; Fintech &bull; Legal &bull; Real Estate &bull; Insurance</div></div>
+      <div class="ind-card" id="cp-icard-4" onclick="selectCampCard(4)"><div class="ind-card-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polygon points="10 8 16 12 10 16 10 8" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ind-card-title">Media, Arts &amp; Entertainment</div><div class="ind-card-pills">Entertainment &bull; Publishing &bull; Art &bull; Marketing &bull; Creative</div></div>
+      <div class="ind-card" id="cp-icard-5" onclick="selectCampCard(5)"><div class="ind-card-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6h3v8"/></svg></div><div class="ind-card-title">Food, Hospitality &amp; Travel</div><div class="ind-card-pills">Food &amp; Bev &bull; Hospitality &bull; Travel &bull; Agriculture</div></div>
+      <div class="ind-card" id="cp-icard-6" onclick="selectCampCard(6)"><div class="ind-card-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20h20"/><path d="M2 20V8l6-4v4l6-4v4l6-4v16"/><path d="M10 20v-5h4v5"/></svg></div><div class="ind-card-title">Industry &amp; Infrastructure</div><div class="ind-card-pills">Manufacturing &bull; Automotive &bull; Construction &bull; Logistics</div></div>
+      <div class="ind-card" id="cp-icard-7" onclick="selectCampCard(7)"><div class="ind-card-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8C8 10 5.9 16.17 3.82 19.34a1 1 0 0 0 1.46 1.32C7.5 18.6 11 17 17 17c4-8 2-15 2-15"/><path d="M3 22c5-5 7-12 7-12"/></svg></div><div class="ind-card-title">Energy, Environment &amp; Education</div><div class="ind-card-pills">Renewable &bull; Green &bull; Education &bull; Non-profit</div></div>
+      <div class="ind-card" id="cp-icard-8" onclick="selectCampCard(8)"><div class="ind-card-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg></div><div class="ind-card-title">Business &amp; Startups</div><div class="ind-card-pills">Startups &bull; Entrepreneurship &bull; DTC &bull; B2B &bull; SaaS</div></div>
+      <div class="ind-card" id="cp-icard-9" onclick="selectCampCard(9)"><div class="ind-card-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg></div><div class="ind-card-title">Other &amp; Niche</div><div class="ind-card-pills">Sports &bull; Luxury &bull; Social Enterprise &bull; Custom</div></div>
     </div>
 
     <div id="cp-ind-pill-zone" style="display:none;margin-bottom:1.25rem;padding:16px;background:var(--gold-light);border:1.5px solid var(--gold);border-radius:12px;">
@@ -1054,27 +1054,27 @@ textarea{resize:vertical;line-height:1.6;}
   <!-- 5 Path cards -->
   <div class="camp-paths">
     <div class="camp-path" onclick="launchPath('A')">
-      <div class="camp-path-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v2"/><path d="M4 11h8"/><path d="M4 7h4"/><path d="M4 15h8"/></svg></div>
+      <div class="camp-path-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h14a2 2 0 0 0 2-2V7l-5-5H6a2 2 0 0 0-2 2v4"/><path d="M14 2v5h5"/><path d="M3 15h7"/><path d="M3 11h3"/><path d="M3 19h7"/><path d="M2 8l2 2-2 2"/></svg></div>
       <div class="camp-path-title">Reach press &amp; media</div>
       <div class="camp-path-desc">Send your press release to targeted outlets</div>
     </div>
     <div class="camp-path" onclick="launchPath('B')">
-      <div class="camp-path-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+      <div class="camp-path-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M8 10h8"/><path d="M8 14h5"/></svg></div>
       <div class="camp-path-title">Pitch a story angle</div>
       <div class="camp-path-desc">Pitch a story idea to journalists and editors</div>
     </div>
     <div class="camp-path" onclick="launchPath('C')">
-      <div class="camp-path-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></div>
+      <div class="camp-path-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></div>
       <div class="camp-path-title">Pitch a podcast</div>
       <div class="camp-path-desc">Craft a guest pitch or collaboration proposal</div>
     </div>
     <div class="camp-path" onclick="launchPath('D')">
-      <div class="camp-path-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+      <div class="camp-path-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="9" r="2.5"/><path d="M6.5 19a5.5 5.5 0 0 1 11 0"/></svg></div>
       <div class="camp-path-title">Reach communities</div>
       <div class="camp-path-desc">Reddit outreach and community posts</div>
     </div>
     <div class="camp-path" style="grid-column:1/-1;" onclick="launchPath('E')">
-      <div class="camp-path-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+      <div class="camp-path-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
       <div class="camp-path-title">Local media outreach</div>
       <div class="camp-path-desc">Target hyperlocal press -- suburb, borough, or district level</div>
     </div>
@@ -1136,7 +1136,7 @@ textarea{resize:vertical;line-height:1.6;}
   <div class="path-cards" style="grid-template-columns:1fr;max-width:580px;">
     <div class="path-card" id="card-a" onclick="selectPath('A')">
       <div style="display:flex;align-items:flex-start;gap:14px;">
-        <div class="path-icon" style="flex-shrink:0;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v2"/><path d="M4 11h8"/><path d="M4 7h4"/><path d="M4 15h8"/><path d="M2 17l2 2 4-4"/></svg></div>
+        <div class="path-icon" style="flex-shrink:0;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h14a2 2 0 0 0 2-2V7l-5-5H6a2 2 0 0 0-2 2v4"/><path d="M14 2v5h5"/><path d="M3 15h7"/><path d="M3 11h3"/><path d="M3 19h7"/><path d="M2 8l2 2-2 2"/></svg></div>
         <div>
           <div class="path-title">Send a press release to the press</div>
           <div class="path-desc">Generate a professional press release, find the right outlets, and send a focused outreach email with the release attached.</div>
@@ -1146,7 +1146,7 @@ textarea{resize:vertical;line-height:1.6;}
     </div>
     <div class="path-card" id="card-b" onclick="selectPath('B')">
       <div style="display:flex;align-items:flex-start;gap:14px;">
-        <div class="path-icon" style="flex-shrink:0;">&#128161;</div>
+        <div class="path-icon" style="flex-shrink:0;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M8 10h8"/><path d="M8 14h5"/></svg></div>
         <div>
           <div class="path-title">Pitch a content idea to the press</div>
           <div class="path-desc">Do you have something newsworthy to get covered as a story? Tell us what you want to pitch and we will generate the outreach to contact the media.</div>
@@ -1156,7 +1156,7 @@ textarea{resize:vertical;line-height:1.6;}
     </div>
     <div class="path-card" id="card-c" onclick="selectPath('C')">
       <div style="display:flex;align-items:flex-start;gap:14px;">
-        <div class="path-icon" style="flex-shrink:0;">&#127911;</div>
+        <div class="path-icon" style="flex-shrink:0;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></div>
         <div>
           <div class="path-title">Pitch a podcast or collaboration</div>
           <div class="path-desc">Want to appear as a guest on a podcast or propose a content collaboration? We will help you craft a compelling pitch to the right shows and creators.</div>
@@ -1166,7 +1166,7 @@ textarea{resize:vertical;line-height:1.6;}
     </div>
     <div class="path-card" id="card-d" onclick="selectPath('D')">
       <div style="display:flex;align-items:flex-start;gap:14px;">
-        <div class="path-icon" style="flex-shrink:0;">&#127760;</div>
+        <div class="path-icon" style="flex-shrink:0;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="9" r="2.5"/><path d="M6.5 19a5.5 5.5 0 0 1 11 0"/></svg></div>
         <div>
           <div class="path-title">Reach communities</div>
           <div class="path-desc">Find the right Reddit communities for your niche, craft a genuine discussion-based post that adds real value, and engage authentically with your audience.</div>
@@ -1176,7 +1176,7 @@ textarea{resize:vertical;line-height:1.6;}
     </div>
     <div class="path-card" id="card-e" onclick="selectPath('E')">
       <div style="display:flex;align-items:flex-start;gap:14px;">
-        <div class="path-icon" style="flex-shrink:0;">&#127968;</div>
+        <div class="path-icon" style="flex-shrink:0;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
         <div>
           <div class="path-title">Local media outreach</div>
           <div class="path-desc">Target hyperlocal press in your neighbourhood, suburb, borough, or district. Find local newspapers, community websites, and regional media that cover your exact area.</div>
@@ -1685,52 +1685,52 @@ textarea{resize:vertical;line-height:1.6;}
 
     <div id="industry-cards-grid" style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:12px;">
       <div class="ind-card" id="icard-0" onclick="selectIndustryCard(0)">
-        <div class="ind-card-icon">&#128522;</div>
+        <div class="ind-card-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.38 18H3.62a1 1 0 0 1-.77-1.63L12 6l9.15 10.37A1 1 0 0 1 20.38 18z"/><path d="M12 6V3"/><circle cx="12" cy="2.5" r="1"/></svg></div>
         <div class="ind-card-title">Fashion, Retail &amp; Consumer</div>
         <div class="ind-card-pills">Fashion &bull; Luxury &bull; E-commerce &bull; Beauty &bull; Consumer</div>
       </div>
       <div class="ind-card" id="icard-1" onclick="selectIndustryCard(1)">
-        <div class="ind-card-icon">&#128187;</div>
+        <div class="ind-card-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="7" width="10" height="10" rx="1"/><path d="M7 9H4M7 12H4M7 15H4M17 9h3M17 12h3M17 15h3M9 7V4M12 7V4M15 7V4M9 17v3M12 17v3M15 17v3"/></svg></div>
         <div class="ind-card-title">Technology &amp; Innovation</div>
         <div class="ind-card-pills">Tech &bull; AI &bull; Telecoms &bull; Gaming &bull; Biotech &bull; Cyber</div>
       </div>
       <div class="ind-card" id="icard-2" onclick="selectIndustryCard(2)">
-        <div class="ind-card-icon">&#128138;</div>
+        <div class="ind-card-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg></div>
         <div class="ind-card-title">Health &amp; Life Sciences</div>
         <div class="ind-card-pills">Healthcare &bull; Pharma &bull; Wellness &bull; Fitness &bull; Mental Health</div>
       </div>
       <div class="ind-card" id="icard-3" onclick="selectIndustryCard(3)">
-        <div class="ind-card-icon">&#128200;</div>
+        <div class="ind-card-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20h18"/><path d="M5 20V14"/><path d="M9 20V8"/><path d="M13 20V11"/><path d="M17 20V5"/></svg></div>
         <div class="ind-card-title">Finance &amp; Professional Services</div>
         <div class="ind-card-pills">Finance &bull; Fintech &bull; Legal &bull; Real Estate &bull; Insurance</div>
       </div>
       <div class="ind-card" id="icard-4" onclick="selectIndustryCard(4)">
-        <div class="ind-card-icon">&#127916;</div>
+        <div class="ind-card-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polygon points="10 8 16 12 10 16 10 8" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
         <div class="ind-card-title">Media, Arts &amp; Entertainment</div>
         <div class="ind-card-pills">Entertainment &bull; Publishing &bull; Art &bull; Marketing &bull; Creative</div>
       </div>
       <div class="ind-card" id="icard-5" onclick="selectIndustryCard(5)">
-        <div class="ind-card-icon">&#127859;</div>
+        <div class="ind-card-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6h3v8"/></svg></div>
         <div class="ind-card-title">Food, Hospitality &amp; Travel</div>
         <div class="ind-card-pills">Food &amp; Bev &bull; Hospitality &bull; Travel &bull; Agriculture</div>
       </div>
       <div class="ind-card" id="icard-6" onclick="selectIndustryCard(6)">
-        <div class="ind-card-icon">&#127981;</div>
+        <div class="ind-card-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20h20"/><path d="M2 20V8l6-4v4l6-4v4l6-4v16"/><path d="M10 20v-5h4v5"/></svg></div>
         <div class="ind-card-title">Industry &amp; Infrastructure</div>
         <div class="ind-card-pills">Manufacturing &bull; Automotive &bull; Construction &bull; Logistics</div>
       </div>
       <div class="ind-card" id="icard-7" onclick="selectIndustryCard(7)">
-        <div class="ind-card-icon">&#127807;</div>
+        <div class="ind-card-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8C8 10 5.9 16.17 3.82 19.34a1 1 0 0 0 1.46 1.32C7.5 18.6 11 17 17 17c4-8 2-15 2-15"/><path d="M3 22c5-5 7-12 7-12"/></svg></div>
         <div class="ind-card-title">Energy, Environment &amp; Education</div>
         <div class="ind-card-pills">Renewable &bull; Green &bull; Education &bull; Non-profit</div>
       </div>
       <div class="ind-card" id="icard-8" onclick="selectIndustryCard(8)">
-        <div class="ind-card-icon">&#128640;</div>
+        <div class="ind-card-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg></div>
         <div class="ind-card-title">Business &amp; Startups</div>
         <div class="ind-card-pills">Startups &bull; Entrepreneurship &bull; DTC &bull; B2B &bull; SaaS</div>
       </div>
       <div class="ind-card" id="icard-9" onclick="selectIndustryCard(9)">
-        <div class="ind-card-icon">&#127760;</div>
+        <div class="ind-card-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg></div>
         <div class="ind-card-title">Other &amp; Niche</div>
         <div class="ind-card-pills">Sports &bull; Luxury &bull; Social Enterprise &bull; Custom</div>
       </div>
@@ -3585,7 +3585,7 @@ function renderCampaignsDashboard() {
     return;
   }
 
-  var branchIcons = ['<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v2"/><path d="M4 11h8"/><path d="M4 7h4"/><path d="M4 15h8"/><path d="M2 17l2 2 4-4"/></svg>','&#128161;','&#127911;','&#127968;','&#127760;'];
+  var branchIcons = ['<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h14a2 2 0 0 0 2-2V7l-5-5H6a2 2 0 0 0-2 2v4"/><path d="M14 2v5h5"/><path d="M3 15h7"/><path d="M3 11h3"/><path d="M3 19h7"/><path d="M2 8l2 2-2 2"/></svg>','<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M8 10h8"/><path d="M8 14h5"/></svg>','<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>','<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>','<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="9" r="2.5"/><path d="M6.5 19a5.5 5.5 0 0 1 11 0"/></svg>'];
   var branchLabels = ['Press','Story','Podcast','Local','Community'];
   var branchPaths = ['Press Release','Editorial Pitch','Podcast Pitch','Local Media','Reddit Outreach'];
 
