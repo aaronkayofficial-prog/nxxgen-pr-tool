@@ -280,6 +280,27 @@ textarea{resize:vertical;line-height:1.6;}
 .kp-card{border:1.5px solid var(--border);border-radius:10px;padding:14px;background:var(--white);margin-bottom:8px;}
 .kp-label{font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--gold);margin-bottom:6px;}
 @media(max-width:600px){.camp-paths{grid-template-columns:1fr;}.path-cards,.g2{grid-template-columns:1fr;}.page-title{font-size:28px;}.wrap{padding:2rem 1.25rem 5rem;}}
+
+/* Phone number field with country prefix */
+.phone-wrap{display:flex;align-items:stretch;border:1.5px solid var(--border);border-radius:var(--radius);overflow:hidden;background:var(--white);transition:border-color 0.2s;}
+.phone-wrap:focus-within{border-color:var(--gold);}
+.phone-prefix{display:flex;align-items:center;gap:6px;padding:0 10px;background:var(--off);border-right:1.5px solid var(--border);cursor:pointer;white-space:nowrap;font-size:14px;user-select:none;position:relative;min-width:90px;}
+.phone-prefix:hover{background:#f0ece8;}
+.phone-prefix-flag{font-size:18px;line-height:1;}
+.phone-prefix-code{font-size:13px;font-weight:500;color:var(--text);}
+.phone-prefix-arrow{font-size:9px;color:var(--muted);margin-left:2px;}
+.phone-input{flex:1;border:none;outline:none;padding:10px 13px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--text);background:transparent;}
+.phone-dropdown{display:none;position:absolute;top:100%;left:0;width:280px;background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius);box-shadow:0 4px 20px rgba(0,0,0,0.12);z-index:500;max-height:260px;overflow-y:auto;}
+.phone-dropdown.open{display:block;}
+.phone-dropdown-search{padding:8px 10px;border-bottom:1px solid var(--border);}
+.phone-dropdown-search input{width:100%;border:1.5px solid var(--border);border-radius:6px;padding:6px 10px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;}
+.phone-dropdown-search input:focus{border-color:var(--gold);}
+.phone-option{display:flex;align-items:center;gap:10px;padding:9px 12px;cursor:pointer;font-size:13px;transition:background 0.1s;}
+.phone-option:hover{background:var(--off);}
+.phone-option.selected{background:var(--gold-light);}
+.phone-option-flag{font-size:18px;flex-shrink:0;}
+.phone-option-name{flex:1;color:var(--text);}
+.phone-option-code{color:var(--muted);font-size:12px;flex-shrink:0;}
 </style>
   <!-- Clerk Auth -->
   <script defer crossorigin="anonymous" data-clerk-publishable-key="pk_live_Y2xlcmsucHJlc3NyZWFjaG91dC5jb20k" src="https://clerk.pressreachout.com/npm/@clerk/clerk-js@latest/dist/clerk.browser.js"></script>
@@ -363,7 +384,22 @@ textarea{resize:vertical;line-height:1.6;}
       <div><label>First name</label><input type="text" id="acct-fname" placeholder="e.g. Jane"/></div>
       <div><label>Last name</label><input type="text" id="acct-lname" placeholder="e.g. Smith"/></div>
       <div><label>Your position / title</label><input type="text" id="acct-pos" placeholder="e.g. Founder, CEO, Marketing Director"/></div>
-      <div><label>Phone number</label><input type="text" id="acct-phone" placeholder="e.g. +61 400 000 000"/></div>
+      <div>
+        <label>Phone number</label>
+        <div class="phone-wrap" id="phone-wrap">
+          <div class="phone-prefix" id="phone-prefix" onclick="togglePhoneDropdown('')">
+            <span class="phone-prefix-flag" id="phone-flag">🌐</span>
+            <span class="phone-prefix-code" id="phone-code">+1</span>
+            <span class="phone-prefix-arrow">▼</span>
+            <div class="phone-dropdown" id="phone-dropdown">
+              <div class="phone-dropdown-search"><input type="text" placeholder="Search country..." oninput="filterPhoneCountries(this.value,'phone-dropdown')" onclick="event.stopPropagation()"/></div>
+              <div id="phone-dropdown-list"></div>
+            </div>
+          </div>
+          <input class="phone-input" type="tel" id="acct-phone" placeholder="400 000 000"/>
+        </div>
+        <input type="hidden" id="acct-phone-prefix" value="+61"/>
+      </div>
       <div class="full"><label>Contact email</label><input type="text" id="acct-email" placeholder="e.g. jane@yourbusiness.com"/></div>
     </div>
   </div>
@@ -451,7 +487,22 @@ textarea{resize:vertical;line-height:1.6;}
       <div><label>First name</label><input type="text" id="acct-fname-e" placeholder="e.g. Jane"/></div>
       <div><label>Last name</label><input type="text" id="acct-lname-e" placeholder="e.g. Smith"/></div>
       <div><label>Position / title</label><input type="text" id="acct-pos-e" placeholder="e.g. Founder, CEO, Marketing Director"/></div>
-      <div><label>Phone number</label><input type="text" id="acct-phone-e" placeholder="e.g. +61 400 000 000"/></div>
+      <div>
+        <label>Phone number</label>
+        <div class="phone-wrap" id="phone-wrap-e">
+          <div class="phone-prefix" id="phone-prefix-e" onclick="togglePhoneDropdown('-e')">
+            <span class="phone-prefix-flag" id="phone-flag-e">🌐</span>
+            <span class="phone-prefix-code" id="phone-code-e">+1</span>
+            <span class="phone-prefix-arrow">▼</span>
+            <div class="phone-dropdown" id="phone-dropdown-e">
+              <div class="phone-dropdown-search"><input type="text" placeholder="Search country..." oninput="filterPhoneCountries(this.value,'phone-dropdown-e')" onclick="event.stopPropagation()"/></div>
+              <div id="phone-dropdown-e-list"></div>
+            </div>
+          </div>
+          <input class="phone-input" type="tel" id="acct-phone-e" placeholder="400 000 000"/>
+        </div>
+        <input type="hidden" id="acct-phone-prefix-e" value="+61"/>
+      </div>
       <div class="full"><label>Contact email</label><input type="text" id="acct-email-e" placeholder="e.g. jane@yourbusiness.com"/></div>
     </div>
   </div>
@@ -2833,7 +2884,7 @@ function saveAccount(isOnboarding) {
     fname: fname,
     lname: lname,
     pos: document.getElementById('acct-pos' + suffix).value.trim(),
-    phone: document.getElementById('acct-phone' + suffix).value.trim(),
+    phone: getFullPhoneNumber(suffix === '' ? '' : '-e'),
     email: document.getElementById('acct-email' + suffix).value.trim(),
     co: co,
     web: document.getElementById('acct-web' + suffix).value.trim(),
@@ -2917,11 +2968,29 @@ function updateAccountCompleteBanner() {
 
 function populateAccountEditForm() {
   if (!userAccount) return;
-  var fields = ['fname','lname','pos','phone','email','co','web','what','kp1','kp2','kp3'];
+  var fields = ['fname','lname','pos','email','co','web','what','kp1','kp2','kp3'];
   fields.forEach(function(f) {
     var el = document.getElementById('acct-' + f + '-e');
     if (el) el.value = userAccount[f] || '';
   });
+  // Populate phone separately — split prefix from number
+  if (userAccount.phone) {
+    var savedPhone = userAccount.phone;
+    var matchedCountry = null;
+    // Find longest matching prefix
+    PHONE_COUNTRIES.slice().sort(function(a,b){ return b.code.length - a.code.length; }).forEach(function(c) {
+      if (!matchedCountry && savedPhone.startsWith(c.code)) matchedCountry = c;
+    });
+    if (matchedCountry) {
+      setPhoneCountry(matchedCountry, '-e');
+      var numOnly = savedPhone.replace(matchedCountry.code, '').trim();
+      var phoneEl = document.getElementById('acct-phone-e');
+      if (phoneEl) phoneEl.value = numOnly;
+    } else {
+      var phoneEl = document.getElementById('acct-phone-e');
+      if (phoneEl) phoneEl.value = savedPhone;
+    }
+  }
   // Individual social fields
   ['fb','ig','yt','x','li','reddit'].forEach(function(f) {
     var el = document.getElementById('acct-' + f + '-e');
@@ -7769,6 +7838,185 @@ function resetAll() {
 }
 
 // ---- INIT ----
+
+// ============================================================
+// PHONE NUMBER COUNTRY PREFIX SELECTOR
+// ============================================================
+var PHONE_COUNTRIES = [
+  {code:'+61',name:'Australia',flag:'🇦🇺',iso:'AU'},
+  {code:'+1',name:'United States',flag:'🇺🇸',iso:'US'},
+  {code:'+44',name:'United Kingdom',flag:'🇬🇧',iso:'GB'},
+  {code:'+1',name:'Canada',flag:'🇨🇦',iso:'CA'},
+  {code:'+64',name:'New Zealand',flag:'🇳🇿',iso:'NZ'},
+  {code:'+353',name:'Ireland',flag:'🇮🇪',iso:'IE'},
+  {code:'+27',name:'South Africa',flag:'🇿🇦',iso:'ZA'},
+  {code:'+91',name:'India',flag:'🇮🇳',iso:'IN'},
+  {code:'+65',name:'Singapore',flag:'🇸🇬',iso:'SG'},
+  {code:'+49',name:'Germany',flag:'🇩🇪',iso:'DE'},
+  {code:'+33',name:'France',flag:'🇫🇷',iso:'FR'},
+  {code:'+39',name:'Italy',flag:'🇮🇹',iso:'IT'},
+  {code:'+34',name:'Spain',flag:'🇪🇸',iso:'ES'},
+  {code:'+31',name:'Netherlands',flag:'🇳🇱',iso:'NL'},
+  {code:'+46',name:'Sweden',flag:'🇸🇪',iso:'SE'},
+  {code:'+47',name:'Norway',flag:'🇳🇴',iso:'NO'},
+  {code:'+45',name:'Denmark',flag:'🇩🇰',iso:'DK'},
+  {code:'+358',name:'Finland',flag:'🇫🇮',iso:'FI'},
+  {code:'+41',name:'Switzerland',flag:'🇨🇭',iso:'CH'},
+  {code:'+43',name:'Austria',flag:'🇦🇹',iso:'AT'},
+  {code:'+32',name:'Belgium',flag:'🇧🇪',iso:'BE'},
+  {code:'+351',name:'Portugal',flag:'🇵🇹',iso:'PT'},
+  {code:'+48',name:'Poland',flag:'🇵🇱',iso:'PL'},
+  {code:'+81',name:'Japan',flag:'🇯🇵',iso:'JP'},
+  {code:'+82',name:'South Korea',flag:'🇰🇷',iso:'KR'},
+  {code:'+86',name:'China',flag:'🇨🇳',iso:'CN'},
+  {code:'+852',name:'Hong Kong',flag:'🇭🇰',iso:'HK'},
+  {code:'+971',name:'UAE',flag:'🇦🇪',iso:'AE'},
+  {code:'+966',name:'Saudi Arabia',flag:'🇸🇦',iso:'SA'},
+  {code:'+55',name:'Brazil',flag:'🇧🇷',iso:'BR'},
+  {code:'+52',name:'Mexico',flag:'🇲🇽',iso:'MX'},
+  {code:'+54',name:'Argentina',flag:'🇦🇷',iso:'AR'},
+  {code:'+56',name:'Chile',flag:'🇨🇱',iso:'CL'},
+  {code:'+57',name:'Colombia',flag:'🇨🇴',iso:'CO'},
+  {code:'+60',name:'Malaysia',flag:'🇲🇾',iso:'MY'},
+  {code:'+63',name:'Philippines',flag:'🇵🇭',iso:'PH'},
+  {code:'+66',name:'Thailand',flag:'🇹🇭',iso:'TH'},
+  {code:'+62',name:'Indonesia',flag:'🇮🇩',iso:'ID'},
+  {code:'+84',name:'Vietnam',flag:'🇻🇳',iso:'VN'},
+  {code:'+92',name:'Pakistan',flag:'🇵🇰',iso:'PK'},
+  {code:'+880',name:'Bangladesh',flag:'🇧🇩',iso:'BD'},
+  {code:'+20',name:'Egypt',flag:'🇪🇬',iso:'EG'},
+  {code:'+234',name:'Nigeria',flag:'🇳🇬',iso:'NG'},
+  {code:'+254',name:'Kenya',flag:'🇰🇪',iso:'KE'},
+  {code:'+233',name:'Ghana',flag:'🇬🇭',iso:'GH'},
+  {code:'+7',name:'Russia',flag:'🇷🇺',iso:'RU'},
+  {code:'+380',name:'Ukraine',flag:'🇺🇦',iso:'UA'},
+  {code:'+90',name:'Turkey',flag:'🇹🇷',iso:'TR'},
+  {code:'+972',name:'Israel',flag:'🇮🇱',iso:'IL'},
+  {code:'+30',name:'Greece',flag:'🇬🇷',iso:'GR'}
+];
+
+var phoneSelectedCountry = { code:'+61', name:'Australia', flag:'🇦🇺', iso:'AU' };
+var phoneSelectedCountryE = { code:'+61', name:'Australia', flag:'🇦🇺', iso:'AU' };
+
+function initPhoneFields() {
+  // Auto-detect country from browser timezone/locale
+  var detected = detectUserCountry();
+  setPhoneCountry(detected, '');
+  setPhoneCountry(detected, '-e');
+  // Render dropdown lists
+  renderPhoneDropdown('phone-dropdown-list', '');
+  renderPhoneDropdown('phone-dropdown-e-list', '-e');
+  // Close dropdowns on outside click
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('#phone-prefix')) {
+      var dd = document.getElementById('phone-dropdown');
+      if (dd) dd.classList.remove('open');
+    }
+    if (!e.target.closest('#phone-prefix-e')) {
+      var dde = document.getElementById('phone-dropdown-e');
+      if (dde) dde.classList.remove('open');
+    }
+  });
+}
+
+function detectUserCountry() {
+  // Use timezone to guess country
+  var tz = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
+  var tzMap = {
+    'Australia/Sydney':'AU','Australia/Melbourne':'AU','Australia/Brisbane':'AU',
+    'Australia/Perth':'AU','Australia/Adelaide':'AU','Australia/Darwin':'AU',
+    'America/New_York':'US','America/Chicago':'US','America/Denver':'US',
+    'America/Los_Angeles':'US','America/Phoenix':'US',
+    'Europe/London':'GB','Europe/Dublin':'IE',
+    'Pacific/Auckland':'NZ','Pacific/Auckland':'NZ',
+    'Asia/Kolkata':'IN','Asia/Singapore':'SG',
+    'America/Toronto':'CA','America/Vancouver':'CA',
+    'Europe/Berlin':'DE','Europe/Paris':'FR','Europe/Rome':'IT',
+    'Europe/Madrid':'ES','Europe/Amsterdam':'NL','Europe/Stockholm':'SE',
+    'Asia/Tokyo':'JP','Asia/Seoul':'KR','Asia/Shanghai':'CN',
+    'Asia/Hong_Kong':'HK','Asia/Dubai':'AE',
+    'America/Sao_Paulo':'BR','America/Mexico_City':'MX',
+    'Asia/Kuala_Lumpur':'MY','Asia/Bangkok':'TH','Asia/Jakarta':'ID'
+  };
+  var iso = tzMap[tz] || 'AU';
+  return PHONE_COUNTRIES.find(function(c){ return c.iso === iso; }) || PHONE_COUNTRIES[0];
+}
+
+function renderPhoneDropdown(listId, suffix) {
+  renderPhoneOptions(listId, PHONE_COUNTRIES, suffix);
+}
+
+function renderPhoneOptions(listId, countries, suffix) {
+  var el = document.getElementById(listId);
+  if (!el) return;
+  var selected = suffix === '-e' ? phoneSelectedCountryE : phoneSelectedCountry;
+  el.innerHTML = countries.map(function(c) {
+    var isSel = c.iso === selected.iso && c.code === selected.code;
+    return '<div class="phone-option' + (isSel?' selected':'') + '" onclick="selectPhoneCountry(\'' + c.iso + '\',\'' + c.code + '\',\'' + suffix + '\')">' +
+      '<span class="phone-option-flag">' + c.flag + '</span>' +
+      '<span class="phone-option-name">' + c.name + '</span>' +
+      '<span class="phone-option-code">' + c.code + '</span>' +
+      '</div>';
+  }).join('');
+}
+
+function filterPhoneCountries(query, dropdownId) {
+  var suffix = dropdownId.includes('-e') ? '-e' : '';
+  var listId = dropdownId.replace('phone-dropdown', 'phone-dropdown') + '-list';
+  // Fix list id
+  if (suffix === '-e') listId = 'phone-dropdown-e-list';
+  else listId = 'phone-dropdown-list';
+  var filtered = query
+    ? PHONE_COUNTRIES.filter(function(c){
+        return c.name.toLowerCase().indexOf(query.toLowerCase()) > -1 ||
+               c.code.indexOf(query) > -1;
+      })
+    : PHONE_COUNTRIES;
+  renderPhoneOptions(listId, filtered, suffix);
+}
+
+function selectPhoneCountry(iso, code, suffix) {
+  var country = PHONE_COUNTRIES.find(function(c){ return c.iso === iso && c.code === code; });
+  if (!country) return;
+  setPhoneCountry(country, suffix);
+  // Close dropdown
+  var dd = document.getElementById('phone-dropdown' + suffix);
+  if (dd) dd.classList.remove('open');
+}
+
+function setPhoneCountry(country, suffix) {
+  if (suffix === '-e') phoneSelectedCountryE = country;
+  else phoneSelectedCountry = country;
+  var flag = document.getElementById('phone-flag' + suffix);
+  var code = document.getElementById('phone-code' + suffix);
+  var hidden = document.getElementById('acct-phone-prefix' + suffix);
+  if (flag) flag.textContent = country.flag;
+  if (code) code.textContent = country.code;
+  if (hidden) hidden.value = country.code;
+  // Re-render list to update selected state
+  var listId = suffix === '-e' ? 'phone-dropdown-e-list' : 'phone-dropdown-list';
+  renderPhoneOptions(listId, PHONE_COUNTRIES, suffix);
+}
+
+function togglePhoneDropdown(suffix) {
+  var dd = document.getElementById('phone-dropdown' + suffix);
+  if (!dd) return;
+  dd.classList.toggle('open');
+  if (dd.classList.contains('open')) {
+    // Focus search
+    var search = dd.querySelector('input');
+    if (search) setTimeout(function(){ search.focus(); }, 50);
+  }
+}
+
+function getFullPhoneNumber(suffix) {
+  var prefix = document.getElementById('acct-phone-prefix' + suffix);
+  var number = document.getElementById('acct-phone' + suffix);
+  if (!prefix || !number) return '';
+  var num = number.value.trim().replace(/^0/, ''); // strip leading 0
+  return prefix.value + ' ' + num;
+}
+
 // ============================================================
 // PHASE 6 — CLERK AUTH + SUPABASE DATA LAYER
 // ============================================================
@@ -7960,6 +8208,7 @@ function skipAuthFallback() {
 
 function initApp() {
   renderPlatforms();
+  setTimeout(initPhoneFields, 100);
   loadCampaigns();
   renderCampaignsDashboard(); // render immediately so campaigns show on load
   campCountries = [];
