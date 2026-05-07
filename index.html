@@ -375,7 +375,6 @@ textarea{resize:vertical;line-height:1.6;}
     <div class="eyebrow">Welcome to Outreach Platform</div>
     <h1 class="sec-title" style="font-size:30px;">Let's set up your account</h1>
     <p class="sec-sub" style="margin:0 auto;">This information stays at your account level and pre-fills every campaign, press release, and outreach email automatically. You only do this once.</p>
-    <button class="btn btn-outline btn-sm" style="margin-top:14px;" onclick="fillTestAccount()"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Fill with test data</button>
   </div>
 
   <div style="background:var(--gold-light);border:1.5px solid var(--gold);border-radius:12px;padding:1.25rem 1.5rem;margin-bottom:1.5rem;">
@@ -407,6 +406,23 @@ textarea{resize:vertical;line-height:1.6;}
   <div style="border:1.5px solid var(--border);border-radius:12px;padding:1.25rem 1.5rem;margin-bottom:1.5rem;background:var(--white);">
     <div style="font-size:12px;font-weight:500;color:var(--muted);margin-bottom:1rem;">YOUR BUSINESS</div>
     <div class="g2">
+      <div class="full">
+        <label>Industry</label>
+        <div class="chips" id="acct-industry-chips" style="margin-top:8px;">
+          <div class="chip" onclick="selectAcctIndustry(this,'Fashion, Retail &amp; Consumer')">👗 Fashion &amp; Retail</div>
+          <div class="chip" onclick="selectAcctIndustry(this,'Technology &amp; Innovation')">💻 Technology</div>
+          <div class="chip" onclick="selectAcctIndustry(this,'Health &amp; Wellness')">💊 Health &amp; Wellness</div>
+          <div class="chip" onclick="selectAcctIndustry(this,'Finance &amp; Professional Services')">📈 Finance</div>
+          <div class="chip" onclick="selectAcctIndustry(this,'Food, Hospitality &amp; Travel')">🍽 Food &amp; Hospitality</div>
+          <div class="chip" onclick="selectAcctIndustry(this,'Media, Arts &amp; Entertainment')">🎬 Media &amp; Arts</div>
+          <div class="chip" onclick="selectAcctIndustry(this,'Business &amp; Startups')">🚀 Business &amp; Startups</div>
+          <div class="chip" onclick="selectAcctIndustry(this,'Energy, Environment &amp; Education')">🌿 Environment &amp; Education</div>
+          <div class="chip" onclick="selectAcctIndustry(this,'Industry &amp; Infrastructure')">🏗 Industry</div>
+          <div class="chip" onclick="selectAcctIndustry(this,'Other')">✦ Other</div>
+        </div>
+        <input type="hidden" id="acct-industry"/>
+        <input type="text" id="acct-industry-other" placeholder="Type your industry..." style="display:none;margin-top:8px;"/>
+      </div>
       <div><label>Company name</label><input type="text" id="acct-co" placeholder="e.g. Acme Co, The Local Bakery"/></div>
       <div><label>Website</label><input type="text" id="acct-web" placeholder="e.g. yourbusiness.com"/></div>
       <div class="full"><label style="display:flex;align-items:center;justify-content:space-between;">What your business does <div class="wfm-wrap">
@@ -476,7 +492,6 @@ textarea{resize:vertical;line-height:1.6;}
   <h2 class="sec-title">Your account</h2>
   <p class="sec-sub" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
     <span>This information pre-fills every campaign, press release, and outreach email. Keep it up to date.</span>
-    <button class="btn btn-outline btn-sm" onclick="fillTestAccount()" style="font-size:11px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Fill with test data</button>
   </p>
 
   <div id="acct-complete-banner" style="display:none;margin-bottom:1.5rem;"></div>
@@ -510,6 +525,23 @@ textarea{resize:vertical;line-height:1.6;}
   <div style="border:1.5px solid var(--border);border-radius:12px;padding:1.25rem 1.5rem;margin-bottom:1.5rem;background:var(--white);">
     <div style="font-size:12px;font-weight:500;color:var(--muted);margin-bottom:1rem;">BUSINESS</div>
     <div class="g2">
+      <div class="full">
+        <label>Industry</label>
+        <div class="chips" id="acct-industry-chips-e" style="margin-top:8px;">
+          <div class="chip" onclick="selectAcctIndustry(this,'Fashion, Retail &amp; Consumer','-e')">👗 Fashion &amp; Retail</div>
+          <div class="chip" onclick="selectAcctIndustry(this,'Technology &amp; Innovation','-e')">💻 Technology</div>
+          <div class="chip" onclick="selectAcctIndustry(this,'Health &amp; Wellness','-e')">💊 Health &amp; Wellness</div>
+          <div class="chip" onclick="selectAcctIndustry(this,'Finance &amp; Professional Services','-e')">📈 Finance</div>
+          <div class="chip" onclick="selectAcctIndustry(this,'Food, Hospitality &amp; Travel','-e')">🍽 Food &amp; Hospitality</div>
+          <div class="chip" onclick="selectAcctIndustry(this,'Media, Arts &amp; Entertainment','-e')">🎬 Media &amp; Arts</div>
+          <div class="chip" onclick="selectAcctIndustry(this,'Business &amp; Startups','-e')">🚀 Business &amp; Startups</div>
+          <div class="chip" onclick="selectAcctIndustry(this,'Energy, Environment &amp; Education','-e')">🌿 Environment &amp; Education</div>
+          <div class="chip" onclick="selectAcctIndustry(this,'Industry &amp; Infrastructure','-e')">🏗 Industry</div>
+          <div class="chip" onclick="selectAcctIndustry(this,'Other','-e')">✦ Other</div>
+        </div>
+        <input type="hidden" id="acct-industry-e"/>
+        <input type="text" id="acct-industry-other-e" placeholder="Type your industry..." style="display:none;margin-top:8px;"/>
+      </div>
       <div><label>Company name</label><input type="text" id="acct-co-e" placeholder="e.g. Acme Co"/></div>
       <div><label>Website</label><input type="text" id="acct-web-e" placeholder="e.g. yourbusiness.com"/></div>
       <div class="full"><label>What your business does</label><textarea id="acct-what-e" style="min-height:75px;" placeholder="Describe your business in 1-2 sentences"></textarea></div>
@@ -738,7 +770,6 @@ textarea{resize:vertical;line-height:1.6;}
       &#10003; Your account information has been pre-filled below. Review and adjust anything specific to this campaign.
     </div>
     <div style="display:flex;align-items:center;justify-content:flex-end;margin-bottom:8px;">
-      <button class="btn btn-outline btn-sm" onclick="fillTestCampaign()" style="font-size:11px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Fill with test data</button>
     </div>
 
     <div style="background:var(--gold-light);border:1.5px solid var(--gold);border-radius:12px;padding:1.25rem 1.5rem;margin-bottom:1.5rem;">
@@ -858,7 +889,6 @@ textarea{resize:vertical;line-height:1.6;}
         Answer 3 short questions. The AI uses your account profile and campaign details to write a professional press release instantly. Approve it and download the PDF straight away.
       </div>
       <div style="display:flex;justify-content:flex-end;margin-bottom:10px;">
-        <button class="btn btn-outline btn-sm" onclick="fillTestPRQuestions()" style="font-size:11px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Fill with test data</button>
       </div>
 
       <!-- 3 Questions -->
@@ -2339,7 +2369,7 @@ function getWFMContext() {
 function buildWFMPrompt(fieldId, ctx, websiteContent) {
   var biz = ctx.co || 'the company';
   var web = websiteContent ? '\n\nFrom their website: ' + websiteContent : '';
-  var base = 'Company: ' + biz + (ctx.pos ? ', ' + ctx.pos : '') + (ctx.what ? '\nWhat they do: ' + ctx.what : '') + (ctx.angle ? '\nUnique angle: ' + ctx.angle : '') + web;
+  var base = 'Company: ' + biz + (ctx.pos ? ', ' + ctx.pos : '') + (ctx.industry ? '\nIndustry: ' + ctx.industry : '') + (ctx.what ? '\nWhat they do: ' + ctx.what : '') + (ctx.angle ? '\nUnique angle: ' + ctx.angle : '') + web;
 
   var prompts = {
     // Account fields
@@ -2885,6 +2915,7 @@ function saveAccount(isOnboarding) {
     lname: lname,
     pos: document.getElementById('acct-pos' + suffix).value.trim(),
     phone: getFullPhoneNumber(suffix === '' ? '' : '-e'),
+    industry: (document.getElementById('acct-industry' + suffix) ? document.getElementById('acct-industry' + suffix).value.trim() : '') || (document.getElementById('acct-industry-other' + suffix) ? document.getElementById('acct-industry-other' + suffix).value.trim() : ''),
     email: document.getElementById('acct-email' + suffix).value.trim(),
     co: co,
     web: document.getElementById('acct-web' + suffix).value.trim(),
@@ -2968,11 +2999,21 @@ function updateAccountCompleteBanner() {
 
 function populateAccountEditForm() {
   if (!userAccount) return;
-  var fields = ['fname','lname','pos','email','co','web','what','kp1','kp2','kp3'];
+  var fields = ['fname','lname','pos','email','co','web','what','kp1','kp2','kp3','industry'];
   fields.forEach(function(f) {
     var el = document.getElementById('acct-' + f + '-e');
     if (el) el.value = userAccount[f] || '';
   });
+  // Restore industry chip selection
+  if (userAccount && userAccount.industry) {
+    var indChips = document.querySelectorAll('#acct-industry-chips-e .chip');
+    indChips.forEach(function(c) {
+      var chipVal = c.getAttribute('onclick').match(/'([^']+)'/)[1].replace(/&amp;/g,'&');
+      if (chipVal === userAccount.industry) c.classList.add('on');
+    });
+    var indHidden = document.getElementById('acct-industry-e');
+    if (indHidden) indHidden.value = userAccount.industry;
+  }
   // Populate phone separately — split prefix from number
   if (userAccount.phone) {
     var savedPhone = userAccount.phone;
@@ -7838,6 +7879,26 @@ function resetAll() {
 }
 
 // ---- INIT ----
+
+
+// ============================================================
+// ACCOUNT INDUSTRY SELECTOR
+// ============================================================
+function selectAcctIndustry(el, val, suffix) {
+  suffix = suffix || '';
+  var decoded = val.replace(/&amp;/g, '&');
+  var chipsId = 'acct-industry-chips' + suffix;
+  document.querySelectorAll('#' + chipsId + ' .chip').forEach(function(c){ c.classList.remove('on'); });
+  el.classList.add('on');
+  var otherInput = document.getElementById('acct-industry-other' + suffix);
+  if (val === 'Other') {
+    if (otherInput) otherInput.style.display = 'block';
+  } else {
+    if (otherInput) otherInput.style.display = 'none';
+    var hidden = document.getElementById('acct-industry' + suffix);
+    if (hidden) hidden.value = decoded;
+  }
+}
 
 // ============================================================
 // PHONE NUMBER COUNTRY PREFIX SELECTOR
