@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>PressReachOut — PR Outreach That Actually Gets You Covered</title>
+<meta name="description" content="AI-powered press releases, pitch emails, and media contacts — built for founders, marketers, and brands who want results without a PR agency."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+/* ── RESET & ROOT ── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --gold:#c2185b;
+  --gold-light:#fff0f3;
+  --gold-dark:#9c1048;
+  --black:#0a0a0a;
+  --white:#ffffff;
+  --off:#f8f7f5;
+  --border:#e8e4df;
+  --text:#1a1a1a;
+  --muted:#888;
+  --radius:10px;
+  --shadow:0 2px 20px rgba(0,0,0,0.07);
+  --shadow-lg:0 8px 40px rgba(0,0,0,0.12);
+}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--text);font-size:16px;line-height:1.6;overflow-x:hidden;}
+img{max-width:100%;display:block;}
+a{text-decoration:none;color:inherit;}
+
+/* ── TYPOGRAPHY ── */
+h1,h2,h3,h4{font-family:'Playfair Display',serif;line-height:1.15;}
+.serif{font-family:'Playfair Display',serif;}
+.gold{color:var(--gold);}
+.muted{color:var(--muted);}
+
+/* ── LAYOUT ── */
+.wrap{max-width:1100px;margin:0 auto;padding:0 2rem;}
+.wrap-sm{max-width:740px;margin:0 auto;padding:0 2rem;}
+section{padding:100px 0;}
+
+/* ── BUTTONS ── */
+.btn{display:inline-flex;align-items:center;gap:8px;padding:13px 26px;border-radius:50px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;cursor:pointer;border:2px solid transparent;transition:all 0.2s;white-space:nowrap;}
+.btn-primary{background:var(--gold);color:#fff;border-color:var(--gold);}
+.btn-primary:hover{background:var(--gold-dark);border-color:var(--gold-dark);transform:translateY(-1px);box-shadow:0 6px 20px rgba(194,24,91,0.35);}
+.btn-outline{background:transparent;color:var(--text);border-color:var(--border);}
+.btn-outline:hover{border-color:var(--text);}
+.btn-outline-white{background:transparent;color:#fff;border-color:rgba(255,255,255,0.5);}
+.btn-outline-white:hover{border-color:#fff;background:rgba(255,255,255,0.1);}
+.btn-sm{padding:9px 18px;font-size:13px;}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);transition:box-shadow 0.3s;}
+nav.scrolled{box-shadow:var(--shadow);}
+.nav-inner{max-width:1100px;margin:0 auto;padding:0 2rem;height:64px;display:flex;align-items:center;justify-content:space-between;gap:2rem;}
+.nav-logo{font-family:'Playfair Display',serif;font-size:18px;font-weight:600;color:var(--black);display:flex;align-items:center;gap:6px;}
+.nav-logo span{color:var(--gold);}
+.nav-links{display:flex;align-items:center;gap:2rem;}
+.nav-links a{font-size:14px;font-weight:500;color:var(--muted);transition:color 0.2s;}
+.nav-links a:hover{color:var(--black);}
+.nav-ctas{display:flex;align-items:center;gap:10px;}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;}
+.hamburger span{display:block;width:22px;height:2px;background:var(--black);border-radius:2px;transition:all 0.3s;}
+.mobile-menu{display:none;position:fixed;top:64px;left:0;right:0;bottom:0;background:#fff;z-index:99;flex-direction:column;padding:2rem;gap:0;overflow-y:auto;}
+.mobile-menu.open{display:flex;}
+.mobile-menu a{font-size:18px;font-weight:500;padding:16px 0;border-bottom:1px solid var(--border);color:var(--text);}
+.mobile-menu .mobile-ctas{margin-top:2rem;display:flex;flex-direction:column;gap:12px;}
+
+/* ── HERO ── */
+#hero{padding:160px 0 100px;background:var(--off);position:relative;overflow:hidden;}
+.hero-bg-circle{position:absolute;border-radius:50%;background:var(--gold-light);opacity:0.7;pointer-events:none;}
+.hero-inner{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:var(--gold-light);color:var(--gold);font-size:12px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;padding:6px 14px;border-radius:50px;margin-bottom:1.5rem;}
+.hero-eyebrow-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);}
+.hero-title{font-size:clamp(2.4rem, 4.5vw, 3.6rem);font-weight:700;color:var(--black);margin-bottom:1.25rem;line-height:1.1;}
+.hero-title em{color:var(--gold);font-style:italic;}
+.hero-sub{font-size:17px;color:var(--muted);line-height:1.7;margin-bottom:2.25rem;max-width:460px;}
+.hero-ctas{display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+.hero-visual{position:relative;}
+.hero-mockup{background:var(--white);border-radius:16px;box-shadow:var(--shadow-lg);overflow:hidden;border:1px solid var(--border);}
+.mockup-bar{background:var(--off);border-bottom:1px solid var(--border);padding:12px 16px;display:flex;align-items:center;gap:8px;}
+.mockup-dot{width:10px;height:10px;border-radius:50%;}
+.mockup-title{font-size:12px;font-weight:600;color:var(--muted);margin-left:6px;}
+.mockup-body{padding:20px;}
+.mockup-row{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.mockup-avatar{width:36px;height:36px;border-radius:50%;background:var(--gold);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.mockup-text-block{flex:1;}
+.mockup-line{height:8px;border-radius:4px;background:var(--border);margin-bottom:4px;}
+.mockup-line.short{width:60%;}
+.mockup-line.gold{background:var(--gold-light);border:1px solid #f0c0cc;}
+.mockup-card{background:var(--off);border-radius:10px;padding:14px;margin-bottom:10px;border:1px solid var(--border);}
+.mockup-card-title{font-size:12px;font-weight:600;color:var(--black);margin-bottom:8px;}
+.mockup-chip-row{display:flex;gap:6px;flex-wrap:wrap;}
+.mockup-chip{font-size:10px;padding:3px 10px;border-radius:20px;background:var(--white);border:1px solid var(--border);color:var(--muted);}
+.mockup-chip.active{background:var(--gold-light);border-color:var(--gold);color:var(--gold);font-weight:600;}
+.mockup-pr-badge{display:inline-flex;align-items:center;gap:5px;background:#e8f5e9;color:#2d6a4f;font-size:10px;font-weight:600;padding:3px 10px;border-radius:20px;margin-top:8px;}
+.mockup-icons{display:flex;gap:6px;margin-top:8px;}
+.mockup-icon-pip{width:28px;height:28px;border-radius:6px;background:var(--border);display:flex;align-items:center;justify-content:center;}
+.mockup-icon-pip.used{background:#e8f5e9;}
+.floating-badge{position:absolute;background:var(--white);border-radius:12px;padding:10px 14px;box-shadow:var(--shadow-lg);border:1px solid var(--border);display:flex;align-items:center;gap:8px;font-size:12px;font-weight:500;white-space:nowrap;}
+.floating-badge svg{flex-shrink:0;}
+
+/* ── PROOF BAR ── */
+#proof{padding:32px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--white);overflow:hidden;}
+.proof-label{font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:16px;text-align:center;}
+.proof-track{display:flex;align-items:center;gap:0;width:max-content;animation:scroll-proof 30s linear infinite;}
+.proof-item{font-size:14px;font-weight:500;color:var(--text);padding:0 28px;opacity:0.6;white-space:nowrap;}
+.proof-sep{color:var(--gold);font-size:18px;opacity:0.4;}
+@keyframes scroll-proof{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+
+/* ── PROBLEM ── */
+#problem{background:var(--black);color:#fff;padding:100px 0;}
+.problem-eyebrow{font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;}
+.problem-title{font-size:clamp(2rem,3.5vw,3rem);color:#fff;margin-bottom:3rem;max-width:600px;}
+.problem-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;}
+.problem-card{background:#111;padding:2.5rem;position:relative;overflow:hidden;}
+.problem-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform 0.4s;}
+.problem-card:hover::before{transform:scaleX(1);}
+.problem-num{font-family:'Playfair Display',serif;font-size:5rem;font-weight:700;color:rgba(194,24,91,0.12);line-height:1;margin-bottom:1rem;display:block;}
+.problem-text{font-size:17px;line-height:1.6;color:#ddd;font-weight:400;}
+.problem-text strong{color:#fff;}
+
+/* ── HOW IT WORKS ── */
+#how{background:var(--off);}
+.section-eyebrow{font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;text-align:center;}
+.section-title{font-size:clamp(1.8rem,3vw,2.8rem);text-align:center;margin-bottom:1rem;color:var(--black);}
+.section-sub{font-size:16px;color:var(--muted);text-align:center;max-width:520px;margin:0 auto 4rem;}
+.steps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;position:relative;}
+.steps-grid::before{content:'';position:absolute;top:44px;left:10%;right:10%;height:1px;background:var(--border);z-index:0;}
+.step-card{text-align:center;position:relative;z-index:1;}
+.step-num{width:56px;height:56px;border-radius:50%;background:var(--white);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;margin:0 auto 1.25rem;font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--muted);transition:all 0.3s;}
+.step-card:hover .step-num{background:var(--gold);border-color:var(--gold);color:#fff;}
+.step-title{font-size:15px;font-weight:600;color:var(--black);margin-bottom:0.5rem;}
+.step-desc{font-size:13px;color:var(--muted);line-height:1.6;}
+
+/* ── FEATURES ── */
+#features{background:var(--white);}
+.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;}
+.feature-card{padding:2rem;border:1.5px solid var(--border);border-radius:14px;background:var(--white);transition:all 0.25s;position:relative;overflow:hidden;}
+.feature-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--gold);transform:scaleX(0);transition:transform 0.3s;transform-origin:left;}
+.feature-card:hover{border-color:var(--gold);transform:translateY(-3px);box-shadow:var(--shadow-lg);}
+.feature-card:hover::after{transform:scaleX(1);}
+.feature-icon{width:44px;height:44px;background:var(--gold-light);border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:1.25rem;}
+.feature-title{font-size:16px;font-weight:600;color:var(--black);margin-bottom:0.5rem;}
+.feature-desc{font-size:14px;color:var(--muted);line-height:1.65;}
+
+/* ── INDUSTRIES ── */
+#industries{background:var(--off);}
+.industries-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-top:3rem;}
+.industry-card{background:var(--white);border:1.5px solid var(--border);border-radius:12px;padding:1.5rem;text-align:center;transition:all 0.2s;}
+.industry-card:hover{border-color:var(--gold);transform:translateY(-2px);box-shadow:var(--shadow);}
+.industry-icon{margin:0 auto 0.75rem;display:flex;align-items:center;justify-content:center;}
+.industry-name{font-size:14px;font-weight:600;color:var(--black);margin-bottom:0.25rem;}
+.industry-desc{font-size:11px;color:var(--muted);line-height:1.5;}
+
+/* ── WHO IT'S FOR ── */
+#for{background:var(--white);}
+.for-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;}
+.for-card{border-radius:16px;overflow:hidden;border:1.5px solid var(--border);transition:all 0.25s;}
+.for-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg);border-color:var(--gold);}
+.for-card-top{padding:2rem 2rem 1.5rem;background:var(--off);}
+.for-icon{width:48px;height:48px;border-radius:12px;background:var(--gold);display:flex;align-items:center;justify-content:center;margin-bottom:1.25rem;}
+.for-title{font-size:18px;font-weight:600;color:var(--black);margin-bottom:0;}
+.for-card-body{padding:1.5rem 2rem 2rem;}
+.for-desc{font-size:14px;color:var(--muted);line-height:1.7;}
+
+/* ── PRICING ── */
+#pricing{background:var(--off);}
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:3.5rem;}
+.pricing-card{background:var(--white);border:1.5px solid var(--border);border-radius:16px;padding:2.25rem;position:relative;transition:all 0.25s;}
+.pricing-card.featured{border-color:var(--gold);background:var(--white);}
+.pricing-card.featured::before{content:'Most popular';position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:var(--gold);color:#fff;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:4px 16px;border-radius:50px;}
+.pricing-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg);}
+.pricing-plan{font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:0.75rem;}
+.pricing-price{font-family:'Playfair Display',serif;font-size:3rem;font-weight:700;color:var(--black);line-height:1;margin-bottom:0.25rem;}
+.pricing-price sup{font-size:1.2rem;vertical-align:super;}
+.pricing-period{font-size:13px;color:var(--muted);margin-bottom:1.75rem;}
+.pricing-features{list-style:none;margin-bottom:2rem;}
+.pricing-features li{font-size:14px;color:var(--text);padding:7px 0;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;}
+.pricing-features li:last-child{border-bottom:none;}
+.pricing-features li::before{content:'';width:16px;height:16px;border-radius:50%;background:var(--gold-light);border:1.5px solid var(--gold);flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+.pricing-features li.check::before{background:url("data:image/svg+xml,%3Csvg width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%23c2185b' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E") center/10px no-repeat var(--gold-light);}
+.pricing-note{font-size:12px;color:var(--muted);text-align:center;margin-top:2rem;}
+
+/* ── FAQ ── */
+#faq{background:var(--white);}
+.faq-list{max-width:700px;margin:3rem auto 0;}
+.faq-item{border-bottom:1px solid var(--border);}
+.faq-q{width:100%;display:flex;align-items:center;justify-content:space-between;padding:1.25rem 0;font-size:16px;font-weight:500;color:var(--black);cursor:pointer;background:none;border:none;font-family:'DM Sans',sans-serif;text-align:left;gap:1rem;}
+.faq-q:hover{color:var(--gold);}
+.faq-arrow{flex-shrink:0;width:22px;height:22px;border-radius:50%;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;transition:all 0.25s;color:var(--muted);}
+.faq-item.open .faq-arrow{background:var(--gold);border-color:var(--gold);color:#fff;transform:rotate(180deg);}
+.faq-a{display:none;padding:0 0 1.25rem;font-size:14px;color:var(--muted);line-height:1.7;}
+.faq-item.open .faq-a{display:block;}
+
+/* ── FINAL CTA ── */
+#cta{background:var(--black);padding:120px 0;text-align:center;position:relative;overflow:hidden;}
+#cta::before{content:'';position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(194,24,91,0.15) 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);}
+.cta-eyebrow{font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:1.25rem;}
+.cta-title{font-size:clamp(2rem,4vw,3.5rem);color:#fff;margin-bottom:1.25rem;position:relative;}
+.cta-sub{font-size:17px;color:rgba(255,255,255,0.55);margin-bottom:2.5rem;max-width:480px;margin-left:auto;margin-right:auto;}
+.cta-btns{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}
+
+/* ── FOOTER ── */
+footer{background:#0a0a0a;border-top:1px solid #1a1a1a;padding:60px 0 40px;}
+.footer-inner{max-width:1100px;margin:0 auto;padding:0 2rem;}
+.footer-top{display:grid;grid-template-columns:1.8fr 1fr 1fr 1fr;gap:3rem;margin-bottom:3rem;}
+.footer-brand .footer-logo{font-family:'Playfair Display',serif;font-size:20px;color:#fff;margin-bottom:0.75rem;}
+.footer-brand .footer-logo span{color:var(--gold);}
+.footer-tagline{font-size:13px;color:#666;line-height:1.6;max-width:220px;}
+.footer-col h4{font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#666;margin-bottom:1rem;}
+.footer-col a{display:block;font-size:13px;color:#888;margin-bottom:8px;transition:color 0.2s;}
+.footer-col a:hover{color:#fff;}
+.footer-bottom{border-top:1px solid #1a1a1a;padding-top:1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;}
+.footer-copy{font-size:12px;color:#555;}
+
+/* ── SCROLL ANIMATION ── */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity 0.65s ease,transform 0.65s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+.reveal-delay-1{transition-delay:0.1s;}
+.reveal-delay-2{transition-delay:0.2s;}
+.reveal-delay-3{transition-delay:0.3s;}
+.reveal-delay-4{transition-delay:0.4s;}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  .hero-inner{grid-template-columns:1fr;text-align:center;}
+  .hero-sub{margin-left:auto;margin-right:auto;}
+  .hero-ctas{justify-content:center;}
+  .hero-visual{display:none;}
+  .problem-grid{grid-template-columns:1fr;}
+  .steps-grid{grid-template-columns:repeat(2,1fr);}
+  .steps-grid::before{display:none;}
+  .features-grid{grid-template-columns:repeat(2,1fr);}
+  .industries-grid{grid-template-columns:repeat(3,1fr);}
+  .for-grid{grid-template-columns:1fr;}
+  .pricing-grid{grid-template-columns:1fr;}
+  .footer-top{grid-template-columns:1fr 1fr;}
+}
+@media(max-width:600px){
+  section{padding:70px 0;}
+  .nav-links,.nav-ctas .btn-outline{display:none;}
+  .hamburger{display:flex;}
+  .features-grid{grid-template-columns:1fr;}
+  .industries-grid{grid-template-columns:repeat(2,1fr);}
+  .footer-top{grid-template-columns:1fr;}
+  .steps-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav id="main-nav">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">Outreach <span>Platform</span></a>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#how">How it works</a>
+      <a href="#industries">Industries</a>
+      <a href="#pricing">Pricing</a>
+    </div>
+    <div class="nav-ctas">
+      <a href="index.html" class="btn btn-outline btn-sm">Sign in</a>
+      <a href="index.html" class="btn btn-primary btn-sm">Get started free &rarr;</a>
+    </div>
+    <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile menu -->
+<div class="mobile-menu" id="mobile-menu">
+  <a href="#features" onclick="toggleMenu()">Features</a>
+  <a href="#how" onclick="toggleMenu()">How it works</a>
+  <a href="#industries" onclick="toggleMenu()">Industries</a>
+  <a href="#pricing" onclick="toggleMenu()">Pricing</a>
+  <div class="mobile-ctas">
+    <a href="index.html" class="btn btn-outline" style="justify-content:center;">Sign in</a>
+    <a href="index.html" class="btn btn-primary" style="justify-content:center;">Get started free &rarr;</a>
+  </div>
+</div>
+
+<!-- ── SECTION 1: HERO ── -->
+<section id="hero">
+  <div style="width:500px;height:500px;top:-200px;right:-100px;" class="hero-bg-circle"></div>
+  <div style="width:300px;height:300px;bottom:-100px;left:-50px;" class="hero-bg-circle"></div>
+  <div class="wrap">
+    <div class="hero-inner">
+      <div>
+        <div class="hero-eyebrow reveal">
+          <span class="hero-eyebrow-dot"></span>
+          AI-Powered PR Outreach
+        </div>
+        <h1 class="hero-title reveal reveal-delay-1">
+          PR outreach that actually gets you <em>covered.</em>
+        </h1>
+        <p class="hero-sub reveal reveal-delay-2">
+          AI-powered press releases, pitch emails, and media contacts — built for founders, marketers, and brands who want results without a PR agency.
+        </p>
+        <div class="hero-ctas reveal reveal-delay-3">
+          <a href="index.html" class="btn btn-primary">Get started free &rarr;</a>
+          <a href="#how" class="btn btn-outline">See how it works</a>
+        </div>
+      </div>
+
+      <!-- App mockup visual -->
+      <div class="hero-visual reveal reveal-delay-2">
+        <div style="position:relative;">
+          <div class="hero-mockup">
+            <div class="mockup-bar">
+              <div class="mockup-dot" style="background:#ff5f57;"></div>
+              <div class="mockup-dot" style="background:#febc2e;"></div>
+              <div class="mockup-dot" style="background:#28c840;"></div>
+              <span class="mockup-title">Outreach Platform — My Campaigns</span>
+            </div>
+            <div class="mockup-body">
+              <div class="mockup-row">
+                <div class="mockup-avatar">AJ</div>
+                <div class="mockup-text-block">
+                  <div class="mockup-line" style="width:80%;"></div>
+                  <div class="mockup-line short" style="background:#e8e4df;"></div>
+                </div>
+                <div style="font-size:10px;font-weight:600;color:#2d6a4f;background:#e8f5e9;padding:3px 10px;border-radius:20px;white-space:nowrap;">&#10003; Profile complete</div>
+              </div>
+              <div class="mockup-card">
+                <div class="mockup-card-title">Product Launch — May 2026</div>
+                <div class="mockup-chip-row">
+                  <span class="mockup-chip">Media & Arts</span>
+                  <span class="mockup-chip">Australia</span>
+                </div>
+                <div class="mockup-pr-badge">&#10003; Press release ready</div>
+                <div class="mockup-icons">
+                  <div class="mockup-icon-pip used">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#2d6a4f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
+                  </div>
+                  <div class="mockup-icon-pip">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#bbb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                  </div>
+                  <div class="mockup-icon-pip">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#bbb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/></svg>
+                  </div>
+                </div>
+              </div>
+              <div class="mockup-card" style="opacity:0.5;">
+                <div class="mockup-card-title">Podcast Pitch — June 2026</div>
+                <div class="mockup-chip-row">
+                  <span class="mockup-chip active">Draft</span>
+                </div>
+              </div>
+              <div style="display:flex;gap:8px;margin-top:8px;">
+                <div style="flex:1;height:32px;background:var(--gold);border-radius:8px;display:flex;align-items:center;justify-content:center;">
+                  <div class="mockup-line" style="width:60%;height:6px;background:rgba(255,255,255,0.5);"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Floating badges -->
+          <div class="floating-badge" style="bottom:-20px;left:-30px;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <span>40 outlets found</span>
+          </div>
+          <div class="floating-badge" style="top:-16px;right:-20px;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v2"/><path d="M4 11h8"/><path d="M4 7h4"/><path d="M4 15h8"/></svg>
+            <span>Press release ready</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SECTION 2: SOCIAL PROOF BAR ── -->
+<section id="proof">
+  <div class="wrap-sm">
+    <p class="proof-label">Reach outlets including</p>
+  </div>
+  <div style="overflow:hidden;">
+    <div class="proof-track">
+      <span class="proof-item">Mumbrella</span><span class="proof-sep">·</span>
+      <span class="proof-item">WhichCar</span><span class="proof-sep">·</span>
+      <span class="proof-item">The Guardian</span><span class="proof-sep">·</span>
+      <span class="proof-item">TechCrunch</span><span class="proof-sep">·</span>
+      <span class="proof-item">Autocar</span><span class="proof-sep">·</span>
+      <span class="proof-item">SmartCompany</span><span class="proof-sep">·</span>
+      <span class="proof-item">Wheels Magazine</span><span class="proof-sep">·</span>
+      <span class="proof-item">Hospitality Magazine</span><span class="proof-sep">·</span>
+      <span class="proof-item">Finextra</span><span class="proof-sep">·</span>
+      <span class="proof-item">Renew Economy</span><span class="proof-sep">·</span>
+      <span class="proof-item">Car Expert</span><span class="proof-sep">·</span>
+      <span class="proof-item">GoAuto</span><span class="proof-sep">·</span>
+      <span class="proof-item">Drive.com.au</span><span class="proof-sep">·</span>
+      <!-- Duplicate for seamless loop -->
+      <span class="proof-item">Mumbrella</span><span class="proof-sep">·</span>
+      <span class="proof-item">WhichCar</span><span class="proof-sep">·</span>
+      <span class="proof-item">The Guardian</span><span class="proof-sep">·</span>
+      <span class="proof-item">TechCrunch</span><span class="proof-sep">·</span>
+      <span class="proof-item">Autocar</span><span class="proof-sep">·</span>
+      <span class="proof-item">SmartCompany</span><span class="proof-sep">·</span>
+      <span class="proof-item">Wheels Magazine</span><span class="proof-sep">·</span>
+      <span class="proof-item">Hospitality Magazine</span><span class="proof-sep">·</span>
+      <span class="proof-item">Finextra</span><span class="proof-sep">·</span>
+      <span class="proof-item">Renew Economy</span><span class="proof-sep">·</span>
+      <span class="proof-item">Car Expert</span><span class="proof-sep">·</span>
+      <span class="proof-item">GoAuto</span><span class="proof-sep">·</span>
+      <span class="proof-item">Drive.com.au</span><span class="proof-sep">·</span>
+    </div>
+  </div>
+</section>
+
+<!-- ── SECTION 3: THE PROBLEM ── -->
+<section id="problem">
+  <div class="wrap">
+    <p class="problem-eyebrow reveal">The problem with PR right now</p>
+    <h2 class="problem-title reveal reveal-delay-1">Most brands never get covered. Not because their story isn't good. Because their outreach is broken.</h2>
+    <div class="problem-grid">
+      <div class="problem-card reveal">
+        <span class="problem-num">01</span>
+        <p class="problem-text"><strong>PR agencies cost $5,000+ a month</strong> and treat small brands as an afterthought while billing for work that AI can now do in minutes.</p>
+      </div>
+      <div class="problem-card reveal reveal-delay-1">
+        <span class="problem-num">02</span>
+        <p class="problem-text"><strong>Copy-pasting the same pitch into Gmail gets ignored.</strong> Journalists receive hundreds of emails a week. They can tell a template instantly.</p>
+      </div>
+      <div class="problem-card reveal reveal-delay-2">
+        <span class="problem-num">03</span>
+        <p class="problem-text"><strong>You don't know which journalists to contact,</strong> what to say, or whether they even cover your industry. So nothing gets sent.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SECTION 4: HOW IT WORKS ── -->
+<section id="how">
+  <div class="wrap">
+    <p class="section-eyebrow reveal">How it works</p>
+    <h2 class="section-title reveal reveal-delay-1">From idea to inbox in under 10 minutes</h2>
+    <p class="section-sub reveal reveal-delay-2">No PR experience needed. No agency required. Just your story and a campaign.</p>
+    <div class="steps-grid">
+      <div class="step-card reveal">
+        <div class="step-num">1</div>
+        <h3 class="step-title">Set up your account</h3>
+        <p class="step-desc">Enter your business details once. They pre-fill every campaign, press release, and pitch email automatically — forever.</p>
+      </div>
+      <div class="step-card reveal reveal-delay-1">
+        <div class="step-num">2</div>
+        <h3 class="step-title">Create a campaign</h3>
+        <p class="step-desc">Name your campaign and answer 3 questions. AI generates a professional press release in under 2 minutes. Edit and approve.</p>
+      </div>
+      <div class="step-card reveal reveal-delay-2">
+        <div class="step-num">3</div>
+        <h3 class="step-title">Choose your path</h3>
+        <p class="step-desc">Press release, story pitch, podcast pitch, community outreach, or local media. Five different ways to get your story out.</p>
+      </div>
+      <div class="step-card reveal reveal-delay-3">
+        <div class="step-num">4</div>
+        <h3 class="step-title">Find contacts & send</h3>
+        <p class="step-desc">AI surfaces real outlets with direct email addresses and writes personalised pitches for each one. Copy, paste, send.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SECTION 5: FEATURES ── -->
+<section id="features">
+  <div class="wrap">
+    <p class="section-eyebrow reveal">What you get</p>
+    <h2 class="section-title reveal reveal-delay-1">Everything you need to get press coverage</h2>
+    <p class="section-sub reveal reveal-delay-2">One platform. Five outreach paths. Unlimited campaigns. Actual results.</p>
+    <div class="features-grid">
+
+      <div class="feature-card reveal">
+        <div class="feature-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h14a2 2 0 0 0 2-2V7l-5-5H6a2 2 0 0 0-2 2v4"/><path d="M14 2v5h5"/><path d="M3 15h7"/><path d="M3 11h3"/><path d="M3 19h7"/></svg>
+        </div>
+        <h3 class="feature-title">AI Press Release Generator</h3>
+        <p class="feature-desc">Answer 3 questions and the AI writes a professional press release. Edit, regenerate, and download as a branded PDF with your logo.</p>
+      </div>
+
+      <div class="feature-card reveal reveal-delay-1">
+        <div class="feature-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M8 10h8"/><path d="M8 14h5"/></svg>
+        </div>
+        <h3 class="feature-title">5 Outreach Pathways</h3>
+        <p class="feature-desc">Press release, story pitch, podcast pitch, community outreach, and local media — all from a single campaign hub, tailored per outlet.</p>
+      </div>
+
+      <div class="feature-card reveal reveal-delay-2">
+        <div class="feature-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="9" r="2.5"/><path d="M6.5 19a5.5 5.5 0 0 1 11 0"/></svg>
+        </div>
+        <h3 class="feature-title">Real Media Contacts</h3>
+        <p class="feature-desc">AI finds real, active publications with direct editorial email addresses. Filtered so only contactable outlets appear — no dead ends.</p>
+      </div>
+
+      <div class="feature-card reveal">
+        <div class="feature-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        </div>
+        <h3 class="feature-title">Personalised Pitch Emails</h3>
+        <p class="feature-desc">Every email is written for the specific outlet and addressed to the right person — never a generic template. Warm, professional, human.</p>
+      </div>
+
+      <div class="feature-card reveal reveal-delay-1">
+        <div class="feature-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        </div>
+        <h3 class="feature-title">Outreach Dashboard</h3>
+        <p class="feature-desc">Every outreach is logged with the email sent, journalist contact, and status. Your full PR history in one place, by campaign.</p>
+      </div>
+
+      <div class="feature-card reveal reveal-delay-2">
+        <div class="feature-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        </div>
+        <h3 class="feature-title">11 Industries Covered</h3>
+        <p class="feature-desc">Automotive, fashion, tech, food, health, finance, media, sustainability, startups, and more — with outlets curated for your specific niche.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── SECTION 6: INDUSTRIES ── -->
+<section id="industries">
+  <div class="wrap">
+    <p class="section-eyebrow reveal">Industries</p>
+    <h2 class="section-title reveal reveal-delay-1">Your industry is covered</h2>
+    <p class="section-sub reveal reveal-delay-2">Curated media databases and AI outlet search across 11 sectors — with new industries added regularly.</p>
+    <div class="industries-grid">
+
+      <div class="industry-card reveal">
+        <div class="industry-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.38 18H3.62a1 1 0 0 1-.77-1.63L12 6l9.15 10.37A1 1 0 0 1 20.38 18z"/><path d="M12 6V3"/><circle cx="12" cy="2.5" r="1"/></svg>
+        </div>
+        <div class="industry-name">Fashion &amp; Retail</div>
+        <div class="industry-desc">Consumer brands, apparel, beauty &amp; lifestyle</div>
+      </div>
+
+      <div class="industry-card reveal reveal-delay-1">
+        <div class="industry-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="7" width="10" height="10" rx="1"/><path d="M7 9H4M7 12H4M7 15H4M17 9h3M17 12h3M17 15h3M9 7V4M12 7V4M15 7V4M9 17v3M12 17v3M15 17v3"/></svg>
+        </div>
+        <div class="industry-name">Technology</div>
+        <div class="industry-desc">SaaS, apps, hardware &amp; innovation</div>
+      </div>
+
+      <div class="industry-card reveal reveal-delay-2">
+        <div class="industry-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>
+        </div>
+        <div class="industry-name">Health &amp; Wellness</div>
+        <div class="industry-desc">Fitness, nutrition, mental health &amp; medical</div>
+      </div>
+
+      <div class="industry-card reveal reveal-delay-3">
+        <div class="industry-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20h18"/><path d="M5 20V14"/><path d="M9 20V8"/><path d="M13 20V11"/><path d="M17 20V5"/></svg>
+        </div>
+        <div class="industry-name">Finance</div>
+        <div class="industry-desc">Fintech, investment, banking &amp; professional services</div>
+      </div>
+
+      <div class="industry-card reveal">
+        <div class="industry-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polygon points="10 8 16 12 10 16 10 8" stroke="#c2185b" stroke-width="1.5"/></svg>
+        </div>
+        <div class="industry-name">Media &amp; Arts</div>
+        <div class="industry-desc">Entertainment, creative industries &amp; culture</div>
+      </div>
+
+      <div class="industry-card reveal reveal-delay-1">
+        <div class="industry-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6h3v8"/></svg>
+        </div>
+        <div class="industry-name">Food &amp; Hospitality</div>
+        <div class="industry-desc">Restaurants, food brands, travel &amp; tourism</div>
+      </div>
+
+      <div class="industry-card reveal reveal-delay-2">
+        <div class="industry-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/></svg>
+        </div>
+        <div class="industry-name">Business &amp; Startups</div>
+        <div class="industry-desc">Founders, scale-ups &amp; entrepreneurship</div>
+      </div>
+
+      <div class="industry-card reveal reveal-delay-3">
+        <div class="industry-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8C8 10 5.9 16.17 3.82 19.34a1 1 0 0 0 1.46 1.32C7.5 18.6 11 17 17 17c4-8 2-15 2-15"/><path d="M3 22c5-5 7-12 7-12"/></svg>
+        </div>
+        <div class="industry-name">Environment &amp; Education</div>
+        <div class="industry-desc">Sustainability, clean energy &amp; education</div>
+      </div>
+
+      <div class="industry-card reveal">
+        <div class="industry-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20h20"/><path d="M2 20V8l6-4v4l6-4v4l6-4v16"/><path d="M10 20v-5h4v5"/></svg>
+        </div>
+        <div class="industry-name">Industry &amp; Infrastructure</div>
+        <div class="industry-desc">Manufacturing, construction &amp; trade</div>
+      </div>
+
+      <div class="industry-card reveal reveal-delay-1">
+        <div class="industry-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/><path d="M12 3v6M4.22 7.22l4.24 4.24M3 12h6M4.22 16.78l4.24-4.24M12 21v-6M19.78 16.78l-4.24-4.24M21 12h-6M19.78 7.22l-4.24 4.24"/></svg>
+        </div>
+        <div class="industry-name">Automotive</div>
+        <div class="industry-desc">New cars, aftermarket, EV &amp; motorsport</div>
+      </div>
+
+      <div class="industry-card reveal reveal-delay-2">
+        <div class="industry-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+        </div>
+        <div class="industry-name">Other &amp; Niche</div>
+        <div class="industry-desc">Sports, luxury, social enterprise &amp; more</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── SECTION 7: WHO IT'S FOR ── -->
+<section id="for">
+  <div class="wrap">
+    <p class="section-eyebrow reveal">Who it's for</p>
+    <h2 class="section-title reveal reveal-delay-1">Built for people who have a story worth telling</h2>
+    <p class="section-sub reveal reveal-delay-2">Whether you're launching your first product or running campaigns at scale, the platform adapts to you.</p>
+    <div class="for-grid">
+
+      <div class="for-card reveal">
+        <div class="for-card-top">
+          <div class="for-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/></svg>
+          </div>
+          <h3 class="for-title">Founders &amp; Startups</h3>
+        </div>
+        <div class="for-card-body">
+          <p class="for-desc">You're launching a product, announcing a milestone, or trying to get your first media coverage — without a $5k/month PR agency. Set up once, run campaigns whenever news breaks.</p>
+        </div>
+      </div>
+
+      <div class="for-card reveal reveal-delay-1">
+        <div class="for-card-top">
+          <div class="for-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          </div>
+          <h3 class="for-title">Marketing Teams</h3>
+        </div>
+        <div class="for-card-body">
+          <p class="for-desc">Running campaigns across multiple channels simultaneously. More output, less admin. AI does the research and drafting so your team focuses on strategy and relationships.</p>
+        </div>
+      </div>
+
+      <div class="for-card reveal reveal-delay-2">
+        <div class="for-card-top">
+          <div class="for-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <h3 class="for-title">PR &amp; Comms Professionals</h3>
+        </div>
+        <div class="for-card-body">
+          <p class="for-desc">Faster outreach, more campaigns per client, AI handles the time-consuming research and first drafts. You spend your time on the work that actually requires a human.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── SECTION 8: PRICING ── -->
+<section id="pricing">
+  <div class="wrap">
+    <p class="section-eyebrow reveal">Pricing</p>
+    <h2 class="section-title reveal reveal-delay-1">Simple, transparent pricing</h2>
+    <p class="section-sub reveal reveal-delay-2">Start free. Upgrade when you need more. No contracts, no lock-in, cancel anytime.</p>
+    <div class="pricing-grid">
+
+      <div class="pricing-card reveal">
+        <p class="pricing-plan">Free</p>
+        <div class="pricing-price">$0</div>
+        <p class="pricing-period">Forever free to get started</p>
+        <ul class="pricing-features">
+          <li class="check">3 campaigns</li>
+          <li class="check">10 outreaches per month</li>
+          <li class="check">All 5 outreach paths</li>
+          <li class="check">Curated media database</li>
+          <li class="check">AI press release generator</li>
+          <li class="check">PDF download</li>
+        </ul>
+        <a href="index.html" class="btn btn-outline" style="width:100%;justify-content:center;">Get started free</a>
+      </div>
+
+      <div class="pricing-card featured reveal reveal-delay-1">
+        <p class="pricing-plan">Pro</p>
+        <div class="pricing-price"><sup>$</sup>49</div>
+        <p class="pricing-period">per month · billed monthly</p>
+        <ul class="pricing-features">
+          <li class="check">Unlimited campaigns</li>
+          <li class="check">Unlimited outreach</li>
+          <li class="check">AI outlet search (60+ per campaign)</li>
+          <li class="check">All 5 outreach paths</li>
+          <li class="check">Podcast &amp; community research</li>
+          <li class="check">Priority support</li>
+        </ul>
+        <a href="index.html" class="btn btn-primary" style="width:100%;justify-content:center;">Start Pro &rarr;</a>
+      </div>
+
+      <div class="pricing-card reveal reveal-delay-2">
+        <p class="pricing-plan">Agency</p>
+        <div class="pricing-price"><sup>$</sup>149</div>
+        <p class="pricing-period">per month · billed monthly</p>
+        <ul class="pricing-features">
+          <li class="check">Everything in Pro</li>
+          <li class="check">Multiple team seats</li>
+          <li class="check">White-label press release PDF</li>
+          <li class="check">Multi-client campaign management</li>
+          <li class="check">API access <span style="color:var(--muted);font-size:11px;">(coming soon)</span></li>
+          <li class="check">Dedicated support</li>
+        </ul>
+        <a href="index.html" class="btn btn-outline" style="width:100%;justify-content:center;">Get Agency access</a>
+      </div>
+
+    </div>
+    <p class="pricing-note reveal">Payments and billing coming soon. Sign up now to get early access and lock in launch pricing.</p>
+  </div>
+</section>
+
+<!-- ── SECTION 9: FAQ ── -->
+<section id="faq">
+  <div class="wrap">
+    <p class="section-eyebrow reveal">FAQ</p>
+    <h2 class="section-title reveal reveal-delay-1">Questions answered</h2>
+    <div class="faq-list">
+
+      <div class="faq-item reveal">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Do I need PR experience to use this?
+          <span class="faq-arrow"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+        </button>
+        <div class="faq-a">Not at all. The platform is built for people who have never sent a press pitch before. It guides you step by step, writes the content for you, and explains what each outreach path does. If you know your story, the platform handles the rest.</div>
+      </div>
+
+      <div class="faq-item reveal">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          How does the AI find media contacts?
+          <span class="faq-arrow"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+        </button>
+        <div class="faq-a">The platform combines a curated database of verified media outlets with live AI research. When you choose an industry and outreach path, it identifies relevant publications, trade press, podcasts, and journalists — and surfaces only those with direct, usable email addresses.</div>
+      </div>
+
+      <div class="faq-item reveal">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Are the email addresses real and verified?
+          <span class="faq-arrow"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+        </button>
+        <div class="faq-a">The platform filters out any outlet without a direct editorial email — no "contact us forms", no generic info@ addresses, no dead ends. We only show contacts where you can send a real email to a real person who covers your industry.</div>
+      </div>
+
+      <div class="faq-item reveal">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          What industries does it cover?
+          <span class="faq-arrow"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+        </button>
+        <div class="faq-a">Currently 11 industries: Automotive, Fashion &amp; Retail, Technology, Health &amp; Wellness, Finance, Media &amp; Arts, Food &amp; Hospitality, Business &amp; Startups, Environment &amp; Education, Industry &amp; Infrastructure, and a niche/other category. New industries are added based on user demand.</div>
+      </div>
+
+      <div class="faq-item reveal">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Can I cancel anytime?
+          <span class="faq-arrow"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+        </button>
+        <div class="faq-a">Yes. There are no lock-in contracts. Cancel from your account settings at any time and you won't be charged again. Your campaigns and press releases remain accessible until the end of your billing period.</div>
+      </div>
+
+      <div class="faq-item reveal">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Is my business data private?
+          <span class="faq-arrow"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+        </button>
+        <div class="faq-a">Your account data, business information, press releases, and campaign history are stored securely and are never shared with other users or used to train AI models. Your story is yours.</div>
+      </div>
+
+      <div class="faq-item reveal">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Can I use this for multiple businesses or clients?
+          <span class="faq-arrow"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+        </button>
+        <div class="faq-a">On the Agency plan, yes — you can manage multiple clients with separate campaign histories and white-labelled PDFs. On the Pro plan, the platform is optimised for a single business. Multi-client support for Pro is on the roadmap.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── SECTION 10: FINAL CTA ── -->
+<section id="cta">
+  <div class="wrap" style="position:relative;z-index:1;text-align:center;">
+    <p class="cta-eyebrow reveal">Ready to get covered?</p>
+    <h2 class="cta-title reveal reveal-delay-1">Your next press coverage is<br><em style="color:var(--gold);">one campaign away.</em></h2>
+    <p class="cta-sub reveal reveal-delay-2">Set up your account in minutes. Generate your first press release. Send your first pitch today.</p>
+    <div class="cta-btns reveal reveal-delay-3">
+      <a href="index.html" class="btn btn-primary">Get started free &rarr;</a>
+      <a href="#how" class="btn btn-outline-white">See how it works</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-logo">Outreach <span>Platform</span></div>
+        <p class="footer-tagline">AI-powered PR outreach for founders, marketers, and brands who want real results.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Product</h4>
+        <a href="#features">Features</a>
+        <a href="#how">How it works</a>
+        <a href="#industries">Industries</a>
+        <a href="#pricing">Pricing</a>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="#">About</a>
+        <a href="#">Blog</a>
+        <a href="#">Contact</a>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Use</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">&copy; 2026 pressreachout.com &mdash; All rights reserved.</p>
+      <p class="footer-copy" style="color:#444;">Built with AI. Designed for humans.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ── NAV scroll shadow ──
+window.addEventListener('scroll', function() {
+  document.getElementById('main-nav').classList.toggle('scrolled', window.scrollY > 20);
+});
+
+// ── Mobile menu ──
+function toggleMenu() {
+  var menu = document.getElementById('mobile-menu');
+  menu.classList.toggle('open');
+}
+
+// ── FAQ accordion ──
+function toggleFaq(btn) {
+  var item = btn.closest('.faq-item');
+  var wasOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(function(i) { i.classList.remove('open'); });
+  if (!wasOpen) item.classList.add('open');
+}
+
+// ── Scroll reveal ──
+var revealObserver = new IntersectionObserver(function(entries) {
+  entries.forEach(function(entry) {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      revealObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.reveal').forEach(function(el) {
+  revealObserver.observe(el);
+});
+
+// Hero elements visible on load
+setTimeout(function() {
+  document.querySelectorAll('#hero .reveal').forEach(function(el) {
+    el.classList.add('visible');
+  });
+}, 100);
+</script>
+</body>
+</html>
