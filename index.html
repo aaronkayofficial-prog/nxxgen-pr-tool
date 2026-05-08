@@ -2135,8 +2135,18 @@ textarea{resize:vertical;line-height:1.6;}
   </div>
   <div class="gen-row" id="email-spinner" style="display:none;"><div class="spinner"></div> Generating your email...</div>
   <div id="email-preview-wrap" style="display:none;margin-top:1.5rem;">
+    <!-- Subject line display — separate from body -->
+    <div style="margin-bottom:10px;border:1.5px solid var(--border);border-radius:10px;overflow:hidden;">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--off);">
+        <div>
+          <div style="font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:2px;">Subject line</div>
+          <div id="email-subject-display" style="font-size:14px;font-weight:500;color:var(--black);">—</div>
+        </div>
+        <button class="btn btn-outline btn-sm" onclick="copyEmailSubject()" id="copy-subject-btn" style="flex-shrink:0;">Copy subject</button>
+      </div>
+    </div>
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
-      <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);">Your outreach email -- edit before sending</div>
+      <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);">Email body — edit before sending</div>
       <div style="font-size:11px;color:var(--gold);">&#9998; Click to edit any line</div>
     </div>
     <textarea id="email-preview" style="width:100%;min-height:380px;font-size:13px;line-height:1.85;font-family:Georgia,serif;color:var(--text);border:1.5px solid var(--gold);border-radius:10px;padding:14px 16px;background:#fffdf9;resize:vertical;"></textarea>
@@ -2441,6 +2451,17 @@ textarea{resize:vertical;line-height:1.6;}
 
   <div id="loc-email-wrap" style="display:none;margin-top:1.5rem;">
     <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Your local outreach email — edit before sending</div>
+    <!-- Subject line display for local email -->
+    <div style="margin-bottom:10px;border:1.5px solid var(--border);border-radius:10px;overflow:hidden;">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--off);">
+        <div>
+          <div style="font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:2px;">Subject line</div>
+          <div id="loc-subject-display" style="font-size:14px;font-weight:500;color:var(--black);">—</div>
+        </div>
+        <button class="btn btn-outline btn-sm" onclick="copyLocSubjectLine()" style="flex-shrink:0;">Copy subject</button>
+      </div>
+    </div>
+    <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Email body — edit before sending</div>
     <textarea id="loc-email-out" style="width:100%;min-height:320px;font-size:13px;line-height:1.85;font-family:Georgia,serif;color:var(--text);border:1.5px solid var(--gold);border-radius:10px;padding:14px 16px;background:#fffdf9;resize:vertical;"></textarea>
     <div class="btn-row" style="margin-top:1rem;">
       <button class="btn btn-gold" onclick="copyLocEmail()" id="copy-loc-btn">Copy email</button>
@@ -5829,6 +5850,8 @@ function filterPodcasts(f, btn) {
 }
 
 function renderFoundPodcasts(list) {
+  // Only show podcasts with a real contact email
+  list = list.filter(function(p){ return hasRealEmail(p); });
   var el = document.getElementById('plat-list');
   if (!list.length) { el.innerHTML = '<div style="padding:1rem;color:var(--muted);font-size:13px;">No podcasts match this filter.</div>'; return; }
   var html = '';
@@ -5972,6 +5995,8 @@ function getLocalOutletResults(primary, countries) {
     });
   }
 
+  // Strip any outlet without a real direct email
+  results = results.filter(function(p){ return hasRealEmail(p); });
   results.sort(function(a,b){ return b.s - a.s; });
   return results.slice(0, 40);
 }
@@ -6059,7 +6084,7 @@ function searchIndustryPlatforms() {
       var start = clean.indexOf('['); var end = clean.lastIndexOf(']');
       if (start === -1 || end === -1) throw new Error('No JSON array found');
       var found = JSON.parse(clean.substring(start, end + 1));
-      found = found.filter(function(p){ return p && p.n && p.u; });
+      found = found.filter(function(p){ return p && p.n && p.u && hasRealEmail(p); });
       if (found.length === 0) throw new Error('Empty results');
       found.forEach(function(p){
         p.s = Math.min(5, Math.max(1, parseInt(p.s) || 3));
@@ -6230,7 +6255,8 @@ function getContactedOutlets() {
 
 function renderFoundPlatforms(list) {
   var f = state.platFilter || 'all';
-  var filtered = list.slice();
+  // Always strip outlets with no real direct email — cannot send to them
+  var filtered = list.filter(function(p) { return hasRealEmail(p); });
   if (f === 'Free') filtered = filtered.filter(function(p) { return !p.paid; });
   else if (f === 'Paid') filtered = filtered.filter(function(p) { return p.paid; });
   else if (f === 'Top') filtered = filtered.filter(function(p) { return p.s >= 4; });
@@ -6979,6 +7005,91 @@ function goBackFromEmail() {
   else showScreen('s4');
 }
 
+
+
+// ── Extract subject line from email, strip from body, show separately ──
+function splitEmailSubjectBody(text) {
+  var lines = text.split('\n');
+  var subjectLine = '';
+  var bodyStart = 0;
+  // Find Subject: line in first 5 lines
+  for (var i = 0; i < Math.min(5, lines.length); i++) {
+    if (lines[i].match(/^subject:/i)) {
+      subjectLine = lines[i].replace(/^subject:\s*/i, '').trim();
+      bodyStart = i + 1;
+      // Skip blank lines after subject
+      while (bodyStart < lines.length && lines[bodyStart].trim() === '') bodyStart++;
+      break;
+    }
+  }
+  var body = lines.slice(bodyStart).join('\n').trim();
+  return { subject: subjectLine, body: body };
+}
+
+function copyEmailSubject() {
+  var subj = document.getElementById('email-subject-display');
+  if (!subj || !subj.textContent || subj.textContent === '—') return;
+  navigator.clipboard.writeText(subj.textContent).then(function() {
+    var btn = document.getElementById('copy-subject-btn');
+    if (btn) { btn.textContent = '✓ Copied!'; setTimeout(function(){ btn.textContent = 'Copy subject'; }, 2000); }
+  });
+}
+
+function copyLocSubjectLine() {
+  var subj = document.getElementById('loc-subject-display');
+  if (!subj || !subj.textContent || subj.textContent === '—') return;
+  navigator.clipboard.writeText(subj.textContent).then(function() {
+    var btn = event.target;
+    if (btn) { btn.textContent = '✓ Copied!'; setTimeout(function(){ btn.textContent = 'Copy subject'; }, 2000); }
+  });
+}
+
+
+// ── Check if outlet has a real direct email (not placeholder, not empty) ──
+function hasRealEmail(p) {
+  var e = (p.e || '').trim().toLowerCase();
+  if (!e) return false;
+  if (e.indexOf('@') === -1) return false;
+  // Reject placeholder/generic contact patterns
+  var bad = ['via website', 'website contact', 'contact form', 'webform', 
+             'see website', 'online form', 'submit online', 'use website',
+             'contact page', 'n/a', 'none', 'unknown', 'tbc', 'tbd'];
+  for (var i = 0; i < bad.length; i++) {
+    if (e.indexOf(bad[i]) > -1) return false;
+  }
+  // Must have something before and after @ with a dot after @
+  var parts = e.split('@');
+  if (parts.length !== 2 || !parts[0] || !parts[1] || parts[1].indexOf('.') === -1) return false;
+  return true;
+}
+// ── Build smart email salutation ──
+function buildSalutation(editorField, outletName) {
+  var raw = (editorField || '').trim();
+  if (!raw) {
+    // No name at all — use outlet name leadership team
+    return 'Dear ' + (outletName || 'Editorial') + ' Leadership & Management Team';
+  }
+  // Split by comma, 'and', '&' — handle multiple names
+  var parts = raw.split(/,|\s+and\s+|&/i).map(function(s){ return s.trim(); }).filter(Boolean);
+  if (parts.length === 0) return 'Dear ' + (outletName || 'Editorial') + ' Leadership & Management Team';
+  // Check if any part looks like a role rather than a name (Editor, Management, etc.)
+  var roleWords = ['editor','editorial','management','leadership','team','news','media','producer','host','journalist','reporter','desk'];
+  var names = parts.filter(function(p){
+    return !roleWords.some(function(r){ return p.toLowerCase().indexOf(r) > -1; });
+  });
+  var roles = parts.filter(function(p){
+    return roleWords.some(function(r){ return p.toLowerCase().indexOf(r) > -1; });
+  });
+  if (names.length > 0) {
+    // Use first names only — take the first word of each name
+    var firstNames = names.map(function(n){ return n.split(' ')[0]; });
+    return 'Dear ' + firstNames.join(' & ');
+  } else if (roles.length > 0) {
+    // It's a role/title — use as-is
+    return 'Dear ' + roles[0];
+  }
+  return 'Dear ' + (outletName || 'Editorial') + ' Leadership & Management Team';
+}
 function generateEmail() {
   if (!state.selectedPlatform) { alert('No platform selected. Please go back and select one.'); return; }
   checkUsageBeforeGenerate(function() { doGenerateEmail(); });
@@ -7013,23 +7124,28 @@ function doGenerateEmail() {
     } else {
       prSnippet = 'Announcement from ' + (p.co||'the company') + ' about ' + (p.what || 'their latest news');
     }
+    var salutation = buildSalutation(editor, sel.n);
     prompt = [
-      'Write a press release pitch email to ' + recipient + ' at ' + sel.n + '.',
+      'Write a press release pitch email from ' + (p.name||'the sender') + ' to ' + recipient + ' at ' + sel.n + '.',
       '', profileLines, outletLine,
       'Press release excerpt: ' + prSnippet,
       '',
+      'SALUTATION TO USE: ' + salutation,
+      '',
       'FORMAT -- plain text, no markdown:',
-      'Subject: [one punchy subject line]',
+      'Subject: [one punchy, specific subject line — not generic]',
       '',
-      '[Opening: one sentence why this is relevant to ' + sel.n + ' readers]',
+      salutation + ',',
       '',
-      '[Body: 2 short paragraphs -- the news and why it matters now]',
+      '[Opening: one warm but direct sentence — why this story is genuinely relevant to ' + sel.n + ' and their readers specifically]',
       '',
-      '[CTA: one sentence inviting them to read the attached release]',
+      '[Body: 2 short paragraphs — the news, why it matters now, and why their readers will care. Personal in tone, not corporate. No jargon.]',
+      '',
+      '[CTA: a natural, conversational invite — not robotic. Offer to send the full release, answer questions, or arrange a call.]',
       '',
       signOff,
       '',
-      'Under 200 words. Professional, direct, no waffle.'
+      'Under 200 words. Warm and professional. Never start with "I am reaching out" or "I hope this finds you well". Sound like a real person.'
     ].join('\n');
 
   } else if (state.path === 'C') {
@@ -7039,24 +7155,36 @@ function doGenerateEmail() {
       pp.hooks && pp.hooks.length ? 'Key hooks: ' + pp.hooks.slice(0,2).join(' / ') : '',
       pp.quote ? 'Soundbite: "' + pp.quote + '"' : ''
     ].filter(Boolean).join('\n');
+    var salutation = buildSalutation(editor, sel.n);
+    var hostName = sel.host || '';
+    var podSalutation = hostName ? buildSalutation(hostName, sel.n) : salutation;
     prompt = [
-      'Write a podcast guest pitch email to the host/producer of ' + sel.n + '.',
+      'Write a podcast guest pitch email from ' + (p.name||'the sender') + ' to the host/producer of ' + sel.n + '.',
       '', profileLines, outletLine, pitchLines,
       '',
+      'SALUTATION TO USE: ' + podSalutation,
+      '',
       'FORMAT -- plain text, no markdown:',
-      'Subject: [specific, references the episode concept]',
+      'Subject: [specific, references the episode concept — sounds like a real pitch not a template]',
       '',
-      '[Opening: one sentence showing you know the podcast]',
+      podSalutation + ',',
       '',
-      '[2 paragraphs: who you are, why you fit their audience, what the episode covers]',
+      '[Opening: one sentence showing genuine familiarity with the podcast — reference their format, audience or a theme they cover]',
       '',
-      '[3 bullet talking points]',
+      '[Paragraph 2: who you are and why you are the right guest — your authority, story, or unique angle. Personal and confident, not a bio copy-paste.]',
       '',
-      '[Friendly CTA]',
+      '[Paragraph 3: what the episode would cover — make it feel exciting and specific to their listeners]',
+      '',
+      '3 specific talking points:',
+      '- [Talking point 1]',
+      '- [Talking point 2]',
+      '- [Talking point 3]',
+      '',
+      '[Friendly, low-pressure CTA — offer a quick call or to send more info]',
       '',
       signOff,
       '',
-      'Under 220 words. Warm, genuine, not salesy.'
+      'Under 220 words. Warm, genuine, conversational. Sound like someone worth having on the show.'
     ].join('\n');
 
   } else {
@@ -7103,8 +7231,12 @@ function doGenerateEmail() {
       'Position them as an expert and interesting voice -- not as a company promoting a product.',
       'The journalist should feel like they are hearing from someone worth talking to.',
       '',
+      'SALUTATION: Use "' + buildSalutation(editor, sel.n) + '" as the opening greeting.',
+      '',
       'FORMAT -- plain text, no markdown, no section headers in the email itself:',
       'Subject: [specific, intriguing -- reads like a story headline not a PR subject line]',
+      '',
+      buildSalutation(editor, sel.n) + ',',
       '',
       '[Opening: one personalised sentence showing genuine awareness of ' + sel.n + ' -- reference their coverage, audience, or a specific angle they cover]',
       '',
@@ -7140,7 +7272,12 @@ function doGenerateEmail() {
     state.reusingEmail = false;
     state.lastEmailBody = '';
     var rn = document.getElementById('reuse-email-notice');
-    if (rn) rn.remove();    document.getElementById('email-preview').value = finalText;
+    if (rn) rn.remove();
+    // Split subject from body and display separately
+    var emailParts = splitEmailSubjectBody(finalText);
+    var subjDisp = document.getElementById('email-subject-display');
+    if (subjDisp) subjDisp.textContent = emailParts.subject || '—';
+    document.getElementById('email-preview').value = emailParts.body || finalText;
     document.getElementById('email-preview-wrap').style.display = 'block';
     document.getElementById('copy-confirm').style.display = 'none';
     document.getElementById('log-inline-confirm').style.display = 'none';
@@ -8339,8 +8476,9 @@ function doGenerateLocalEmail() {
 
   var signOff = (p.name || 'Kind regards') + (p.pos ? '\n' + p.pos : '') + (p.co ? '\n' + p.co : '') + (p.email ? '\n' + p.email : '') + (p.web ? '\n' + p.web : '');
 
+  var locSalutation = buildSalutation(editor, outlet.n);
   var prompt = [
-    'Write a community-focused local press outreach email to ' + recipient + ' at ' + outlet.n + (contact ? ' (' + contact + ')' : '') + '.',
+    'Write a community-focused local press outreach email from ' + (p.name||'a local business owner') + ' to ' + recipient + ' at ' + outlet.n + (contact ? ' (' + contact + ')' : '') + '.',
     '',
     'Sender: ' + (p.name || 'a local business owner') + (p.pos ? ', ' + p.pos : '') + (p.co ? ' at ' + p.co : ''),
     'Location: ' + locStr,
@@ -8350,26 +8488,33 @@ function doGenerateLocalEmail() {
     'Local angles: ' + (locState.angles || []).slice(0,2).join(', '),
     extra ? 'Extra detail: ' + extra : '',
     '',
+    'SALUTATION TO USE: ' + locSalutation,
+    '',
     'FORMAT — plain text, no markdown:',
     'Subject: [local, specific, mentions ' + (locState.hyper || locState.city || 'the area') + ' by name]',
     '',
-    '[Opening: one sentence — genuine local connection, why ' + outlet.n + ' readers care]',
+    locSalutation + ',',
     '',
-    '[2 short paragraphs: the community story, human interest first, not corporate]',
+    '[Opening: one warm sentence — genuine local connection, why ' + outlet.n + ' readers will care about this specifically]',
     '',
-    '[What you offer: interview, photos, access]',
+    '[2 short paragraphs: lead with the human/community story, not the business. Personal and genuine in tone.]',
     '',
-    '[Warm CTA]',
+    '[Natural offer: happy to do an interview, provide photos, or give them access — whatever works for them]',
+    '',
+    '[Warm, neighbourly sign-off — one sentence]',
     '',
     signOff,
     '',
-    'Under 200 words. Warm, personal, genuinely local. Not a press release.'
+    'Under 200 words. Warm, personal, genuinely local. Write like a neighbour, not a PR agency.'
   ].filter(Boolean).join('\n');
 
   callAPIFast(prompt, function(text) {
     document.getElementById('loc-email-spinner').style.display = 'none';
     var outEl = document.getElementById('loc-email-out');
-    if (outEl) outEl.value = text;
+    var locParts = splitEmailSubjectBody(text);
+    var locSubjDisp = document.getElementById('loc-subject-display');
+    if (locSubjDisp) locSubjDisp.textContent = locParts.subject || '—';
+    if (outEl) outEl.value = locParts.body || text;
     document.getElementById('loc-email-wrap').style.display = 'block';
     document.getElementById('loc-copy-ok').style.display = 'none';
     // Update local send checklist
