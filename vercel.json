@@ -1,7 +1,11 @@
 {
   "rewrites": [
+    { "source": "/app", "destination": "/index.html" },
     { "source": "/api/chat", "destination": "/api/chat.js" },
     { "source": "/api/auth", "destination": "/api/auth.js" },
     { "source": "/api/data", "destination": "/api/data.js" }
+  ],
+  "routes": [
+    { "src": "/", "dest": "/landing.html" }
   ]
 }
