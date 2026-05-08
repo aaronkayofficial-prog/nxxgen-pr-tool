@@ -3054,12 +3054,16 @@ function var_gold() { return '#c2185b'; }
 // ============================================================
 // USER ACCOUNT SYSTEM
 // ============================================================
-var ACCT_KEY = 'op_account';
+var ACCT_KEY = 'op_account'; // overridden per-user after auth
+function getUserKey(base) {
+  var uid = currentUser && currentUser.userId ? currentUser.userId : 'anon';
+  return base + '_' + uid;
+}
 var userAccount = null;
 
 function loadAccount() {
   try {
-    var raw = localStorage.getItem(ACCT_KEY);
+    var raw = localStorage.getItem(getUserKey('op_account'));
     userAccount = raw ? JSON.parse(raw) : null;
   } catch(e) { userAccount = null; }
   return userAccount;
@@ -3105,15 +3109,18 @@ function saveAccount(isOnboarding) {
     created: userAccount ? userAccount.created : new Date().toISOString(),
     updated: new Date().toISOString()
   };
-  try { localStorage.setItem(ACCT_KEY, JSON.stringify(acct)); } catch(e) {}
   userAccount = acct;
-  updateAccountHeader();
-  // Save to Supabase so profile persists across all devices and browsers
+  // Save to Supabase first (source of truth)
   if (currentUser) {
-    apiData('saveUser', acct).catch(function(e){
-      console.warn('[Account] Supabase save failed (profile still in localStorage):', e);
+    apiData('saveUser', acct).then(function() {
+      console.log('[Account] Saved to Supabase');
+    }).catch(function(e) {
+      console.warn('[Account] Supabase save failed:', e);
     });
   }
+  // Also cache locally for speed
+  try { localStorage.setItem(getUserKey('op_account'), JSON.stringify(acct)); } catch(e) {}
+  updateAccountHeader();
   if (isOnboarding) {
     goHome();
   } else {
@@ -3269,7 +3276,7 @@ function closeAccountDropdown() {
 
 function confirmClearAccount() {
   if (confirm('Clear all account data? This cannot be undone.')) {
-    localStorage.removeItem(ACCT_KEY);
+    localStorage.removeItem(getUserKey('op_account'));
     userAccount = null;
     updateAccountHeader();
     closeAccountDropdown();
@@ -3718,13 +3725,13 @@ var editingCampId = null;
 
 function loadCampaigns() {
   try {
-    var stored = localStorage.getItem('op_campaigns');
+    var stored = localStorage.getItem(getUserKey('op_campaigns'));
     campaigns = stored ? JSON.parse(stored) : [];
   } catch(e) { campaigns = []; }
 }
 
 function saveCampaignsToStorage() {
-  try { localStorage.setItem('op_campaigns', JSON.stringify(campaigns)); } catch(e) {}
+  try { localStorage.setItem(getUserKey('op_campaigns'), JSON.stringify(campaigns)); } catch(e) {}
 }
 
 function genId() {
@@ -5152,7 +5159,7 @@ function refreshOutletSearch() {
   delete outletSessionCache[cacheKey];
   var stored = loadOutletCache();
   delete stored[cacheKey];
-  try { localStorage.setItem('outlet_cache_v2', JSON.stringify(stored)); } catch(e) {}
+  try { localStorage.setItem(getUserKey('outlet_cache_v2'), JSON.stringify(stored)); } catch(e) {}
   // Clear search box
   var sb = document.getElementById('plat-search-box');
   if (sb) sb.value = '';
@@ -8724,52 +8731,82 @@ async function initClerk() {
 async function handleSignedIn(session) {
   try {
     var token = await session.getToken();
-    currentUser = { userId: session.user.id, email: session.user.primaryEmailAddress?.emailAddress, token: token };
+    currentUser = {
+      userId: session.user.id,
+      email: session.user.primaryEmailAddress ? session.user.primaryEmailAddress.emailAddress : '',
+      token: token
+    };
+    console.log('[Auth] Signed in as:', currentUser.email);
 
-    // Sync user to Supabase — non-blocking with 5s timeout, never stalls the app
-    var authTimeout = new Promise(function(_, reject){ setTimeout(function(){ reject(new Error('auth timeout')); }, 5000); });
+    // Register user in Supabase (creates row if new, ignores if existing)
     try {
       await Promise.race([
-        fetch('/api/auth', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token } }),
-        authTimeout
+        fetch('/api/auth', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token }
+        }),
+        new Promise(function(res){ setTimeout(res, 5000); })
       ]);
-    } catch(authErr) {
-      console.warn('[Auth] /api/auth call failed or timed out — continuing anyway:', authErr.message);
-    }
+    } catch(e) { console.warn('[Auth] /api/auth error:', e.message); }
 
-    // Step 1: Check localStorage first (fastest, works offline)
-    var localAccount = null;
+    // Load full profile from Supabase — this is the source of truth
     try {
-      var raw = localStorage.getItem('userAccount');
-      localAccount = raw ? JSON.parse(raw) : null;
-    } catch(e) {}
-
-    if (localAccount && localAccount.fname && localAccount.co) {
-      userAccount = localAccount;
-      console.log('[Auth] Profile from localStorage:', userAccount.fname, userAccount.co);
-    } else {
-      // Step 2: Try Supabase — user may have set up on another device
-      console.log('[Auth] No local profile — fetching from Supabase...');
-      try {
-        var dataTimeout = new Promise(function(res){ setTimeout(res, 5000); });
-        var profileData = await Promise.race([
-          apiData('getUser', {}),
-          dataTimeout.then(function(){ return null; })
-        ]);
-        if (profileData && profileData.fname && profileData.co) {
-          userAccount = profileData;
-          // Cache it locally for next time
-          try { localStorage.setItem('userAccount', JSON.stringify(userAccount)); } catch(e) {}
-          console.log('[Auth] Profile from Supabase:', userAccount.fname, userAccount.co);
-        } else {
-          console.log('[Auth] No profile found — new user, will show wizard');
-        }
-      } catch(dataErr) {
-        console.warn('[Auth] Supabase fetch failed:', dataErr.message);
+      var profileData = await Promise.race([
+        apiData('getUser', {}),
+        new Promise(function(res){ setTimeout(function(){ res(null); }, 5000); })
+      ]);
+      if (profileData && profileData.fname && profileData.co) {
+        userAccount = profileData;
+        // Cache locally for speed on next load
+        try { localStorage.setItem(getUserKey('op_account'), JSON.stringify(userAccount)); } catch(e) {}
+        console.log('[Auth] Profile loaded from Supabase:', userAccount.fname, userAccount.co);
+      } else {
+        // Supabase has no profile yet — check local cache (same device, first time)
+        try {
+          var cached = localStorage.getItem(getUserKey('op_account'));
+          var localData = cached ? JSON.parse(cached) : null;
+          if (localData && localData.fname && localData.co) {
+            userAccount = localData;
+            console.log('[Auth] Profile loaded from local cache:', userAccount.fname, userAccount.co);
+          } else {
+            console.log('[Auth] New user — will show setup wizard');
+            userAccount = null;
+          }
+        } catch(e) { userAccount = null; }
       }
+    } catch(e) {
+      console.warn('[Auth] Profile load error:', e.message);
+      userAccount = null;
     }
 
-    // Always proceed no matter what
+    // Load campaigns from Supabase
+    try {
+      var campData = await Promise.race([
+        apiData('getCampaigns', {}),
+        new Promise(function(res){ setTimeout(function(){ res(null); }, 5000); })
+      ]);
+      if (campData && Array.isArray(campData) && campData.length > 0) {
+        // Map Supabase column names to app format
+        campaigns = campData.map(function(c) {
+          return {
+            id: c.id,
+            name: c.name,
+            goal: c.goal,
+            status: c.status || 'active',
+            profile: c.profile || {},
+            targeting: c.targeting || {},
+            savedContent: c.saved_content || {},
+            outreachLog: c.outreach_log || [],
+            created: c.created_at
+          };
+        });
+        try { localStorage.setItem(getUserKey('op_campaigns'), JSON.stringify(campaigns)); } catch(e) {}
+        console.log('[Auth] Loaded', campaigns.length, 'campaigns from Supabase');
+      }
+    } catch(e) {
+      console.warn('[Auth] Campaign load error:', e.message);
+    }
+
     document.getElementById('s-auth').classList.remove('active');
     initApp();
   } catch(e) {
