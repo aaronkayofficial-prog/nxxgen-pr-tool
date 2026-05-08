@@ -292,7 +292,8 @@ textarea{resize:vertical;line-height:1.6;}
 .pr-drop-active svg{opacity:1!important;}
 @media(max-width:600px){.camp-paths{grid-template-columns:1fr;}.path-cards,.g2{grid-template-columns:1fr;}.page-title{font-size:28px;}.wrap{padding:2rem 1.25rem 5rem;}}
 /* ── ACCOUNT SETUP WIZARD ── */
-#s-account-setup{background:var(--off);min-height:100vh;display:flex;flex-direction:column;}
+#s-account-setup{background:var(--off);min-height:100vh;flex-direction:column;}
+#s-account-setup.active{display:flex;}
 .wizard-header{background:var(--white);border-bottom:1px solid var(--border);padding:2rem 2rem 1.5rem;text-align:center;position:sticky;top:57px;z-index:50;}
 .wizard-brand{font-family:'Playfair Display',serif;font-size:22px;font-weight:600;color:var(--black);margin-bottom:2px;}
 .wizard-brand span{color:var(--gold);}
