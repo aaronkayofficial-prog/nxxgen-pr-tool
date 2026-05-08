@@ -847,7 +847,7 @@ textarea{resize:vertical;line-height:1.6;}
   <!-- Campaign status tabs -->
   <div class="camp-tabs">
     <div class="camp-tab" id="ctab-active" onclick="switchCampTab('active',this)">Active</div>
-    <div class="camp-tab" id="ctab-draft" onclick="switchCampTab('draft',this)">Drafts</div>
+    <div class="camp-tab" id="ctab-draft" onclick="switchCampTab('draft',this)">Drafts <span id="draft-count-badge" style="display:none;background:var(--gold);color:white;font-size:10px;font-weight:600;padding:1px 6px;border-radius:10px;margin-left:3px;"></span></div>
     <div class="camp-tab" id="ctab-completed" onclick="switchCampTab('completed',this)">Completed</div>
     <div class="camp-tab active" id="ctab-all" onclick="switchCampTab('all',this)">All</div>
   </div>
@@ -911,7 +911,7 @@ textarea{resize:vertical;line-height:1.6;}
     <div style="background:var(--gold-light);border:1.5px solid var(--gold);border-radius:12px;padding:1.25rem 1.5rem;margin-bottom:1.5rem;">
       <div style="font-size:12px;font-weight:600;color:var(--gold);letter-spacing:1px;text-transform:uppercase;margin-bottom:12px;">This campaign</div>
       <label style="color:var(--gold);">Campaign name</label>
-      <input type="text" id="camp-name-input" placeholder="e.g. May 2025 Product Launch, Spring Campaign, Podcast Tour 2025"/>
+      <input type="text" id="camp-name-input" placeholder="e.g. May 2025 Product Launch, Spring Campaign, Podcast Tour 2025" oninput="autoSaveCampaignDraft()"/>
       <label style="margin-top:10px;color:var(--gold);">Campaign goal <span style="font-size:10px;font-weight:400;text-transform:none;">(what do you want this campaign to achieve?)</span></label>
       <input type="text" id="camp-goal-input" placeholder="e.g. Announce our new product launch and get covered in 10 fashion publications"/>
     </div>
@@ -3350,6 +3350,7 @@ function confirmClearAccount() {
 
 function goHome() {
   closeAccountDropdown();
+  clearDraftState();
   showScreen('s-camps');
   loadCampaigns();
   renderCampaignsDashboard();
@@ -3836,6 +3837,14 @@ function renderCampaignsDashboard() {
     summary.style.display = 'block';
   }
 
+  // Update draft count badge
+  var draftCount = campaigns.filter(function(c){ return (c.status||'draft') === 'draft'; }).length;
+  var badge = document.getElementById('draft-count-badge');
+  if (badge) {
+    if (draftCount > 0) { badge.textContent = draftCount; badge.style.display = 'inline'; }
+    else { badge.style.display = 'none'; }
+  }
+
   var list = document.getElementById('camps-list');
   var empty = document.getElementById('camps-empty');
 
@@ -3870,6 +3879,10 @@ function renderCampaignsDashboard() {
     var statusLabel = c.status === 'active' ? 'Active' : c.status === 'completed' ? 'Completed' : 'Draft';
     var statusBg = { active:'#d8f3dc', completed:'#e8f4fd', draft:'#f0f0f0' };
     var statusCol = { active:'#2d6a4f', completed:'#1565c0', draft:'#888' };
+    // Auto-detect draft — no outreach and no press release = draft
+    var compData = getCampaignCompleteness(c);
+    if (!compData.complete && c.status !== 'completed' && c.status !== 'active') c.status = 'draft';
+    if (log.length > 0 && c.status === 'draft') c.status = 'active';
     var st = c.status || 'draft';
     var total = log.length;
 
@@ -3909,8 +3922,15 @@ function renderCampaignsDashboard() {
     if (lastActivity) html += '<div class="camp-meta-stat">&#128336; Last: <strong>' + lastActivity + '</strong></div>';
     else if (created) html += '<div class="camp-meta-stat">&#128197; Created: <strong>' + created + '</strong></div>';
     html += '<div style="flex:1;"></div>';
+    var btnTxt = st === 'draft' ? 'Continue &rarr;' : 'Open campaign &rarr;';
     html += '<div style="display:flex;align-items:center;gap:12px;">';
-    html += '<div style="font-size:12px;color:var(--gold);font-weight:500;">Open campaign &rarr;</div>';
+    if (st === 'draft') {
+      html += '<div style="display:flex;align-items:center;gap:6px;margin-right:4px;">' +
+        '<div style="width:60px;height:3px;background:var(--border);border-radius:2px;">' +
+        '<div style="width:' + compData.pct + '%;height:3px;background:var(--gold);border-radius:2px;"></div></div>' +
+        '<span style="font-size:10px;color:var(--muted);">' + compData.pct + '% done</span></div>';
+    }
+    html += '<div style="font-size:12px;color:var(--gold);font-weight:500;">' + btnTxt + '</div>';
     html += '<button onclick="event.stopPropagation();deleteCampaign(\'' + c.id + '\')" style="font-size:11px;color:var(--muted);background:none;border:none;cursor:pointer;padding:2px 4px;border-radius:4px;line-height:1;" title="Delete campaign">&#128465;</button>';
     html += '</div>';
     html += '</div>'; // end meta
@@ -5351,6 +5371,143 @@ function setPathBanner(screenId) {
     var el = document.getElementById(id);
     if (el) el.innerHTML = bannerHTML;
   });
+}
+
+
+// ============================================================
+// DRAFT STATE — auto-save & restore all form fields
+// ============================================================
+
+// All field IDs to track across every screen
+var DRAFT_FIELDS = [
+  // Campaign setup
+  'cp-name','cp-pos','cp-co','cp-web','cp-email','cp-what','cp-angle',
+  // PR questions
+  'cp-pr-q1','cp-pr-q2','cp-pr-q3',
+  // Podcast pitch fields
+  'cp-pod-bio','cp-pod-topic','cp-pod-angle','cp-pod-tp1','cp-pod-tp2','cp-pod-tp3',
+  // Story pitch fields  
+  'cp-pitch-hook','cp-pitch-angle','cp-pitch-why',
+  // Reddit/Community
+  'rd-niche','rd-message','rd-audience',
+  'rd-story-1','rd-story-2','rd-story-3','rd-story-4','rd-story-5','rd-feedback',
+  // Local media
+  'loc-state','loc-city','loc-hyper','loc-lga','loc-what',
+  'loc-angle-other-input','loc-story','loc-editor','loc-contact','loc-extra',
+  // s1 shared fields (campaign step 1)
+  's1-name','s1-pos','s1-co','s1-web','s1-email','s1-what','s1-angle'
+];
+
+var draftSaveTimer = null;
+
+function saveDraftState() {
+  var draft = {};
+  DRAFT_FIELDS.forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el && el.value && el.value.trim()) draft[id] = el.value;
+  });
+  // Also save campaign name from wherever it lives
+  var nameEl = document.getElementById('cp-camp-name') || document.getElementById('camp-name-input');
+  if (nameEl && nameEl.value.trim()) draft['cp-camp-name'] = nameEl.value;
+  // Save current campaign ID so we restore to the right campaign
+  if (activeCampaign && activeCampaign.id) draft['_activeCampaignId'] = activeCampaign.id;
+  try { localStorage.setItem(getUserKey('op_draft'), JSON.stringify(draft)); } catch(e) {}
+}
+
+function restoreDraftState(campaignId) {
+  try {
+    var raw = localStorage.getItem(getUserKey('op_draft'));
+    if (!raw) return;
+    var draft = JSON.parse(raw);
+    // Only restore if it matches the current campaign (or no campaign set yet)
+    if (campaignId && draft._activeCampaignId && draft._activeCampaignId !== campaignId) return;
+    DRAFT_FIELDS.forEach(function(id) {
+      if (!draft[id]) return;
+      var el = document.getElementById(id);
+      if (el && !el.value) el.value = draft[id];
+    });
+    if (draft['cp-camp-name']) {
+      var nameEl = document.getElementById('cp-camp-name') || document.getElementById('camp-name-input');
+      if (nameEl && !nameEl.value) nameEl.value = draft['cp-camp-name'];
+    }
+  } catch(e) {}
+}
+
+function clearDraftState() {
+  try { localStorage.removeItem(getUserKey('op_draft')); } catch(e) {}
+}
+
+function initDraftAutoSave() {
+  // Attach input listeners to all draft fields
+  DRAFT_FIELDS.forEach(function(id) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    el.addEventListener('input', function() {
+      clearTimeout(draftSaveTimer);
+      draftSaveTimer = setTimeout(saveDraftState, 800);
+    });
+  });
+}
+
+
+// ── Auto-save campaign as draft when user starts filling in details ──
+var autoSaveDraftTimer = null;
+function autoSaveCampaignDraft() {
+  clearTimeout(autoSaveDraftTimer);
+  autoSaveDraftTimer = setTimeout(function() {
+    var name = (document.getElementById('camp-name-input') || {}).value || '';
+    if (!name.trim()) return; // Don't save if no name yet
+    // Build minimal campaign object
+    var campId = editingCampId || (activeCampaign && activeCampaign.id) || null;
+    // Check if this campaign already exists
+    var existing = campId ? campaigns.find(function(c){ return c.id === campId; }) : null;
+    if (existing) {
+      // Update name and mark as draft if it was already saved
+      existing.name = name.trim();
+      if (!existing.outreachLog || !existing.outreachLog.length) {
+        existing.status = 'draft';
+      }
+      saveCampaignsToStorage();
+      return;
+    }
+    // New campaign — create a draft entry
+    var newId = genId();
+    var draftCamp = {
+      id: newId,
+      name: name.trim(),
+      goal: (document.getElementById('camp-goal-input') || {}).value || '',
+      status: 'draft',
+      created: new Date().toISOString(),
+      profile: {
+        name: (document.getElementById('cp-name') || {}).value || '',
+        co: (document.getElementById('cp-co') || {}).value || '',
+        pos: (document.getElementById('cp-pos') || {}).value || '',
+        web: (document.getElementById('cp-web') || {}).value || '',
+        email: (document.getElementById('cp-email') || {}).value || '',
+        what: (document.getElementById('cp-what') || {}).value || '',
+        angle: (document.getElementById('cp-angle') || {}).value || ''
+      },
+      targeting: { primary: '', secondary: '', countries: [] },
+      outreachLog: [],
+      savedContent: {}
+    };
+    campaigns.push(draftCamp);
+    activeCampaign = draftCamp;
+    editingCampId = newId;
+    saveCampaignsToStorage();
+    console.log('[Draft] Auto-saved draft campaign:', name.trim());
+  }, 1200);
+}
+
+// ── Determine campaign completeness for draft detection ──
+function getCampaignCompleteness(c) {
+  var issues = [];
+  if (!c.name) issues.push('name');
+  if (!c.profile || !c.profile.co) issues.push('company');
+  if (!c.targeting || !c.targeting.primary) issues.push('industry');
+  if (!c.savedContent || !c.savedContent.pressRelease) issues.push('press release');
+  if (!c.outreachLog || !c.outreachLog.length) issues.push('outreach');
+  return { complete: issues.length === 0, issues: issues, pct: Math.round((5 - issues.length) / 5 * 100) };
 }
 
 // ---- NAVIGATION ----
@@ -7089,17 +7246,25 @@ function splitEmailSubjectBody(text) {
   var lines = text.split('\n');
   var subjectLine = '';
   var bodyStart = 0;
-  // Find Subject: line in first 5 lines
-  for (var i = 0; i < Math.min(5, lines.length); i++) {
+  // Scan ALL lines for Subject: (AI sometimes puts it after a blank line)
+  for (var i = 0; i < Math.min(10, lines.length); i++) {
     if (lines[i].match(/^subject:/i)) {
       subjectLine = lines[i].replace(/^subject:\s*/i, '').trim();
+      // Remove wrapping quotes if AI added them
+      subjectLine = subjectLine.replace(/^['"]+|['"]+$/g, '').trim();
       bodyStart = i + 1;
       // Skip blank lines after subject
       while (bodyStart < lines.length && lines[bodyStart].trim() === '') bodyStart++;
       break;
     }
   }
+  // If the body starts with "Subject:" somehow, strip it
   var body = lines.slice(bodyStart).join('\n').trim();
+  body = body.replace(/^subject:.*\n?/im, '').trim();
+  // If subject is empty or looks like a greeting, flag it as missing
+  if (!subjectLine || subjectLine.match(/^dear /i)) {
+    subjectLine = '(subject not generated — please add one)';
+  }
   return { subject: subjectLine, body: body };
 }
 
@@ -7202,28 +7367,32 @@ function doGenerateEmail() {
       prSnippet = 'Announcement from ' + (p.co||'the company') + ' about ' + (p.what || 'their latest news');
     }
     var salutation = buildSalutation(editor, sel.n);
+    var coName = p.co || 'the company';
+    var campGoal = activeCampaign && activeCampaign.goal ? activeCampaign.goal : '';
     prompt = [
-      'Write a press release pitch email from ' + (p.name||'the sender') + ' to ' + recipient + ' at ' + sel.n + '.',
+      'You are writing a press release pitch email on behalf of ' + (p.name||'the sender') + ' from ' + coName + '.',
       '', profileLines, outletLine,
       'Press release excerpt: ' + prSnippet,
+      campGoal ? 'Campaign goal: ' + campGoal : '',
       '',
-      'SALUTATION TO USE: ' + salutation,
+      'OUTPUT FORMAT — you must output EXACTLY this structure, plain text only, no markdown:',
       '',
-      'FORMAT -- plain text, no markdown:',
-      'Subject: [one punchy, specific subject line — not generic]',
+      'Subject: [Write a compelling, specific subject line here. It should tease the news angle or hook — NOT the greeting, NOT the company name alone, NOT generic. Example: "How ' + coName + ' is changing [what they do] — story pitch for ' + sel.n + '"]',
       '',
       salutation + ',',
       '',
-      '[Opening: one warm but direct sentence — why this story is genuinely relevant to ' + sel.n + ' and their readers specifically]',
+      '[One warm opening sentence specific to ' + sel.n + ' and why this story fits their readers]',
       '',
-      '[Body: 2 short paragraphs — the news, why it matters now, and why their readers will care. Personal in tone, not corporate. No jargon.]',
+      '[Paragraph 2: The news — what it is, why now, why it matters. Personal tone, not corporate.]',
       '',
-      '[CTA: a natural, conversational invite — not robotic. Offer to send the full release, answer questions, or arrange a call.]',
+      '[Paragraph 3: Why their readers specifically will care about this story]',
+      '',
+      '[Natural CTA — offer to send full release, answer questions, or hop on a quick call]',
       '',
       signOff,
       '',
-      'Under 200 words. Warm and professional. Never start with "I am reaching out" or "I hope this finds you well". Sound like a real person.'
-    ].join('\n');
+      'RULES: Subject line must be a real email subject — never the greeting. Greeting starts the body. Under 200 words total. Never write "I am reaching out" or "I hope this finds you well".'
+    ].filter(Boolean).join('\n');
 
   } else if (state.path === 'C') {
     var pp = state.podcastPitch || {};
@@ -7239,10 +7408,9 @@ function doGenerateEmail() {
       'Write a podcast guest pitch email from ' + (p.name||'the sender') + ' to the host/producer of ' + sel.n + '.',
       '', profileLines, outletLine, pitchLines,
       '',
-      'SALUTATION TO USE: ' + podSalutation,
+      'OUTPUT FORMAT — plain text only, exactly this structure:',
       '',
-      'FORMAT -- plain text, no markdown:',
-      'Subject: [specific, references the episode concept — sounds like a real pitch not a template]',
+      'Subject: [A specific subject line that pitches the episode concept — sounds like a real guest pitch, not a template. Example: "Guest pitch: ' + (p.name||'Speaker') + ' on [specific topic] for ' + sel.n + '"]',
       '',
       podSalutation + ',',
       '',
@@ -7308,14 +7476,13 @@ function doGenerateEmail() {
       'Position them as an expert and interesting voice -- not as a company promoting a product.',
       'The journalist should feel like they are hearing from someone worth talking to.',
       '',
-      'SALUTATION: Use "' + buildSalutation(editor, sel.n) + '" as the opening greeting.',
+      'OUTPUT FORMAT — plain text only, exactly this structure:',
       '',
-      'FORMAT -- plain text, no markdown, no section headers in the email itself:',
-      'Subject: [specific, intriguing -- reads like a story headline not a PR subject line]',
+      'Subject: [A specific, intriguing subject line written like a story headline — should make a journalist want to open it. NOT the greeting. Example: "The founder who rebuilt after losing everything — exclusive story for ' + sel.n + '"]',
       '',
       buildSalutation(editor, sel.n) + ',',
       '',
-      '[Opening: one personalised sentence showing genuine awareness of ' + sel.n + ' -- reference their coverage, audience, or a specific angle they cover]',
+      '[Opening: one personalised sentence showing genuine familiarity with ' + sel.n + ' — reference their coverage style, their audience, or a topic they regularly cover]',
       '',
       '[Paragraph 2: who ' + founderName + ' is and why they are the right person to speak on this topic -- their authority, experience, or unique position. Confident but not boastful.]',
       '',
@@ -9231,6 +9398,7 @@ function initApp() {
   if (header) header.style.display = '';
   renderPlatforms();
   setTimeout(initPhoneFields, 100);
+  setTimeout(initDraftAutoSave, 300);
   loadCampaigns();
   renderCampaignsDashboard(); // render immediately so campaigns show on load
   campCountries = [];
