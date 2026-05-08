@@ -345,7 +345,7 @@ textarea{resize:vertical;line-height:1.6;}
 .phone-option-code{color:var(--muted);font-size:12px;flex-shrink:0;}
 </style>
   <!-- Clerk Auth -->
-  <script defer crossorigin="anonymous" data-clerk-publishable-key="pk_live_Y2xlcmsucHJlc3NyZWFjaG91dC5jb20k" src="https://clerk.pressreachout.com/npm/@clerk/clerk-js@latest/dist/clerk.browser.js"></script>
+  <script async crossorigin="anonymous" data-clerk-publishable-key="pk_live_Y2xlcmsucHJlc3NyZWFjaG91dC5jb20k" src="https://clerk.pressreachout.com/npm/@clerk/clerk-js@5/dist/clerk.browser.js"></script>
 </head>
 <body>
 
@@ -3279,19 +3279,18 @@ function goHome() {
 }
 
 function checkFirstRun() {
-  // userAccount may already be populated from Supabase (handleSignedIn).
-  // Only fall back to localStorage if Supabase didn't load anything.
-  if (!userAccount) loadAccount();
+  // Try localStorage if userAccount not already set
+  if (!userAccount || !userAccount.fname) loadAccount();
 
-  if (!userAccount || !userAccount.fname || !userAccount.co) {
-    // Genuinely new user — show setup wizard
-    document.querySelectorAll('.screen').forEach(function(s){ s.classList.remove('active'); });
-    document.getElementById('s-account-setup').classList.add('active');
-  } else {
+  if (userAccount && userAccount.fname && userAccount.co) {
     // Existing user — go straight to campaigns
     updateAccountHeader();
     syncAccountToCampaignForm();
     showScreen('s-camps');
+  } else {
+    // New user — show setup wizard
+    document.querySelectorAll('.screen').forEach(function(s){ s.classList.remove('active'); });
+    document.getElementById('s-account-setup').classList.add('active');
   }
 }
 
@@ -8682,7 +8681,10 @@ async function initClerk() {
   var loadingEl = document.getElementById('auth-loading');
   try {
     console.log('[Auth] Calling Clerk.load()...');
-    await window.Clerk.load();
+    await window.Clerk.load({
+      routerPush: function(to) { window.location.href = to; },
+      routerReplace: function(to) { window.location.replace(to); }
+    });
     clerkLoaded = true;
     console.log('[Auth] Clerk loaded. Session:', window.Clerk.session ? window.Clerk.session.id : 'none');
 
@@ -8726,19 +8728,34 @@ async function handleSignedIn(session) {
       console.warn('[Auth] /api/auth call failed or timed out — continuing anyway:', authErr.message);
     }
 
-    // Load user profile from Supabase — non-blocking with 5s timeout
+    // Load profile — localStorage is the source of truth for profile data.
+    // Supabase only stores id+email, not the full profile.
+    var localAccount = null;
     try {
-      var dataTimeout = new Promise(function(_, reject){ setTimeout(function(){ reject(new Error('data timeout')); }, 5000); });
-      var profileData = await Promise.race([ apiData('getUser', {}), dataTimeout ]);
-      if (profileData) userAccount = profileData;
-    } catch(dataErr) {
-      console.warn('[Auth] Profile load failed or timed out — continuing with localStorage:', dataErr.message);
+      var raw = localStorage.getItem('userAccount');
+      localAccount = raw ? JSON.parse(raw) : null;
+    } catch(e) {}
+
+    if (localAccount && localAccount.fname && localAccount.co) {
+      // Good local profile exists — use it
+      userAccount = localAccount;
+      console.log('[Auth] Profile loaded from localStorage:', userAccount.fname, userAccount.co);
+    } else {
+      // No local profile — this is a new user or new device
+      // Try Supabase but only use it if it has real profile data
+      try {
+        var dataTimeout = new Promise(function(_, reject){ setTimeout(function(){ reject(new Error('data timeout')); }, 4000); });
+        var profileData = await Promise.race([ apiData('getUser', {}), dataTimeout ]);
+        if (profileData && profileData.fname && profileData.co) {
+          userAccount = profileData;
+          try { localStorage.setItem('userAccount', JSON.stringify(userAccount)); } catch(e) {}
+          console.log('[Auth] Profile loaded from Supabase:', userAccount.fname, userAccount.co);
+        }
+      } catch(dataErr) {
+        console.warn('[Auth] Supabase profile load failed:', dataErr.message);
+      }
     }
 
-    // Persist to localStorage so offline/refresh works
-    if (userAccount) {
-      try { localStorage.setItem('userAccount', JSON.stringify(userAccount)); } catch(e) {}
-    }
     // Always proceed — hide auth screen and launch app
     document.getElementById('s-auth').classList.remove('active');
     initApp();
