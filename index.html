@@ -3279,33 +3279,59 @@ function goHome() {
 }
 
 function checkFirstRun() {
-  loadAccount();
-  if (!userAccount) {
-    // First time — show account setup
+  // userAccount may already be populated from Supabase (handleSignedIn).
+  // Only fall back to localStorage if Supabase didn't load anything.
+  if (!userAccount) loadAccount();
+
+  if (!userAccount || !userAccount.fname || !userAccount.co) {
+    // Genuinely new user — show setup wizard
     document.querySelectorAll('.screen').forEach(function(s){ s.classList.remove('active'); });
     document.getElementById('s-account-setup').classList.add('active');
   } else {
+    // Existing user — go straight to campaigns
     updateAccountHeader();
-    // Pre-populate campaign form fields from account
     syncAccountToCampaignForm();
+    showScreen('s-camps');
   }
 }
 
 function syncAccountToCampaignForm() {
   if (!userAccount) return;
-  // Pre-fill campaign Step 1 fields from account data
+  // Pre-fill campaign form fields from saved account data
   var map = {
     'cp-name': [userAccount.fname, userAccount.lname].filter(Boolean).join(' '),
-    'cp-pos': userAccount.pos,
-    'cp-co': userAccount.co,
-    'cp-web': userAccount.web,
-    'cp-email': userAccount.email,
-    'cp-what': userAccount.what
+    'cp-pos':  userAccount.pos  || '',
+    'cp-co':   userAccount.co   || '',
+    'cp-web':  userAccount.web  || '',
+    'cp-email':userAccount.email|| '',
+    'cp-what': userAccount.what || ''
   };
   Object.keys(map).forEach(function(id) {
     var el = document.getElementById(id);
     if (el && map[id] && !el.value) el.value = map[id];
   });
+  // Pre-select industry card if account has one
+  if (userAccount.industry) {
+    var IND_LABEL_MAP = {
+      'Fashion, Retail & Consumer': 0,
+      'Technology & Innovation': 1,
+      'Health & Wellness': 2,
+      'Finance & Professional Services': 3,
+      'Media, Arts & Entertainment': 4,
+      'Food, Hospitality & Travel': 5,
+      'Industry & Infrastructure': 6,
+      'Energy, Environment & Education': 7,
+      'Business & Startups': 8,
+      'Other': 9,
+      'Automotive': 10
+    };
+    var idx = IND_LABEL_MAP[userAccount.industry];
+    if (idx !== undefined) {
+      setTimeout(function() { selectCampCard(idx); }, 200);
+    }
+    var hiddenInd = document.getElementById('cp-industry');
+    if (hiddenInd && !hiddenInd.value) hiddenInd.value = userAccount.industry;
+  }
 }
 
 // ---- OUTREACH DASHBOARD ----
@@ -8709,6 +8735,10 @@ async function handleSignedIn(session) {
       console.warn('[Auth] Profile load failed or timed out — continuing with localStorage:', dataErr.message);
     }
 
+    // Persist to localStorage so offline/refresh works
+    if (userAccount) {
+      try { localStorage.setItem('userAccount', JSON.stringify(userAccount)); } catch(e) {}
+    }
     // Always proceed — hide auth screen and launch app
     document.getElementById('s-auth').classList.remove('active');
     initApp();
