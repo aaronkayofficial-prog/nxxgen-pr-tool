@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Automotive PR Outreach — Press Releases, Media Contacts & Podcast Pitching | PressReachOut</title>
+<meta name="description" content="Reach automotive journalists, trade publications and podcast hosts across Australia, UK and US. AI-powered press releases and personalised pitch emails for car brands, aftermarket businesses, EV companies and motorsport."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --gold:#c2185b;--gold-light:#fff0f3;--gold-dark:#9c1048;
+  --black:#0a0a0a;--white:#ffffff;--off:#f8f7f5;
+  --border:#e8e4df;--text:#1a1a1a;--muted:#888;
+  --radius:10px;--shadow:0 2px 20px rgba(0,0,0,0.07);
+  --shadow-lg:0 8px 40px rgba(0,0,0,0.12);
+}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--text);font-size:16px;line-height:1.6;overflow-x:hidden;}
+h1,h2,h3,h4{font-family:'Playfair Display',serif;line-height:1.15;}
+.wrap{max-width:1100px;margin:0 auto;padding:0 2rem;}
+.wrap-sm{max-width:740px;margin:0 auto;padding:0 2rem;}
+section{padding:80px 0;}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:13px 26px;border-radius:50px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;cursor:pointer;border:2px solid transparent;transition:all 0.2s;white-space:nowrap;text-decoration:none;}
+.btn-primary{background:var(--gold);color:#fff;border-color:var(--gold);}
+.btn-primary:hover{background:var(--gold-dark);transform:translateY(-1px);box-shadow:0 6px 20px rgba(194,24,91,0.35);}
+.btn-outline{background:transparent;color:var(--text);border-color:var(--border);}
+.btn-sm{padding:9px 18px;font-size:13px;}
+
+/* NAV */
+nav{background:var(--white);border-bottom:1px solid var(--border);padding:0 2rem;height:64px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.nav-logo{font-family:'Playfair Display',serif;font-size:18px;font-weight:600;color:var(--black);text-decoration:none;}
+.nav-logo span{color:var(--gold);}
+.nav-back{font-size:13px;color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:color 0.2s;}
+.nav-back:hover{color:var(--black);}
+
+/* BREADCRUMB */
+.breadcrumb{background:var(--off);border-bottom:1px solid var(--border);padding:10px 0;}
+.breadcrumb-inner{max-width:1100px;margin:0 auto;padding:0 2rem;display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);}
+.breadcrumb-inner a{color:var(--muted);text-decoration:none;}
+.breadcrumb-inner a:hover{color:var(--gold);}
+.breadcrumb-sep{opacity:0.4;}
+
+/* HERO */
+#hero{background:var(--off);padding:80px 0 60px;border-bottom:1px solid var(--border);}
+.hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;}
+.hero-industry-badge{display:inline-flex;align-items:center;gap:10px;background:var(--white);border:1.5px solid var(--border);border-radius:50px;padding:6px 16px 6px 8px;margin-bottom:1.5rem;}
+.hero-industry-icon{width:32px;height:32px;border-radius:50%;background:var(--gold-light);display:flex;align-items:center;justify-content:center;}
+.hero-industry-label{font-size:12px;font-weight:600;color:var(--muted);letter-spacing:0.5px;}
+.hero-h1{font-size:clamp(2rem,3.5vw,2.8rem);color:var(--black);margin-bottom:1rem;font-weight:700;}
+.hero-h1 em{color:var(--gold);font-style:normal;}
+.hero-sub{font-size:16px;color:var(--muted);line-height:1.75;margin-bottom:2rem;max-width:480px;}
+.hero-ctas{display:flex;gap:12px;flex-wrap:wrap;}
+.hero-stats{display:flex;gap:2rem;margin-top:2rem;padding-top:2rem;border-top:1px solid var(--border);}
+.hero-stat-num{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:var(--black);}
+.hero-stat-label{font-size:12px;color:var(--muted);margin-top:2px;}
+
+/* Outlet logo grid in hero */
+.outlet-logo-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+.outlet-logo-card{background:var(--white);border:1.5px solid var(--border);border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:10px;}
+.outlet-logo-territory{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--gold);background:var(--gold-light);padding:2px 7px;border-radius:20px;flex-shrink:0;}
+.outlet-logo-name{font-size:13px;font-weight:600;color:var(--black);}
+.outlet-logo-type{font-size:10px;color:var(--muted);}
+
+/* SEO CONTENT */
+#seo-content{background:var(--white);}
+.seo-grid{display:grid;grid-template-columns:2fr 1fr;gap:5rem;align-items:start;}
+.seo-body h2{font-size:clamp(1.6rem,2.5vw,2rem);margin-bottom:1.25rem;color:var(--black);}
+.seo-body p{font-size:15px;color:#444;line-height:1.8;margin-bottom:1.25rem;}
+.seo-body p strong{color:var(--black);}
+.seo-sidebar{background:var(--off);border-radius:16px;padding:1.75rem;position:sticky;top:80px;}
+.seo-sidebar-title{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:1rem;}
+.seo-kw-list{list-style:none;display:flex;flex-direction:column;gap:6px;}
+.seo-kw-list li{font-size:13px;color:var(--text);display:flex;align-items:center;gap:8px;padding:7px 10px;background:var(--white);border-radius:8px;border:1px solid var(--border);}
+.seo-kw-list li::before{content:'🔍';font-size:11px;flex-shrink:0;}
+
+/* OUTREACH PATHS */
+#paths{background:var(--off);}
+.paths-eyebrow{font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:0.75rem;}
+.paths-title{font-size:clamp(1.6rem,2.5vw,2.2rem);margin-bottom:0.75rem;color:var(--black);}
+.paths-sub{font-size:15px;color:var(--muted);margin-bottom:3rem;max-width:560px;}
+.paths-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1rem;}
+.path-card{background:var(--white);border:1.5px solid var(--border);border-radius:14px;padding:1.5rem 1.25rem;text-align:center;transition:all 0.2s;}
+.path-card:hover{border-color:var(--gold);transform:translateY(-3px);box-shadow:var(--shadow-lg);}
+.path-card-icon{width:44px;height:44px;background:var(--gold-light);border-radius:10px;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;}
+.path-card-title{font-size:14px;font-weight:600;color:var(--black);margin-bottom:6px;}
+.path-card-desc{font-size:12px;color:var(--muted);line-height:1.55;}
+
+/* OUTLETS */
+#outlets{background:var(--white);}
+.outlets-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:2.5rem;gap:2rem;flex-wrap:wrap;}
+.outlets-title{font-size:clamp(1.6rem,2.5vw,2.2rem);color:var(--black);}
+.outlets-sub{font-size:14px;color:var(--muted);max-width:400px;}
+.outlets-filter{display:flex;gap:8px;}
+.outlets-filter-btn{font-size:12px;font-weight:500;padding:6px 14px;border-radius:20px;border:1.5px solid var(--border);background:var(--white);color:var(--muted);cursor:pointer;transition:all 0.15s;}
+.outlets-filter-btn.active{background:var(--gold);border-color:var(--gold);color:#fff;}
+.outlets-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;}
+.outlet-card{border:1.5px solid var(--border);border-radius:12px;padding:1.25rem;transition:all 0.2s;}
+.outlet-card[data-featured="false"]{display:none;}
+.outlet-card:hover{border-color:var(--gold);box-shadow:var(--shadow);}
+.outlet-card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.outlet-name{font-size:15px;font-weight:600;color:var(--black);}
+.outlet-territory{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:20px;}
+.outlet-territory.au{color:#c2185b;background:#fff0f3;}
+.outlet-territory.uk{color:#1565c0;background:#e3f2fd;}
+.outlet-territory.us{color:#2e7d32;background:#e8f5e9;}
+.outlet-type{font-size:11px;color:var(--muted);margin-bottom:6px;}
+.outlet-desc{font-size:12px;color:#555;line-height:1.55;}
+
+/* PODCASTS */
+#podcasts{background:var(--off);}
+.podcasts-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:2.5rem;}
+.podcast-card{background:var(--white);border:1.5px solid var(--border);border-radius:12px;padding:1.25rem;display:flex;align-items:flex-start;gap:12px;transition:all 0.2s;text-decoration:none;color:inherit;}
+.podcast-card:hover{border-color:var(--gold);box-shadow:var(--shadow);}
+.podcast-artwork-sm{width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,#c2185b,#7b0d3a);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.podcast-card-name{font-size:14px;font-weight:600;color:var(--black);margin-bottom:3px;}
+.podcast-card-meta{font-size:11px;color:var(--muted);margin-bottom:6px;}
+.podcast-card-desc{font-size:12px;color:#555;line-height:1.55;}
+
+/* FAQ */
+#faq-industry{background:var(--white);}
+.faq-list{max-width:740px;margin:2.5rem auto 0;}
+.faq-item{border-bottom:1px solid var(--border);}
+.faq-q{width:100%;display:flex;align-items:center;justify-content:space-between;padding:1.1rem 0;font-size:15px;font-weight:500;color:var(--black);cursor:pointer;background:none;border:none;font-family:'DM Sans',sans-serif;text-align:left;gap:1rem;}
+.faq-q:hover{color:var(--gold);}
+.faq-arrow{flex-shrink:0;width:22px;height:22px;border-radius:50%;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--muted);}
+.faq-item.open .faq-arrow{background:var(--gold);border-color:var(--gold);color:#fff;}
+.faq-a{display:none;padding:0 0 1.1rem;font-size:14px;color:var(--muted);line-height:1.7;}
+.faq-item.open .faq-a{display:block;}
+
+/* CTA */
+#page-cta{background:var(--black);padding:100px 0;text-align:center;}
+.page-cta-eyebrow{font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;}
+.page-cta-title{font-size:clamp(2rem,3.5vw,3rem);color:#fff;margin-bottom:1rem;}
+.page-cta-title em{color:var(--gold);font-style:italic;}
+.page-cta-sub{font-size:16px;color:rgba(255,255,255,0.5);margin-bottom:2rem;max-width:440px;margin-left:auto;margin-right:auto;}
+
+/* INDUSTRY NAV */
+.industry-nav{background:var(--off);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:16px 0;}
+.industry-nav-inner{max-width:1100px;margin:0 auto;padding:0 2rem;display:flex;gap:8px;flex-wrap:wrap;}
+.industry-nav-item{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:500;padding:6px 14px;border-radius:20px;border:1.5px solid var(--border);background:var(--white);color:var(--muted);text-decoration:none;transition:all 0.15s;flex-shrink:0;}
+.industry-nav-item.active{background:var(--gold);border-color:var(--gold);color:#fff;}
+.industry-nav-item:hover:not(.active){border-color:var(--black);color:var(--black);}
+
+footer{background:#0a0a0a;padding:40px 0;text-align:center;}
+.footer-logo{font-family:'Playfair Display',serif;font-size:18px;color:#fff;margin-bottom:8px;}
+.footer-logo span{color:var(--gold);}
+.footer-copy{font-size:12px;color:#444;}
+
+/* MOCKUP ANNOTATION */
+
+
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="/" class="nav-logo">Press<span>ReachOut</span></a>
+  <div style="display:flex;align-items:center;gap:16px;">
+    <a href="/" class="nav-back">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      All industries
+    </a>
+    <a href="/app" class="btn btn-primary btn-sm">Get started free →</a>
+  </div>
+</nav>
+
+<!-- BREADCRUMB -->
+<div class="breadcrumb">
+  <div class="breadcrumb-inner">
+    <a href="/">Home</a>
+    <span class="breadcrumb-sep">›</span>
+    <a href="/#industries">Industries</a>
+    <span class="breadcrumb-sep">›</span>
+    <span>Automotive PR</span>
+  </div>
+</div>
+
+<!-- INDUSTRY NAV BAR -->
+<div class="industry-nav">
+  <div class="industry-nav-inner">
+    <a href="#" class="industry-nav-item active"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/><path d="M12 3v6M4.22 7.22l4.24 4.24M3 12h6M4.22 16.78l4.24-4.24M12 21v-6M19.78 16.78l-4.24-4.24M21 12h-6M19.78 7.22l-4.24 4.24"/></svg> Automotive</a>
+    <a href="#" class="industry-nav-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.38 18H3.62a1 1 0 0 1-.77-1.63L12 6l9.15 10.37A1 1 0 0 1 20.38 18z"/><path d="M12 6V3"/><circle cx="12" cy="2.5" r="1"/></svg> Fashion</a>
+    <a href="#" class="industry-nav-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="7" width="10" height="10" rx="1"/><path d="M7 9H4M7 12H4M7 15H4M17 9h3M17 12h3M17 15h3M9 7V4M12 7V4M15 7V4M9 17v3M12 17v3M15 17v3"/></svg> Technology</a>
+    <a href="#" class="industry-nav-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg> Health</a>
+    <a href="#" class="industry-nav-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20h18"/><path d="M5 20V14"/><path d="M9 20V8"/><path d="M13 20V11"/><path d="M17 20V5"/></svg> Finance</a>
+    <a href="#" class="industry-nav-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polygon points="10 8 16 12 10 16 10 8" stroke="currentColor" stroke-width="1.5"/></svg> Media</a>
+    <a href="#" class="industry-nav-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6h3v8"/></svg> Food</a>
+    <a href="#" class="industry-nav-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20h20"/><path d="M2 20V8l6-4v4l6-4v4l6-4v16"/><path d="M10 20v-5h4v5"/></svg> Industry</a>
+    <a href="#" class="industry-nav-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8C8 10 5.9 16.17 3.82 19.34a1 1 0 0 0 1.46 1.32C7.5 18.6 11 17 17 17c4-8 2-15 2-15"/><path d="M3 22c5-5 7-12 7-12"/></svg> Environment</a>
+    <a href="#" class="industry-nav-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/></svg> Startups</a>
+    <a href="#" class="industry-nav-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg> Sports</a>
+    <a href="#" class="industry-nav-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg> Music</a>
+    <a href="#" class="industry-nav-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="m10 8 6 4-6 4V8z"/><path d="M8 21h8M12 17v4"/></svg> Creators</a>
+    <a href="#" class="industry-nav-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="10.5" r="2.5"/><circle cx="8.5" cy="7.5" r="2.5"/><circle cx="6.5" cy="12.5" r="2.5"/><path d="M12 20a6 6 0 0 1-6-6c0-4 6-10.5 6-10.5s6 6.5 6 10.5a6 6 0 0 1-6 6z"/></svg> Artists</a>
+    <a href="#" class="industry-nav-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><line x1="8" y1="7" x2="16" y2="7"/><line x1="8" y1="11" x2="16" y2="11"/><line x1="8" y1="15" x2="12" y2="15"/></svg> Authors</a>
+    <a href="#" class="industry-nav-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg> Other</a>
+  </div>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="wrap">
+    
+    <div class="hero-grid">
+      <div>
+        <div class="hero-industry-badge">
+          <div class="hero-industry-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/><path d="M12 3v6M4.22 7.22l4.24 4.24M3 12h6"/></svg>
+          </div>
+          <span class="hero-industry-label">Automotive PR</span>
+        </div>
+        <h1 class="hero-h1">Automotive <em>PR Outreach</em> — Press Releases, Media Contacts & Podcast Pitching</h1>
+        <p class="hero-sub">Reach automotive journalists, trade editors, and podcast hosts across Australia, the UK, and the US. AI-generated press releases and personalised pitch emails tailored to the car industry.</p>
+        <div class="hero-ctas">
+          <a href="/app" class="btn btn-primary">Start your automotive campaign →</a>
+          <a href="#outlets" class="btn btn-outline">See media contacts</a>
+        </div>
+        <div class="hero-stats">
+          <div>
+            <div class="hero-stat-num">45+</div>
+            <div class="hero-stat-label">Automotive outlets</div>
+          </div>
+          <div>
+            <div class="hero-stat-num">3</div>
+            <div class="hero-stat-label">Territories covered</div>
+          </div>
+          <div>
+            <div class="hero-stat-num">5</div>
+            <div class="hero-stat-label">Outreach paths</div>
+          </div>
+        </div>
+      </div>
+      <div>
+      <!-- Automotive hero visual -->
+      <div style="margin-bottom:20px;border-radius:16px;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,0.15);">
+        <img src="https://images.unsplash.com/photo-1623572435912-9940866dca4e?fm=jpg&q=80&w=900&auto=format&fit=crop" alt="Automotive PR — electric vehicle on road" style="width:100%;height:220px;object-fit:cover;display:block;"/>
+        <div style="background:var(--black);padding:8px 14px;display:flex;align-items:center;justify-content:space-between;">
+          <span style="font-size:10px;color:#555;">Photo: Unsplash / Bob Osias</span>
+          <span style="font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:#c2185b;">Automotive PR</span>
+        </div>
+      </div>
+      <p style="font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:14px;">Publications we reach</p>
+        <div class="outlet-logo-grid">
+          <div class="outlet-logo-card">
+            <div>
+              <div class="outlet-logo-name">Wheels Magazine</div>
+              <div class="outlet-logo-type">Consumer · Print & Digital</div>
+            </div>
+            <span class="outlet-territory au" style="margin-left:auto;">AU</span>
+          </div>
+          <div class="outlet-logo-card">
+            <div>
+              <div class="outlet-logo-name">Autocar</div>
+              <div class="outlet-logo-type">Consumer · Print & Digital</div>
+            </div>
+            <span class="outlet-territory uk" style="margin-left:auto;">UK</span>
+          </div>
+          <div class="outlet-logo-card">
+            <div>
+              <div class="outlet-logo-name">MotorTrend</div>
+              <div class="outlet-logo-type">Consumer · Digital</div>
+            </div>
+            <span class="outlet-territory us" style="margin-left:auto;">US</span>
+          </div>
+          <div class="outlet-logo-card">
+            <div>
+              <div class="outlet-logo-name">GoAuto</div>
+              <div class="outlet-logo-type">Trade · Digital</div>
+            </div>
+            <span class="outlet-territory au" style="margin-left:auto;">AU</span>
+          </div>
+          <div class="outlet-logo-card">
+            <div>
+              <div class="outlet-logo-name">Auto Express</div>
+              <div class="outlet-logo-type">Consumer · Print & Digital</div>
+            </div>
+            <span class="outlet-territory uk" style="margin-left:auto;">UK</span>
+          </div>
+          <div class="outlet-logo-card">
+            <div>
+              <div class="outlet-logo-name">SEMA News</div>
+              <div class="outlet-logo-type">Trade · Print & Digital</div>
+            </div>
+            <span class="outlet-territory us" style="margin-left:auto;">US</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SEO CONTENT -->
+<section id="seo-content">
+  <div class="wrap">
+    
+    <div class="seo-grid">
+      <div class="seo-body">
+        <h2>What Automotive PR Looks Like in 2026</h2>
+        <p>The automotive industry is one of the most competitive PR landscapes in the world. Whether you're launching a new vehicle, announcing a performance aftermarket product, entering the EV space, or pitching a car care brand, <strong>getting your story in front of the right automotive journalists requires more than a generic press release</strong>. It requires understanding what motoring editors actually want — and sending it to the right person, at the right publication, at the right time.</p>
+        <p>In Australia, the automotive press is dominated by a handful of major consumer titles — Wheels, WhichCar, Drive, CarExpert — alongside influential trade publications like GoAuto and Spanner. In the UK, Autocar and Auto Express set the agenda for consumer coverage, while AM Online and Motor Trader serve the dealer and trade sector. In the US, the aftermarket is king — <strong>SEMA-affiliated titles and trade publications like Ward's Auto and Automotive News</strong> reach the buyers and decision-makers that matter most for parts, accessories, and performance brands.</p>
+        <p>Podcast outreach has become one of the fastest-growing PR channels in automotive. Shows covering car culture, EV adoption, motorsport, detailing, and classic cars have built intensely loyal audiences — <strong>the kind of engaged listeners that buy products, trust recommendations, and share content</strong>. A single well-placed podcast appearance can outperform months of traditional advertising.</p>
+      </div>
+      <div class="seo-sidebar">
+        <div class="seo-sidebar-title">What people search for</div>
+        <ul class="seo-kw-list">
+          <li>automotive press release service</li>
+          <li>car industry PR Australia</li>
+          <li>automotive media contacts UK</li>
+          <li>SEMA press release template</li>
+          <li>EV brand PR outreach</li>
+          <li>aftermarket PR strategy</li>
+          <li>automotive podcasts for brands</li>
+          <li>how to pitch automotive journalists</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OUTREACH PATHS -->
+<section id="paths">
+  <div class="wrap">
+    
+    <p class="paths-eyebrow">How we reach your audience</p>
+    <h2 class="paths-title">5 ways to get your automotive story out</h2>
+    <p class="paths-sub">Every campaign unlocks five distinct outreach channels — each tailored to the automotive media landscape across AU, UK, and US.</p>
+    <div class="paths-grid">
+      <div class="path-card">
+        <div class="path-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h14a2 2 0 0 0 2-2V7l-5-5H6a2 2 0 0 0-2 2v4"/><path d="M14 2v5h5"/><path d="M3 15h7"/></svg></div>
+        <div class="path-card-title">Press Release</div>
+        <div class="path-card-desc">Distribute your automotive news to trade editors, consumer titles, and motoring journalists directly.</div>
+      </div>
+      <div class="path-card">
+        <div class="path-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+        <div class="path-card-title">Story Pitch</div>
+        <div class="path-card-desc">Pitch an exclusive story angle to automotive feature writers at major consumer and trade publications.</div>
+      </div>
+      <div class="path-card">
+        <div class="path-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg></div>
+        <div class="path-card-title">Podcast Pitch</div>
+        <div class="path-card-desc">Get booked as a guest on automotive, EV, motorsport, detailing, and car culture podcasts.</div>
+      </div>
+      <div class="path-card">
+        <div class="path-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="9" r="2.5"/><path d="M6.5 19a5.5 5.5 0 0 1 11 0"/></svg></div>
+        <div class="path-card-title">Community Outreach</div>
+        <div class="path-card-desc">Reach automotive enthusiast communities, forums, and clubs where your audience already gathers.</div>
+      </div>
+      <div class="path-card">
+        <div class="path-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+        <div class="path-card-title">Local Media</div>
+        <div class="path-card-desc">Connect with regional automotive journalists, state-based motoring clubs, and local trade press.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OUTLETS -->
+<section id="outlets">
+  <div class="wrap">
+    
+    <div class="outlets-header">
+      <div>
+        <h2 class="outlets-title">Automotive Publications We Reach</h2>
+        <p class="outlets-sub">Real editorial outlets with direct contact emails — not wire services or press release aggregators.</p>
+      </div>
+      <div class="outlets-filter">
+        <button class="outlets-filter-btn active" onclick="filterOutlets('all',this)">All</button>
+        <button class="outlets-filter-btn" onclick="filterOutlets('au',this)">AU</button>
+        <button class="outlets-filter-btn" onclick="filterOutlets('uk',this)">UK</button>
+        <button class="outlets-filter-btn" onclick="filterOutlets('us',this)">US</button>
+      </div>
+    </div>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:1.5rem;" id="outlets-count">6 publications</p>
+    <div class="outlets-grid" id="outlets-grid">
+
+      <!-- ── AU (6) ── -->
+      <div class="outlet-card" data-territory="au" data-featured="true">
+        <div class="outlet-card-header"><div class="outlet-name">Wheels Magazine</div><span class="outlet-territory au">AU</span></div>
+        <div class="outlet-type">Consumer · Print & Digital</div>
+        <div class="outlet-desc">Australia's oldest and most respected car magazine. New car reviews, performance and industry news.</div>
+      </div>
+      <div class="outlet-card" data-territory="au" data-featured="true">
+        <div class="outlet-card-header"><div class="outlet-name">WhichCar</div><span class="outlet-territory au">AU</span></div>
+        <div class="outlet-type">Consumer · Digital</div>
+        <div class="outlet-desc">Australia's most-read car review and buying guide platform with millions of monthly visitors.</div>
+      </div>
+      <div class="outlet-card" data-territory="au" data-featured="false">
+        <div class="outlet-card-header"><div class="outlet-name">Drive.com.au</div><span class="outlet-territory au">AU</span></div>
+        <div class="outlet-type">Consumer · Digital</div>
+        <div class="outlet-desc">Australia's leading online motoring destination. Owned by Nine Entertainment, broad mainstream reach.</div>
+      </div>
+      <div class="outlet-card" data-territory="au" data-featured="false">
+        <div class="outlet-card-header"><div class="outlet-name">CarExpert</div><span class="outlet-territory au">AU</span></div>
+        <div class="outlet-type">Consumer · Digital</div>
+        <div class="outlet-desc">Fast-growing Australian car news and reviews site known for independent editorial and EV coverage.</div>
+      </div>
+      <div class="outlet-card" data-territory="au" data-featured="false">
+        <div class="outlet-card-header"><div class="outlet-name">GoAuto</div><span class="outlet-territory au">AU</span></div>
+        <div class="outlet-type">Trade · Digital</div>
+        <div class="outlet-desc">The Australian automotive trade news bible. Essential for dealer, fleet, and industry announcements.</div>
+      </div>
+      <div class="outlet-card" data-territory="au" data-featured="false">
+        <div class="outlet-card-header"><div class="outlet-name">Motor Magazine AU</div><span class="outlet-territory au">AU</span></div>
+        <div class="outlet-type">Consumer · Print & Digital</div>
+        <div class="outlet-desc">Australian performance and culture-focused car magazine. Strong with enthusiast and aftermarket audiences.</div>
+      </div>
+
+      <!-- ── UK (6) ── -->
+      <div class="outlet-card" data-territory="uk" data-featured="true">
+        <div class="outlet-card-header"><div class="outlet-name">Autocar</div><span class="outlet-territory uk">UK</span></div>
+        <div class="outlet-type">Consumer · Print & Digital</div>
+        <div class="outlet-desc">The UK's oldest and most authoritative car magazine. Highly influential with manufacturers and enthusiasts.</div>
+      </div>
+      <div class="outlet-card" data-territory="uk" data-featured="true">
+        <div class="outlet-card-header"><div class="outlet-name">Auto Express</div><span class="outlet-territory uk">UK</span></div>
+        <div class="outlet-type">Consumer · Print & Digital</div>
+        <div class="outlet-desc">UK's largest weekly car publication. Broad mainstream readership and strong used car audience.</div>
+      </div>
+      <div class="outlet-card" data-territory="uk" data-featured="false">
+        <div class="outlet-card-header"><div class="outlet-name">Car Magazine UK</div><span class="outlet-territory uk">UK</span></div>
+        <div class="outlet-type">Consumer · Print & Digital</div>
+        <div class="outlet-desc">Long-running UK performance and prestige car magazine. Strong with luxury and sports car brands.</div>
+      </div>
+      <div class="outlet-card" data-territory="uk" data-featured="false">
+        <div class="outlet-card-header"><div class="outlet-name">AM Online</div><span class="outlet-territory uk">UK</span></div>
+        <div class="outlet-type">Trade · Digital</div>
+        <div class="outlet-desc">UK automotive retail and dealer trade publication. Essential for dealer-network and fleet announcements.</div>
+      </div>
+      <div class="outlet-card" data-territory="uk" data-featured="false">
+        <div class="outlet-card-header"><div class="outlet-name">Electrifying.com</div><span class="outlet-territory uk">UK</span></div>
+        <div class="outlet-type">Consumer · Digital</div>
+        <div class="outlet-desc">UK's leading independent EV review and advice platform. High-intent audience actively researching electric cars.</div>
+      </div>
+      <div class="outlet-card" data-territory="uk" data-featured="false">
+        <div class="outlet-card-header"><div class="outlet-name">Driving Electric</div><span class="outlet-territory uk">UK</span></div>
+        <div class="outlet-type">Consumer · Digital</div>
+        <div class="outlet-desc">UK EV-focused publication covering new models, charging, incentives and real-world range testing.</div>
+      </div>
+
+      <!-- ── US (6) ── -->
+      <div class="outlet-card" data-territory="us" data-featured="true">
+        <div class="outlet-card-header"><div class="outlet-name">MotorTrend</div><span class="outlet-territory us">US</span></div>
+        <div class="outlet-type">Consumer · Digital & Streaming</div>
+        <div class="outlet-desc">The US premier automotive media brand. Car of the Year awards, broad consumer reach across print, digital and streaming.</div>
+      </div>
+      <div class="outlet-card" data-territory="us" data-featured="true">
+        <div class="outlet-card-header"><div class="outlet-name">SEMA News</div><span class="outlet-territory us">US</span></div>
+        <div class="outlet-type">Trade · Print & Digital</div>
+        <div class="outlet-desc">The global aftermarket bible. Essential for parts, accessories, performance and specialty equipment brands.</div>
+      </div>
+      <div class="outlet-card" data-territory="us" data-featured="false">
+        <div class="outlet-card-header"><div class="outlet-name">Car and Driver</div><span class="outlet-territory us">US</span></div>
+        <div class="outlet-type">Consumer · Print & Digital</div>
+        <div class="outlet-desc">One of the most-read US car magazines. Strong editorial voice, widely respected by consumers and industry.</div>
+      </div>
+      <div class="outlet-card" data-territory="us" data-featured="false">
+        <div class="outlet-card-header"><div class="outlet-name">Automotive News</div><span class="outlet-territory us">US</span></div>
+        <div class="outlet-type">Trade · Print & Digital</div>
+        <div class="outlet-desc">The US automotive industry's definitive trade publication. OEMs, dealers, suppliers and investors all read it.</div>
+      </div>
+      <div class="outlet-card" data-territory="us" data-featured="false">
+        <div class="outlet-card-header"><div class="outlet-name">InsideEVs</div><span class="outlet-territory us">US</span></div>
+        <div class="outlet-type">Consumer · Digital</div>
+        <div class="outlet-desc">The US leading EV-specific publication. In-depth reviews, charging guides and EV industry news with global reach.</div>
+      </div>
+      <div class="outlet-card" data-territory="us" data-featured="false">
+        <div class="outlet-card-header"><div class="outlet-name">Road & Track</div><span class="outlet-territory us">US</span></div>
+        <div class="outlet-type">Consumer · Print & Digital</div>
+        <div class="outlet-desc">Prestige US automotive title focused on performance, racing and driving culture. Strong with enthusiast brands.</div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:2rem;">
+      <p style="font-size:13px;color:var(--muted);">+ 39 more automotive outlets across AU, UK and US unlocked when you start a campaign</p>
+    </div>
+  </div>
+</section>
+
+<!-- PODCASTS -->
+<section id="podcasts">
+  <div class="wrap">
+    
+    <p style="font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:0.75rem;">Podcast Outreach</p>
+    <h2 style="font-size:clamp(1.6rem,2.5vw,2.2rem);color:var(--black);margin-bottom:0.75rem;">Automotive Podcasts That Accept Guest Pitches</h2>
+    <p style="font-size:15px;color:var(--muted);max-width:560px;">Audio and video podcast audiences are the most engaged in automotive media. Get your story in front of listeners who are already obsessed with cars.</p>
+    <div class="podcasts-grid">
+      <a class="podcast-card" href="https://sites.libsyn.com/410528/website" target="_blank" rel="noopener" style="text-decoration:none;cursor:pointer;">
+        <div class="podcast-artwork-sm"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></div>
+        <div>
+          <div class="podcast-card-name" style="display:flex;align-items:center;gap:6px;">The Carmudgeon Show <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></div>
+          <div class="podcast-card-meta">Car culture · US · Hagerty Podcast Network · Weekly</div>
+          <div class="podcast-card-desc">Jason Cammisa and Derek Tam-Scott discuss all things automotive with deep technical insight and dry humour. 300M+ YouTube views. Accepts brand guests.</div>
+        </div>
+      </a>
+      <a class="podcast-card" href="https://www.evcafe.org" target="_blank" rel="noopener" style="text-decoration:none;cursor:pointer;">
+        <div class="podcast-artwork-sm" style="background:linear-gradient(135deg,#1565c0,#0a3d62);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></div>
+        <div>
+          <div class="podcast-card-name" style="display:flex;align-items:center;gap:6px;">EV Café <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></div>
+          <div class="podcast-card-meta">Electric vehicles · UK · Active · Accepts guests</div>
+          <div class="podcast-card-desc">Award-winning UK podcast covering the EV and sustainability industry. Interviews with pioneers, innovators and industry leaders across zero-emission transport.</div>
+        </div>
+      </a>
+      <a class="podcast-card" href="https://www.autoline.tv/after-hours/" target="_blank" rel="noopener" style="text-decoration:none;cursor:pointer;">
+        <div class="podcast-artwork-sm" style="background:linear-gradient(135deg,#b71c1c,#7f0000);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></div>
+        <div>
+          <div class="podcast-card-name" style="display:flex;align-items:center;gap:6px;">Autoline After Hours <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></div>
+          <div class="podcast-card-meta">Industry trade · US · autoline.tv · Weekly</div>
+          <div class="podcast-card-desc">The automotive industry's premier trade podcast. Weekly roundtable with top OEM executives, designers, engineers and journalists. Ideal for B2B automotive brands.</div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq-industry">
+  <div class="wrap">
+    
+    <h2 style="font-size:clamp(1.6rem,2.5vw,2.2rem);color:var(--black);text-align:center;margin-bottom:0.5rem;">Automotive PR — Common Questions</h2>
+    <p style="font-size:15px;color:var(--muted);text-align:center;margin-bottom:0;">Everything you need to know about getting your automotive brand in the press.</p>
+    <div class="faq-list">
+      <div class="faq-item open">
+        <button class="faq-q" onclick="this.closest('.faq-item').classList.toggle('open')">
+          How do I write a press release for an automotive brand?
+          <span class="faq-arrow"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></span>
+        </button>
+        <div class="faq-a">A strong automotive press release leads with the news — the vehicle launch, product release, or milestone — in the first paragraph. Include technical specs where relevant, but lead with the human story or the market significance. Always include a quote from a key person, high-resolution images, and a clear boilerplate about your company. The AI press release generator handles all of this automatically based on your answers to three questions.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="this.closest('.faq-item').classList.toggle('open')">
+          Which Australian automotive publications should I pitch?
+          <span class="faq-arrow"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></span>
+        </button>
+        <div class="faq-a">The major Australian automotive consumer titles are Wheels, WhichCar, Drive.com.au, CarExpert, and Motor Magazine. For trade and aftermarket coverage, GoAuto, Spanner, and AutoMedia Australia are the key targets. For EV and sustainability angles, EV Central and The Driven are highly relevant. Our platform surfaces all of these with direct editorial email addresses.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="this.closest('.faq-item').classList.toggle('open')">
+          What is aftermarket PR and how does it differ from automotive PR?
+          <span class="faq-arrow"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></span>
+        </button>
+        <div class="faq-a">Aftermarket PR focuses on parts, accessories, performance products, car care, and modification culture rather than new vehicle launches. The target publications are different — trade titles like SEMA News, Aftermarket Business World, and specialist consumer titles like Hot Rod and Street Machine. Our platform separates these into sub-categories so you reach exactly the right editors.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="this.closest('.faq-item').classList.toggle('open')">
+          How do I get my car brand featured on automotive podcasts?
+          <span class="faq-arrow"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></span>
+        </button>
+        <div class="faq-a">Automotive podcast hosts look for guests who can offer genuine expertise, an interesting story, or industry insight — not a sales pitch. The best approach is a personalised pitch that references the specific show, explains why your story is relevant to their audience, and proposes 2-3 concrete talking points. Our Podcast Pitch path generates this for you and finds shows that actively accept guest submissions.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="this.closest('.faq-item').classList.toggle('open')">
+          Can I use this for EV and electric vehicle PR?
+          <span class="faq-arrow"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></span>
+        </button>
+        <div class="faq-a">Yes — Electric Vehicles is one of the fastest-growing sub-categories in our automotive database. We surface dedicated EV titles like Electrek, InsideEVs, EV Central, and The Driven, alongside mainstream automotive publications that are now covering EVs heavily. There's also a growing EV podcast circuit that's highly receptive to brand stories.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="page-cta">
+  <div class="wrap">
+    <p class="page-cta-eyebrow">Start today</p>
+    <h2 class="page-cta-title">Ready to get your automotive brand <em>covered?</em></h2>
+    <p class="page-cta-sub">Set up your account in minutes. Generate your first automotive press release. Send your first pitch today.</p>
+    <a href="/app" class="btn btn-primary">Start your free automotive campaign →</a>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">Press<span>ReachOut</span></div>
+  <p class="footer-copy">&copy; 2026 pressreachout.com</p>
+</footer>
+
+
+<script>
+function filterOutlets(territory, btn) {
+  document.querySelectorAll('.outlets-filter-btn').forEach(function(b) { b.classList.remove('active'); });
+  btn.classList.add('active');
+
+  var cards = document.querySelectorAll('#outlets-grid .outlet-card');
+  var shown = 0;
+
+  cards.forEach(function(card) {
+    var cardTerritory = card.getAttribute('data-territory');
+    var isFeatured = card.getAttribute('data-featured') === 'true';
+    var show = false;
+
+    if (territory === 'all') {
+      show = isFeatured;
+    } else {
+      show = (cardTerritory === territory);
+    }
+
+    // Always set explicit value — never empty string (which would let CSS hide rule take over)
+    card.style.setProperty('display', show ? 'block' : 'none', 'important');
+    if (show) shown++;
+  });
+
+  var countEl = document.getElementById('outlets-count');
+  var labelMap = { all: 'from across AU, UK & US', au: 'Australian publications', uk: 'UK publications', us: 'US publications' };
+  if (countEl) countEl.textContent = shown + ' ' + (labelMap[territory] || 'publications');
+}
+
+// Run on page load to set correct initial state
+document.addEventListener('DOMContentLoaded', function() {
+  var allBtn = document.querySelector('.outlets-filter-btn.active');
+  if (allBtn) filterOutlets('all', allBtn);
+});
+</script>
+</body>
+</html>
