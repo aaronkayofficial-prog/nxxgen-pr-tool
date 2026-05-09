@@ -279,8 +279,8 @@ footer{background:#0a0a0a;border-top:1px solid #1a1a1a;padding:60px 0 40px;}
 .phone-dead-overlay{position:absolute;inset:0;border-radius:26px;background:rgba(194,24,91,0.06);border:2px solid rgba(194,24,91,0.25);pointer-events:none;}
 
 /* Pivot separator */
-.inf-pivot-sep{display:flex;align-items:center;gap:1.5rem;margin-bottom:48px;}
-.inf-pivot-line{flex:1;height:1px;background:#1e1e1e;}
+.inf-pivot-sep{display:flex;align-items:center;gap:1.5rem;margin-bottom:48px;padding:0 0;}
+.inf-pivot-line{flex:1;height:1px;background:#222;}
 .inf-pivot-text{font-family:'Playfair Display',serif;font-size:clamp(1.4rem,2.5vw,1.9rem);color:#fff;white-space:nowrap;text-align:center;}
 .inf-pivot-text em{color:#c2185b;font-style:italic;}
 
@@ -516,9 +516,8 @@ footer{background:#0a0a0a;border-top:1px solid #1a1a1a;padding:60px 0 40px;}
 
 <!-- ── SECTION 3B: INFLUENCER ERA IS OVER ── -->
 <section id="influencer">
+  <!-- TOP BLOCK: Argument + Phone — constrained & centered -->
   <div class="inf-container">
-
-    <!-- TOP BLOCK: Argument + Phone -->
     <div class="inf-top">
       <div class="inf-left">
         <p class="inf-eyebrow reveal">The inconvenient truth</p>
@@ -581,14 +580,17 @@ footer{background:#0a0a0a;border-top:1px solid #1a1a1a;padding:60px 0 40px;}
       </div>
     </div>
 
-    <!-- PIVOT SEPARATOR -->
-    <div class="inf-pivot-sep reveal">
+  </div><!-- /inf-container -->
+
+  <!-- PIVOT — full width edge to edge -->
+  <div class="inf-pivot-sep reveal">
       <div class="inf-pivot-line"></div>
       <h3 class="inf-pivot-text">What actually <em>moves the needle</em></h3>
       <div class="inf-pivot-line"></div>
     </div>
 
-    <!-- BOTTOM BLOCK: Editorial + Podcast cards -->
+  <!-- BOTTOM BLOCK: Editorial + Podcast — full width with wrap padding -->
+  <div class="wrap">
     <div class="inf-bottom">
 
       <!-- EDITORIAL CARD -->
@@ -641,7 +643,7 @@ footer{background:#0a0a0a;border-top:1px solid #1a1a1a;padding:60px 0 40px;}
       </div>
 
     </div>
-  </div>
+  </div><!-- /wrap -->
 </section>
 
 <!-- ── SECTION 4: HOW IT WORKS ── -->
