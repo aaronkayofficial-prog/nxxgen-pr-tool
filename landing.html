@@ -316,6 +316,51 @@ footer{background:#0a0a0a;border-top:1px solid #1a1a1a;padding:60px 0 40px;}
   .footer-top{grid-template-columns:1fr;}
   .steps-grid{grid-template-columns:1fr;}
 }
+
+/* ── FEATURE ROWS ── */
+.feature-rows{display:flex;flex-direction:column;}
+.feature-row{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;padding:64px 0;border-top:1px solid #1e1e1e;}
+.feature-row:last-child{border-bottom:1px solid #1e1e1e;}
+.feature-row-icon{width:48px;height:48px;border-radius:12px;background:rgba(194,24,91,0.12);border:1px solid rgba(194,24,91,0.25);display:flex;align-items:center;justify-content:center;margin-bottom:1.25rem;}
+.feature-row-eyebrow{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#c2185b;margin-bottom:0.6rem;}
+.feature-row-title{font-family:'Playfair Display',serif;font-size:clamp(1.5rem,2.2vw,2rem);color:#fff;line-height:1.2;margin-bottom:0.85rem;}
+.feature-row-desc{font-size:15px;color:#666;line-height:1.75;}
+
+/* Editorial card */
+.editorial-card{background:#f8f7f5;border-radius:16px;padding:2rem;}
+.editorial-masthead{font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#aaa;margin-bottom:1rem;padding-bottom:10px;border-bottom:1.5px solid #e8e4df;}
+.editorial-badge{display:inline-flex;align-items:center;gap:5px;background:#c2185b;color:#fff;font-size:10px;font-weight:600;padding:4px 12px;border-radius:20px;margin-bottom:12px;}
+.editorial-headline{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:#0a0a0a;line-height:1.3;margin-bottom:8px;}
+.editorial-byline{font-size:11px;color:#aaa;margin-bottom:14px;}
+.editorial-excerpt{font-size:13px;color:#555;line-height:1.7;border-left:3px solid #c2185b;padding-left:14px;margin-bottom:16px;}
+.editorial-footer{display:flex;align-items:center;justify-content:space-between;padding-top:12px;border-top:1px solid #e8e4df;}
+.editorial-pub{font-size:11px;color:#aaa;}
+.editorial-reach{font-size:12px;font-weight:700;color:#c2185b;}
+
+/* Podcast card */
+.podcast-card{background:#0f172a;border-radius:16px;padding:1.75rem;}
+.podcast-top-label{font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#c2185b;margin-bottom:1.25rem;}
+.podcast-player-inner{background:#1e293b;border-radius:12px;padding:1.25rem;margin-bottom:1rem;}
+.podcast-artwork{width:48px;height:48px;border-radius:10px;background:linear-gradient(135deg,#c2185b,#7b0d3a);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.podcast-info-row{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+.podcast-ep-title{font-size:13px;font-weight:600;color:#fff;margin-bottom:2px;}
+.podcast-ep-show{font-size:11px;color:#64748b;}
+.podcast-formats{display:flex;gap:6px;margin-bottom:14px;}
+.podcast-fmt{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:500;padding:3px 10px;border-radius:20px;border:1px solid;}
+.podcast-fmt.audio{color:#c2185b;border-color:rgba(194,24,91,0.4);background:rgba(194,24,91,0.08);}
+.podcast-fmt.video{color:#4ade80;border-color:rgba(74,222,128,0.4);background:rgba(74,222,128,0.08);}
+.podcast-waveform{display:flex;align-items:center;gap:2px;height:36px;margin-bottom:12px;overflow:hidden;}
+.podcast-bar{border-radius:2px;width:3px;flex-shrink:0;}
+.podcast-controls-row{display:flex;align-items:center;gap:10px;}
+.podcast-play-btn{width:30px;height:30px;border-radius:50%;background:#c2185b;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.podcast-progress{flex:1;height:3px;background:#334155;border-radius:2px;}
+.podcast-progress-fill{height:3px;width:42%;background:#c2185b;border-radius:2px;}
+.podcast-time{font-size:10px;color:#475569;white-space:nowrap;}
+.podcast-stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.podcast-stat-box{background:#1e293b;border-radius:8px;padding:10px 8px;text-align:center;}
+.podcast-stat-val{font-size:15px;font-weight:700;color:#fff;margin-bottom:2px;}
+.podcast-stat-lbl{font-size:8px;color:#475569;text-transform:uppercase;letter-spacing:0.5px;}
+@media(max-width:900px){.feature-row{grid-template-columns:1fr;gap:2rem;}.feature-row-left{order:1;}.feature-row-right{order:2;}}
 </style>
 </head>
 <body>
