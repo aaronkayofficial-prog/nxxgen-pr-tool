@@ -2,6 +2,7 @@
   "rewrites": [
     { "source": "/app", "destination": "/index.html" },
     { "source": "/automotive-pr", "destination": "/automotive-pr.html" },
+    { "source": "/fashion-pr", "destination": "/fashion-pr.html" },
     { "source": "/api/chat", "destination": "/api/chat.js" },
     { "source": "/api/auth", "destination": "/api/auth.js" },
     { "source": "/api/data", "destination": "/api/data.js" }
