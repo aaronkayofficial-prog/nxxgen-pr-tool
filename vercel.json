@@ -1,6 +1,8 @@
 {
+  "routes": [
+    { "src": "/", "dest": "/landing.html" }
+  ],
   "rewrites": [
-    { "source": "/", "dest": "/landing.html" },
     { "source": "/app", "destination": "/index.html" },
     { "source": "/automotive-pr", "destination": "/automotive-pr.html" },
     { "source": "/fashion-pr", "destination": "/fashion-pr.html" },
