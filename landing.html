@@ -128,7 +128,7 @@ nav.scrolled{box-shadow:var(--shadow);}
 .problem-card{background:#111;padding:2.5rem;position:relative;overflow:hidden;}
 .problem-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform 0.4s;}
 .problem-card:hover::before{transform:scaleX(1);}
-.problem-num{font-family:'Playfair Display',serif;font-size:5rem;font-weight:700;color:rgba(194,24,91,0.12);line-height:1;margin-bottom:1rem;display:block;}
+.problem-num{font-family:'Playfair Display',serif;font-size:5rem;font-weight:700;color:rgba(194,24,91,0.7);line-height:1;margin-bottom:1rem;display:block;}
 .problem-text{font-size:17px;line-height:1.6;color:#ddd;font-weight:400;}
 .problem-text strong{color:#fff;}
 
@@ -179,7 +179,7 @@ nav.scrolled{box-shadow:var(--shadow);}
 /* ── PRICING ── */
 #pricing{background:var(--off);}
 .pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:3.5rem;}
-.pricing-card{background:var(--white);border:1.5px solid var(--border);border-radius:16px;padding:2.25rem;position:relative;transition:all 0.25s;}
+.pricing-card{background:var(--white);border:1.5px solid var(--border);border-radius:16px;padding:2.25rem;position:relative;transition:all 0.25s;display:flex;flex-direction:column;}
 .pricing-card.featured{border-color:var(--gold);background:var(--white);}
 .pricing-card.featured::before{content:'Most popular';position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:var(--gold);color:#fff;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:4px 16px;border-radius:50px;}
 .pricing-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg);}
@@ -187,7 +187,7 @@ nav.scrolled{box-shadow:var(--shadow);}
 .pricing-price{font-family:'Playfair Display',serif;font-size:3rem;font-weight:700;color:var(--black);line-height:1;margin-bottom:0.25rem;}
 .pricing-price sup{font-size:1.2rem;vertical-align:super;}
 .pricing-period{font-size:13px;color:var(--muted);margin-bottom:1.75rem;}
-.pricing-features{list-style:none;margin-bottom:2rem;}
+.pricing-features{list-style:none;margin-bottom:2rem;flex:1;}
 .pricing-features li{font-size:14px;color:var(--text);padding:7px 0;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;}
 .pricing-features li:last-child{border-bottom:none;}
 .pricing-features li::before{content:'';width:16px;height:16px;border-radius:50%;background:var(--gold-light);border:1.5px solid var(--gold);flex-shrink:0;display:flex;align-items:center;justify-content:center;}
@@ -282,7 +282,7 @@ footer{background:#0a0a0a;border-top:1px solid #1a1a1a;padding:60px 0 40px;}
 /* Pivot separator */
 .inf-pivot-sep{display:flex;align-items:center;gap:1.5rem;margin-bottom:48px;padding:0 0;}
 .inf-pivot-line{flex:1;height:1px;background:#222;}
-.inf-pivot-text{font-family:'Playfair Display',serif;font-size:clamp(1.4rem,2.5vw,1.9rem);color:#fff;white-space:nowrap;text-align:center;}
+.inf-pivot-text{font-family:'Playfair Display',serif;font-size:clamp(2rem,4vw,3.2rem);color:#fff;white-space:nowrap;text-align:center;letter-spacing:-0.5px;}
 .inf-pivot-text em{color:#c2185b;font-style:italic;}
 
 
@@ -290,7 +290,7 @@ footer{background:#0a0a0a;border-top:1px solid #1a1a1a;padding:60px 0 40px;}
 @media(max-width:900px){
   .inf-top{grid-template-columns:1fr;}.phone-wrap{display:none;}
   .inf-bottom{grid-template-columns:1fr;}
-  .inf-pivot-text{font-size:1.3rem;white-space:normal;text-align:center;}
+  .inf-pivot-text{font-size:1.8rem;white-space:normal;text-align:center;}
 }
 
 @media(max-width:900px){
@@ -361,6 +361,23 @@ footer{background:#0a0a0a;border-top:1px solid #1a1a1a;padding:60px 0 40px;}
 .podcast-stat-val{font-size:15px;font-weight:700;color:#fff;margin-bottom:2px;}
 .podcast-stat-lbl{font-size:8px;color:#475569;text-transform:uppercase;letter-spacing:0.5px;}
 @media(max-width:900px){.feature-row{grid-template-columns:1fr;gap:2rem;}.feature-row-left{order:1;}.feature-row-right{order:2;}}
+
+/* ── TESTIMONIALS ── */
+#testimonials{background:var(--off);padding:100px 0;}
+.testimonials-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:3rem;}
+.testimonial-card{background:var(--white);border:1.5px solid var(--border);border-radius:16px;padding:2rem;display:flex;flex-direction:column;gap:1.25rem;transition:all 0.25s;}
+.testimonial-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg);border-color:var(--gold);}
+.testimonial-stars{display:flex;gap:3px;}
+.testimonial-star{color:var(--gold);font-size:14px;}
+.testimonial-quote{font-size:15px;line-height:1.75;color:var(--text);font-style:italic;flex:1;}
+.testimonial-quote::before{content:'"';font-family:'Playfair Display',serif;font-size:3rem;color:var(--gold);line-height:0;vertical-align:-0.6rem;margin-right:4px;opacity:0.4;}
+.testimonial-divider{height:1px;background:var(--border);}
+.testimonial-author{display:flex;align-items:center;gap:12px;}
+.testimonial-avatar{width:40px;height:40px;border-radius:50%;background:var(--gold);color:#fff;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.testimonial-name{font-size:14px;font-weight:600;color:var(--black);margin-bottom:2px;}
+.testimonial-role{font-size:12px;color:var(--muted);}
+@media(max-width:900px){.testimonials-grid{grid-template-columns:1fr;}}
+@media(max-width:600px){.testimonials-grid{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
@@ -685,7 +702,7 @@ footer{background:#0a0a0a;border-top:1px solid #1a1a1a;padding:60px 0 40px;}
 <section id="how">
   <div class="wrap">
     <p class="section-eyebrow reveal">How it works</p>
-    <h2 class="section-title reveal reveal-delay-1">From idea to inbox in under 10 minutes</h2>
+    <h2 class="section-title reveal reveal-delay-1">From idea to editor's inbox in under 10 minutes</h2>
     <p class="section-sub reveal reveal-delay-2">No PR experience needed. No agency required. Just your story and a campaign.</p>
     <div class="steps-grid">
       <div class="step-card reveal">
@@ -700,7 +717,7 @@ footer{background:#0a0a0a;border-top:1px solid #1a1a1a;padding:60px 0 40px;}
       </div>
       <div class="step-card reveal reveal-delay-2">
         <div class="step-num">3</div>
-        <h3 class="step-title">Choose your path</h3>
+        <h3 class="step-title">Choose your media outreach</h3>
         <p class="step-desc">Press release, story pitch, podcast pitch, community outreach, or local media. Five different ways to get your story out.</p>
       </div>
       <div class="step-card reveal reveal-delay-3">
@@ -860,14 +877,6 @@ footer{background:#0a0a0a;border-top:1px solid #1a1a1a;padding:60px 0 40px;}
         <div class="industry-desc">New cars, aftermarket, EV &amp; motorsport</div>
       </div>
 
-      <div class="industry-card reveal reveal-delay-2">
-        <div class="industry-icon">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
-        </div>
-        <div class="industry-name">Other &amp; Niche</div>
-        <div class="industry-desc">Luxury, social enterprise &amp; niche sectors</div>
-      </div>
-
       <div class="industry-card reveal">
         <div class="industry-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg></div>
         <div class="industry-name">Sports</div>
@@ -896,6 +905,14 @@ footer{background:#0a0a0a;border-top:1px solid #1a1a1a;padding:60px 0 40px;}
         <div class="industry-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><line x1="8" y1="7" x2="16" y2="7"/><line x1="8" y1="11" x2="16" y2="11"/><line x1="8" y1="15" x2="12" y2="15"/></svg></div>
         <div class="industry-name">Authors</div>
         <div class="industry-desc">Fiction, non-fiction, book launches &amp; literary press</div>
+      </div>
+
+      <div class="industry-card reveal">
+        <div class="industry-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+        </div>
+        <div class="industry-name">Other &amp; Niche</div>
+        <div class="industry-desc">Luxury, social enterprise &amp; niche sectors</div>
       </div>
 
     </div>
@@ -1009,16 +1026,13 @@ footer{background:#0a0a0a;border-top:1px solid #1a1a1a;padding:60px 0 40px;}
       </div>
 
     </div>
-    <p class="pricing-note reveal">Payments and billing coming soon. Sign up now to get early access and lock in launch pricing.</p>
+    
 
     <!-- AGENCY / ENTERPRISE FOOTNOTE BAR -->
-    <div class="reveal" style="margin-top:2rem;border:1px solid var(--border);border-radius:12px;padding:1.1rem 1.75rem;display:flex;align-items:center;justify-content:space-between;gap:1.5rem;flex-wrap:wrap;background:var(--off);">
-      <div style="display:flex;align-items:center;gap:14px;">
-        <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);flex-shrink:0;">Agency &amp; Enterprise</div>
-        <div style="width:1px;height:20px;background:var(--border);flex-shrink:0;"></div>
-        <div style="font-size:13px;color:var(--text);">Unlimited seats · Dedicated account manager · Custom onboarding · API access · White-label · SLA support</div>
-      </div>
-      <a href="mailto:hello@pressreachout.com" class="btn btn-outline btn-sm" style="flex-shrink:0;white-space:nowrap;">Book a consultation &rarr;</a>
+    <div class="reveal" style="margin-top:2.5rem;text-align:center;padding:1.25rem 2rem;border-top:1px solid var(--border);">
+      <p style="font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;">Agency &amp; Enterprise</p>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:12px;">Unlimited seats · Dedicated account manager · Custom onboarding · API access · White-label · SLA support</p>
+      <a href="mailto:hello@pressreachout.com" style="font-size:12px;color:var(--muted);text-decoration:underline;text-underline-offset:3px;">Talk to us about a custom plan &rarr;</a>
     </div>
   </div>
 </section>
@@ -1084,6 +1098,64 @@ footer{background:#0a0a0a;border-top:1px solid #1a1a1a;padding:60px 0 40px;}
           <span class="faq-arrow"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
         </button>
         <div class="faq-a">On the Pro plan, yes — you can manage multiple clients with separate campaign histories, team seats, and white-labelled PDFs. The Agency &amp; Enterprise tier is designed for larger teams managing many clients simultaneously, with dedicated support and custom integrations. Book a consultation to discuss your specific needs.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── TESTIMONIALS ── -->
+<section id="testimonials">
+  <div class="wrap">
+    <p class="section-eyebrow reveal">What people are saying</p>
+    <h2 class="section-title reveal reveal-delay-1">Real results from real brands</h2>
+    <p class="section-sub reveal reveal-delay-2">Founders, marketers, and PR professionals who stopped copy-pasting into Gmail.</p>
+
+    <div class="testimonials-grid">
+
+      <div class="testimonial-card reveal">
+        <div class="testimonial-stars">
+          <span class="testimonial-star">★</span><span class="testimonial-star">★</span><span class="testimonial-star">★</span><span class="testimonial-star">★</span><span class="testimonial-star">★</span>
+        </div>
+        <p class="testimonial-quote">We landed a feature in Smart Company within two weeks of our first campaign. I'd been trying to get press coverage for six months before this. The pitch it wrote was better than anything I could have done myself.</p>
+        <div class="testimonial-divider"></div>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">SL</div>
+          <div>
+            <div class="testimonial-name">Sarah L.</div>
+            <div class="testimonial-role">Founder, DTC Skincare Brand · Australia</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-card reveal reveal-delay-1">
+        <div class="testimonial-stars">
+          <span class="testimonial-star">★</span><span class="testimonial-star">★</span><span class="testimonial-star">★</span><span class="testimonial-star">★</span><span class="testimonial-star">★</span>
+        </div>
+        <p class="testimonial-quote">I run campaigns for six clients and this has cut my outreach time in half. The AI finds contacts I would never have thought to pitch, and the emails don't read like templates. My clients think I have a secret weapon.</p>
+        <div class="testimonial-divider"></div>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar" style="background:#1a1a1a;">MR</div>
+          <div>
+            <div class="testimonial-name">Marcus R.</div>
+            <div class="testimonial-role">Head of PR, Independent Agency · United Kingdom</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-card reveal reveal-delay-2">
+        <div class="testimonial-stars">
+          <span class="testimonial-star">★</span><span class="testimonial-star">★</span><span class="testimonial-star">★</span><span class="testimonial-star">★</span><span class="testimonial-star">★</span>
+        </div>
+        <p class="testimonial-quote">We got booked on three podcasts in our first month — two in Australia and one in the US. The podcast pitch tool found shows I'd never heard of that turned out to be perfect for our audience. Incredible ROI.</p>
+        <div class="testimonial-divider"></div>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar" style="background:#0a3d62;">JK</div>
+          <div>
+            <div class="testimonial-name">Jamie K.</div>
+            <div class="testimonial-role">Co-Founder, B2B SaaS Startup · United States</div>
+          </div>
+        </div>
       </div>
 
     </div>
