@@ -6,7 +6,7 @@
     { "source": "/app", "destination": "/index.html" },
     { "source": "/automotive-pr", "destination": "/automotive-pr.html" },
     { "source": "/fashion-pr", "destination": "/fashion-pr.html" },
-    { "source": "/technology-pr", "destination": "/Technology-pr.html" },
+    { "source": "/technology-pr", "destination": "/technology-pr.html" },
     { "source": "/health-pr", "destination": "/health-pr.html" },
     { "source": "/finance-pr", "destination": "/finance-pr.html" },
     { "source": "/media-arts-pr", "destination": "/media-arts-pr.html" },
