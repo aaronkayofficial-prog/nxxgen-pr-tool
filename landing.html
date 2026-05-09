@@ -365,7 +365,7 @@ footer{background:#0a0a0a;border-top:1px solid #1a1a1a;padding:60px 0 40px;}
 /* ── TESTIMONIALS ── */
 #testimonials{background:var(--off);padding:100px 0;}
 .testimonials-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:3rem;}
-.testimonial-card{background:var(--white);border:1.5px solid var(--border);border-radius:16px;padding:2rem;display:flex;flex-direction:column;gap:1.25rem;transition:all 0.25s;}
+.testimonial-card{background:var(--white);border:1.5px solid var(--border);border-radius:16px;padding:2rem;display:flex;flex-direction:column;gap:1.25rem;transition:all 0.25s;position:relative;}
 .testimonial-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg);border-color:var(--gold);}
 .testimonial-stars{display:flex;gap:3px;}
 .testimonial-star{color:var(--gold);font-size:14px;}
@@ -373,7 +373,9 @@ footer{background:#0a0a0a;border-top:1px solid #1a1a1a;padding:60px 0 40px;}
 .testimonial-quote::before{content:'"';font-family:'Playfair Display',serif;font-size:3rem;color:var(--gold);line-height:0;vertical-align:-0.6rem;margin-right:4px;opacity:0.4;}
 .testimonial-divider{height:1px;background:var(--border);}
 .testimonial-author{display:flex;align-items:center;gap:12px;}
-.testimonial-avatar{width:40px;height:40px;border-radius:50%;background:var(--gold);color:#fff;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.testimonial-avatar{width:40px;height:40px;border-radius:50%;background:var(--gold);color:#fff;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;}
+.testimonial-headshot{position:absolute;top:1.25rem;right:1.25rem;width:52px;height:52px;border-radius:50%;border:2.5px solid var(--white);box-shadow:0 2px 12px rgba(0,0,0,0.12);overflow:hidden;background:var(--off);}
+.testimonial-headshot img{width:100%;height:100%;object-fit:cover;}
 .testimonial-name{font-size:14px;font-weight:600;color:var(--black);margin-bottom:2px;}
 .testimonial-role{font-size:12px;color:var(--muted);}
 @media(max-width:900px){.testimonials-grid{grid-template-columns:1fr;}}
@@ -869,13 +871,13 @@ footer{background:#0a0a0a;border-top:1px solid #1a1a1a;padding:60px 0 40px;}
         <div class="industry-desc">Manufacturing, construction &amp; trade</div>
       </div>
 
-      <div class="industry-card reveal reveal-delay-1">
+      <a href="/automotive-pr" class="industry-card reveal reveal-delay-1" style="text-decoration:none;cursor:pointer;" title="Automotive PR Outreach">
         <div class="industry-icon">
           <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/><path d="M12 3v6M4.22 7.22l4.24 4.24M3 12h6M4.22 16.78l4.24-4.24M12 21v-6M19.78 16.78l-4.24-4.24M21 12h-6M19.78 7.22l-4.24 4.24"/></svg>
         </div>
         <div class="industry-name">Automotive</div>
         <div class="industry-desc">New cars, aftermarket, EV &amp; motorsport</div>
-      </div>
+      </a>
 
       <div class="industry-card reveal">
         <div class="industry-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg></div>
@@ -1114,6 +1116,7 @@ footer{background:#0a0a0a;border-top:1px solid #1a1a1a;padding:60px 0 40px;}
     <div class="testimonials-grid">
 
       <div class="testimonial-card reveal">
+        <div class="testimonial-headshot"><img src="https://i.pravatar.cc/100?img=47" alt="Sarah L."/></div>
         <div class="testimonial-stars">
           <span class="testimonial-star">★</span><span class="testimonial-star">★</span><span class="testimonial-star">★</span><span class="testimonial-star">★</span><span class="testimonial-star">★</span>
         </div>
@@ -1129,6 +1132,7 @@ footer{background:#0a0a0a;border-top:1px solid #1a1a1a;padding:60px 0 40px;}
       </div>
 
       <div class="testimonial-card reveal reveal-delay-1">
+        <div class="testimonial-headshot"><img src="https://i.pravatar.cc/100?img=11" alt="Marcus R."/></div>
         <div class="testimonial-stars">
           <span class="testimonial-star">★</span><span class="testimonial-star">★</span><span class="testimonial-star">★</span><span class="testimonial-star">★</span><span class="testimonial-star">★</span>
         </div>
@@ -1144,6 +1148,7 @@ footer{background:#0a0a0a;border-top:1px solid #1a1a1a;padding:60px 0 40px;}
       </div>
 
       <div class="testimonial-card reveal reveal-delay-2">
+        <div class="testimonial-headshot"><img src="https://i.pravatar.cc/100?img=33" alt="Jamie K."/></div>
         <div class="testimonial-stars">
           <span class="testimonial-star">★</span><span class="testimonial-star">★</span><span class="testimonial-star">★</span><span class="testimonial-star">★</span><span class="testimonial-star">★</span>
         </div>
