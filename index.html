@@ -519,6 +519,11 @@ textarea{resize:vertical;line-height:1.6;}
           <div class="chip" onclick="selectAcctIndustry(this,'Industry &amp; Infrastructure')"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20h20"/><path d="M2 20V8l6-4v4l6-4v4l6-4v16"/><path d="M10 20v-5h4v5"/></svg> Industry</div>
           <div class="chip" onclick="selectAcctIndustry(this,'Other')"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg> Other</div>
           <div class="chip" onclick="selectAcctIndustry(this,'Automotive')"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/><path d="M12 3v6M4.22 7.22l4.24 4.24M3 12h6M4.22 16.78l4.24-4.24M12 21v-6M19.78 16.78l-4.24-4.24M21 12h-6M19.78 7.22l-4.24 4.24"/></svg> Automotive</div>
+          <div class="chip" onclick="selectAcctIndustry(this,'Sports')"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg> Sports</div>
+          <div class="chip" onclick="selectAcctIndustry(this,'Music &amp; Entertainment')"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg> Music &amp; Entertainment</div>
+          <div class="chip" onclick="selectAcctIndustry(this,'Influencers &amp; Content Creators')"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="m10 8 6 4-6 4V8z"/><path d="M8 21h8M12 17v4"/></svg> Influencers &amp; Creators</div>
+          <div class="chip" onclick="selectAcctIndustry(this,'Artists')"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="10.5" r="2.5"/><circle cx="8.5" cy="7.5" r="2.5"/><circle cx="6.5" cy="12.5" r="2.5"/><path d="M12 20a6 6 0 0 1-6-6c0-4 6-10.5 6-10.5s6 6.5 6 10.5a6 6 0 0 1-6 6z"/></svg> Artists</div>
+          <div class="chip" onclick="selectAcctIndustry(this,'Authors')"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><line x1="8" y1="7" x2="16" y2="7"/><line x1="8" y1="11" x2="16" y2="11"/><line x1="8" y1="15" x2="12" y2="15"/></svg> Authors</div>
         </div>
         <input type="hidden" id="acct-industry"/>
         <input type="text" id="acct-industry-other" placeholder="Type your industry..." style="display:none;margin-top:8px;"/>
@@ -674,6 +679,11 @@ textarea{resize:vertical;line-height:1.6;}
           <div class="chip" onclick="selectAcctIndustry(this,'Industry &amp; Infrastructure','-e')"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20h20"/><path d="M2 20V8l6-4v4l6-4v4l6-4v16"/><path d="M10 20v-5h4v5"/></svg> Industry</div>
           <div class="chip" onclick="selectAcctIndustry(this,'Other','-e')"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg> Other</div>
           <div class="chip" onclick="selectAcctIndustry(this,'Automotive','-e')"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/><path d="M12 3v6M4.22 7.22l4.24 4.24M3 12h6M4.22 16.78l4.24-4.24M12 21v-6M19.78 16.78l-4.24-4.24M21 12h-6M19.78 7.22l-4.24 4.24"/></svg> Automotive</div>
+          <div class="chip" onclick="selectAcctIndustry(this,'Sports','-e')"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg> Sports</div>
+          <div class="chip" onclick="selectAcctIndustry(this,'Music &amp; Entertainment','-e')"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg> Music &amp; Entertainment</div>
+          <div class="chip" onclick="selectAcctIndustry(this,'Influencers &amp; Content Creators','-e')"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="m10 8 6 4-6 4V8z"/><path d="M8 21h8M12 17v4"/></svg> Influencers &amp; Creators</div>
+          <div class="chip" onclick="selectAcctIndustry(this,'Artists','-e')"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="10.5" r="2.5"/><circle cx="8.5" cy="7.5" r="2.5"/><circle cx="6.5" cy="12.5" r="2.5"/><path d="M12 20a6 6 0 0 1-6-6c0-4 6-10.5 6-10.5s6 6.5 6 10.5a6 6 0 0 1-6 6z"/></svg> Artists</div>
+          <div class="chip" onclick="selectAcctIndustry(this,'Authors','-e')"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><line x1="8" y1="7" x2="16" y2="7"/><line x1="8" y1="11" x2="16" y2="11"/><line x1="8" y1="15" x2="12" y2="15"/></svg> Authors</div>
         </div>
         <input type="hidden" id="acct-industry-e"/>
         <input type="text" id="acct-industry-other-e" placeholder="Type your industry..." style="display:none;margin-top:8px;"/>
@@ -959,6 +969,11 @@ textarea{resize:vertical;line-height:1.6;}
       <div class="ind-card" id="cp-icard-8" onclick="selectCampCard(8)"><div class="ind-card-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg></div><div class="ind-card-title">Business &amp; Startups</div><div class="ind-card-pills">Startups &bull; Entrepreneurship &bull; DTC &bull; B2B &bull; SaaS</div></div>
       <div class="ind-card" id="cp-icard-9" onclick="selectCampCard(9)"><div class="ind-card-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg></div><div class="ind-card-title">Other &amp; Niche</div><div class="ind-card-pills">Sports &bull; Luxury &bull; Social Enterprise &bull; Custom</div></div>
       <div class="ind-card" id="cp-icard-10" onclick="selectCampCard(10)"><div class="ind-card-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/><path d="M12 3v6M4.22 7.22l4.24 4.24M3 12h6M4.22 16.78l4.24-4.24M12 21v-6M19.78 16.78l-4.24-4.24M21 12h-6M19.78 7.22l-4.24 4.24"/></svg></div><div class="ind-card-title">Automotive</div><div class="ind-card-pills">New Cars &bull; Aftermarket &bull; Car Care &bull; Motorsport &bull; EV &bull; Parts &amp; Accessories</div></div>
+      <div class="ind-card" id="cp-icard-11" onclick="selectCampCard(11)"><div class="ind-card-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg></div><div class="ind-card-title">Sports</div><div class="ind-card-pills">Team Sports &bull; Individual Athletes &bull; Sporting Goods &bull; Esports &bull; Fitness &amp; Training</div></div>
+      <div class="ind-card" id="cp-icard-12" onclick="selectCampCard(12)"><div class="ind-card-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div><div class="ind-card-title">Music &amp; Entertainment</div><div class="ind-card-pills">New Releases &bull; Touring &bull; Music Business &bull; Film &amp; TV &bull; Streaming</div></div>
+      <div class="ind-card" id="cp-icard-13" onclick="selectCampCard(13)"><div class="ind-card-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="m10 8 6 4-6 4V8z"/><path d="M8 21h8M12 17v4"/></svg></div><div class="ind-card-title">Influencers &amp; Creators</div><div class="ind-card-pills">YouTube &bull; Instagram &amp; TikTok &bull; Podcasting &bull; Brand Deals &bull; Creator Tools</div></div>
+      <div class="ind-card" id="cp-icard-14" onclick="selectCampCard(14)"><div class="ind-card-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="10.5" r="2.5"/><circle cx="8.5" cy="7.5" r="2.5"/><circle cx="6.5" cy="12.5" r="2.5"/><path d="M12 20a6 6 0 0 1-6-6c0-4 6-10.5 6-10.5s6 6.5 6 10.5a6 6 0 0 1-6 6z"/></svg></div><div class="ind-card-title">Artists</div><div class="ind-card-pills">Visual Art &bull; Sculpture &bull; Photography &bull; Galleries &bull; Art Fairs &bull; Public Art</div></div>
+      <div class="ind-card" id="cp-icard-15" onclick="selectCampCard(15)"><div class="ind-card-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><line x1="8" y1="7" x2="16" y2="7"/><line x1="8" y1="11" x2="16" y2="11"/><line x1="8" y1="15" x2="12" y2="15"/></svg></div><div class="ind-card-title">Authors</div><div class="ind-card-pills">Fiction &bull; Non-Fiction &bull; Self-Publishing &bull; Book Launches &bull; Literary Festivals</div></div>
     </div>
 
     <div id="cp-ind-pill-zone" style="display:none;margin-bottom:1.25rem;padding:16px;background:var(--gold-light);border:1.5px solid var(--gold);border-radius:12px;">
@@ -2985,7 +3000,17 @@ var IND_CHIPS = [
   // 9 Other
   ['Sports &amp; Esports','Luxury &amp; Premium','Social Enterprise','Arts &amp; Culture','__custom__'],
   // 10 Automotive
-  ['New Cars &amp; Reviews','Aftermarket &amp; Parts','Car Care &amp; Detailing','Motorsport &amp; Racing','Electric Vehicles &amp; EV','4WD &amp; Off-Road','Performance &amp; Tuning','Classic &amp; Collector Cars','Automotive Retail &amp; Dealerships','Fleet &amp; Commercial Vehicles']
+  ['New Cars &amp; Reviews','Aftermarket &amp; Parts','Car Care &amp; Detailing','Motorsport &amp; Racing','Electric Vehicles &amp; EV','4WD &amp; Off-Road','Performance &amp; Tuning','Classic &amp; Collector Cars','Automotive Retail &amp; Dealerships','Fleet &amp; Commercial Vehicles'],
+  // 11 Sports
+  ['Team Sports','Individual Athletes &amp; PR','Sporting Goods &amp; Apparel','Esports &amp; Gaming','Sports Media','Motorsport','Fitness &amp; Training &amp; Performance'],
+  // 12 Music & Entertainment
+  ['New Releases &amp; Albums','Touring &amp; Live Events','Music Business &amp; Industry','Film &amp; TV','Streaming &amp; Digital','Record Labels &amp; Publishing'],
+  // 13 Influencers & Content Creators
+  ['YouTube &amp; Video','Instagram &amp; TikTok','Podcasting','Brand Deals &amp; Partnerships','Creator Tools &amp; Tech','Agency &amp; Talent Management'],
+  // 14 Artists
+  ['Visual Art &amp; Painting','Sculpture &amp; Installation','Photography','Galleries &amp; Exhibitions','Art Fairs &amp; Markets','Public &amp; Street Art'],
+  // 15 Authors
+  ['Fiction','Non-Fiction','Self-Publishing','Book Launches &amp; Tours','Literary Festivals','Publishers &amp; Agents']
 ];
 
 var IND_NAMES = [
@@ -2999,7 +3024,12 @@ var IND_NAMES = [
   'Energy, Environment & Education',
   'Business & Startups',
   'Other & Niche',
-  'Automotive'
+  'Automotive',
+  'Sports',
+  'Music & Entertainment',
+  'Influencers & Content Creators',
+  'Artists',
+  'Authors'
 ];
 
 function selectIndustryCard(idx) {
@@ -3403,7 +3433,12 @@ function syncAccountToCampaignForm() {
       'Energy, Environment & Education': 7,
       'Business & Startups': 8,
       'Other': 9,
-      'Automotive': 10
+      'Automotive': 10,
+      'Sports': 11,
+      'Music & Entertainment': 12,
+      'Influencers & Content Creators': 13,
+      'Artists': 14,
+      'Authors': 15
     };
     var idx = IND_LABEL_MAP[userAccount.industry];
     if (idx !== undefined) {
@@ -4152,7 +4187,7 @@ var campSecondaries = [];
 
 function selectCampCard(idx) {
   selectedCampCardIdx = idx;
-  for (var i = 0; i < 11; i++) {
+  for (var i = 0; i < 16; i++) {
     var card = document.getElementById('cp-icard-' + i);
     if (card) card.classList.toggle('selected', i === idx);
   }
@@ -5098,6 +5133,80 @@ var PLATFORMS = [
   {n:'Medium',u:'medium.com',e:'hello@medium.com',t:'Content',r:'AU,UK,US',c:'',paid:false,s:4,desc:"Self-publishing and editorial content platform"},
   {n:'LinkedIn Articles',u:'linkedin.com',e:'',t:'Content',r:'AU,UK,US',c:'',paid:false,s:4,desc:"Professional content publishing and networking"},
   {n:'Substack',u:'substack.com',e:'',t:'Content',r:'AU,UK,US',c:'',paid:false,s:3,desc:"Email newsletter and paid subscription platform"},
+  // ── SPORTS ──
+  {n:'The Roar',u:'theroar.com.au',e:'editorial@theroar.com.au',t:'Consumer',r:'AU',c:'Sports',paid:false,s:5,desc:'Australian sport news, opinion and analysis across all codes'},
+  {n:'Fox Sports AU',u:'foxsports.com.au',e:'editorial@foxsports.com.au',t:'Consumer',r:'AU',c:'Sports',paid:false,s:5,desc:'Australian premium sports media covering AFL, NRL, football and more'},
+  {n:'Wide World of Sports',u:'wwos.nine.com.au',e:'sport@nine.com.au',t:'Consumer',r:'AU',c:'Sports',paid:false,s:5,desc:'Nine Network sports news, results and feature coverage'},
+  {n:'Sportspro',u:'sportspromedia.com',e:'editorial@sportspromedia.com',t:'Trade',r:'AU,UK,US',c:'Sports',paid:false,s:5,desc:'Global sports business and sponsorship trade publication'},
+  {n:'Sport & Recreation NSW',u:'sportandrecreation.nsw.gov.au',e:'media@sport.nsw.gov.au',t:'Trade',r:'AU',c:'Sports',paid:false,s:3,desc:'NSW government sport and recreation media'},
+  {n:'Inside Sport',u:'insidesport.com.au',e:'editorial@insidesport.com.au',t:'Consumer',r:'AU',c:'Sports',paid:false,s:4,desc:'Australian sports magazine covering athletes and sporting culture'},
+  {n:'Fitness Journal',u:'fitnessjournal.com.au',e:'editorial@fitnessjournal.com.au',t:'Trade',r:'AU',c:'Sports',paid:false,s:3,desc:'Australian fitness industry trade and consumer publication'},
+  {n:'Esports Insider',u:'esportsinsider.com',e:'editorial@esportsinsider.com',t:'Trade',r:'AU,UK,US',c:'Sports',paid:false,s:4,desc:'Global esports business, industry news and investment coverage'},
+  {n:'Kotaku Australia',u:'kotaku.com.au',e:'tips@kotaku.com.au',t:'Consumer',r:'AU',c:'Sports',paid:false,s:4,desc:'Australian gaming, esports and pop culture coverage'},
+  {n:'Sky Sports UK',u:'skysports.com',e:'editorial@skysports.com',t:'Consumer',r:'UK',c:'Sports',paid:false,s:5,desc:'UK leading sports broadcaster and digital sports media'},
+  {n:'BBC Sport',u:'bbc.com/sport',e:'sport@bbc.co.uk',t:'Consumer',r:'UK',c:'Sports',paid:false,s:5,desc:'UK public broadcaster sport news and features'},
+  {n:'The Athletic UK',u:'theathletic.com',e:'tips@theathletic.com',t:'Consumer',r:'UK,US',c:'Sports',paid:false,s:5,desc:'Premium sports journalism covering elite sport globally'},
+  {n:'SportsPro UK',u:'sportspromedia.com',e:'editorial@sportspromedia.com',t:'Trade',r:'UK',c:'Sports',paid:false,s:4,desc:'Sports business, rights and sponsorship trade press UK'},
+  {n:'ESPN US',u:'espn.com',e:'editorial@espn.com',t:'Consumer',r:'US',c:'Sports',paid:false,s:5,desc:'US largest sports media brand covering all major American sports'},
+  {n:'Sports Business Journal',u:'sportsbusinessjournal.com',e:'editorial@sportsbusinessjournal.com',t:'Trade',r:'US',c:'Sports',paid:false,s:5,desc:'US sports industry trade publication for business and rights'},
+  {n:'Athletic Business',u:'athleticbusiness.com',e:'editorial@athleticbusiness.com',t:'Trade',r:'US',c:'Sports',paid:false,s:4,desc:'US sporting goods, facilities and fitness industry trade press'},
+
+  // ── MUSIC & ENTERTAINMENT ──
+  {n:'The Music Network',u:'themusicnetwork.com',e:'editorial@themusicnetwork.com',t:'Trade',r:'AU',c:'Music',paid:false,s:5,desc:'Australian music industry news, deals and releases'},
+  {n:'Tone Deaf',u:'tonedeaf.thebrag.com',e:'editorial@tonedeaf.com.au',t:'Consumer',r:'AU',c:'Music',paid:false,s:4,desc:'Australian music news, reviews and entertainment'},
+  {n:'Rolling Stone AU',u:'au.rollingstone.com',e:'editorial@rollingstone.com.au',t:'Consumer',r:'AU',c:'Music',paid:false,s:5,desc:'Australian edition of iconic music and culture magazine'},
+  {n:'NME Australia',u:'nme.com/au',e:'australia@nme.com',t:'Consumer',r:'AU',c:'Music',paid:false,s:4,desc:'Australian music, film, TV and entertainment news'},
+  {n:'Triple J',u:'abc.net.au/triplej',e:'triplej@abc.net.au',t:'Consumer',r:'AU',c:'Music',paid:false,s:5,desc:'ABC youth radio — Australian music culture and emerging artists'},
+  {n:'Music Feeds',u:'musicfeeds.com.au',e:'editorial@musicfeeds.com.au',t:'Consumer',r:'AU',c:'Music',paid:false,s:4,desc:'Australian independent music news and festival coverage'},
+  {n:'Screen Hub',u:'screenhub.com.au',e:'editorial@screenhub.com.au',t:'Trade',r:'AU',c:'Music',paid:false,s:4,desc:'Australian screen industry news for film, TV and streaming'},
+  {n:'If.com.au',u:'if.com.au',e:'editorial@if.com.au',t:'Trade',r:'AU',c:'Music',paid:false,s:4,desc:'Australian film and TV industry trade publication'},
+  {n:'NME UK',u:'nme.com',e:'editorial@nme.com',t:'Consumer',r:'UK',c:'Music',paid:false,s:5,desc:'UK iconic music, film and entertainment publication'},
+  {n:'Music Week UK',u:'musicweek.com',e:'editorial@musicweek.com',t:'Trade',r:'UK',c:'Music',paid:false,s:5,desc:'UK music industry trade bible — charts, deals and business'},
+  {n:'Screen Daily UK',u:'screendaily.com',e:'editorial@screendaily.com',t:'Trade',r:'UK',c:'Music',paid:false,s:4,desc:'UK film and TV industry trade news and reviews'},
+  {n:'Billboard US',u:'billboard.com',e:'editorial@billboard.com',t:'Trade',r:'US',c:'Music',paid:false,s:5,desc:'US definitive music industry charts, news and business'},
+  {n:'Rolling Stone US',u:'rollingstone.com',e:'tips@rollingstone.com',t:'Consumer',r:'US',c:'Music',paid:false,s:5,desc:'US iconic music and pop culture magazine'},
+  {n:'Variety US',u:'variety.com',e:'tips@variety.com',t:'Trade',r:'US',c:'Music',paid:false,s:5,desc:'US premier entertainment industry trade publication'},
+  {n:'Deadline US',u:'deadline.com',e:'tips@deadline.com',t:'Trade',r:'US',c:'Music',paid:false,s:5,desc:'US breaking film, TV and entertainment industry news'},
+
+  // ── INFLUENCERS & CONTENT CREATORS ──
+  {n:'Mumbrella',u:'mumbrella.com.au',e:'editorial@mumbrella.com.au',t:'Trade',r:'AU',c:'Creator',paid:false,s:5,desc:'Australian media, marketing and advertising industry news'},
+  {n:'AdNews Australia',u:'adnews.com.au',e:'editorial@adnews.com.au',t:'Trade',r:'AU',c:'Creator',paid:false,s:5,desc:'Australian advertising, media and marketing trade news'},
+  {n:'Social Media Today AU',u:'socialmediatoday.com',e:'editorial@socialmediatoday.com',t:'Trade',r:'AU,UK,US',c:'Creator',paid:false,s:4,desc:'Social media strategy, creator trends and platform news globally'},
+  {n:'Influencer Marketing Hub',u:'influencermarketinghub.com',e:'editorial@influencermarketinghub.com',t:'Trade',r:'AU,UK,US',c:'Creator',paid:false,s:4,desc:'Global influencer marketing news, benchmarks and resources'},
+  {n:'Creator IQ',u:'creatoriq.com/blog',e:'press@creatoriq.com',t:'Trade',r:'AU,UK,US',c:'Creator',paid:false,s:4,desc:'Creator economy data, trends and influencer marketing intelligence'},
+  {n:'Campaign Brief AU',u:'campaignbrief.com',e:'editorial@campaignbrief.com',t:'Trade',r:'AU',c:'Creator',paid:false,s:4,desc:'Australian advertising and creative industry news'},
+  {n:'The Drum UK',u:'thedrum.com',e:'editorial@thedrum.com',t:'Trade',r:'UK',c:'Creator',paid:false,s:5,desc:'UK global marketing and media industry publication'},
+  {n:'Campaign UK',u:'campaignlive.co.uk',e:'editorial@campaignlive.co.uk',t:'Trade',r:'UK',c:'Creator',paid:false,s:5,desc:'UK advertising and marketing trade magazine'},
+  {n:'Tubefilter US',u:'tubefilter.com',e:'editorial@tubefilter.com',t:'Trade',r:'US',c:'Creator',paid:false,s:4,desc:'YouTube and creator economy news and analysis'},
+  {n:'Digiday US',u:'digiday.com',e:'tips@digiday.com',t:'Trade',r:'US',c:'Creator',paid:false,s:5,desc:'US digital media, marketing and creator economy trade publication'},
+  {n:'Adweek US',u:'adweek.com',e:'editorial@adweek.com',t:'Trade',r:'US',c:'Creator',paid:false,s:5,desc:'US advertising, marketing and media industry trade publication'},
+
+  // ── ARTISTS ──
+  {n:'Art Guide Australia',u:'artguide.com.au',e:'editorial@artguide.com.au',t:'Consumer',r:'AU',c:'Art',paid:false,s:5,desc:'Australian visual art guide — exhibitions, events and reviews'},
+  {n:'Artlink Australia',u:'artlink.com.au',e:'editorial@artlink.com.au',t:'Consumer',r:'AU',c:'Art',paid:false,s:4,desc:'Australian contemporary art publication and criticism'},
+  {n:'Art Monthly Australasia',u:'artmonthly.org.au',e:'editorial@artmonthly.org.au',t:'Consumer',r:'AU',c:'Art',paid:false,s:4,desc:'Australian art magazine covering contemporary and historical art'},
+  {n:'ArtsHub Australia',u:'artshub.com.au',e:'editorial@artshub.com.au',t:'Trade',r:'AU',c:'Art',paid:false,s:5,desc:'Australian arts industry news, jobs and professional development'},
+  {n:'Limelight Magazine AU',u:'limelightmagazine.com.au',e:'editorial@limelightmagazine.com.au',t:'Consumer',r:'AU',c:'Art',paid:false,s:4,desc:'Australian classical music and arts culture magazine'},
+  {n:'Art Almanac AU',u:'art-almanac.com.au',e:'editorial@art-almanac.com.au',t:'Consumer',r:'AU',c:'Art',paid:false,s:4,desc:'Australian visual arts guide to exhibitions and galleries'},
+  {n:'Artforum US',u:'artforum.com',e:'editorial@artforum.com',t:'Consumer',r:'US,UK,AU',c:'Art',paid:false,s:5,desc:'International contemporary art criticism and culture'},
+  {n:'The Art Newspaper',u:'theartnewspaper.com',e:'editorial@theartnewspaper.com',t:'Trade',r:'UK,AU,US',c:'Art',paid:false,s:5,desc:'Global art market news, exhibition reviews and cultural policy'},
+  {n:'Frieze UK',u:'frieze.com',e:'editorial@frieze.com',t:'Consumer',r:'UK',c:'Art',paid:false,s:5,desc:'UK leading contemporary art and culture publication'},
+  {n:'Apollo Magazine UK',u:'apollo-magazine.com',e:'editorial@apollo-magazine.com',t:'Consumer',r:'UK',c:'Art',paid:false,s:4,desc:'UK international magazine for art collectors and culture'},
+  {n:'Hyperallergic US',u:'hyperallergic.com',e:'editors@hyperallergic.com',t:'Consumer',r:'US',c:'Art',paid:false,s:4,desc:'US art criticism and culture with a progressive editorial voice'},
+  {n:'ARTnews US',u:'artnews.com',e:'editorial@artnews.com',t:'Consumer',r:'US',c:'Art',paid:false,s:5,desc:'US oldest and most widely circulated art magazine globally'},
+
+  // ── AUTHORS ──
+  {n:'Books+Publishing AU',u:'booksandpublishing.com.au',e:'editorial@booksandpublishing.com.au',t:'Trade',r:'AU',c:'Books',paid:false,s:5,desc:'Australian book industry trade publication — titles, reviews, deals'},
+  {n:'Better Reading AU',u:'betterreading.com.au',e:'editorial@betterreading.com.au',t:'Consumer',r:'AU',c:'Books',paid:false,s:4,desc:'Australian book recommendations and author interviews'},
+  {n:'Kill Your Darlings AU',u:'killyourdarlings.com.au',e:'editorial@killyourdarlings.com.au',t:'Consumer',r:'AU',c:'Books',paid:false,s:4,desc:'Australian literary journal — essays, fiction and author profiles'},
+  {n:'Readings',u:'readings.com.au',e:'editorial@readings.com.au',t:'Consumer',r:'AU',c:'Books',paid:false,s:4,desc:'Australian independent bookshop with editorial coverage and author events'},
+  {n:'The Australian Literary Review',u:'theaustralian.com.au',e:'books@theaustralian.com.au',t:'Consumer',r:'AU',c:'Books',paid:false,s:4,desc:'Australian newspaper literary review and book coverage'},
+  {n:'The Bookseller UK',u:'thebookseller.com',e:'editorial@thebookseller.com',t:'Trade',r:'UK',c:'Books',paid:false,s:5,desc:'UK book trade bible — charts, deals and publishing industry news'},
+  {n:'The Guardian Books UK',u:'theguardian.com/books',e:'books@theguardian.com',t:'Consumer',r:'UK',c:'Books',paid:false,s:5,desc:'UK Guardian newspaper book reviews, author interviews and literary coverage'},
+  {n:'Literary Hub US',u:'lithub.com',e:'editorial@lithub.com',t:'Consumer',r:'US,UK,AU',c:'Books',paid:false,s:5,desc:'Global literary culture, author essays and book recommendations'},
+  {n:'Publishers Weekly US',u:'publishersweekly.com',e:'editorial@publishersweekly.com',t:'Trade',r:'US',c:'Books',paid:false,s:5,desc:'US book publishing industry trade publication — reviews and rights'},
+  {n:'Kirkus Reviews US',u:'kirkusreviews.com',e:'editorial@kirkusreviews.com',t:'Trade',r:'US',c:'Books',paid:false,s:4,desc:'US authoritative book reviews for publishers, agents and readers'},
+  {n:'Goodreads',u:'goodreads.com',e:'press@goodreads.com',t:'Consumer',r:'AU,UK,US',c:'Books',paid:false,s:4,desc:'World largest book recommendation platform and author community'},
 
   // ── AUTOMOTIVE ──
   {n:'WhichCar',u:'whichcar.com.au',e:'editorial@whichcar.com.au',t:'Consumer',r:'AU',c:'Auto',paid:false,s:5,desc:'Australian new car reviews, advice and buying guides'},
@@ -5188,7 +5297,48 @@ var INDUSTRY_OUTLET_MAP = {
   'ev':            ['Auto','Tech'],
   'electric vehicle': ['Auto','Tech'],
   'parts':         ['Auto'],
-  'accessories':   ['Auto']
+  'accessories':   ['Auto'],
+  'sports':        ['Sports'],
+  'sport':         ['Sports'],
+  'athlete':       ['Sports'],
+  'athletics':     ['Sports'],
+  'esports':       ['Sports','Tech'],
+  'gaming':        ['Sports','Tech'],
+  'fitness':       ['Sports','Health'],
+  'sporting goods':['Sports'],
+  'music':         ['Music'],
+  'entertainment': ['Music'],
+  'musician':      ['Music'],
+  'band':          ['Music'],
+  'album':         ['Music'],
+  'film':          ['Music'],
+  'movie':         ['Music'],
+  'television':    ['Music'],
+  'tv':            ['Music'],
+  'streaming':     ['Music','Tech'],
+  'influencer':    ['Creator'],
+  'creator':       ['Creator'],
+  'content creator':['Creator'],
+  'youtube':       ['Creator'],
+  'tiktok':        ['Creator'],
+  'instagram':     ['Creator'],
+  'social media':  ['Creator'],
+  'podcast':       ['Creator'],
+  'artist':        ['Art'],
+  'art':           ['Art'],
+  'gallery':       ['Art'],
+  'exhibition':    ['Art'],
+  'painting':      ['Art'],
+  'sculpture':     ['Art'],
+  'photography':   ['Art'],
+  'author':        ['Books'],
+  'book':          ['Books'],
+  'books':         ['Books'],
+  'novel':         ['Books'],
+  'fiction':       ['Books'],
+  'publishing':    ['Books'],
+  'writer':        ['Books'],
+  'literary':      ['Books']
 };
 
 
@@ -5966,6 +6116,11 @@ function searchPodcasts() {
   // Build prompt — automotive gets deep specialist treatment
   var primaryLowerPod = primary.toLowerCase();
   var isAutoPod = ['automotive','aftermarket','car care','motorsport','new cars','detailing','tuning','4wd','fleet','classic car','performance','ev','electric vehicle','motoring','vehicle','parts','accessories','dealer'].some(function(t){ return primaryLowerPod.indexOf(t) > -1; });
+  var isSports = ['sport','sports','athlete','athletics','esports','gaming','fitness','sporting goods'].some(function(t){ return primaryLowerPod.indexOf(t) > -1; });
+  var isMusic = ['music','entertainment','musician','band','album','film','movie','television','streaming','concert','touring'].some(function(t){ return primaryLowerPod.indexOf(t) > -1; });
+  var isCreator = ['influencer','creator','content creator','youtube','tiktok','instagram','social media','podcast','brand deal'].some(function(t){ return primaryLowerPod.indexOf(t) > -1; });
+  var isArt = ['artist','visual art','gallery','exhibition','painting','sculpture','photography','art fair'].some(function(t){ return primaryLowerPod.indexOf(t) > -1; });
+  var isBooks = ['author','book','novel','fiction','non-fiction','publishing','writer','literary','memoir'].some(function(t){ return primaryLowerPod.indexOf(t) > -1; });
 
   var prompt;
   if (isAutoPod) {
@@ -5987,6 +6142,16 @@ function searchPodcasts() {
       'Include both interview-format shows AND solo-host shows that accept pitches.\n\n' +
       'Respond ONLY with a JSON array. Start immediately with [:\n' +
       '[{"n":"Podcast Name","u":"podcasturl.com","e":"contact@email.com","host":"Host Name","platform":"Spotify, Apple Podcasts","t":"niche","r":"AU","s":4,"desc":"What automotive sub-niche this covers and why relevant","accepts_guests":true}]';
+  } else if (isSports) {
+    prompt = 'List 40 real, currently active sports podcasts covering: ' + (secondary || primary) + ' in ' + countries + '.\n\nCategories to cover: sports news, athlete interviews, coaching & performance, sports business, esports, fitness & health, sporting culture.\nInclude shows that accept guest pitches or media contact emails.\nRespond ONLY with JSON array:\n[{"n":"Podcast Name","u":"url.com","e":"contact@email.com","host":"Host Name","platform":"Spotify","t":"niche","r":"AU","s":4,"desc":"What sport content this covers","accepts_guests":true}]';
+  } else if (isMusic) {
+    prompt = 'List 40 real, currently active music and entertainment podcasts covering: ' + (secondary || primary) + ' in ' + countries + '.\n\nCategories: music industry business, artist interviews, music culture, film & TV industry, streaming & digital, music history.\nInclude shows that accept guest pitches.\nRespond ONLY with JSON array:\n[{"n":"Podcast Name","u":"url.com","e":"contact@email.com","host":"Host Name","platform":"Spotify","t":"niche","r":"AU","s":4,"desc":"What music/entertainment content this covers","accepts_guests":true}]';
+  } else if (isCreator) {
+    prompt = 'List 40 real, currently active podcasts about the creator economy and influencer marketing covering: ' + (secondary || primary) + ' in ' + countries + '.\n\nCategories: influencer marketing business, social media strategy, YouTube & video creation, brand deals & sponsorship, creator tools, talent management, digital marketing.\nInclude shows that accept guest pitches.\nRespond ONLY with JSON array:\n[{"n":"Podcast Name","u":"url.com","e":"contact@email.com","host":"Host Name","platform":"Spotify","t":"niche","r":"AU","s":4,"desc":"What creator/influencer content this covers","accepts_guests":true}]';
+  } else if (isArt) {
+    prompt = 'List 40 real, currently active art and culture podcasts covering: ' + (secondary || primary) + ' in ' + countries + '.\n\nCategories: visual art interviews, art market & collecting, gallery & museum, photography, public art & design, art history, creative practice.\nInclude shows that accept artist or gallery guest pitches.\nRespond ONLY with JSON array:\n[{"n":"Podcast Name","u":"url.com","e":"contact@email.com","host":"Host Name","platform":"Spotify","t":"niche","r":"AU","s":4,"desc":"What art content this covers","accepts_guests":true}]';
+  } else if (isBooks) {
+    prompt = 'List 40 real, currently active book and literary podcasts covering: ' + (secondary || primary) + ' in ' + countries + '.\n\nCategories: book reviews & recommendations, author interviews, publishing industry, writing craft, genre-specific shows (crime, sci-fi, literary fiction), bookclub podcasts, self-publishing.\nInclude shows that accept author guest pitches or book submissions.\nRespond ONLY with JSON array:\n[{"n":"Podcast Name","u":"url.com","e":"contact@email.com","host":"Host Name","platform":"Spotify","t":"niche","r":"AU","s":4,"desc":"What book/literary content this covers","accepts_guests":true}]';
   } else {
     prompt = 'List 20 real, currently active podcasts specifically about "' + primary + '"' + (secondary ? ' or "' + secondary + '"' : '') + ' that are popular in ' + countries + ' and accept ' + pitchType + ' pitches.\n\nCriteria: ' + audText + '. Only include podcasts you know are real and active.\n\nRespond ONLY with a JSON array. No text before or after. Start your response with [ immediately:\n[{"n":"Podcast Name","u":"podcasturl.com","e":"contact@email.com","host":"Host Name","platform":"Spotify, Apple Podcasts","t":"niche","r":"' + (countries.split(',')[0].trim().substring(0,2).toUpperCase() || 'Global') + '","s":4,"desc":"One sentence why relevant for ' + primary + ' guests","accepts_guests":true}]';
   }
@@ -6208,6 +6373,11 @@ function getLocalOutletResults(primary, countries) {
   var autoTerms = ['automotive','auto ','aftermarket','car care','motorsport','new cars','detailing','tuning','4wd','fleet','classic car','performance','dealer','ev','electric vehicle','motoring','vehicle'];
   var isAuto = autoTerms.some(function(t){ return primaryLower.indexOf(t) > -1; });
   if (isAuto) { matchTags.push('Auto'); }
+  if (['sport','sports','athlete','esports','gaming','fitness'].some(function(t){ return primaryLower.indexOf(t) > -1; })) { matchTags.push('Sports'); }
+  if (['music','entertainment','musician','film','streaming'].some(function(t){ return primaryLower.indexOf(t) > -1; })) { matchTags.push('Music'); }
+  if (['influencer','creator','youtube','tiktok','social media'].some(function(t){ return primaryLower.indexOf(t) > -1; })) { matchTags.push('Creator'); }
+  if (['artist','art','gallery','exhibition','painting','photography'].some(function(t){ return primaryLower.indexOf(t) > -1; })) { matchTags.push('Art'); }
+  if (['author','book','novel','publishing','writer','literary'].some(function(t){ return primaryLower.indexOf(t) > -1; })) { matchTags.push('Books'); }
   // Always include general outlets regardless
   matchTags = matchTags.concat(['Wire','AU','Business','Content','Startup','News']);
   matchTags = matchTags.filter(function(v,i,a){ return a.indexOf(v) === i; });
@@ -6270,6 +6440,11 @@ function searchIndustryPlatforms() {
   var isStoryPitch = state.path === 'B';
   var primaryLower = primary.toLowerCase();
   var isAuto = ['automotive','aftermarket','car care','motorsport','new cars','detailing','tuning','4wd','fleet','classic car','performance','ev','electric vehicle','motoring','vehicle','parts','accessories','dealer'].some(function(t){ return primaryLower.indexOf(t) > -1; });
+  var isSports = ['sport','sports','athlete','athletics','esports','gaming','fitness','sporting goods','team sports','individual athlete'].some(function(t){ return primaryLower.indexOf(t) > -1; });
+  var isMusic = ['music','entertainment','musician','band','album','record','film','movie','television',' tv ','streaming','concert','touring','festival','label'].some(function(t){ return primaryLower.indexOf(t) > -1; });
+  var isCreator = ['influencer','creator','content creator','youtube','tiktok','instagram','social media','podcast','brand deal','talent'].some(function(t){ return primaryLower.indexOf(t) > -1; });
+  var isArt = ['artist','visual art','gallery','exhibition','painting','sculpture','photography','installation','art fair','public art'].some(function(t){ return primaryLower.indexOf(t) > -1; });
+  var isBooks = ['author','book','novel','fiction','non-fiction','publishing','writer','literary','memoir','biography'].some(function(t){ return primaryLower.indexOf(t) > -1; });
 
   var prompt;
   if (isAuto) {
@@ -6296,6 +6471,59 @@ function searchIndustryPlatforms() {
       'Type: ' + prefText + '. Be exhaustive — this user needs maximum reach in the automotive sector.\n\n' +
       'Return ONLY a valid JSON array. No text before or after the array:\n' +
       '[{"n":"Publication Name","u":"domain.com","e":"editorial@domain.com","t":"Trade/Consumer/Digital","r":"AU","paid":false,"s":5,"desc":"Specific description of what automotive content they cover and why relevant"}]';
+  } else if (isSports) {
+    prompt = 'You are a specialist sports PR researcher. Generate up to 50 real, currently active media outlets, trade publications, and PR channels covering: ' + (secondary || primary) + ' in ' + countryStr + '.\n\n' +
+      'Cover ALL of these sports media categories:\n' +
+      '1. SPORTS NEWS & CONSUMER MEDIA: general sports news sites, broadcasting, online sports media\n' +
+      '2. SPORT-SPECIFIC PUBLICATIONS: magazines and sites dedicated to the specific sport or category\n' +
+      '3. SPORTING GOODS & INDUSTRY TRADE: equipment, apparel, sponsorship and sports business press\n' +
+      '4. ESPORTS & GAMING: esports news, gaming culture, competitive gaming publications\n' +
+      '5. FITNESS & PERFORMANCE: training, coaching, sports science, performance publications\n' +
+      '6. SPORTS BUSINESS: rights, sponsorship, stadium, management trade press\n' +
+      '7. ATHLETE MEDIA: athlete profile publications, sports talent and PR trade press\n\n' +
+      'Type: ' + prefText + '. Return ONLY a valid JSON array:\n[{"n":"Outlet","u":"domain.com","e":"editorial@domain.com","t":"Consumer","r":"AU","paid":false,"s":5,"desc":"What sport they cover and why relevant"}]';
+  } else if (isMusic) {
+    prompt = 'You are a specialist music and entertainment PR researcher. Generate up to 50 real, currently active media outlets covering: ' + (secondary || primary) + ' in ' + countryStr + '.\n\n' +
+      'Cover ALL of these entertainment media categories:\n' +
+      '1. MUSIC CONSUMER PRESS: music magazines, blogs, review sites, fan media\n' +
+      '2. MUSIC TRADE PRESS: industry news, charts, rights, deals, label business\n' +
+      '3. FILM & TV TRADE PRESS: production, distribution, streaming industry news\n' +
+      '4. ENTERTAINMENT CONSUMER MEDIA: pop culture, celebrity, lifestyle entertainment\n' +
+      '5. RADIO & PODCAST MEDIA: radio stations that feature music PR, podcast networks\n' +
+      '6. STREAMING & DIGITAL: digital music, streaming platform coverage, playlist media\n\n' +
+      'Type: ' + prefText + '. Return ONLY a valid JSON array:\n[{"n":"Outlet","u":"domain.com","e":"editorial@domain.com","t":"Trade","r":"AU","paid":false,"s":5,"desc":"What entertainment content they cover"}]';
+  } else if (isCreator) {
+    prompt = 'You are a specialist influencer and creator economy PR researcher. Generate up to 50 real, currently active media outlets, trade publications, and channels covering: ' + (secondary || primary) + ' in ' + countryStr + '.\n\n' +
+      'Cover ALL of these creator media categories:\n' +
+      '1. CREATOR ECONOMY TRADE PRESS: influencer marketing, creator tools, platform business news\n' +
+      '2. MARKETING & ADVERTISING TRADE: media buying, brand partnerships, campaign industry news\n' +
+      '3. SOCIAL MEDIA INDUSTRY: platform news, algorithm updates, social strategy publications\n' +
+      '4. DIGITAL MARKETING: performance marketing, content marketing, SEO/SEM publications\n' +
+      '5. YOUTUBE & VIDEO: video creator news, YouTube culture, video production industry\n' +
+      '6. TALENT & AGENCY: talent management, creator agencies, brand deal industry news\n\n' +
+      'Type: ' + prefText + '. Return ONLY a valid JSON array:\n[{"n":"Outlet","u":"domain.com","e":"editorial@domain.com","t":"Trade","r":"AU","paid":false,"s":5,"desc":"What creator/influencer content they cover"}]';
+  } else if (isArt) {
+    prompt = 'You are a specialist visual arts PR researcher. Generate up to 50 real, currently active media outlets, galleries, and publications covering: ' + (secondary || primary) + ' in ' + countryStr + '.\n\n' +
+      'Cover ALL of these arts media categories:\n' +
+      '1. ART CONSUMER PUBLICATIONS: visual art magazines, culture publications, arts lifestyle media\n' +
+      '2. ART TRADE & MARKET PRESS: art market news, auction coverage, collector publications\n' +
+      '3. GALLERY & MUSEUM MEDIA: gallery publications, museum media, exhibition coverage\n' +
+      '4. PHOTOGRAPHY PUBLICATIONS: photography magazines, photo culture, camera industry press\n' +
+      '5. PUBLIC ART & DESIGN: public art, street art, design culture publications\n' +
+      '6. ARTS INDUSTRY: arts funding, policy, professional arts industry trade press\n' +
+      '7. DIGITAL ART & NFT: digital art culture, creative technology, new media arts\n\n' +
+      'Type: ' + prefText + '. Return ONLY a valid JSON array:\n[{"n":"Outlet","u":"domain.com","e":"editorial@domain.com","t":"Consumer","r":"AU","paid":false,"s":5,"desc":"What art content they cover and why relevant"}]';
+  } else if (isBooks) {
+    prompt = 'You are a specialist book publishing PR researcher. Generate up to 50 real, currently active media outlets, literary publications, and review platforms covering: ' + (secondary || primary) + ' in ' + countryStr + '.\n\n' +
+      'Cover ALL of these literary media categories:\n' +
+      '1. BOOK TRADE PRESS: publishing industry news, rights, charts, deals, agent news\n' +
+      '2. LITERARY CONSUMER PUBLICATIONS: book review magazines, literary journals, reading culture\n' +
+      '3. NEWSPAPER BOOKS SECTIONS: major newspaper literary supplements and book coverage\n' +
+      '4. AUTHOR INTERVIEW MEDIA: publications and podcasts that feature author interviews\n' +
+      '5. BOOKSHOP & RETAIL MEDIA: independent bookshop newsletters, reading communities\n' +
+      '6. GENRE-SPECIFIC MEDIA: crime fiction, sci-fi, romance, non-fiction specialist publications\n' +
+      '7. SELF-PUBLISHING & INDIE: self-publishing industry, indie author platforms, writing advice\n\n' +
+      'Type: ' + prefText + '. Return ONLY a valid JSON array:\n[{"n":"Outlet","u":"domain.com","e":"editorial@domain.com","t":"Trade","r":"AU","paid":false,"s":5,"desc":"What books/publishing content they cover"}]';
   } else if (isStoryPitch) {
     prompt = 'You are a specialist PR researcher. Generate up to 40 real, currently active editorial publications, trade magazines, and news sites that would cover a story pitch in the ' + primary + ' sector' +
       (secondary ? ' with ' + secondary + ' crossover' : '') + ' in ' + countryStr + '.' +
