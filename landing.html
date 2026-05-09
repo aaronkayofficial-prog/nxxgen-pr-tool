@@ -285,42 +285,7 @@ footer{background:#0a0a0a;border-top:1px solid #1a1a1a;padding:60px 0 40px;}
 .inf-pivot-text{font-family:'Playfair Display',serif;font-size:clamp(1.4rem,2.5vw,1.9rem);color:#fff;white-space:nowrap;text-align:center;}
 .inf-pivot-text em{color:#c2185b;font-style:italic;}
 
-/* Bottom solution cards */
-.inf-bottom{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;}
-.inf-sol-card{border-radius:16px;overflow:hidden;}
 
-/* Editorial card */
-.editorial-card{background:#f8f7f5;padding:1.75rem;}
-.editorial-masthead{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#888;margin-bottom:1rem;padding-bottom:8px;border-bottom:2px solid #e0ddd9;}
-.editorial-badge{display:inline-flex;align-items:center;gap:5px;background:#c2185b;color:#fff;font-size:10px;font-weight:600;padding:3px 10px;border-radius:20px;margin-bottom:10px;letter-spacing:0.5px;}
-.editorial-headline{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:#0a0a0a;line-height:1.3;margin-bottom:8px;}
-.editorial-byline{font-size:11px;color:#888;margin-bottom:12px;}
-.editorial-excerpt{font-size:12px;color:#555;line-height:1.65;margin-bottom:14px;border-left:3px solid #c2185b;padding-left:10px;}
-.editorial-meta{display:flex;align-items:center;justify-content:space-between;padding-top:10px;border-top:1px solid #e0ddd9;}
-.editorial-pub{font-size:11px;color:#888;}
-.editorial-reach{font-size:11px;font-weight:600;color:#c2185b;}
-
-/* Podcast card */
-.podcast-card{background:#111827;padding:1.75rem;}
-.podcast-label{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#c2185b;margin-bottom:1rem;}
-.podcast-player{background:#0d1117;border-radius:12px;padding:1.25rem;margin-bottom:1.25rem;}
-.podcast-artwork{width:52px;height:52px;border-radius:10px;background:linear-gradient(135deg,#c2185b,#7b0d3a);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.podcast-info{display:flex;align-items:center;gap:12px;margin-bottom:1rem;}
-.podcast-ep-title{font-size:13px;font-weight:600;color:#fff;margin-bottom:3px;}
-.podcast-ep-show{font-size:11px;color:#555;}
-.podcast-formats{display:flex;gap:6px;margin-bottom:12px;}
-.podcast-format-badge{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:500;padding:3px 9px;border-radius:20px;border:1px solid;}
-.podcast-format-badge.audio{color:#c2185b;border-color:#c2185b;background:rgba(194,24,91,0.08);}
-.podcast-format-badge.video{color:#4ade80;border-color:#4ade80;background:rgba(74,222,128,0.08);}
-.podcast-waveform{display:flex;align-items:center;gap:2px;height:32px;margin-bottom:10px;}
-.podcast-bar{border-radius:2px;background:#c2185b;opacity:0.6;width:3px;}
-.podcast-controls{display:flex;align-items:center;gap:10px;}
-.podcast-play{width:32px;height:32px;border-radius:50%;background:#c2185b;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.podcast-time{font-size:10px;color:#555;}
-.podcast-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
-.podcast-stat{text-align:center;background:#0d1117;border-radius:8px;padding:10px 8px;}
-.podcast-stat-num{font-size:14px;font-weight:700;color:#fff;margin-bottom:2px;}
-.podcast-stat-label{font-size:9px;color:#555;text-transform:uppercase;letter-spacing:0.5px;}
 
 @media(max-width:900px){
   .inf-top{grid-template-columns:1fr;}.phone-wrap{display:none;}
@@ -590,66 +555,84 @@ footer{background:#0a0a0a;border-top:1px solid #1a1a1a;padding:60px 0 40px;}
       <div class="inf-pivot-line"></div>
     </div>
 
-  <!-- BOTTOM BLOCK: Editorial + Podcast — full width with wrap padding -->
+    <!-- BOTTOM BLOCK: Two feature rows -->
   <div class="wrap">
-    <div class="inf-bottom">
+    <div class="feature-rows">
 
-      <!-- EDITORIAL CARD -->
-      <div class="reveal" style="margin-bottom:12px;"><p style="font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#888;">Influential Editorial</p></div>
-      <div class="inf-sol-card editorial-card reveal">
-        <div class="editorial-masthead">The Editorial Standard</div>
-        <div class="editorial-badge">
-          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-          Editor's Pick
+      <!-- ROW 1: INFLUENTIAL EDITORIAL -->
+      <div class="feature-row">
+        <div class="feature-row-left reveal">
+          <div class="feature-row-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h14a2 2 0 0 0 2-2V7l-5-5H6a2 2 0 0 0-2 2v4"/><path d="M14 2v5h5"/><path d="M3 15h7"/><path d="M3 11h3"/><path d="M3 19h7"/></svg>
+          </div>
+          <p class="feature-row-eyebrow">Influential Editorial</p>
+          <h3 class="feature-row-title">Coverage that builds<br>permanent credibility</h3>
+          <p class="feature-row-desc">Your story in front of editors who vet, verify, and publish for audiences who chose to trust them. That authority transfers to your brand — and it doesn't expire when the campaign does.</p>
         </div>
-        <div class="editorial-headline">"How this brand quietly changed its entire industry — and why nobody saw it coming"</div>
-        <div class="editorial-byline">By Sarah Chen, Senior Editor &nbsp;·&nbsp; Feature</div>
-        <div class="editorial-excerpt">Verified. Vetted. Published. Your story in front of readers who chose to trust this publication — and by extension, you. That credibility doesn't expire when the campaign does.</div>
-        <div class="editorial-meta">
-          <span class="editorial-pub">📰 Editorial coverage</span>
-          <span class="editorial-reach">3.2M monthly readers</span>
+        <div class="feature-row-right reveal reveal-delay-1">
+          <div class="editorial-card">
+            <div class="editorial-masthead">The Editorial Standard</div>
+            <div class="editorial-badge">
+              <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              Editor's Pick
+            </div>
+            <div class="editorial-headline">"How this brand quietly changed its entire industry — and why nobody saw it coming"</div>
+            <div class="editorial-byline">By Sarah Chen, Senior Editor &nbsp;·&nbsp; Feature</div>
+            <div class="editorial-excerpt">Verified. Vetted. Published. Your story in front of readers who chose to trust this publication — and by extension, you.</div>
+            <div class="editorial-footer">
+              <span class="editorial-pub">📰 Editorial coverage</span>
+              <span class="editorial-reach">3.2M monthly readers</span>
+            </div>
+          </div>
         </div>
       </div>
 
-      </div><!-- /editorial column -->
-
-      <!-- PODCAST COLUMN -->
-      <div>
-        <p class="reveal reveal-delay-1" style="font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#888;margin-bottom:16px;">Engaging Podcast Collabs</p>
-        <div class="inf-sol-card podcast-card reveal reveal-delay-1">
-        <div class="podcast-label">The Podcast Advantage</div>
-        <div class="podcast-player">
-          <div class="podcast-info">
-            <div class="podcast-artwork">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg>
-            </div>
-            <div>
-              <div class="podcast-ep-title">The story behind the brand building</div>
-              <div class="podcast-ep-show">Industry Voices · Ep. 147</div>
-            </div>
+      <!-- ROW 2: ENGAGING PODCAST COLLABS -->
+      <div class="feature-row">
+        <div class="feature-row-left reveal">
+          <div class="feature-row-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
           </div>
-          <div class="podcast-formats">
-            <span class="podcast-format-badge audio">🎧 Audio</span>
-            <span class="podcast-format-badge video">📹 Video</span>
-          </div>
-          <div class="podcast-waveform"><div class="podcast-bar" style="height:8px;opacity:1;"></div><div class="podcast-bar" style="height:14px;opacity:1;"></div><div class="podcast-bar" style="height:20px;opacity:1;"></div><div class="podcast-bar" style="height:28px;opacity:1;"></div><div class="podcast-bar" style="height:36px;opacity:1;"></div><div class="podcast-bar" style="height:28px;opacity:1;"></div><div class="podcast-bar" style="height:20px;opacity:1;"></div><div class="podcast-bar" style="height:32px;opacity:1;"></div><div class="podcast-bar" style="height:16px;opacity:1;"></div><div class="podcast-bar" style="height:24px;opacity:1;"></div><div class="podcast-bar" style="height:36px;opacity:1;"></div><div class="podcast-bar" style="height:20px;opacity:1;"></div><div class="podcast-bar" style="height:12px;opacity:1;"></div><div class="podcast-bar" style="height:28px;opacity:1;"></div><div class="podcast-bar" style="height:36px;opacity:1;"></div><div class="podcast-bar" style="height:24px;"></div><div class="podcast-bar" style="height:16px;"></div><div class="podcast-bar" style="height:32px;"></div><div class="podcast-bar" style="height:20px;"></div><div class="podcast-bar" style="height:28px;"></div><div class="podcast-bar" style="height:14px;"></div><div class="podcast-bar" style="height:36px;"></div><div class="podcast-bar" style="height:24px;"></div><div class="podcast-bar" style="height:18px;"></div><div class="podcast-bar" style="height:30px;"></div><div class="podcast-bar" style="height:22px;"></div><div class="podcast-bar" style="height:36px;"></div><div class="podcast-bar" style="height:16px;"></div><div class="podcast-bar" style="height:28px;"></div><div class="podcast-bar" style="height:20px;"></div><div class="podcast-bar" style="height:14px;"></div><div class="podcast-bar" style="height:36px;"></div><div class="podcast-bar" style="height:24px;"></div><div class="podcast-bar" style="height:18px;"></div><div class="podcast-bar" style="height:28px;"></div></div>
-          <div class="podcast-controls">
-            <div class="podcast-play">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="#fff"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-            </div>
-            <div style="flex:1;height:3px;background:#1e293b;border-radius:2px;"><div style="width:42%;height:3px;background:#c2185b;border-radius:2px;"></div></div>
-            <span class="podcast-time">42:18 / 68:00</span>
-          </div>
+          <p class="feature-row-eyebrow">Engaging Podcast Collabs</p>
+          <h3 class="feature-row-title">60 minutes with<br>someone's loyal audience</h3>
+          <p class="feature-row-desc">Audio and video podcast listeners are the most engaged audience in media. No algorithm. No ad-skip. No bots. Just real people who showed up specifically to listen — and kept listening.</p>
         </div>
-        <div class="podcast-stats">
-          <div class="podcast-stat"><div class="podcast-stat-num">147K</div><div class="podcast-stat-label">listeners</div></div>
-          <div class="podcast-stat"><div class="podcast-stat-num">68<span style="font-size:10px;color:#555;">min</span></div><div class="podcast-stat-label">avg listen</div></div>
-          <div class="podcast-stat"><div class="podcast-stat-num" style="color:#4ade80;">94%</div><div class="podcast-stat-label">completion</div></div>
+        <div class="feature-row-right reveal reveal-delay-1">
+          <div class="podcast-card">
+            <div class="podcast-top-label">The Podcast Advantage</div>
+            <div class="podcast-player-inner">
+              <div class="podcast-info-row">
+                <div class="podcast-artwork">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg>
+                </div>
+                <div>
+                  <div class="podcast-ep-title">The story behind the brand building</div>
+                  <div class="podcast-ep-show">Industry Voices &nbsp;·&nbsp; Ep. 147</div>
+                </div>
+              </div>
+              <div class="podcast-formats">
+                <span class="podcast-fmt audio">🎧 Audio</span>
+                <span class="podcast-fmt video">📹 Video</span>
+              </div>
+              <div class="podcast-waveform"><div class="podcast-bar" style="height:10px;background:#c2185b;opacity:1;"></div><div class="podcast-bar" style="height:18px;background:#c2185b;opacity:1;"></div><div class="podcast-bar" style="height:28px;background:#c2185b;opacity:1;"></div><div class="podcast-bar" style="height:36px;background:#c2185b;opacity:1;"></div><div class="podcast-bar" style="height:24px;background:#c2185b;opacity:1;"></div><div class="podcast-bar" style="height:32px;background:#c2185b;opacity:1;"></div><div class="podcast-bar" style="height:16px;background:#c2185b;opacity:1;"></div><div class="podcast-bar" style="height:36px;background:#c2185b;opacity:1;"></div><div class="podcast-bar" style="height:22px;background:#c2185b;opacity:1;"></div><div class="podcast-bar" style="height:30px;background:#c2185b;opacity:1;"></div><div class="podcast-bar" style="height:14px;background:#c2185b;opacity:1;"></div><div class="podcast-bar" style="height:36px;background:#c2185b;opacity:1;"></div><div class="podcast-bar" style="height:20px;background:#c2185b;opacity:1;"></div><div class="podcast-bar" style="height:28px;background:#c2185b;opacity:1;"></div><div class="podcast-bar" style="height:36px;background:#c2185b;opacity:1;"></div><div class="podcast-bar" style="height:18px;background:#c2185b;opacity:1;"></div><div class="podcast-bar" style="height:26px;background:#334155;opacity:0.25;"></div><div class="podcast-bar" style="height:36px;background:#334155;opacity:0.25;"></div><div class="podcast-bar" style="height:14px;background:#334155;opacity:0.25;"></div><div class="podcast-bar" style="height:30px;background:#334155;opacity:0.25;"></div><div class="podcast-bar" style="height:24px;background:#334155;opacity:0.25;"></div><div class="podcast-bar" style="height:36px;background:#334155;opacity:0.25;"></div><div class="podcast-bar" style="height:16px;background:#334155;opacity:0.25;"></div><div class="podcast-bar" style="height:28px;background:#334155;opacity:0.25;"></div><div class="podcast-bar" style="height:20px;background:#334155;opacity:0.25;"></div><div class="podcast-bar" style="height:36px;background:#334155;opacity:0.25;"></div><div class="podcast-bar" style="height:12px;background:#334155;opacity:0.25;"></div><div class="podcast-bar" style="height:24px;background:#334155;opacity:0.25;"></div><div class="podcast-bar" style="height:36px;background:#334155;opacity:0.25;"></div><div class="podcast-bar" style="height:22px;background:#334155;opacity:0.25;"></div><div class="podcast-bar" style="height:18px;background:#334155;opacity:0.25;"></div><div class="podcast-bar" style="height:36px;background:#334155;opacity:0.25;"></div><div class="podcast-bar" style="height:26px;background:#334155;opacity:0.25;"></div><div class="podcast-bar" style="height:14px;background:#334155;opacity:0.25;"></div><div class="podcast-bar" style="height:30px;background:#334155;opacity:0.25;"></div></div>
+              <div class="podcast-controls-row">
+                <div class="podcast-play-btn">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="#fff"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                </div>
+                <div class="podcast-progress"><div class="podcast-progress-fill"></div></div>
+                <span class="podcast-time">42:18 / 68:00</span>
+              </div>
+            </div>
+            <div class="podcast-stats-row">
+              <div class="podcast-stat-box"><div class="podcast-stat-val">147K</div><div class="podcast-stat-lbl">Listeners</div></div>
+              <div class="podcast-stat-box"><div class="podcast-stat-val">68<span style="font-size:11px;color:#475569;">min</span></div><div class="podcast-stat-lbl">Avg listen</div></div>
+              <div class="podcast-stat-box"><div class="podcast-stat-val" style="color:#4ade80;">94%</div><div class="podcast-stat-lbl">Completion</div></div>
+            </div>
+          </div>
         </div>
       </div>
 
-      </div><!-- /podcast column -->
-    </div><!-- /inf-bottom -->
+    </div>
   </div><!-- /wrap -->
 </section>
 
