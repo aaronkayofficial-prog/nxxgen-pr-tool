@@ -235,59 +235,97 @@ footer{background:#0a0a0a;border-top:1px solid #1a1a1a;padding:60px 0 40px;}
 
 /* ── RESPONSIVE ── */
 
+
+
 /* ── INFLUENCER SECTION ── */
-#influencer{background:#0d0d0d;padding:110px 0;overflow:hidden;}
-.inf-inner{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;}
-.inf-left{}
+#influencer{background:#0d0d0d;padding:110px 0 100px;overflow:hidden;}
+.inf-container{max-width:960px;margin:0 auto;padding:0 2.5rem;}
+
+/* Top block */
+.inf-top{display:grid;grid-template-columns:1fr auto;gap:4rem;align-items:center;margin-bottom:64px;}
 .inf-eyebrow{font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#c2185b;margin-bottom:1rem;}
-.inf-title{font-family:'Playfair Display',serif;font-size:clamp(2rem,3.5vw,2.8rem);color:#fff;line-height:1.15;margin-bottom:1.25rem;}
+.inf-title{font-family:'Playfair Display',serif;font-size:clamp(2rem,3.5vw,2.8rem);color:#fff;line-height:1.15;margin-bottom:1.1rem;}
 .inf-title em{color:#c2185b;font-style:italic;}
-.inf-sub{font-size:16px;color:#888;line-height:1.7;margin-bottom:2rem;max-width:440px;}
-.inf-pain-cards{display:flex;flex-direction:column;gap:12px;margin-bottom:2.5rem;}
-.inf-pain{display:flex;align-items:flex-start;gap:14px;background:#161616;border:1px solid #222;border-radius:12px;padding:1.1rem 1.25rem;}
-.inf-pain-icon{font-size:20px;flex-shrink:0;margin-top:1px;}
-.inf-pain-text{font-size:14px;color:#bbb;line-height:1.6;}
+.inf-sub{font-size:15px;color:#777;line-height:1.7;margin-bottom:1.75rem;max-width:420px;}
+.inf-pain-cards{display:flex;flex-direction:column;gap:10px;}
+.inf-pain{display:flex;align-items:flex-start;gap:12px;background:#161616;border:1px solid #222;border-radius:10px;padding:1rem 1.1rem;}
+.inf-pain-icon{font-size:18px;flex-shrink:0;margin-top:1px;}
+.inf-pain-text{font-size:13px;color:#aaa;line-height:1.6;}
 .inf-pain-text strong{color:#fff;display:block;margin-bottom:2px;}
-.inf-pivot{display:flex;align-items:center;gap:12px;margin-bottom:0;}
-.inf-pivot-line{height:1px;flex:1;background:linear-gradient(90deg,#c2185b,transparent);}
-.inf-pivot-text{font-size:13px;font-weight:600;color:#c2185b;white-space:nowrap;letter-spacing:0.5px;}
 
-/* ── PHONE MOCKUP ── */
-.inf-right{display:flex;flex-direction:column;gap:1.5rem;align-items:center;position:relative;}
-.inf-vs{display:flex;align-items:center;gap:1rem;margin:0.5rem 0;}
-.inf-vs-line{flex:1;height:1px;background:#222;}
-.inf-vs-text{font-size:12px;font-weight:700;letter-spacing:3px;color:#333;text-transform:uppercase;}
-.phone-wrap{position:relative;width:200px;flex-shrink:0;}
-.phone-dead{position:absolute;top:-12px;right:-12px;width:36px;height:36px;background:#c2185b;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;z-index:2;border:2px solid #0d0d0d;}
-.phone{background:#1a1a1a;border-radius:28px;padding:12px;border:2px solid #2a2a2a;box-shadow:0 20px 60px rgba(0,0,0,0.6);}
+/* Phone mockup */
+.phone-wrap{position:relative;width:190px;flex-shrink:0;}
+.phone-dead{position:absolute;top:-10px;right:-10px;width:34px;height:34px;background:#c2185b;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;z-index:2;border:2px solid #0d0d0d;color:#fff;}
+.phone{background:#1a1a1a;border-radius:26px;padding:10px;border:2px solid #2a2a2a;box-shadow:0 20px 60px rgba(0,0,0,0.7);}
 .phone-screen{background:#0a0a0a;border-radius:18px;overflow:hidden;}
-.phone-notch{height:28px;background:#111;display:flex;align-items:center;justify-content:center;}
-.phone-notch-dot{width:8px;height:8px;border-radius:50%;background:#1a1a1a;}
-.phone-content{padding:12px;}
-.phone-profile{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
-.phone-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#f093fb,#f5576c);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
-.phone-handle{font-size:11px;color:#fff;font-weight:600;}
-.phone-handle span{color:#888;font-weight:400;font-size:10px;display:block;}
-.phone-verify{color:#1d9bf0;font-size:10px;}
-.phone-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-bottom:10px;text-align:center;}
-.phone-stat-num{font-size:12px;font-weight:700;color:#fff;}
-.phone-stat-label{font-size:9px;color:#555;}
-.phone-post{background:#111;border-radius:8px;padding:8px;margin-bottom:8px;}
-.phone-post-img{width:100%;height:60px;background:linear-gradient(135deg,#667eea,#764ba2);border-radius:6px;margin-bottom:6px;display:flex;align-items:center;justify-content:center;font-size:20px;}
-.phone-post-caption{font-size:9px;color:#888;line-height:1.4;}
-.phone-post-caption .hashtags{color:#555;font-size:8px;}
-.phone-sponsored{display:inline-block;background:#1a1a1a;border:1px solid #333;color:#666;font-size:8px;padding:2px 6px;border-radius:4px;margin-bottom:4px;letter-spacing:1px;text-transform:uppercase;}
-.phone-engagement{display:flex;gap:8px;align-items:center;}
-.phone-eng-num{font-size:9px;color:#555;}
-.phone-dead-overlay{position:absolute;inset:0;border-radius:28px;background:rgba(194,24,91,0.08);border:2px solid rgba(194,24,91,0.3);pointer-events:none;}
+.phone-notch{height:24px;background:#111;display:flex;align-items:center;justify-content:center;}
+.phone-notch-dot{width:7px;height:7px;border-radius:50%;background:#1a1a1a;}
+.phone-content{padding:11px;}
+.phone-profile{display:flex;align-items:center;gap:7px;margin-bottom:9px;}
+.phone-avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#f093fb,#f5576c);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.phone-handle{font-size:10px;color:#fff;font-weight:600;line-height:1.3;}
+.phone-handle span{color:#555;font-weight:400;font-size:9px;display:block;}
+.phone-verify{color:#1d9bf0;font-size:9px;margin-left:2px;}
+.phone-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;margin-bottom:9px;text-align:center;}
+.phone-stat-num{font-size:11px;font-weight:700;color:#fff;}
+.phone-stat-label{font-size:8px;color:#444;}
+.phone-post{background:#111;border-radius:7px;padding:7px;margin-bottom:7px;}
+.phone-post-img{width:100%;height:55px;background:linear-gradient(135deg,#667eea,#764ba2);border-radius:5px;margin-bottom:5px;display:flex;align-items:center;justify-content:center;font-size:18px;}
+.phone-post-caption{font-size:8px;color:#777;line-height:1.4;}
+.phone-post-caption .hashtags{color:#444;font-size:7px;margin-top:2px;}
+.phone-sponsored{display:inline-block;background:#1a1a1a;border:1px solid #2a2a2a;color:#555;font-size:7px;padding:2px 5px;border-radius:3px;margin-bottom:4px;letter-spacing:1px;text-transform:uppercase;}
+.phone-engagement{display:flex;gap:6px;align-items:center;}
+.phone-eng-num{font-size:8px;color:#444;}
+.phone-dead-overlay{position:absolute;inset:0;border-radius:26px;background:rgba(194,24,91,0.06);border:2px solid rgba(194,24,91,0.25);pointer-events:none;}
 
-/* Solution cards */
-.inf-solution-cards{display:flex;flex-direction:column;gap:12px;flex:1;width:100%;}
-.inf-sol-card{background:#fff;border-radius:14px;padding:1.25rem;display:flex;align-items:flex-start;gap:12px;box-shadow:0 4px 20px rgba(0,0,0,0.3);}
-.inf-sol-icon{width:40px;height:40px;border-radius:10px;background:#fff0f3;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.inf-sol-title{font-size:14px;font-weight:700;color:#0a0a0a;margin-bottom:3px;}
-.inf-sol-desc{font-size:12px;color:#666;line-height:1.55;}
-@media(max-width:900px){.inf-inner{grid-template-columns:1fr;}.phone-wrap{display:none;}}
+/* Pivot separator */
+.inf-pivot-sep{display:flex;align-items:center;gap:1.5rem;margin-bottom:48px;}
+.inf-pivot-line{flex:1;height:1px;background:#1e1e1e;}
+.inf-pivot-text{font-family:'Playfair Display',serif;font-size:clamp(1.4rem,2.5vw,1.9rem);color:#fff;white-space:nowrap;text-align:center;}
+.inf-pivot-text em{color:#c2185b;font-style:italic;}
+
+/* Bottom solution cards */
+.inf-bottom{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;}
+.inf-sol-card{border-radius:16px;overflow:hidden;}
+
+/* Editorial card */
+.editorial-card{background:#f8f7f5;padding:1.75rem;}
+.editorial-masthead{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#888;margin-bottom:1rem;padding-bottom:8px;border-bottom:2px solid #e0ddd9;}
+.editorial-badge{display:inline-flex;align-items:center;gap:5px;background:#c2185b;color:#fff;font-size:10px;font-weight:600;padding:3px 10px;border-radius:20px;margin-bottom:10px;letter-spacing:0.5px;}
+.editorial-headline{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:#0a0a0a;line-height:1.3;margin-bottom:8px;}
+.editorial-byline{font-size:11px;color:#888;margin-bottom:12px;}
+.editorial-excerpt{font-size:12px;color:#555;line-height:1.65;margin-bottom:14px;border-left:3px solid #c2185b;padding-left:10px;}
+.editorial-meta{display:flex;align-items:center;justify-content:space-between;padding-top:10px;border-top:1px solid #e0ddd9;}
+.editorial-pub{font-size:11px;color:#888;}
+.editorial-reach{font-size:11px;font-weight:600;color:#c2185b;}
+
+/* Podcast card */
+.podcast-card{background:#111827;padding:1.75rem;}
+.podcast-label{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#c2185b;margin-bottom:1rem;}
+.podcast-player{background:#0d1117;border-radius:12px;padding:1.25rem;margin-bottom:1.25rem;}
+.podcast-artwork{width:52px;height:52px;border-radius:10px;background:linear-gradient(135deg,#c2185b,#7b0d3a);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.podcast-info{display:flex;align-items:center;gap:12px;margin-bottom:1rem;}
+.podcast-ep-title{font-size:13px;font-weight:600;color:#fff;margin-bottom:3px;}
+.podcast-ep-show{font-size:11px;color:#555;}
+.podcast-formats{display:flex;gap:6px;margin-bottom:12px;}
+.podcast-format-badge{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:500;padding:3px 9px;border-radius:20px;border:1px solid;}
+.podcast-format-badge.audio{color:#c2185b;border-color:#c2185b;background:rgba(194,24,91,0.08);}
+.podcast-format-badge.video{color:#4ade80;border-color:#4ade80;background:rgba(74,222,128,0.08);}
+.podcast-waveform{display:flex;align-items:center;gap:2px;height:32px;margin-bottom:10px;}
+.podcast-bar{border-radius:2px;background:#c2185b;opacity:0.6;width:3px;}
+.podcast-controls{display:flex;align-items:center;gap:10px;}
+.podcast-play{width:32px;height:32px;border-radius:50%;background:#c2185b;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.podcast-time{font-size:10px;color:#555;}
+.podcast-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.podcast-stat{text-align:center;background:#0d1117;border-radius:8px;padding:10px 8px;}
+.podcast-stat-num{font-size:14px;font-weight:700;color:#fff;margin-bottom:2px;}
+.podcast-stat-label{font-size:9px;color:#555;text-transform:uppercase;letter-spacing:0.5px;}
+
+@media(max-width:900px){
+  .inf-top{grid-template-columns:1fr;}.phone-wrap{display:none;}
+  .inf-bottom{grid-template-columns:1fr;}
+  .inf-pivot-text{font-size:1.3rem;white-space:normal;text-align:center;}
+}
 @media(max-width:1100px){.pricing-grid{grid-template-columns:repeat(2,1fr);}}
 @media(max-width:900px){
   .hero-inner{grid-template-columns:1fr;text-align:center;}
@@ -475,126 +513,136 @@ footer{background:#0a0a0a;border-top:1px solid #1a1a1a;padding:60px 0 40px;}
   </div>
 </section>
 
+
 <!-- ── SECTION 3B: INFLUENCER ERA IS OVER ── -->
 <section id="influencer">
-  <div class="wrap">
-    <div class="inf-inner">
+  <div class="inf-container">
 
-      <!-- LEFT: THE ARGUMENT -->
+    <!-- TOP BLOCK: Argument + Phone -->
+    <div class="inf-top">
       <div class="inf-left">
         <p class="inf-eyebrow reveal">The inconvenient truth</p>
         <h2 class="inf-title reveal reveal-delay-1">The era of social media<br>influencers is <em>over.</em></h2>
         <p class="inf-sub reveal reveal-delay-2">Brands have spent billions lining the pockets of influencers. The return? Hit and miss at best. Miss and humiliating at worst.</p>
-
         <div class="inf-pain-cards">
           <div class="inf-pain reveal">
             <span class="inf-pain-icon">💸</span>
-            <div class="inf-pain-text">
-              <strong>The price tag is absurd.</strong>
-              Influencer campaigns routinely cost $10,000–$100,000+. With zero guaranteed editorial coverage, zero vetting, and zero accountability when it doesn't land.
-            </div>
+            <div class="inf-pain-text"><strong>The price tag is absurd.</strong>Campaigns routinely cost $10,000–$100,000+ with zero guaranteed coverage, zero vetting, and zero accountability when it flops.</div>
           </div>
           <div class="inf-pain reveal reveal-delay-1">
             <span class="inf-pain-icon">📉</span>
-            <div class="inf-pain-text">
-              <strong>The numbers are fiction.</strong>
-              Follower counts have been inflated for years. Bought audiences. Bot engagement. Fake reach. Real invoices. Brands have been paying for an illusion.
-            </div>
+            <div class="inf-pain-text"><strong>The numbers are fiction.</strong>Follower counts have been inflated for years. Bought audiences. Bot engagement. Fake reach. Real invoices.</div>
           </div>
           <div class="inf-pain reveal reveal-delay-2">
             <span class="inf-pain-icon">🎭</span>
-            <div class="inf-pain-text">
-              <strong>You're funding a lifestyle. Not a brand.</strong>
-              Every dollar you give an influencer goes toward their next trip to Bali — not toward building your credibility, your authority, or your audience.
-            </div>
+            <div class="inf-pain-text"><strong>You're funding a lifestyle. Not a brand.</strong>Every dollar goes toward their next trip to Bali — not your credibility, authority, or audience.</div>
           </div>
-        </div>
-
-        <div class="inf-pivot reveal">
-          <div class="inf-pivot-line"></div>
-          <span class="inf-pivot-text">What actually works</span>
-          <div class="inf-pivot-line" style="background:linear-gradient(90deg,transparent,#c2185b);"></div>
         </div>
       </div>
 
-      <!-- RIGHT: VISUAL -->
-      <div class="inf-right reveal reveal-delay-1">
-
-        <!-- Dead influencer phone -->
-        <div style="display:flex;align-items:flex-start;gap:1.5rem;width:100%;">
-          <div class="phone-wrap">
-            <div class="phone-dead">✕</div>
-            <div class="phone">
-              <div class="phone-screen">
-                <div class="phone-notch"><div class="phone-notch-dot"></div></div>
-                <div class="phone-content">
-                  <div class="phone-profile">
-                    <div class="phone-avatar">✨</div>
-                    <div style="flex:1;">
-                      <div style="display:flex;align-items:center;gap:4px;">
-                        <span class="phone-handle">@lifestyle.guru</span>
-                        <span class="phone-verify">✓</span>
-                      </div>
-                      <span style="font-size:9px;color:#555;">Living my best life ✨🌴</span>
-                    </div>
-                  </div>
-                  <div class="phone-stats">
-                    <div><div class="phone-stat-num">4.2M</div><div class="phone-stat-label">followers</div></div>
-                    <div><div class="phone-stat-num" style="color:#c2185b;">0.3%</div><div class="phone-stat-label">engagement</div></div>
-                    <div><div class="phone-stat-num">$50k</div><div class="phone-stat-label">per post</div></div>
-                  </div>
-                  <div class="phone-post">
-                    <div class="phone-post-img">🏖️</div>
-                    <span class="phone-sponsored">Sponsored</span>
-                    <div class="phone-post-caption">
-                      Honestly OBSESSED with this product, it literally changed my life!! Cannot believe how good it is 😭🙌 You NEED this.
-                      <div class="hashtags">#gifted #ad #spon #blessed #partner #collab #lifestyle #authentic</div>
-                    </div>
-                    <div class="phone-engagement">
-                      <span class="phone-eng-num">👍 12.4K</span>
-                      <span class="phone-eng-num">💬 43</span>
-                      <span class="phone-eng-num" style="color:#c2185b;margin-left:auto;font-size:8px;">ROI: unknown</span>
-                    </div>
+      <!-- PHONE MOCKUP -->
+      <div class="phone-wrap reveal reveal-delay-1">
+        <div class="phone-dead">✕</div>
+        <div class="phone">
+          <div class="phone-screen">
+            <div class="phone-notch"><div class="phone-notch-dot"></div></div>
+            <div class="phone-content">
+              <div class="phone-profile">
+                <div class="phone-avatar">✨</div>
+                <div style="flex:1;">
+                  <div style="display:flex;align-items:center;">
+                    <span class="phone-handle">@lifestyle.guru<span>Living my best life ✨🌴</span></span>
+                    <span class="phone-verify">✓</span>
                   </div>
                 </div>
               </div>
-            </div>
-            <div class="phone-dead-overlay"></div>
-          </div>
-
-          <!-- Solution cards -->
-          <div class="inf-solution-cards">
-            <div class="inf-vs">
-              <div class="inf-vs-line"></div>
-              <span class="inf-vs-text">vs</span>
-              <div class="inf-vs-line"></div>
-            </div>
-            <div class="inf-sol-card">
-              <div class="inf-sol-icon">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h14a2 2 0 0 0 2-2V7l-5-5H6a2 2 0 0 0-2 2v4"/><path d="M14 2v5h5"/><path d="M3 15h7"/><path d="M3 11h3"/><path d="M3 19h7"/></svg>
+              <div class="phone-stats">
+                <div><div class="phone-stat-num">4.2M</div><div class="phone-stat-label">followers</div></div>
+                <div><div class="phone-stat-num" style="color:#c2185b;">0.3%</div><div class="phone-stat-label">engagement</div></div>
+                <div><div class="phone-stat-num">$50k</div><div class="phone-stat-label">per post</div></div>
               </div>
-              <div>
-                <div class="inf-sol-title">Editorial &amp; Press Coverage</div>
-                <div class="inf-sol-desc">Your story in front of editors who vet, verify and publish for audiences who have chosen to trust them. That credibility transfers to your brand — permanently.</div>
-              </div>
-            </div>
-            <div class="inf-sol-card">
-              <div class="inf-sol-icon">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
-              </div>
-              <div>
-                <div class="inf-sol-title">Podcast — Audio &amp; Video</div>
-                <div class="inf-sol-desc">60–90 minutes of genuine conversation with a loyal, self-selected audience. No algorithm. No ad-skip. No bots. Just real people who showed up to listen.</div>
+              <div class="phone-post">
+                <div class="phone-post-img">🏖️</div>
+                <span class="phone-sponsored">Sponsored</span>
+                <div class="phone-post-caption">
+                  Honestly OBSESSED with this!! It literally changed my life 😭🙌 You NEED this.
+                  <div class="hashtags">#gifted #ad #spon #blessed #partner #collab #authentic</div>
+                </div>
+                <div class="phone-engagement">
+                  <span class="phone-eng-num">👍 12.4K</span>
+                  <span class="phone-eng-num">💬 43</span>
+                  <span class="phone-eng-num" style="color:#c2185b;margin-left:auto;font-size:7px;">ROI: unknown</span>
+                </div>
               </div>
             </div>
           </div>
         </div>
-
+        <div class="phone-dead-overlay"></div>
       </div>
+    </div>
+
+    <!-- PIVOT SEPARATOR -->
+    <div class="inf-pivot-sep reveal">
+      <div class="inf-pivot-line"></div>
+      <h3 class="inf-pivot-text">What actually <em>moves the needle</em></h3>
+      <div class="inf-pivot-line"></div>
+    </div>
+
+    <!-- BOTTOM BLOCK: Editorial + Podcast cards -->
+    <div class="inf-bottom">
+
+      <!-- EDITORIAL CARD -->
+      <div class="inf-sol-card editorial-card reveal">
+        <div class="editorial-masthead">The Editorial Standard</div>
+        <div class="editorial-badge">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          Editor's Pick
+        </div>
+        <div class="editorial-headline">"How this brand quietly changed its entire industry — and why nobody saw it coming"</div>
+        <div class="editorial-byline">By Sarah Chen, Senior Editor &nbsp;·&nbsp; Feature</div>
+        <div class="editorial-excerpt">Verified. Vetted. Published. Your story in front of readers who chose to trust this publication — and by extension, you. That credibility doesn't expire when the campaign does.</div>
+        <div class="editorial-meta">
+          <span class="editorial-pub">📰 Editorial coverage</span>
+          <span class="editorial-reach">3.2M monthly readers</span>
+        </div>
+      </div>
+
+      <!-- PODCAST CARD -->
+      <div class="inf-sol-card podcast-card reveal reveal-delay-1">
+        <div class="podcast-label">The Podcast Advantage</div>
+        <div class="podcast-player">
+          <div class="podcast-info">
+            <div class="podcast-artwork">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg>
+            </div>
+            <div>
+              <div class="podcast-ep-title">The story behind the brand building</div>
+              <div class="podcast-ep-show">Industry Voices · Ep. 147</div>
+            </div>
+          </div>
+          <div class="podcast-formats">
+            <span class="podcast-format-badge audio">🎧 Audio</span>
+            <span class="podcast-format-badge video">📹 Video</span>
+          </div>
+          <div class="podcast-waveform"><div class="podcast-bar" style="height:8px;opacity:1;"></div><div class="podcast-bar" style="height:14px;opacity:1;"></div><div class="podcast-bar" style="height:20px;opacity:1;"></div><div class="podcast-bar" style="height:28px;opacity:1;"></div><div class="podcast-bar" style="height:36px;opacity:1;"></div><div class="podcast-bar" style="height:28px;opacity:1;"></div><div class="podcast-bar" style="height:20px;opacity:1;"></div><div class="podcast-bar" style="height:32px;opacity:1;"></div><div class="podcast-bar" style="height:16px;opacity:1;"></div><div class="podcast-bar" style="height:24px;opacity:1;"></div><div class="podcast-bar" style="height:36px;opacity:1;"></div><div class="podcast-bar" style="height:20px;opacity:1;"></div><div class="podcast-bar" style="height:12px;opacity:1;"></div><div class="podcast-bar" style="height:28px;opacity:1;"></div><div class="podcast-bar" style="height:36px;opacity:1;"></div><div class="podcast-bar" style="height:24px;"></div><div class="podcast-bar" style="height:16px;"></div><div class="podcast-bar" style="height:32px;"></div><div class="podcast-bar" style="height:20px;"></div><div class="podcast-bar" style="height:28px;"></div><div class="podcast-bar" style="height:14px;"></div><div class="podcast-bar" style="height:36px;"></div><div class="podcast-bar" style="height:24px;"></div><div class="podcast-bar" style="height:18px;"></div><div class="podcast-bar" style="height:30px;"></div><div class="podcast-bar" style="height:22px;"></div><div class="podcast-bar" style="height:36px;"></div><div class="podcast-bar" style="height:16px;"></div><div class="podcast-bar" style="height:28px;"></div><div class="podcast-bar" style="height:20px;"></div><div class="podcast-bar" style="height:14px;"></div><div class="podcast-bar" style="height:36px;"></div><div class="podcast-bar" style="height:24px;"></div><div class="podcast-bar" style="height:18px;"></div><div class="podcast-bar" style="height:28px;"></div></div>
+          <div class="podcast-controls">
+            <div class="podcast-play">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="#fff"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            </div>
+            <div style="flex:1;height:3px;background:#1e293b;border-radius:2px;"><div style="width:42%;height:3px;background:#c2185b;border-radius:2px;"></div></div>
+            <span class="podcast-time">42:18 / 68:00</span>
+          </div>
+        </div>
+        <div class="podcast-stats">
+          <div class="podcast-stat"><div class="podcast-stat-num">147K</div><div class="podcast-stat-label">listeners</div></div>
+          <div class="podcast-stat"><div class="podcast-stat-num">68<span style="font-size:10px;color:#555;">min</span></div><div class="podcast-stat-label">avg listen</div></div>
+          <div class="podcast-stat"><div class="podcast-stat-num" style="color:#4ade80;">94%</div><div class="podcast-stat-label">completion</div></div>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
-
 
 <!-- ── SECTION 4: HOW IT WORKS ── -->
 <section id="how">
