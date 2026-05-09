@@ -108,10 +108,16 @@ nav.scrolled{box-shadow:var(--shadow);}
 
 /* ── PROOF BAR ── */
 #proof{padding:32px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--white);overflow:hidden;}
-.proof-label{font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:16px;text-align:center;}
-.proof-track{display:flex;align-items:center;gap:0;width:max-content;animation:scroll-proof 30s linear infinite;}
-.proof-item{font-size:14px;font-weight:500;color:var(--text);padding:0 28px;opacity:0.6;white-space:nowrap;}
-.proof-sep{color:var(--gold);font-size:18px;opacity:0.4;}
+.proof-label{font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:20px;text-align:center;}
+.proof-geo-label{display:inline-flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);margin-left:8px;opacity:0.6;}
+.proof-track{display:flex;align-items:center;gap:0;width:max-content;animation:scroll-proof 35s linear infinite;}
+.proof-track:hover{animation-play-state:paused;}
+.proof-item{display:inline-flex;align-items:center;padding:0 32px;white-space:nowrap;opacity:0.75;transition:opacity 0.2s;}
+.proof-item:hover{opacity:1;}
+.proof-item .wm{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--black);letter-spacing:-0.3px;}
+.proof-item .wm.sans{font-family:'DM Sans',sans-serif;font-weight:800;letter-spacing:-0.5px;font-size:15px;}
+.proof-item .wm.condensed{font-family:'DM Sans',sans-serif;font-weight:700;font-size:13px;letter-spacing:2px;text-transform:uppercase;}
+.proof-div{width:1px;height:20px;background:var(--border);flex-shrink:0;}
 @keyframes scroll-proof{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
 
 /* ── PROBLEM ── */
@@ -172,7 +178,7 @@ nav.scrolled{box-shadow:var(--shadow);}
 
 /* ── PRICING ── */
 #pricing{background:var(--off);}
-.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:3.5rem;}
+.pricing-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.25rem;margin-top:3.5rem;}
 .pricing-card{background:var(--white);border:1.5px solid var(--border);border-radius:16px;padding:2.25rem;position:relative;transition:all 0.25s;}
 .pricing-card.featured{border-color:var(--gold);background:var(--white);}
 .pricing-card.featured::before{content:'Most popular';position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:var(--gold);color:#fff;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:4px 16px;border-radius:50px;}
@@ -229,6 +235,7 @@ footer{background:#0a0a0a;border-top:1px solid #1a1a1a;padding:60px 0 40px;}
 .reveal-delay-4{transition-delay:0.4s;}
 
 /* ── RESPONSIVE ── */
+@media(max-width:1100px){.pricing-grid{grid-template-columns:repeat(2,1fr);}}
 @media(max-width:900px){
   .hero-inner{grid-template-columns:1fr;text-align:center;}
   .hero-sub{margin-left:auto;margin-right:auto;}
@@ -380,38 +387,15 @@ footer{background:#0a0a0a;border-top:1px solid #1a1a1a;padding:60px 0 40px;}
 
 <!-- ── SECTION 2: SOCIAL PROOF BAR ── -->
 <section id="proof">
-  <div class="wrap-sm">
-    <p class="proof-label">Reach outlets including</p>
+  <div class="wrap-sm" style="text-align:center;">
+    <p class="proof-label">
+      Reach outlets including
+      <span class="proof-geo-label" id="proof-geo-label"></span>
+    </p>
   </div>
-  <div style="overflow:hidden;">
-    <div class="proof-track">
-      <span class="proof-item">Mumbrella</span><span class="proof-sep">·</span>
-      <span class="proof-item">WhichCar</span><span class="proof-sep">·</span>
-      <span class="proof-item">The Guardian</span><span class="proof-sep">·</span>
-      <span class="proof-item">TechCrunch</span><span class="proof-sep">·</span>
-      <span class="proof-item">Autocar</span><span class="proof-sep">·</span>
-      <span class="proof-item">SmartCompany</span><span class="proof-sep">·</span>
-      <span class="proof-item">Wheels Magazine</span><span class="proof-sep">·</span>
-      <span class="proof-item">Hospitality Magazine</span><span class="proof-sep">·</span>
-      <span class="proof-item">Finextra</span><span class="proof-sep">·</span>
-      <span class="proof-item">Renew Economy</span><span class="proof-sep">·</span>
-      <span class="proof-item">Car Expert</span><span class="proof-sep">·</span>
-      <span class="proof-item">GoAuto</span><span class="proof-sep">·</span>
-      <span class="proof-item">Drive.com.au</span><span class="proof-sep">·</span>
-      <!-- Duplicate for seamless loop -->
-      <span class="proof-item">Mumbrella</span><span class="proof-sep">·</span>
-      <span class="proof-item">WhichCar</span><span class="proof-sep">·</span>
-      <span class="proof-item">The Guardian</span><span class="proof-sep">·</span>
-      <span class="proof-item">TechCrunch</span><span class="proof-sep">·</span>
-      <span class="proof-item">Autocar</span><span class="proof-sep">·</span>
-      <span class="proof-item">SmartCompany</span><span class="proof-sep">·</span>
-      <span class="proof-item">Wheels Magazine</span><span class="proof-sep">·</span>
-      <span class="proof-item">Hospitality Magazine</span><span class="proof-sep">·</span>
-      <span class="proof-item">Finextra</span><span class="proof-sep">·</span>
-      <span class="proof-item">Renew Economy</span><span class="proof-sep">·</span>
-      <span class="proof-item">Car Expert</span><span class="proof-sep">·</span>
-      <span class="proof-item">GoAuto</span><span class="proof-sep">·</span>
-      <span class="proof-item">Drive.com.au</span><span class="proof-sep">·</span>
+  <div style="overflow:hidden;" id="proof-slider-wrap">
+    <div class="proof-track" id="proof-track">
+      <!-- Populated by JS based on geo -->
     </div>
   </div>
 </section>
@@ -715,49 +699,72 @@ footer{background:#0a0a0a;border-top:1px solid #1a1a1a;padding:60px 0 40px;}
     <p class="section-sub reveal reveal-delay-2">Start free. Upgrade when you need more. No contracts, no lock-in, cancel anytime.</p>
     <div class="pricing-grid">
 
+      <!-- TIER 1: FREE -->
       <div class="pricing-card reveal">
         <p class="pricing-plan">Free</p>
         <div class="pricing-price">$0</div>
-        <p class="pricing-period">Forever free to get started</p>
+        <p class="pricing-period">Forever free · no credit card</p>
         <ul class="pricing-features">
           <li class="check">3 campaigns</li>
           <li class="check">10 outreaches per month</li>
           <li class="check">All 5 outreach paths</li>
           <li class="check">Curated media database</li>
           <li class="check">AI press release generator</li>
-          <li class="check">PDF download</li>
+          <li class="check">Branded PDF download</li>
         </ul>
         <a href="/app" class="btn btn-outline" style="width:100%;justify-content:center;">Get started free</a>
       </div>
 
-      <div class="pricing-card featured reveal reveal-delay-1">
-        <p class="pricing-plan">Pro</p>
+      <!-- TIER 2: BRAND -->
+      <div class="pricing-card reveal reveal-delay-1">
+        <p class="pricing-plan">Brand</p>
         <div class="pricing-price"><sup>$</sup>49</div>
         <p class="pricing-period">per month · billed monthly</p>
         <ul class="pricing-features">
           <li class="check">Unlimited campaigns</li>
           <li class="check">Unlimited outreach</li>
-          <li class="check">AI outlet search (60+ per campaign)</li>
+          <li class="check">AI outlet search (60+ results)</li>
           <li class="check">All 5 outreach paths</li>
+          <li class="check">All 16 industry categories</li>
           <li class="check">Podcast &amp; community research</li>
+          <li class="check">Email support</li>
+        </ul>
+        <a href="/app" class="btn btn-outline" style="width:100%;justify-content:center;">Start Brand &rarr;</a>
+      </div>
+
+      <!-- TIER 3: PRO (featured) -->
+      <div class="pricing-card featured reveal reveal-delay-2">
+        <p class="pricing-plan">Pro</p>
+        <div class="pricing-price"><sup>$</sup>149</div>
+        <p class="pricing-period">per month · billed monthly</p>
+        <ul class="pricing-features">
+          <li class="check">Everything in Brand</li>
+          <li class="check">Multiple team seats (up to 5)</li>
+          <li class="check">White-label press release PDF</li>
+          <li class="check">Multi-campaign management</li>
+          <li class="check">Advanced outreach dashboard</li>
+          <li class="check">Drip campaign sequences <span style="color:var(--muted);font-size:11px;">(coming soon)</span></li>
           <li class="check">Priority support</li>
         </ul>
         <a href="/app" class="btn btn-primary" style="width:100%;justify-content:center;">Start Pro &rarr;</a>
       </div>
 
-      <div class="pricing-card reveal reveal-delay-2">
-        <p class="pricing-plan">Agency</p>
-        <div class="pricing-price"><sup>$</sup>149</div>
-        <p class="pricing-period">per month · billed monthly</p>
-        <ul class="pricing-features">
-          <li class="check">Everything in Pro</li>
-          <li class="check">Multiple team seats</li>
-          <li class="check">White-label press release PDF</li>
-          <li class="check">Multi-client campaign management</li>
-          <li class="check">API access <span style="color:var(--muted);font-size:11px;">(coming soon)</span></li>
-          <li class="check">Dedicated support</li>
+      <!-- TIER 4: AGENCY / ENTERPRISE -->
+      <div class="pricing-card reveal reveal-delay-3" style="background:var(--black);border-color:#222;">
+        <p class="pricing-plan" style="color:#666;">Agency &amp; Enterprise</p>
+        <div class="pricing-price" style="color:#fff;">Custom</div>
+        <p class="pricing-period" style="color:#555;">Tailored to your team</p>
+        <ul class="pricing-features" style="border-color:#222;">
+          <li class="check" style="color:#ccc;border-color:#1a1a1a;">Everything in Pro</li>
+          <li class="check" style="color:#ccc;border-color:#1a1a1a;">Unlimited team seats</li>
+          <li class="check" style="color:#ccc;border-color:#1a1a1a;">Dedicated account manager</li>
+          <li class="check" style="color:#ccc;border-color:#1a1a1a;">Custom onboarding &amp; training</li>
+          <li class="check" style="color:#ccc;border-color:#1a1a1a;">Multi-client &amp; brand management</li>
+          <li class="check" style="color:#ccc;border-color:#1a1a1a;">API access &amp; custom integrations</li>
+          <li class="check" style="color:#ccc;border-color:#1a1a1a;">SLA &amp; enterprise-grade support</li>
         </ul>
-        <a href="/app" class="btn btn-outline" style="width:100%;justify-content:center;">Get Agency access</a>
+        <a href="mailto:hello@pressreachout.com" class="btn" style="width:100%;justify-content:center;background:transparent;border:1.5px solid #333;color:#888;">Book a consultation &rarr;</a>
+        <p style="font-size:11px;color:#555;text-align:center;margin-top:12px;">No listed price — we scope &amp; quote based on your needs.</p>
       </div>
 
     </div>
@@ -825,7 +832,7 @@ footer{background:#0a0a0a;border-top:1px solid #1a1a1a;padding:60px 0 40px;}
           Can I use this for multiple businesses or clients?
           <span class="faq-arrow"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
         </button>
-        <div class="faq-a">On the Agency plan, yes — you can manage multiple clients with separate campaign histories and white-labelled PDFs. On the Pro plan, the platform is optimised for a single business. Multi-client support for Pro is on the roadmap.</div>
+        <div class="faq-a">On the Pro plan, yes — you can manage multiple clients with separate campaign histories, team seats, and white-labelled PDFs. The Agency &amp; Enterprise tier is designed for larger teams managing many clients simultaneously, with dedicated support and custom integrations. Book a consultation to discuss your specific needs.</div>
       </div>
 
     </div>
@@ -880,6 +887,108 @@ footer{background:#0a0a0a;border-top:1px solid #1a1a1a;padding:60px 0 40px;}
 </footer>
 
 <script>
+
+// ── GEO-TARGETED PROOF BAR ──
+var GEO_OUTLETS = {
+  AU: [
+    {n:'Australian Financial Review', style:'serif', abbr:'AFR'},
+    {n:'The Sydney Morning Herald', style:'serif'},
+    {n:'Vogue Australia', style:'serif'},
+    {n:'SmartCompany', style:'sans'},
+    {n:'Mumbrella', style:'sans'},
+    {n:'The Guardian', style:'serif'},
+    {n:'Wheels Magazine', style:'condensed'},
+    {n:'The Australian', style:'serif'},
+    {n:'GoAuto', style:'sans'},
+    {n:'CarExpert', style:'sans'},
+    {n:'Hospitality Magazine', style:'condensed'},
+    {n:'Drive.com.au', style:'sans'}
+  ],
+  US: [
+    {n:'Forbes', style:'serif'},
+    {n:'The New York Times', style:'serif'},
+    {n:'Vogue', style:'serif'},
+    {n:'TechCrunch', style:'sans'},
+    {n:'Billboard', style:'serif'},
+    {n:'Variety', style:'serif'},
+    {n:'Ad Week', style:'condensed'},
+    {n:'Rolling Stone', style:'serif'},
+    {n:'The Atlantic', style:'serif'},
+    {n:'Deadline', style:'sans'},
+    {n:'Sports Business Journal', style:'condensed'},
+    {n:'Digiday', style:'sans'}
+  ],
+  GB: [
+    {n:'The Guardian', style:'serif'},
+    {n:'Forbes UK', style:'serif'},
+    {n:'Vogue UK', style:'serif'},
+    {n:'The Times', style:'serif'},
+    {n:'Campaign', style:'sans'},
+    {n:'Music Week', style:'condensed'},
+    {n:'The Bookseller', style:'serif'},
+    {n:'Autocar', style:'sans'},
+    {n:'NME', style:'serif'},
+    {n:'The Drum', style:'sans'},
+    {n:'Screen Daily', style:'condensed'},
+    {n:'Fleet News', style:'sans'}
+  ]
+};
+
+var GEO_LABELS = {
+  AU: '🇦🇺 Australian outlets',
+  US: '🇺🇸 US outlets',
+  GB: '🇬🇧 UK outlets'
+};
+
+function buildProofItem(outlet) {
+  var cls = 'wm' + (outlet.style === 'sans' ? ' sans' : outlet.style === 'condensed' ? ' condensed' : '');
+  var name = outlet.abbr || outlet.n;
+  return '<span class="proof-item"><span class="' + cls + '">' + name + '</span></span><span class="proof-div"></span>';
+}
+
+function renderProofBar(geo) {
+  var outlets = GEO_OUTLETS[geo] || GEO_OUTLETS.AU;
+  var label = GEO_LABELS[geo] || '';
+  var track = document.getElementById('proof-track');
+  var geoLabel = document.getElementById('proof-geo-label');
+  if (!track) return;
+  // Build HTML — duplicate for seamless loop
+  var items = outlets.map(buildProofItem).join('');
+  track.innerHTML = items + items;
+  if (geoLabel && label) geoLabel.textContent = '— ' + label;
+}
+
+function initGeoProof() {
+  // Check for URL override first (for testing)
+  var params = new URLSearchParams(window.location.search);
+  var geoOverride = (params.get('geo') || '').toUpperCase();
+  if (GEO_OUTLETS[geoOverride]) {
+    renderProofBar(geoOverride);
+    return;
+  }
+  // Detect via ipapi.co (free, no key needed)
+  fetch('https://ipapi.co/json/')
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      var country = (data.country_code || 'AU').toUpperCase();
+      // Map country codes to our geo sets
+      var geoMap = {
+        'AU': 'AU', 'NZ': 'AU',
+        'US': 'US', 'CA': 'US',
+        'GB': 'GB', 'IE': 'GB'
+      };
+      var geo = geoMap[country] || 'AU';
+      renderProofBar(geo);
+    })
+    .catch(function() {
+      // Fallback to AU if detection fails
+      renderProofBar('AU');
+    });
+}
+
+// Initialise on load
+initGeoProof();
+
 // ── NAV scroll shadow ──
 window.addEventListener('scroll', function() {
   document.getElementById('main-nav').classList.toggle('scrolled', window.scrollY > 20);
