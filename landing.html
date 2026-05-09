@@ -109,7 +109,6 @@ nav.scrolled{box-shadow:var(--shadow);}
 /* ── PROOF BAR ── */
 #proof{padding:32px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--white);overflow:hidden;}
 .proof-label{font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:20px;text-align:center;}
-.proof-geo-label{display:inline-flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);margin-left:8px;opacity:0.6;}
 .proof-track{display:flex;align-items:center;gap:0;width:max-content;animation:scroll-proof 35s linear infinite;}
 .proof-track:hover{animation-play-state:paused;}
 .proof-item{display:inline-flex;align-items:center;padding:0 32px;white-space:nowrap;opacity:0.75;transition:opacity 0.2s;}
@@ -235,6 +234,60 @@ footer{background:#0a0a0a;border-top:1px solid #1a1a1a;padding:60px 0 40px;}
 .reveal-delay-4{transition-delay:0.4s;}
 
 /* ── RESPONSIVE ── */
+
+/* ── INFLUENCER SECTION ── */
+#influencer{background:#0d0d0d;padding:110px 0;overflow:hidden;}
+.inf-inner{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;}
+.inf-left{}
+.inf-eyebrow{font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#c2185b;margin-bottom:1rem;}
+.inf-title{font-family:'Playfair Display',serif;font-size:clamp(2rem,3.5vw,2.8rem);color:#fff;line-height:1.15;margin-bottom:1.25rem;}
+.inf-title em{color:#c2185b;font-style:italic;}
+.inf-sub{font-size:16px;color:#888;line-height:1.7;margin-bottom:2rem;max-width:440px;}
+.inf-pain-cards{display:flex;flex-direction:column;gap:12px;margin-bottom:2.5rem;}
+.inf-pain{display:flex;align-items:flex-start;gap:14px;background:#161616;border:1px solid #222;border-radius:12px;padding:1.1rem 1.25rem;}
+.inf-pain-icon{font-size:20px;flex-shrink:0;margin-top:1px;}
+.inf-pain-text{font-size:14px;color:#bbb;line-height:1.6;}
+.inf-pain-text strong{color:#fff;display:block;margin-bottom:2px;}
+.inf-pivot{display:flex;align-items:center;gap:12px;margin-bottom:0;}
+.inf-pivot-line{height:1px;flex:1;background:linear-gradient(90deg,#c2185b,transparent);}
+.inf-pivot-text{font-size:13px;font-weight:600;color:#c2185b;white-space:nowrap;letter-spacing:0.5px;}
+
+/* ── PHONE MOCKUP ── */
+.inf-right{display:flex;flex-direction:column;gap:1.5rem;align-items:center;position:relative;}
+.inf-vs{display:flex;align-items:center;gap:1rem;margin:0.5rem 0;}
+.inf-vs-line{flex:1;height:1px;background:#222;}
+.inf-vs-text{font-size:12px;font-weight:700;letter-spacing:3px;color:#333;text-transform:uppercase;}
+.phone-wrap{position:relative;width:200px;flex-shrink:0;}
+.phone-dead{position:absolute;top:-12px;right:-12px;width:36px;height:36px;background:#c2185b;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;z-index:2;border:2px solid #0d0d0d;}
+.phone{background:#1a1a1a;border-radius:28px;padding:12px;border:2px solid #2a2a2a;box-shadow:0 20px 60px rgba(0,0,0,0.6);}
+.phone-screen{background:#0a0a0a;border-radius:18px;overflow:hidden;}
+.phone-notch{height:28px;background:#111;display:flex;align-items:center;justify-content:center;}
+.phone-notch-dot{width:8px;height:8px;border-radius:50%;background:#1a1a1a;}
+.phone-content{padding:12px;}
+.phone-profile{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.phone-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#f093fb,#f5576c);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.phone-handle{font-size:11px;color:#fff;font-weight:600;}
+.phone-handle span{color:#888;font-weight:400;font-size:10px;display:block;}
+.phone-verify{color:#1d9bf0;font-size:10px;}
+.phone-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-bottom:10px;text-align:center;}
+.phone-stat-num{font-size:12px;font-weight:700;color:#fff;}
+.phone-stat-label{font-size:9px;color:#555;}
+.phone-post{background:#111;border-radius:8px;padding:8px;margin-bottom:8px;}
+.phone-post-img{width:100%;height:60px;background:linear-gradient(135deg,#667eea,#764ba2);border-radius:6px;margin-bottom:6px;display:flex;align-items:center;justify-content:center;font-size:20px;}
+.phone-post-caption{font-size:9px;color:#888;line-height:1.4;}
+.phone-post-caption .hashtags{color:#555;font-size:8px;}
+.phone-sponsored{display:inline-block;background:#1a1a1a;border:1px solid #333;color:#666;font-size:8px;padding:2px 6px;border-radius:4px;margin-bottom:4px;letter-spacing:1px;text-transform:uppercase;}
+.phone-engagement{display:flex;gap:8px;align-items:center;}
+.phone-eng-num{font-size:9px;color:#555;}
+.phone-dead-overlay{position:absolute;inset:0;border-radius:28px;background:rgba(194,24,91,0.08);border:2px solid rgba(194,24,91,0.3);pointer-events:none;}
+
+/* Solution cards */
+.inf-solution-cards{display:flex;flex-direction:column;gap:12px;flex:1;width:100%;}
+.inf-sol-card{background:#fff;border-radius:14px;padding:1.25rem;display:flex;align-items:flex-start;gap:12px;box-shadow:0 4px 20px rgba(0,0,0,0.3);}
+.inf-sol-icon{width:40px;height:40px;border-radius:10px;background:#fff0f3;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.inf-sol-title{font-size:14px;font-weight:700;color:#0a0a0a;margin-bottom:3px;}
+.inf-sol-desc{font-size:12px;color:#666;line-height:1.55;}
+@media(max-width:900px){.inf-inner{grid-template-columns:1fr;}.phone-wrap{display:none;}}
 @media(max-width:1100px){.pricing-grid{grid-template-columns:repeat(2,1fr);}}
 @media(max-width:900px){
   .hero-inner{grid-template-columns:1fr;text-align:center;}
@@ -390,7 +443,7 @@ footer{background:#0a0a0a;border-top:1px solid #1a1a1a;padding:60px 0 40px;}
   <div class="wrap-sm" style="text-align:center;">
     <p class="proof-label">
       Reach outlets including
-      <span class="proof-geo-label" id="proof-geo-label"></span>
+
     </p>
   </div>
   <div style="overflow:hidden;" id="proof-slider-wrap">
@@ -421,6 +474,127 @@ footer{background:#0a0a0a;border-top:1px solid #1a1a1a;padding:60px 0 40px;}
     </div>
   </div>
 </section>
+
+<!-- ── SECTION 3B: INFLUENCER ERA IS OVER ── -->
+<section id="influencer">
+  <div class="wrap">
+    <div class="inf-inner">
+
+      <!-- LEFT: THE ARGUMENT -->
+      <div class="inf-left">
+        <p class="inf-eyebrow reveal">The inconvenient truth</p>
+        <h2 class="inf-title reveal reveal-delay-1">The era of social media<br>influencers is <em>over.</em></h2>
+        <p class="inf-sub reveal reveal-delay-2">Brands have spent billions lining the pockets of influencers. The return? Hit and miss at best. Miss and humiliating at worst.</p>
+
+        <div class="inf-pain-cards">
+          <div class="inf-pain reveal">
+            <span class="inf-pain-icon">💸</span>
+            <div class="inf-pain-text">
+              <strong>The price tag is absurd.</strong>
+              Influencer campaigns routinely cost $10,000–$100,000+. With zero guaranteed editorial coverage, zero vetting, and zero accountability when it doesn't land.
+            </div>
+          </div>
+          <div class="inf-pain reveal reveal-delay-1">
+            <span class="inf-pain-icon">📉</span>
+            <div class="inf-pain-text">
+              <strong>The numbers are fiction.</strong>
+              Follower counts have been inflated for years. Bought audiences. Bot engagement. Fake reach. Real invoices. Brands have been paying for an illusion.
+            </div>
+          </div>
+          <div class="inf-pain reveal reveal-delay-2">
+            <span class="inf-pain-icon">🎭</span>
+            <div class="inf-pain-text">
+              <strong>You're funding a lifestyle. Not a brand.</strong>
+              Every dollar you give an influencer goes toward their next trip to Bali — not toward building your credibility, your authority, or your audience.
+            </div>
+          </div>
+        </div>
+
+        <div class="inf-pivot reveal">
+          <div class="inf-pivot-line"></div>
+          <span class="inf-pivot-text">What actually works</span>
+          <div class="inf-pivot-line" style="background:linear-gradient(90deg,transparent,#c2185b);"></div>
+        </div>
+      </div>
+
+      <!-- RIGHT: VISUAL -->
+      <div class="inf-right reveal reveal-delay-1">
+
+        <!-- Dead influencer phone -->
+        <div style="display:flex;align-items:flex-start;gap:1.5rem;width:100%;">
+          <div class="phone-wrap">
+            <div class="phone-dead">✕</div>
+            <div class="phone">
+              <div class="phone-screen">
+                <div class="phone-notch"><div class="phone-notch-dot"></div></div>
+                <div class="phone-content">
+                  <div class="phone-profile">
+                    <div class="phone-avatar">✨</div>
+                    <div style="flex:1;">
+                      <div style="display:flex;align-items:center;gap:4px;">
+                        <span class="phone-handle">@lifestyle.guru</span>
+                        <span class="phone-verify">✓</span>
+                      </div>
+                      <span style="font-size:9px;color:#555;">Living my best life ✨🌴</span>
+                    </div>
+                  </div>
+                  <div class="phone-stats">
+                    <div><div class="phone-stat-num">4.2M</div><div class="phone-stat-label">followers</div></div>
+                    <div><div class="phone-stat-num" style="color:#c2185b;">0.3%</div><div class="phone-stat-label">engagement</div></div>
+                    <div><div class="phone-stat-num">$50k</div><div class="phone-stat-label">per post</div></div>
+                  </div>
+                  <div class="phone-post">
+                    <div class="phone-post-img">🏖️</div>
+                    <span class="phone-sponsored">Sponsored</span>
+                    <div class="phone-post-caption">
+                      Honestly OBSESSED with this product, it literally changed my life!! Cannot believe how good it is 😭🙌 You NEED this.
+                      <div class="hashtags">#gifted #ad #spon #blessed #partner #collab #lifestyle #authentic</div>
+                    </div>
+                    <div class="phone-engagement">
+                      <span class="phone-eng-num">👍 12.4K</span>
+                      <span class="phone-eng-num">💬 43</span>
+                      <span class="phone-eng-num" style="color:#c2185b;margin-left:auto;font-size:8px;">ROI: unknown</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="phone-dead-overlay"></div>
+          </div>
+
+          <!-- Solution cards -->
+          <div class="inf-solution-cards">
+            <div class="inf-vs">
+              <div class="inf-vs-line"></div>
+              <span class="inf-vs-text">vs</span>
+              <div class="inf-vs-line"></div>
+            </div>
+            <div class="inf-sol-card">
+              <div class="inf-sol-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h14a2 2 0 0 0 2-2V7l-5-5H6a2 2 0 0 0-2 2v4"/><path d="M14 2v5h5"/><path d="M3 15h7"/><path d="M3 11h3"/><path d="M3 19h7"/></svg>
+              </div>
+              <div>
+                <div class="inf-sol-title">Editorial &amp; Press Coverage</div>
+                <div class="inf-sol-desc">Your story in front of editors who vet, verify and publish for audiences who have chosen to trust them. That credibility transfers to your brand — permanently.</div>
+              </div>
+            </div>
+            <div class="inf-sol-card">
+              <div class="inf-sol-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+              </div>
+              <div>
+                <div class="inf-sol-title">Podcast — Audio &amp; Video</div>
+                <div class="inf-sol-desc">60–90 minutes of genuine conversation with a loyal, self-selected audience. No algorithm. No ad-skip. No bots. Just real people who showed up to listen.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
 
 <!-- ── SECTION 4: HOW IT WORKS ── -->
 <section id="how">
@@ -934,12 +1108,6 @@ var GEO_OUTLETS = {
   ]
 };
 
-var GEO_LABELS = {
-  AU: '🇦🇺 Australian outlets',
-  US: '🇺🇸 US outlets',
-  GB: '🇬🇧 UK outlets'
-};
-
 function buildProofItem(outlet) {
   var cls = 'wm' + (outlet.style === 'sans' ? ' sans' : outlet.style === 'condensed' ? ' condensed' : '');
   var name = outlet.abbr || outlet.n;
@@ -948,14 +1116,10 @@ function buildProofItem(outlet) {
 
 function renderProofBar(geo) {
   var outlets = GEO_OUTLETS[geo] || GEO_OUTLETS.AU;
-  var label = GEO_LABELS[geo] || '';
   var track = document.getElementById('proof-track');
-  var geoLabel = document.getElementById('proof-geo-label');
   if (!track) return;
-  // Build HTML — duplicate for seamless loop
   var items = outlets.map(buildProofItem).join('');
   track.innerHTML = items + items;
-  if (geoLabel && label) geoLabel.textContent = '— ' + label;
 }
 
 function initGeoProof() {
