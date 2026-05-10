@@ -4918,7 +4918,8 @@ function buildPRDocument(prText, co, name, email, web, logo, images) {
     '</tr></table></div>' +
     '</div>' +
     '<scr' + 'ipt>window.onload=function(){window.focus();window.print();window.onafterprint=function(){window.close();};};</scr' + 'ipt>' +
-    '</body></html>';
+    '<script src="/auth-patch.js"></script>
+</body></html>';
 }
 
 function openPRPopup(html) {
@@ -9564,7 +9565,7 @@ document.addEventListener('DOMContentLoaded', function() {
       if (authEl) authEl.classList.remove('active');
       initApp();
     }
-  }, 8000);
+  }, 1500); /* failsafe */
 
   var pollStart = Date.now();
   var checkClerk = setInterval(function() {
@@ -9582,7 +9583,7 @@ document.addEventListener('DOMContentLoaded', function() {
           if (authEl) authEl.classList.remove('active');
           initApp();
         }
-      }, 6000);
+      }, 1500); /* clerk timeout */
       initClerk().then(function() {
         clerkDone = true;
         appLaunched = true;
@@ -9613,7 +9614,7 @@ document.addEventListener('DOMContentLoaded', function() {
       if (authEl) authEl.classList.remove('active');
       initApp();
     }
-  }, 10000);
+  }, 2000); /* clerk js timeout */
 });
 
 function skipAuthFallback() {
@@ -9661,4 +9662,5 @@ function initApp() {
 // Calling initApp() here would bypass Clerk auth entirely.
 </script>
 </body>
-</html>
+<script src="/auth-patch.js"></script>
+<script src="/auth-patch.js"></script>
