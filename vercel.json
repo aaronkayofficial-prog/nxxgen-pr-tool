@@ -3,7 +3,7 @@
     { "src": "/", "dest": "/landing.html" }
   ],
   "rewrites": [
-    { "source": "/app", "destination": "/index.html" },
+    { "source": "/app", "destination": "/api/serve-app" },
     { "source": "/automotive-pr", "destination": "/automotive-pr.html" },
     { "source": "/fashion-pr", "destination": "/fashion-pr.html" },
     { "source": "/technology-pr", "destination": "/technology-pr.html" },
