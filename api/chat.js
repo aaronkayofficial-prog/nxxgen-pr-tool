@@ -1,42 +1,27 @@
-// PressReachOut /api/chat.js — STREAMING VERSION
+// PressReachOut /api/chat.js — STREAMING-AWARE VERSION
 //
-// Previous version waited for Claude's entire response before returning it.
-// On long web-search requests (60-120s), this hit Vercel's serverless timeout
-// (10s Hobby / 60s Pro) and the user saw an infinite spinner.
+// Streams the response back to the browser ONLY when the frontend sets
+// `stream: true` in the request body. For every other call (Write for me,
+// press release generation, email drafting, etc.) it behaves like the
+// original non-streaming proxy and returns one JSON response.
 //
-// This version uses Anthropic's streaming API. Claude sends data back as it's
-// generated, we forward each chunk to the browser immediately. The connection
-// stays alive the whole time because data is constantly flowing. Vercel keeps
-// the function running as long as the stream is active.
-//
-// The frontend (callAPIWithSearch in index.html) needs to be updated in tandem
-// to read the stream instead of waiting for one big JSON response.
+// This means:
+//   - callAPIWithSearch (which reads streams) gets the streaming response
+//     it needs to bypass Vercel's 60s timeout on deep web searches.
+//   - All the other /api/chat callers keep getting the JSON shape they expect.
 
 export const config = {
-  // Allow this function to run up to 60 seconds (Vercel Pro plan max for non-streaming;
-  // streaming responses can exceed this because data is flowing). On Hobby plan, max is 10s
-  // but streaming responses can still exceed in practice because of how Vercel handles
-  // open connections.
   maxDuration: 300
 };
 
 export default async function handler(req, res) {
-  // CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-  // Handle preflight
-  if (req.method === 'OPTIONS') {
-    return res.status(200).end();
-  }
+  if (req.method === 'OPTIONS') return res.status(200).end();
+  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  // Only allow POST
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
-
-  // Get API key from environment variable
   const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) {
     return res.status(500).json({ error: 'ANTHROPIC_API_KEY environment variable is not set' });
@@ -45,32 +30,43 @@ export default async function handler(req, res) {
   try {
     const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
 
-    // Force streaming mode in the request to Anthropic regardless of what the frontend sent.
-    // This is the entire point of this rewrite — we always stream.
-    body.stream = true;
+    // KEY DECISION: stream only if the frontend explicitly asked for it.
+    // Default = non-streaming (preserves existing behaviour for Write-for-me etc).
+    const wantsStream = body.stream === true;
 
-    // Detect if the request uses web_search tool. If so, we need anthropic-beta header
-    // (some web_search versions require it). The 20260209 version is GA and doesn't need
-    // the beta header, but we send it anyway for safety in case of older models.
-    const hasWebSearch = Array.isArray(body.tools) && body.tools.some(function(t) {
-      return t && typeof t.type === 'string' && t.type.indexOf('web_search') === 0;
-    });
-
-    const headers = {
+    const upstreamHeaders = {
       'Content-Type': 'application/json',
       'x-api-key': apiKey,
       'anthropic-version': '2023-06-01'
     };
 
-    // Make the upstream streaming request to Anthropic
+    // ─────────────────────────────────────────────────────────────
+    // PATH A — Non-streaming (the default, original behaviour)
+    // ─────────────────────────────────────────────────────────────
+    if (!wantsStream) {
+      delete body.stream;
+
+      const response = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: upstreamHeaders,
+        body: JSON.stringify(body)
+      });
+
+      const data = await response.json();
+      return res.status(response.status).json(data);
+    }
+
+    // ─────────────────────────────────────────────────────────────
+    // PATH B — Streaming (used only by callAPIWithSearch for deep search)
+    // ─────────────────────────────────────────────────────────────
+    body.stream = true;
+
     const upstream = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
-      headers: headers,
+      headers: upstreamHeaders,
       body: JSON.stringify(body)
     });
 
-    // If Anthropic returns a non-200 BEFORE streaming starts, forward the error as JSON
-    // and don't switch to streaming mode.
     if (!upstream.ok || !upstream.body) {
       const errText = await upstream.text();
       let errJson;
@@ -78,14 +74,12 @@ export default async function handler(req, res) {
       return res.status(upstream.status).json(errJson);
     }
 
-    // Set headers for Server-Sent Events streaming back to the browser
     res.setHeader('Content-Type', 'text/event-stream');
     res.setHeader('Cache-Control', 'no-cache, no-transform');
     res.setHeader('Connection', 'keep-alive');
-    res.setHeader('X-Accel-Buffering', 'no'); // Disable nginx/proxy buffering
+    res.setHeader('X-Accel-Buffering', 'no');
     res.flushHeaders && res.flushHeaders();
 
-    // Pipe Anthropic's SSE stream straight to the browser, chunk by chunk.
     const reader = upstream.body.getReader();
     const decoder = new TextDecoder();
 
@@ -95,11 +89,9 @@ export default async function handler(req, res) {
         if (done) break;
         const chunk = decoder.decode(value, { stream: true });
         res.write(chunk);
-        // Flush immediately so the browser sees each chunk as it arrives
         if (typeof res.flush === 'function') res.flush();
       }
     } catch (streamErr) {
-      // If anything goes wrong mid-stream, write an error event and close
       try {
         res.write('event: error\ndata: ' + JSON.stringify({ error: streamErr.message }) + '\n\n');
       } catch (_) {}
@@ -108,8 +100,6 @@ export default async function handler(req, res) {
     }
 
   } catch (error) {
-    // If headers haven't been sent yet, return a normal JSON error.
-    // Otherwise we're mid-stream and have to write an SSE error event.
     if (!res.headersSent) {
       return res.status(500).json({ error: error.message });
     } else {
