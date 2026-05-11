@@ -6499,7 +6499,7 @@ function pr2_buildPressReleasePrompt(primary, secondary, countries, prefText) {
     '- Pathway: Press Release (sending press releases to named editors and editorial inboxes)',
     '',
     'YOUR TASK:',
-    'Return a MINIMUM of 40 verified press release contacts. Multiple named editors at the same outlet count as separate contacts and are encouraged. Quality over padding — but aim for 40+.',
+    'Return a MINIMUM of 20 verified press release contacts. Multiple named editors at the same outlet count as separate contacts and are encouraged. Quality over padding — but aim for 20-25. (Note: this is a deliberately lower target than the production goal of 40+ so the request completes within timeout limits during this validation phase.)',
     '',
     'INDUSTRY CONTEXT FOR ' + primary.toUpperCase() + ':',
     industryGuidance,
@@ -6559,7 +6559,7 @@ function pr2_buildPressReleasePrompt(primary, secondary, countries, prefText) {
     '  }',
     ']',
     '',
-    'BEGIN RESEARCH NOW. Use web_search tool calls extensively across at least 15-20 different publications. Return MINIMUM 40 contacts with verified source URLs. Filter to "' + prefText + '". DO NOT pad the list with low-confidence guesses — the floor is 60% confidence.'
+    'BEGIN RESEARCH NOW. Use web_search tool calls extensively across at least 8-12 different publications. Return MINIMUM 20 contacts with verified source URLs. Filter to "' + prefText + '". DO NOT pad the list with low-confidence guesses — the floor is 60% confidence.'
   ].join('\n');
 }
 
@@ -8099,8 +8099,8 @@ function callAPIWithSearch(prompt, onSuccess, onError, statusCallback) {
   // PressReachOut Pass 1+2 — real web search enabled.
   // Claude searches publication websites at runtime instead of answering from training data.
   // 30-60 seconds for thorough results. ~$0.20/call in search fees on top of token costs.
-  // max_uses: 20 = Claude can make up to 20 internal web searches per request.
-  if (statusCallback) statusCallback('Searching publication websites for verified contacts — this takes 30-60 seconds for thorough deep research...');
+  // max_uses: 8 = Claude can make up to 20 internal web searches per request.
+  if (statusCallback) statusCallback('Searching publication websites for verified contacts — this takes 20-40 seconds...');
   fetch('/api/chat', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
