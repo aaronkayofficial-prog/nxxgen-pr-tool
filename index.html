@@ -6234,6 +6234,335 @@ function getLocalOutletResults(primary, countries) {
   return results.slice(0, 40);
 }
 
+// ─────────────────────────────────────────────────────────────────
+// PASS 2 — DEEP RESEARCH PROMPT BUILDER (Press Release pathway)
+// ─────────────────────────────────────────────────────────────────
+// Forces Claude to use the web_search tool with research-grade methodology:
+//   - Visit publication's own contact/pitch/team pages
+//   - Capture named editors with verifiable source URLs
+//   - Score confidence by source authority (not by SMTP — by where the email
+//     is published)
+//   - Reject anything below 60% confidence
+//   - Return minimum 40 verified contacts, named editors preferred over inboxes,
+//     multiple editors per outlet count separately
+// Output schema is BACKWARD COMPATIBLE — adds 5 optional fields without
+// removing any existing ones.
+
+function pr2_getIndustryGuidance(primary) {
+  if (!primary) return 'Search broadly across trade press, consumer media, and digital publications relevant to this sector.';
+  var p = primary.toLowerCase();
+
+  if (/\b(tech|innovation|saas|software|ai\b|computing|digital innovation|telecom|gaming|biotech|cyber)\b/.test(p)) {
+    return 'Search across these categories: ' +
+      '(1) B2B/trade IT publications (e.g. iTnews, CIO, ARN, CRN, iTWire, TechDay, Technology Decisions); ' +
+      '(2) Startup and tech-business media (e.g. Startup Daily, SmartCompany, AFR Technology, InnovationAus, Capital Brief, TechCrunch, Sifted); ' +
+      '(3) Mainstream press tech desks at major newspapers (SMH, The Age, The Australian, news.com.au, ABC, Guardian, NYT Tech, Wired, Verge); ' +
+      '(4) Consumer tech publications and review sites (TechAU, Byteside, EFTM in AU; T3, PocketLint in UK; Engadget, Ars Technica in US). Note: Gizmodo AU, Lifehacker AU, Kotaku AU all shut down in 2024 — do NOT include them; ' +
+      '(5) Specialty publications: cybersecurity (Cyber Daily, Cyber Security Connect), AI, fintech-tech, gov-tech (The Mandarin, Information Age), defence tech.';
+  }
+
+  if (/\b(fashion|retail|consumer|apparel|beauty|cosmetic|luxury|style|lifestyle)\b/.test(p)) {
+    return 'Search across: ' +
+      '(1) Consumer fashion magazines and their editorial teams (Vogue, ELLE, Harper\'s Bazaar, GQ, InStyle, Grazia regional editions); ' +
+      '(2) Fashion trade publications (WWD, Drapers UK, Ragtrader AU, Fashion United, Business of Fashion); ' +
+      '(3) Retail trade publications (Inside Retail, Retail Week, Retail Dive, Drapers); ' +
+      '(4) Newspaper fashion/style sections at major papers; ' +
+      '(5) Beauty industry publications (Glossy, Cosmetic Business, Allure, Beauty Independent); ' +
+      '(6) Sustainable and ethical fashion press (Eco-Age, Good On You, Fashion Revolution); ' +
+      '(7) Streetwear and youth-culture publications (Hypebeast, Highsnobiety, Dazed).';
+  }
+
+  if (/\b(health|wellness|medical|fitness|nutrition|mental health|pharma|life science|wellbeing)\b/.test(p)) {
+    return 'Search across: ' +
+      '(1) Consumer wellness/lifestyle (Body+Soul, Wellbeing Magazine, Women\'s Health, Men\'s Health regional editions, Well+Good, Healthline); ' +
+      '(2) Medical and clinical trade (Australian Doctor, Medical Republic, Pulse UK, GP Online, Medscape); ' +
+      '(3) Pharmacy industry press (Pharmacy News AU, Chemist+Druggist UK, Drug Topics US); ' +
+      '(4) Mental health publications (Mindful, Psychology Today, Mental Health Today); ' +
+      '(5) Fitness and nutrition trade; ' +
+      '(6) Health-tech and digital health publications; ' +
+      '(7) Mainstream newspaper health desks and dedicated health vertical reporters.';
+  }
+
+  if (/\b(finance|fintech|banking|investment|insurance|wealth|legal|professional service|real estate|property)\b/.test(p)) {
+    return 'Search across: ' +
+      '(1) Major financial newspapers (AFR, FT, WSJ, Bloomberg regional editions); ' +
+      '(2) Investment publications (Money Magazine, MoneyWeek, Kiplinger, Investors Chronicle); ' +
+      '(3) Fintech publications (Fintech Futures, AltFi, The Fintech Times); ' +
+      '(4) Banking and insurance trade press; ' +
+      '(5) Wealth management and adviser trade (FT Adviser, Money Management, Citywire); ' +
+      '(6) Personal finance consumer publications; ' +
+      '(7) Legal and professional services trade (Lawyerly, The Lawyer, Legal Week, Law360).';
+  }
+
+  if (/\b(food|hospitality|travel|restaurant|tourism|beverage|culinary|agriculture)\b/.test(p)) {
+    return 'Search across: ' +
+      '(1) Food magazines and trade (Gourmet Traveller, delicious., Hospitality Magazine, Eater, Bon Appétit regional); ' +
+      '(2) Restaurant and dining publications (Broadsheet, Time Out, Concrete Playground, The Infatuation, Resy); ' +
+      '(3) Travel and tourism trade press (Travel Weekly, TravelMole, Skift); ' +
+      '(4) FMCG industry trade (Food Industry News, The Grocer UK, Supermarket News US); ' +
+      '(5) Beverage industry publications (Drinks Industry, Drinks Trade, Decanter, Imbibe); ' +
+      '(6) Recipe and lifestyle food sites; ' +
+      '(7) Newspaper food/dining sections and named food editors.';
+  }
+
+  if (/\b(media|arts|entertainment|publishing|art|marketing|creative|advertising|culture|film|tv)\b/.test(p)) {
+    return 'Search across: ' +
+      '(1) Arts publications (ArtsHub, The Stage, The Art Newspaper, ARTnews, Hyperallergic); ' +
+      '(2) Film and TV trade (Variety, Hollywood Reporter, Broadcast UK, IF Magazine AU, Screen International); ' +
+      '(3) Music publications (Billboard, Rolling Stone, NME, Pitchfork); ' +
+      '(4) Creative industry trade (Campaign, AdAge, Adweek, Mumbrella, The Drum); ' +
+      '(5) Cultural commentary publications (LARB, Sydney Review of Books, LRB, NYRB); ' +
+      '(6) Marketing and PR trade publications.';
+  }
+
+  if (/\b(business|startup|entrepreneur|scale[- ]?up|smb|sme|growth|saas business)\b/.test(p)) {
+    return 'Search across: ' +
+      '(1) Business newspapers and sections (AFR, Inc., Forbes, Fast Company, Bloomberg Businessweek, The Economist); ' +
+      '(2) Startup publications (Startup Daily, SmartCompany, Sifted UK, TechCrunch, Crunchbase News); ' +
+      '(3) Entrepreneur publications (Entrepreneur, Inc., Business Insider startup vertical); ' +
+      '(4) SME trade press (Inside Small Business, Real Business UK, Small Business Trends US); ' +
+      '(5) Growth and scale-up specialist publications (Capital Brief, The Information); ' +
+      '(6) Industry-specific business trade publications.';
+  }
+
+  if (/\b(environment|sustainability|clean energy|renewable|climate|education|edtech|green|non[- ]?profit)\b/.test(p)) {
+    return 'Search across: ' +
+      '(1) Sustainability publications (RenewEconomy, The Ecologist, Grist, Inside Climate News, Yale Environment 360); ' +
+      '(2) Climate and clean energy trade (Climate Home, Carbon Brief, GreenBiz); ' +
+      '(3) Education industry trade (Teacher Magazine, TES UK, Education Week, EducationHQ, SecEd); ' +
+      '(4) EdTech publications (EdSurge, Class Central); ' +
+      '(5) Environmental science press; ' +
+      '(6) Renewable energy industry publications (PV Magazine, Recharge, Energy Source); ' +
+      '(7) Non-profit and social enterprise sector media (Pro Bono Australia, Third Sector UK).';
+  }
+
+  if (/\b(industry|infrastructure|construction|manufacturing|engineering|mining|logistics|supply chain|trade contractor)\b/.test(p)) {
+    return 'Search across: ' +
+      '(1) Construction trade (Construction News UK, ENR US, Sourceable AU, The Constructor); ' +
+      '(2) Manufacturing publications (Manufacturers Monthly, IndustryWeek, The Manufacturer UK); ' +
+      '(3) Engineering trade (The Engineer, Engineering News-Record, Engineers Australia); ' +
+      '(4) Mining industry press (Australian Mining, Mining Magazine, Mining.com); ' +
+      '(5) Infrastructure publications (Infrastructure Magazine, Infrastructure Intelligence UK, ENR); ' +
+      '(6) Logistics and supply chain trade (Logistics Manager, Transport Topics); ' +
+      '(7) Trade contractor publications across electrical, plumbing, HVAC sectors.';
+  }
+
+  if (/\b(automotive|motoring|car|ev\b|electric vehicle|aftermarket|motorsport|fleet|dealer)\b/.test(p)) {
+    return 'Search across: ' +
+      '(1) Consumer motoring (Drive, WhichCar, CarExpert, Autocar, Auto Express, MotorTrend, Car and Driver, Road & Track); ' +
+      '(2) Automotive trade press (GoAuto, Motor Trader UK, Automotive News US, AM Online); ' +
+      '(3) EV and electric vehicle specialty (Electrek, InsideEVs, The Driven, EV Central, Electrifying.com); ' +
+      '(4) Aftermarket and parts trade (SEMA News, Aftermarket Business World); ' +
+      '(5) Motorsport and performance publications; ' +
+      '(6) Fleet and commercial vehicle trade (Fleet News, Fleet Auto News); ' +
+      '(7) Classic and collector car publications; ' +
+      '(8) Motoring journalists\' associations and named senior motoring editors at mainstream newspapers.';
+  }
+
+  if (/\b(sports?|athletic|cricket|football|soccer|rugby|tennis|golf|esports|fitness sport)\b/.test(p)) {
+    return 'Search across: ' +
+      '(1) Major sports publications (The Athletic, ESPN, Sports Illustrated, Fox Sports, BBC Sport, Sky Sports); ' +
+      '(2) Sport-specific trade publications by code (cricket, rugby, AFL, soccer, NFL, NBA, etc); ' +
+      '(3) Sports business trade (SportsPro, Sports Business Journal, SportBusiness); ' +
+      '(4) Athletic performance/training publications; ' +
+      '(5) Sporting goods industry trade; ' +
+      '(6) Olympic and amateur sport media; ' +
+      '(7) Local/regional sports press at major newspapers (named sports editors); ' +
+      '(8) Esports publications (Dot Esports, The Esports Observer).';
+  }
+
+  if (/\b(music\b|musician|record label|streaming|audio|festival|live music|concert)\b/.test(p)) {
+    return 'Search across: ' +
+      '(1) Music trade (Billboard, Music Week, The Music Network, Music Business Worldwide); ' +
+      '(2) Consumer music press (Rolling Stone, NME, Pitchfork, Clash, DIY Magazine); ' +
+      '(3) Genre-specific publications (rock, electronic, hip-hop, country, jazz, classical); ' +
+      '(4) Live music industry trade (Pollstar, IQ Magazine); ' +
+      '(5) Streaming/digital music publications; ' +
+      '(6) Audio production trade (Sound on Sound, Mix Magazine); ' +
+      '(7) Festival and event coverage publications.';
+  }
+
+  if (/\b(creator|influencer|youtube|tiktok|instagram|social media|content creator|creator economy)\b/.test(p)) {
+    return 'Search across: ' +
+      '(1) Creator economy publications (Passionfruit, The Information Creator Economy, Tubefilter); ' +
+      '(2) Influencer marketing trade (Influencer Marketing Hub, Later, Modash); ' +
+      '(3) Social media industry press (Social Media Today, SocialMediaExaminer); ' +
+      '(4) Marketing trade with creator coverage (Adweek, Campaign, The Drum, Mumbrella); ' +
+      '(5) Platform-specific publications (YouTube creator press, TikTok industry coverage); ' +
+      '(6) Brand-creator partnership trade publications; ' +
+      '(7) Newsletter platforms covering creator economy (Substack, Beehiiv editorial).';
+  }
+
+  if (/\b(artist|gallery|exhibition|visual art|painter|sculptor|photographer|fine art)\b/.test(p)) {
+    return 'Search across: ' +
+      '(1) Art critic publications (ArtsHub, Hyperallergic, Artforum, ARTnews, Art in America); ' +
+      '(2) Gallery and museum trade (The Art Newspaper, Apollo Magazine, Royal Academy Magazine); ' +
+      '(3) Exhibition review publications (Memo Review, Eyeline, Frieze, ArtReview); ' +
+      '(4) Visual arts press; ' +
+      '(5) Art market and auction trade (Art Collector, Artnet News, Artsy Editorial); ' +
+      '(6) Photography publications (1854, British Journal of Photography, PetaPixel); ' +
+      '(7) Studio and practice-focused media.';
+  }
+
+  if (/\b(author|book|publishing|literary|novelist|memoir|fiction|non[- ]?fiction)\b/.test(p)) {
+    return 'Search across: ' +
+      '(1) Book publishing trade (Publishers Weekly, The Bookseller, Books+Publishing AU, Kirkus Reviews); ' +
+      '(2) Literary review press (Literary Review, London Review of Books, NYRB, ABR); ' +
+      '(3) Newspaper books sections (NYT Books, Guardian Books, SMH Books, Sunday Times Books); ' +
+      '(4) Author profile and interview publications; ' +
+      '(5) Reading culture media (Literary Hub, Bookforum, Lit Hub); ' +
+      '(6) Literary podcast and review aggregators; ' +
+      '(7) Genre-specific publications (crime trade, romance, sci-fi, children\'s books).';
+  }
+
+  // Default / Other & Niche
+  return 'This is a custom or niche category. Search broadly for: ' +
+    '(1) Specialist publications, trade press, and industry magazines covering this exact niche; ' +
+    '(2) Newsletter platforms with editorial teams in this niche; ' +
+    '(3) Podcast hosts who interview industry players (capture their booking emails); ' +
+    '(4) Adjacent mainstream publications that cover this niche occasionally (find the specific named journalist who does so); ' +
+    '(5) Niche community publications, association magazines, and conference media partners. ' +
+    'Be inventive — niche communities often have dedicated publications most mainstream researchers miss.';
+}
+
+function pr2_getTerritoryGuidance(countries) {
+  if (!countries || countries.length === 0) return 'Distribute coverage across major English-language territories (AU, UK, US) unless context suggests otherwise.';
+
+  if (countries.length > 1) {
+    return 'Multi-territory search. Distribute contacts roughly evenly across: ' + countries.join(', ') + '. ' +
+      'Prioritize publications with international reach where they exist. Do not over-weight any single territory. ' +
+      'For each contact, set the "r" field to the territory code (AU, UK, US, CA, NZ, or 2-letter code).';
+  }
+
+  var c = countries[0].toLowerCase();
+  if (c.indexOf('australia') > -1) {
+    return 'Focus on outlets with .com.au domains (and .org.au for associations). ' +
+      'Major nationals: Sydney Morning Herald (smh.com.au), The Age (theage.com.au), The Australian (theaustralian.com.au), AFR (afr.com), news.com.au, ABC News (abc.net.au), Guardian Australia (theguardian.com/au), The Conversation AU. ' +
+      'Trade press typically uses .com.au domains. Include state-specific publications where relevant (NSW, VIC, QLD, WA, SA, TAS, ACT, NT). ' +
+      'Set "r" field to "AU" for every contact.';
+  }
+  if (c.indexOf('united kingdom') > -1 || c.indexOf('uk') > -1 || c === 'britain' || c === 'england') {
+    return 'Focus on outlets with .co.uk or .com domains based in the UK. ' +
+      'Major nationals: Guardian (theguardian.com), Times (thetimes.co.uk), FT (ft.com), Telegraph (telegraph.co.uk), Independent (independent.co.uk), BBC News (bbc.co.uk/news), Mirror, Sun, Daily Mail. ' +
+      'Trade press concentrated in London. Include regional press where relevant (Manchester Evening News, Yorkshire Post, Scotsman, Belfast Telegraph, WalesOnline). ' +
+      'Set "r" field to "UK" for every contact.';
+  }
+  if (c.indexOf('united states') > -1 || c.indexOf('us') > -1 || c === 'america' || c.indexOf('usa') > -1) {
+    return 'Focus on outlets with .com domains based in the US. ' +
+      'Major nationals: NYT (nytimes.com), WSJ (wsj.com), Washington Post (washingtonpost.com), USA Today, Bloomberg, Reuters, AP. ' +
+      'Major TV networks (CNN, NBC News, CBS News, ABC News, Fox News). Trade press distributed across NYC, SF, LA, Chicago, DC. ' +
+      'Include major regional outlets where relevant (LA Times, Boston Globe, Chicago Tribune, Miami Herald, Dallas Morning News, Seattle Times). ' +
+      'Set "r" field to "US" for every contact.';
+  }
+  if (c.indexOf('canada') > -1) {
+    return 'Focus on outlets with .ca domains. ' +
+      'Major nationals: Globe and Mail (theglobeandmail.com), National Post, Toronto Star, CBC (cbc.ca), CTV News. ' +
+      'Bilingual considerations — include French-language Quebec publications (La Presse, Le Devoir) where relevant. ' +
+      'Regional outlets (Vancouver Sun, Montreal Gazette, Ottawa Citizen, Calgary Herald). ' +
+      'Trade press concentrated in Toronto. Set "r" field to "CA" for every contact.';
+  }
+  if (c.indexOf('new zealand') > -1 || c === 'nz') {
+    return 'Focus on outlets with .co.nz or .nz domains. ' +
+      'Major nationals: NZ Herald (nzherald.co.nz), Stuff (stuff.co.nz), Radio NZ (rnz.co.nz), Newshub, 1News. ' +
+      'Auckland-centric for trade press. Include regional publications (Otago Daily Times, The Press Christchurch). ' +
+      'Include Australian outlets covering NZ stories where relevant. ' +
+      'Set "r" field to "NZ" for every contact.';
+  }
+  if (c.indexOf('global') > -1 || c.indexOf('international') > -1) {
+    return 'Global / international coverage. Focus on outlets with truly international reach: ' +
+      'Reuters, AP, Bloomberg, FT, NYT International, Wall Street Journal, BBC, Al Jazeera English. ' +
+      'Plus genuinely global trade publications in the relevant industry. ' +
+      'Distribute coverage across AU, UK, US for the bulk of named editors. ' +
+      'Set "r" field to the appropriate 2-letter code for each contact.';
+  }
+
+  // Fallback for other countries
+  return 'Focus on the major English-language and local-language publications in ' + countries[0] + '. ' +
+    'Include national newspapers, broadcasters, and major trade press. ' +
+    'Set "r" field to the appropriate 2-letter country code for each contact.';
+}
+
+function pr2_buildPressReleasePrompt(primary, secondary, countries, prefText) {
+  var industryGuidance = pr2_getIndustryGuidance(primary);
+  var territoryGuidance = pr2_getTerritoryGuidance(countries);
+  var countryStr = countries.join(', ');
+  var subFocus = secondary ? ' with sub-focus on ' + secondary : '';
+
+  return [
+    'You are conducting RESEARCH-GRADE PR contact discovery for the PressReachOut platform.',
+    'This is NOT a creative writing task. Every contact you return must be backed by a real source URL you find via web search RIGHT NOW.',
+    '',
+    'THE USER\'S REQUEST:',
+    '- Industry: ' + primary + subFocus,
+    '- Territory: ' + countryStr,
+    '- Filter: ' + prefText,
+    '- Pathway: Press Release (sending press releases to named editors and editorial inboxes)',
+    '',
+    'YOUR TASK:',
+    'Return a MINIMUM of 40 verified press release contacts. Multiple named editors at the same outlet count as separate contacts and are encouraged. Quality over padding — but aim for 40+.',
+    '',
+    'INDUSTRY CONTEXT FOR ' + primary.toUpperCase() + ':',
+    industryGuidance,
+    '',
+    'TERRITORY CONTEXT:',
+    territoryGuidance,
+    '',
+    'RESEARCH METHODOLOGY — YOU MUST USE THE web_search TOOL EXTENSIVELY:',
+    '',
+    'For each outlet you identify, perform this sequence:',
+    '',
+    '1. SEARCH the publication\'s own website for the following types of pages:',
+    '   - "[outlet name] contact" — to find their contact page',
+    '   - "[outlet name] write for us OR pitch OR submit OR contributors" — to find pitch guidelines',
+    '   - "[outlet name] masthead OR editorial team OR staff OR about" — to find named editors',
+    '   - "[outlet name] [section] editor" (e.g. "Sydney Morning Herald technology editor")',
+    '',
+    '2. From the pages you find, extract:',
+    '   - Named editors with their email addresses (when publicly listed by the publication)',
+    '   - Editorial inboxes (news@, editorial@, tips@, press@, submissions@) — label these "Editorial Team"',
+    '   - The EXACT source URL where you found each email',
+    '',
+    '3. For each named contact, verify they\'re currently active by checking they have recent bylines (within last 90 days). If a journalist appears stale (no bylines in 6+ months) or has clearly moved publications, DO NOT include them.',
+    '',
+    '4. SOURCE-AUTHORITY CONFIDENCE SCORING — assign 0-100 based on WHERE you found the email:',
+    '   - 95-100 (Verified): Email is on the publication\'s OWN current contact, pitch, write-for-us, or editorial team page',
+    '   - 80-94 (Strong): Email is on the journalist\'s own author/profile page on the publication, OR in their public Twitter/X or LinkedIn bio that names this publication as current employer',
+    '   - 60-79 (Moderate): Email pattern matches a verified format at the same domain (e.g. first.last@publication.com confirmed on one named contact, applied to another confirmed-current named journalist at the same domain)',
+    '   - Below 60: DO NOT INCLUDE. Better to omit than to guess.',
+    '',
+    'CRITICAL RULES:',
+    '- Every email MUST have a source URL — the actual page where you found it',
+    '- Prefer NAMED contacts over generic inboxes when both exist at the same outlet',
+    '- Multiple named editors at one outlet = multiple separate entries in the output',
+    '- NO inferring or guessing emails without a verifiable pattern source. If you can\'t verify it, skip it.',
+    '- NO outdated journalists (no bylines in 6+ months)',
+    '- NO defunct publications. Verify the outlet is currently publishing before including it.',
+    '- If you can\'t find a named editor but the outlet has a published editorial inbox, include the inbox with contact="Editorial Team" and role describing the inbox purpose (e.g. "News Tips Inbox", "General Editorial").',
+    '',
+    'OUTPUT FORMAT — return ONLY a JSON array, no prose before or after the array:',
+    '',
+    '[',
+    '  {',
+    '    "n": "Publication Name",',
+    '    "u": "domain.com",',
+    '    "e": "verified.email@domain.com",',
+    '    "t": "Trade Publication" | "Consumer Media" | "Digital" | "Newspaper" | "Magazine" | "Broadcaster",',
+    '    "r": "AU" | "UK" | "US" | "CA" | "NZ" | other 2-letter code,',
+    '    "paid": false,',
+    '    "s": 5,',
+    '    "desc": "One sentence on what they cover and why relevant for a ' + primary + ' press release",',
+    '    "contact": "Jane Smith" | "Editorial Team",',
+    '    "role": "Technology Editor" | "News Reporter" | "General Inbox" | etc.,',
+    '    "source": "https://publication.com/contact-page-you-found-the-email-on",',
+    '    "confidence": 92,',
+    '    "confLabel": "Verified" | "Strong" | "Moderate"',
+    '  }',
+    ']',
+    '',
+    'BEGIN RESEARCH NOW. Use web_search tool calls extensively across at least 15-20 different publications. Return MINIMUM 40 contacts with verified source URLs. Filter to "' + prefText + '". DO NOT pad the list with low-confidence guesses — the floor is 60% confidence.'
+  ].join('\n');
+}
+
 function searchIndustryPlatforms() {
   var t = state.targeting;
   var primary = t.primary || 'General Press';
@@ -6303,11 +6632,12 @@ function searchIndustryPlatforms() {
       ' Return ONLY a valid JSON array starting with [' +
       '\n[{"n":"Publication Name","u":"domain.com","e":"editorial@domain.com","t":"Trade Publication","r":"AU","paid":false,"s":5,"desc":"One sentence about editorial focus and why relevant for a ' + primary + ' story pitch"}]';
   } else {
-    prompt = 'You are a specialist PR researcher. Generate up to 40 real, currently active media outlets, trade publications, and PR channels for the ' + primary + ' sector' +
-      (secondary ? ' with ' + secondary + ' crossover' : '') + ' in ' + countryStr + '.' +
-      ' Include a mix of trade publications, industry news sites, and PR distribution channels. Type: ' + prefText + '.' +
-      ' Return ONLY a valid JSON array starting with [' +
-      '\n[{"n":"Outlet Name","u":"domain.com","e":"editorial@domain.com","t":"Trade Publication","r":"AU","paid":false,"s":5,"desc":"One sentence about why relevant for ' + primary + '"}]';
+    // PASS 2 — Press Release (path A) deep research prompt
+    // Replaces the previous shallow 3-sentence prompt with a research-grade
+    // methodology that forces Claude to use web_search across publication
+    // contact/pitch/team pages, capture source URLs, and confidence-score
+    // every contact. See pr2_buildPressReleasePrompt for the full template.
+    prompt = pr2_buildPressReleasePrompt(primary, secondary, countries, prefText);
   }
 
   callAPIWithSearch(prompt, function(text) {
@@ -6327,6 +6657,18 @@ function searchIndustryPlatforms() {
         p.t = p.t || primary;
         p.r = p.r || countryStr.split(',')[0].trim();
         p.c = primary;
+        // PASS 2 — preserve new optional fields if Claude returned them.
+        // Defaults are set so downstream UI never sees undefined.
+        p.contact = p.contact || '';
+        p.role = p.role || '';
+        p.source = p.source || '';
+        p.confidence = (typeof p.confidence === 'number') ? p.confidence : null;
+        p.confLabel = p.confLabel || '';
+      });
+      // PASS 2 — confidence floor. Exclude anything below 60% by default.
+      // Contacts with no confidence score (legacy / older cache) are kept.
+      found = found.filter(function(p){
+        return (p.confidence === null) || (p.confidence >= 60);
       });
       if (pref === 'free') found = found.filter(function(p){ return !p.paid; });
       if (pref === 'paid') found = found.filter(function(p){ return p.paid; });
@@ -7754,19 +8096,36 @@ function callAPI(prompt, onSuccess, onError) {
 }
 
 function callAPIWithSearch(prompt, onSuccess, onError, statusCallback) {
-  if (statusCallback) statusCallback('Researching platforms for your industry...');
+  // PressReachOut Pass 1+2 — real web search enabled.
+  // Claude searches publication websites at runtime instead of answering from training data.
+  // 30-60 seconds for thorough results. ~$0.20/call in search fees on top of token costs.
+  // max_uses: 20 = Claude can make up to 20 internal web searches per request.
+  if (statusCallback) statusCallback('Searching publication websites for verified contacts — this takes 30-60 seconds for thorough deep research...');
   fetch('/api/chat', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       model: 'claude-sonnet-4-5',
-      max_tokens: 8000,
-      messages: [{ role: 'user', content: prompt }]
+      max_tokens: 16000,
+      messages: [{ role: 'user', content: prompt }],
+      tools: [{
+        type: 'web_search_20260209',
+        name: 'web_search',
+        max_uses: 20
+      }]
     })
   }).then(function(resp) { return resp.json(); })
   .then(function(data) {
     if (data.error) { onError(data.error.message); return; }
-    var text = (data.content || []).map(function(c) { return c.text || ''; }).join('');
+    // Web search responses contain mixed content blocks:
+    //   - 'text' blocks (Claude's answer to extract)
+    //   - 'server_tool_use' blocks (Claude calling the search tool)
+    //   - 'web_search_tool_result' blocks (search results themselves)
+    // We only want the final text Claude wrote, so filter to type === 'text'.
+    var text = (data.content || [])
+      .filter(function(c) { return c.type === 'text'; })
+      .map(function(c) { return c.text || ''; })
+      .join('');
     if (statusCallback) statusCallback('Processing results...');
     onSuccess(text);
   }).catch(function(e) { onError(e.message); });
