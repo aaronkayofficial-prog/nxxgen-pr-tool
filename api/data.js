@@ -1,7 +1,14 @@
-// PressReachOut /api/data.js — Clerk session token verification (FIXED)
+// PressReachOut /api/data.js — with Pass 3 caching support
 //
-// Same fix as auth.js — decode the JWT directly instead of calling the wrong
-// OAuth endpoint. See auth.js header for full explanation.
+// Adds two new actions for the result-caching layer:
+//   - getCachedResearch: retrieves a cached search result if it exists and is
+//     less than 7 days old, keyed by (pathway, industry, secondary, countries,
+//     filter)
+//   - saveCachedResearch: stores a successful AI search result so subsequent
+//     searches for the same combination return instantly from cache
+//
+// Requires a new Supabase table `cached_research` — see the SQL command
+// provided alongside this file.
 
 function decodeJWT(token) {
   try {
@@ -53,7 +60,6 @@ export default async function handler(req, res) {
   const { action, data } = body;
 
   try {
-    // ── USER PROFILE ──
     if (action === 'getUser') {
       const r = await fetch(supabaseUrl + '/rest/v1/users?id=eq.' + userId + '&select=*', { headers });
       const rows = await r.json();
@@ -71,7 +77,6 @@ export default async function handler(req, res) {
       return res.status(200).json({ ok: true });
     }
 
-    // ── CAMPAIGNS ──
     if (action === 'getCampaigns') {
       const r = await fetch(supabaseUrl + '/rest/v1/campaigns?user_id=eq.' + userId + '&order=created_at.desc&select=*', { headers });
       const rows = await r.json();
@@ -98,7 +103,6 @@ export default async function handler(req, res) {
       return res.status(200).json({ ok: true });
     }
 
-    // ── DAILY USAGE ──
     if (action === 'getUsage') {
       const today = new Date().toISOString().slice(0, 10);
       const r = await fetch(supabaseUrl + '/rest/v1/daily_usage?user_id=eq.' + userId + '&date=eq.' + today + '&select=count', { headers });
@@ -124,6 +128,48 @@ export default async function handler(req, res) {
         return res.status(200).json({ count: rows[0] ? rows[0].count : 1 });
       }
       return res.status(200).json({ count: 1 });
+    }
+
+    // ─────────────────────────────────────────────────────────────
+    // PASS 3 — CACHED RESEARCH RESULTS (Item 7)
+    // ─────────────────────────────────────────────────────────────
+    if (action === 'getCachedResearch') {
+      if (!data || !data.key) return res.status(400).json({ error: 'Missing cache key' });
+      const cutoff = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+      const r = await fetch(
+        supabaseUrl + '/rest/v1/cached_research?cache_key=eq.' + encodeURIComponent(data.key) +
+        '&created_at=gte.' + encodeURIComponent(cutoff) +
+        '&order=created_at.desc&limit=1&select=*',
+        { headers }
+      );
+      if (!r.ok) {
+        return res.status(200).json(null);
+      }
+      const rows = await r.json();
+      return res.status(200).json(rows[0] || null);
+    }
+
+    if (action === 'saveCachedResearch') {
+      if (!data || !data.key || !data.results) return res.status(400).json({ error: 'Missing key or results' });
+      const payload = {
+        cache_key: data.key,
+        pathway: data.pathway || 'A',
+        industry: data.industry || '',
+        countries: data.countries || '',
+        results: data.results,
+        count: data.count || 0,
+        last_user_id: userId
+      };
+      const r = await fetch(supabaseUrl + '/rest/v1/cached_research', {
+        method: 'POST',
+        headers: Object.assign({}, headers, { 'Prefer': 'resolution=merge-duplicates,return=minimal' }),
+        body: JSON.stringify(payload)
+      });
+      if (!r.ok) {
+        const e = await r.text();
+        return res.status(200).json({ ok: false, warn: e });
+      }
+      return res.status(200).json({ ok: true });
     }
 
     return res.status(400).json({ error: 'Unknown action: ' + action });
