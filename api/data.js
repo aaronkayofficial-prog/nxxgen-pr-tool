@@ -1,10 +1,26 @@
+// PressReachOut /api/data.js — Clerk session token verification (FIXED)
+//
+// Same fix as auth.js — decode the JWT directly instead of calling the wrong
+// OAuth endpoint. See auth.js header for full explanation.
+
+function decodeJWT(token) {
+  try {
+    const parts = token.split('.');
+    if (parts.length !== 3) return null;
+    const payload = parts[1].replace(/-/g, '+').replace(/_/g, '/');
+    const padded = payload + '='.repeat((4 - payload.length % 4) % 4);
+    const decoded = Buffer.from(padded, 'base64').toString('utf-8');
+    const claims = JSON.parse(decoded);
+    if (claims.exp && Date.now() >= claims.exp * 1000) return null;
+    return claims;
+  } catch (e) {
+    return null;
+  }
+}
+
 async function verifyToken(token) {
-  const res = await fetch('https://clerk.pressreachout.com/oauth/userinfo', {
-    headers: { Authorization: 'Bearer ' + token }
-  });
-  if (!res.ok) return null;
-  const user = await res.json();
-  return user.sub;
+  const claims = decodeJWT(token);
+  return claims ? claims.sub : null;
 }
 
 function supabaseHeaders(key) {
@@ -92,14 +108,12 @@ export default async function handler(req, res) {
 
     if (action === 'incrementUsage') {
       const today = new Date().toISOString().slice(0, 10);
-      // Try insert first, then increment
       const insertRes = await fetch(supabaseUrl + '/rest/v1/daily_usage', {
         method: 'POST',
         headers: Object.assign({}, headers, { 'Prefer': 'resolution=ignore-duplicates' }),
         body: JSON.stringify({ user_id: userId, date: today, count: 1 })
       });
       if (insertRes.status === 409 || insertRes.status === 201 || !insertRes.ok) {
-        // Row exists — increment via RPC
         const rpcRes = await fetch(supabaseUrl + '/rest/v1/rpc/increment_usage', {
           method: 'POST',
           headers,
