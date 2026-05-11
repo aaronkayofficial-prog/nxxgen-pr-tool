@@ -3413,7 +3413,7 @@ function syncAccountToCampaignForm() {
     if (hiddenInd && !hiddenInd.value) hiddenInd.value = userAccount.industry;
   }
 }
- 
+
 // ---- OUTREACH DASHBOARD ----
 var currentDashTab = 'all';
 // ── SEND CHECKLIST ──
@@ -5291,6 +5291,15 @@ function searchCustomOutlet() {
     '[{"n":"Outlet Name","u":"domain.com","e":"editorial@domain.com","t":"Publication Type","r":"AU","paid":false,"s":5,"desc":"One sentence about what this outlet covers"}]';
 
   callAPIWithSearch(prompt, function(text) {
+    // PR2 DIAGNOSTIC — capture the raw response so we can debug parse failures
+    try {
+      console.log('[PR2 raw response] length:', text ? text.length : 0);
+      console.log('[PR2 raw response] first 500 chars:', text ? text.substring(0, 500) : '<empty>');
+      console.log('[PR2 raw response] last 300 chars:', text ? text.substring(Math.max(0, text.length - 300)) : '<empty>');
+      window._lastApiResponse = text;
+      if (typeof state !== 'undefined') state.lastRawText = text;
+    } catch (_logErr) { /* logging must never break the flow */ }
+
     if (banner) banner.style.display = 'none';
     if (btn) { btn.textContent = 'Find outlets'; btn.disabled = false; }
     try {
@@ -5986,6 +5995,15 @@ function searchPodcasts() {
   var prompt = pr2_buildPodcastPrompt(primary, secondary, (t.countries || []), pitchType, podAudPref);
 
   callAPIWithSearch(prompt, function(text) {
+    // PR2 DIAGNOSTIC — capture the raw response so we can debug parse failures
+    try {
+      console.log('[PR2 raw response] length:', text ? text.length : 0);
+      console.log('[PR2 raw response] first 500 chars:', text ? text.substring(0, 500) : '<empty>');
+      console.log('[PR2 raw response] last 300 chars:', text ? text.substring(Math.max(0, text.length - 300)) : '<empty>');
+      window._lastApiResponse = text;
+      if (typeof state !== 'undefined') state.lastRawText = text;
+    } catch (_logErr) { /* logging must never break the flow */ }
+
     document.getElementById('plat-search-banner').style.display = 'none';
     try {
       // Aggressive JSON extraction — handles prose, fences, smart quotes
@@ -6997,6 +7015,15 @@ function searchIndustryPlatforms() {
 
 function _pr2_runIndustrySearch(prompt, pathwayCode, primary, secondary, countries, prefText, pref, banner, statusEl, countryStr, cacheKey) {
   callAPIWithSearch(prompt, function(text) {
+    // PR2 DIAGNOSTIC — capture the raw response so we can debug parse failures
+    try {
+      console.log('[PR2 raw response] length:', text ? text.length : 0);
+      console.log('[PR2 raw response] first 500 chars:', text ? text.substring(0, 500) : '<empty>');
+      console.log('[PR2 raw response] last 300 chars:', text ? text.substring(Math.max(0, text.length - 300)) : '<empty>');
+      window._lastApiResponse = text;
+      if (typeof state !== 'undefined') state.lastRawText = text;
+    } catch (_logErr) { /* logging must never break the flow */ }
+
     if (banner) banner.style.display = 'none';
     try {
       // Aggressive JSON extraction — handles prose, fences, smart quotes
@@ -7131,6 +7158,15 @@ function runDeepSearch() {
     ' Only real platforms. No invented outlets.';
 
   callAPIWithSearch(prompt, function(text) {
+    // PR2 DIAGNOSTIC — capture the raw response so we can debug parse failures
+    try {
+      console.log('[PR2 raw response] length:', text ? text.length : 0);
+      console.log('[PR2 raw response] first 500 chars:', text ? text.substring(0, 500) : '<empty>');
+      console.log('[PR2 raw response] last 300 chars:', text ? text.substring(Math.max(0, text.length - 300)) : '<empty>');
+      window._lastApiResponse = text;
+      if (typeof state !== 'undefined') state.lastRawText = text;
+    } catch (_logErr) { /* logging must never break the flow */ }
+
     if (banner) banner.style.display = 'none';
     try {
       var clean = text.trim().replace(/^```json\s*/i,'').replace(/^```\s*/i,'').replace(/```\s*$/,'').trim();
@@ -9435,6 +9471,15 @@ function searchLocalMedia(country, state, city, hyper, lga) {
   var prompt = pr2_buildLocalPrompt(country, state, city, hyper, lga, locState.angles);
 
   callAPIWithSearch(prompt, function(text) {
+    // PR2 DIAGNOSTIC — capture the raw response so we can debug parse failures
+    try {
+      console.log('[PR2 raw response] length:', text ? text.length : 0);
+      console.log('[PR2 raw response] first 500 chars:', text ? text.substring(0, 500) : '<empty>');
+      console.log('[PR2 raw response] last 300 chars:', text ? text.substring(Math.max(0, text.length - 300)) : '<empty>');
+      window._lastApiResponse = text;
+      if (typeof state !== 'undefined') state.lastRawText = text;
+    } catch (_logErr) { /* logging must never break the flow */ }
+
     document.getElementById('loc-search-banner').style.display = 'none';
     try {
       // Aggressive JSON extraction — handles prose, fences, smart quotes
