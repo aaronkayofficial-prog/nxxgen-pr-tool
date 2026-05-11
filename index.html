@@ -3970,6 +3970,10 @@ function openCampaign(id) {
   // Pre-load press release into session state
   if (camp.savedContent && camp.savedContent.pressRelease) {
     state.pressRelease = camp.savedContent.pressRelease;
+    // PASS 3 hotfix — restore pathway-specific content
+    if (camp.savedContent.pitchStory) state.pitchStory = camp.savedContent.pitchStory;
+    if (camp.savedContent.podcastPitch) state.podcastPitch = camp.savedContent.podcastPitch;
+    if (camp.savedContent.lastPath) state.path = camp.savedContent.lastPath;
     state.prApproved = true;
   }
   if (camp.status === 'draft') {
@@ -4298,6 +4302,19 @@ function saveCampaign() {
     campPRDraft = prText;
   } else if (campPRApproved && campPRDraft) {
     campData.savedContent.pressRelease = campPRDraft;
+  }
+
+  // PASS 3 hotfix — also persist pathway-specific content so users don't
+  // have to re-input it every time they reopen a campaign.
+  if (state.pitchStory && (state.pitchStory.headline || state.pitchStory.hook1 || state.pitchStory.hook2 || state.pitchStory.hook3)) {
+    campData.savedContent.pitchStory = state.pitchStory;
+  }
+  if (state.podcastPitch && (state.podcastPitch.title || state.podcastPitch.type || state.podcastPitch.background)) {
+    campData.savedContent.podcastPitch = state.podcastPitch;
+  }
+  // Also remember which pathway was active in this campaign
+  if (state.path) {
+    campData.savedContent.lastPath = state.path;
   }
 
   loadCampaigns();
@@ -5971,17 +5988,20 @@ function searchPodcasts() {
   callAPIWithSearch(prompt, function(text) {
     document.getElementById('plat-search-banner').style.display = 'none';
     try {
-      // Aggressive JSON extraction
+      // Aggressive JSON extraction — handles prose, fences, smart quotes
       var clean = text.trim();
-      // Strip any markdown fences
-      clean = clean.replace(/^```json\s*/i,'').replace(/^```\s*/i,'').replace(/```\s*$/,'').trim();
-      // Strip any prose before the array
+      // Strip markdown fences anywhere in the text
+      clean = clean.replace(/```json/gi, '').replace(/```/g, '');
+      // Find the first [ and last ] anywhere in the (possibly prose-wrapped) text
       var start = clean.indexOf('[');
       var end = clean.lastIndexOf(']');
-      if (start === -1 || end === -1 || end <= start) throw new Error('No JSON array in response');
+      if (start === -1 || end === -1 || end <= start) {
+        throw new Error('No JSON array in response');
+      }
       clean = clean.substring(start, end + 1);
-      // Fix common JSON issues -- trailing commas
+      // Fix common JSON issues
       clean = clean.replace(/,\s*([}\]])/g, '$1');
+      clean = clean.replace(/[\u2018\u2019]/g, "'").replace(/[\u201C\u201D]/g, '"');
       var found = JSON.parse(clean);
       if (!Array.isArray(found) || !found.length) throw new Error('Empty array');
       found = found.filter(function(p) { return p && p.n; });
@@ -6553,6 +6573,8 @@ function pr2_buildPressReleasePrompt(primary, secondary, countries, prefText) {
     '  }',
     ']',
     '',
+    '',
+    '⚠ CRITICAL OUTPUT FORMAT — read this twice. Your FINAL response (the text you write after all web_search tool calls complete) must be ONLY a JSON array and nothing else. The FIRST character must be "[" and the LAST character must be "]". Do NOT write any prose explanation. Do NOT add markdown code fences like ```json. Do NOT introduce the data with "Here are the results" or similar. If you have something to explain, put it inside a "desc" field on each entry. Anything outside the JSON array breaks the parser and the user sees zero results.',
     'BEGIN RESEARCH NOW. Use web_search tool calls extensively across at least 12-15 different publications. Return MINIMUM 25 contacts (preferably 40+), every one with a real source URL pasted into the source field. Filter to "' + prefText + '". Confidence floor is 60% — anything below is a hard reject. If you cannot find an email\'s source URL, omit the contact entirely. Quality only.'
   ].join('\n');
 }
@@ -6643,6 +6665,8 @@ function pr2_buildStoryPitchPrompt(primary, secondary, countries, prefText) {
     '  }',
     ']',
     '',
+    '',
+    '⚠ CRITICAL OUTPUT FORMAT — read this twice. Your FINAL response (the text you write after all web_search tool calls complete) must be ONLY a JSON array and nothing else. The FIRST character must be "[" and the LAST character must be "]". Do NOT write any prose explanation. Do NOT add markdown code fences like ```json. Do NOT introduce the data with "Here are the results" or similar. If you have something to explain, put it inside a "desc" field on each entry. Anything outside the JSON array breaks the parser and the user sees zero results.',
     'BEGIN RESEARCH NOW. Use web_search extensively across at least 10-15 publications. Return MINIMUM 20 NAMED journalists with real source URLs. Filter: "' + prefText + '". Quality only — no padding with guesses.'
   ].join('\n');
 }
@@ -6735,6 +6759,8 @@ function pr2_buildPodcastPrompt(primary, secondary, countries, pitchType, audPre
     '  }',
     ']',
     '',
+    '',
+    '⚠ CRITICAL OUTPUT FORMAT — read this twice. Your FINAL response (the text you write after all web_search tool calls complete) must be ONLY a JSON array and nothing else. The FIRST character must be "[" and the LAST character must be "]". Do NOT write any prose explanation. Do NOT add markdown code fences like ```json. Do NOT introduce the data with "Here are the results" or similar. If you have something to explain, put it inside a "desc" field on each entry. Anything outside the JSON array breaks the parser and the user sees zero results.',
     'BEGIN RESEARCH NOW. Use web_search extensively across at least 10-15 podcasts. Return MINIMUM 20 podcasts with real source URLs. Quality over quantity — no guesses.'
   ].join('\n');
 }
@@ -6833,6 +6859,8 @@ function pr2_buildLocalPrompt(country, stateName, city, hyper, lga, angles) {
     '  }',
     ']',
     '',
+    '',
+    '⚠ CRITICAL OUTPUT FORMAT — read this twice. Your FINAL response (the text you write after all web_search tool calls complete) must be ONLY a JSON array and nothing else. The FIRST character must be "[" and the LAST character must be "]". Do NOT write any prose explanation. Do NOT add markdown code fences like ```json. Do NOT introduce the data with "Here are the results" or similar. If you have something to explain, put it inside a "desc" field on each entry. Anything outside the JSON array breaks the parser and the user sees zero results.',
     'BEGIN RESEARCH NOW. Use web_search extensively. Return MINIMUM 15 outlets with real source URLs. Quality only — local-only — no national press unless dedicated local section exists.'
   ].join('\n');
 }
@@ -6971,10 +6999,15 @@ function _pr2_runIndustrySearch(prompt, pathwayCode, primary, secondary, countri
   callAPIWithSearch(prompt, function(text) {
     if (banner) banner.style.display = 'none';
     try {
-      var clean = text.trim().replace(/^```json\s*/i,'').replace(/^```\s*/i,'').replace(/```\s*$/,'').trim();
+      // Aggressive JSON extraction — handles prose, fences, smart quotes
+      var clean = text.trim();
+      clean = clean.replace(/```json/gi, '').replace(/```/g, '');
       var start = clean.indexOf('['); var end = clean.lastIndexOf(']');
       if (start === -1 || end === -1) throw new Error('No JSON array found');
-      var found = JSON.parse(clean.substring(start, end + 1));
+      var arrStr = clean.substring(start, end + 1);
+      arrStr = arrStr.replace(/,\s*([}\]])/g, '$1');
+      arrStr = arrStr.replace(/[\u2018\u2019]/g, "'").replace(/[\u201C\u201D]/g, '"');
+      var found = JSON.parse(arrStr);
       found = found.filter(function(p){ return p && p.n && p.u && hasRealEmail(p); });
       if (found.length === 0) throw new Error('Empty results');
       found.forEach(function(p){
@@ -9404,11 +9437,14 @@ function searchLocalMedia(country, state, city, hyper, lga) {
   callAPIWithSearch(prompt, function(text) {
     document.getElementById('loc-search-banner').style.display = 'none';
     try {
-      var clean = text.trim().replace(/^```json\s*/i,'').replace(/^```\s*/i,'').replace(/```\s*$/,'').trim();
+      // Aggressive JSON extraction — handles prose, fences, smart quotes
+      var clean = text.trim();
+      clean = clean.replace(/```json/gi, '').replace(/```/g, '');
       var start = clean.indexOf('['), end = clean.lastIndexOf(']');
       if (start === -1 || end === -1) throw new Error('no array');
       clean = clean.substring(start, end + 1);
       clean = clean.replace(/,\s*([}\]])/g, '$1');
+      clean = clean.replace(/[\u2018\u2019]/g, "'").replace(/[\u201C\u201D]/g, '"');
       var found = JSON.parse(clean);
       if (!Array.isArray(found) || !found.length) throw new Error('empty');
       found = found.filter(function(p) { return p && p.n; });
