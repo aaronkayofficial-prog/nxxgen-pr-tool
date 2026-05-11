@@ -5963,35 +5963,12 @@ function searchPodcasts() {
   var pitchType = pp.type || 'guest';
   var audText = podAudPref === 'niche' ? 'niche highly-engaged audiences' : podAudPref === 'large' ? 'large audiences 50k+ listeners' : 'any audience size';
 
-  // Build prompt — automotive gets deep specialist treatment
-  var primaryLowerPod = primary.toLowerCase();
-  var isAutoPod = ['automotive','aftermarket','car care','motorsport','new cars','detailing','tuning','4wd','fleet','classic car','performance','ev','electric vehicle','motoring','vehicle','parts','accessories','dealer'].some(function(t){ return primaryLowerPod.indexOf(t) > -1; });
+  // PASS 3 — Deep research methodology for podcasts
+  // Uses callAPIWithSearch (web search enabled) instead of callAPIHighTokens
+  // Industry-specific podcast guidance is inside pr2_getIndustryGuidance
+  var prompt = pr2_buildPodcastPrompt(primary, secondary, (t.countries || []), pitchType, podAudPref);
 
-  var prompt;
-  if (isAutoPod) {
-    var autoFocus = secondary || primary;
-    prompt = 'You are a specialist automotive media researcher. List 40 real, currently active podcasts covering automotive topics relevant to: ' + autoFocus + '\n\n' +
-      'You MUST search across ALL of these automotive podcast categories:\n' +
-      '1. NEW CAR REVIEWS & MOTORING NEWS: general motoring, new car reveals, industry news\n' +
-      '2. AFTERMARKET & PARTS: modifications, accessories, parts industry, SEMA culture\n' +
-      '3. CAR CARE & DETAILING: detailing techniques, ceramic coatings, paint protection, car cleaning\n' +
-      '4. PERFORMANCE & MOTORSPORT: track cars, drag racing, circuit racing, rally, time attack\n' +
-      '5. ELECTRIC VEHICLES: EV reviews, charging, EV industry, clean transport\n' +
-      '6. 4WD & OVERLANDING: off-road adventures, 4x4 builds, overlanding, camping\n' +
-      '7. CLASSIC CARS & RESTORATION: vintage vehicles, restoration projects, concours, auctions\n' +
-      '8. AUTOMOTIVE BUSINESS & TRADE: dealership management, aftermarket business, industry news\n' +
-      '9. CAR CULTURE & ENTHUSIAST: general car enthusiasm, car meets, automotive lifestyle\n' +
-      '10. DIY & MECHANICS: home mechanics, workshop skills, maintenance tips\n\n' +
-      'Countries: ' + countries + '. Audience preference: ' + audText + '. Pitch type sought: ' + pitchType + '.\n\n' +
-      'For each podcast include the actual contact/submission email if known. If host name is known, include it.\n' +
-      'Include both interview-format shows AND solo-host shows that accept pitches.\n\n' +
-      'Respond ONLY with a JSON array. Start immediately with [:\n' +
-      '[{"n":"Podcast Name","u":"podcasturl.com","e":"contact@email.com","host":"Host Name","platform":"Spotify, Apple Podcasts","t":"niche","r":"AU","s":4,"desc":"What automotive sub-niche this covers and why relevant","accepts_guests":true}]';
-  } else {
-    prompt = 'List 20 real, currently active podcasts specifically about "' + primary + '"' + (secondary ? ' or "' + secondary + '"' : '') + ' that are popular in ' + countries + ' and accept ' + pitchType + ' pitches.\n\nCriteria: ' + audText + '. Only include podcasts you know are real and active.\n\nRespond ONLY with a JSON array. No text before or after. Start your response with [ immediately:\n[{"n":"Podcast Name","u":"podcasturl.com","e":"contact@email.com","host":"Host Name","platform":"Spotify, Apple Podcasts","t":"niche","r":"' + (countries.split(',')[0].trim().substring(0,2).toUpperCase() || 'Global') + '","s":4,"desc":"One sentence why relevant for ' + primary + ' guests","accepts_guests":true}]';
-  }
-
-  callAPIHighTokens(prompt, function(text) {
+  callAPIWithSearch(prompt, function(text) {
     document.getElementById('plat-search-banner').style.display = 'none';
     try {
       // Aggressive JSON extraction
@@ -6020,6 +5997,19 @@ function searchPodcasts() {
         p.r = p.r || countries.split(',')[0].trim();
         p.isPodcast = true;
         p.accepts_guests = p.accepts_guests !== false;
+        // PASS 3 — preserve new fields for trust UI
+        p.contact = p.contact || p.host || '';
+        p.role = p.role || (p.host ? 'Host' : '');
+        p.source = p.source || '';
+        p.confidence = (typeof p.confidence === 'number') ? p.confidence : null;
+        p.confLabel = p.confLabel || '';
+      });
+      // PASS 3 — confidence floor + source URL enforcement for podcasts
+      found = found.filter(function(p) {
+        if (p.confidence !== null && p.confidence < 60) return false;
+        var hasNewFields = (p.contact || p.role || p.confidence !== null || p.confLabel);
+        if (hasNewFields && !p.source) return false;
+        return true;
       });
       found.sort(function(a,b) { return b.s - a.s; });
       state.foundPlatforms = found;
@@ -6490,7 +6480,9 @@ function pr2_buildPressReleasePrompt(primary, secondary, countries, prefText) {
 
   return [
     'You are conducting RESEARCH-GRADE PR contact discovery for the PressReachOut platform.',
-    'This is NOT a creative writing task. Every contact you return must be backed by a real source URL you find via web search RIGHT NOW.',
+    'This is NOT a creative writing task. Every contact you return must be backed by a real source URL you found via web search RIGHT NOW. NO EXCEPTIONS.',
+    '',
+    'ABSOLUTE RULE: If you cannot point to the EXACT URL where you read an email address on the live web during this research, DO NOT include that contact. An inferred or guessed email — even one that "looks right" — is a failure. The "source" field must contain the actual URL where the email is published. If the source field would be empty or fabricated, omit the entire contact from your output.',
     '',
     'THE USER\'S REQUEST:',
     '- Industry: ' + primary + subFocus,
@@ -6499,7 +6491,7 @@ function pr2_buildPressReleasePrompt(primary, secondary, countries, prefText) {
     '- Pathway: Press Release (sending press releases to named editors and editorial inboxes)',
     '',
     'YOUR TASK:',
-    'Return a MINIMUM of 20 verified press release contacts. Multiple named editors at the same outlet count as separate contacts and are encouraged. Quality over padding — but aim for 20-25. (Note: this is a deliberately lower target than the production goal of 40+ so the request completes within timeout limits during this validation phase.)',
+    'Return a MINIMUM of 25 verified press release contacts, ideally 40+. Multiple named editors at the same outlet count as separate contacts and are strongly encouraged. Quality is the only thing that matters — better to return 15 verified contacts than 40 with 20 guesses. Every single entry must have a real source URL.',
     '',
     'INDUSTRY CONTEXT FOR ' + primary.toUpperCase() + ':',
     industryGuidance,
@@ -6530,14 +6522,16 @@ function pr2_buildPressReleasePrompt(primary, secondary, countries, prefText) {
     '   - 60-79 (Moderate): Email pattern matches a verified format at the same domain (e.g. first.last@publication.com confirmed on one named contact, applied to another confirmed-current named journalist at the same domain)',
     '   - Below 60: DO NOT INCLUDE. Better to omit than to guess.',
     '',
-    'CRITICAL RULES:',
-    '- Every email MUST have a source URL — the actual page where you found it',
-    '- Prefer NAMED contacts over generic inboxes when both exist at the same outlet',
-    '- Multiple named editors at one outlet = multiple separate entries in the output',
+    'CRITICAL RULES (violations = unusable output):',
+    '- The "source" field MUST contain the EXACT URL where the email appears on the live web. If you did not visit that URL during this research, do not include the contact.',
+    '- An email pattern guess (e.g. "firstname.lastname@publication.com") is ONLY acceptable if (a) you verified the pattern on at least one OTHER named editor at the same domain, AND (b) you cite the verification page as the source. Otherwise skip.',
+    '- Prefer NAMED contacts over generic inboxes when both exist at the same outlet.',
+    '- Multiple named editors at one outlet = multiple separate entries in the output. iTnews with 3 named editors = 3 rows.',
     '- NO inferring or guessing emails without a verifiable pattern source. If you can\'t verify it, skip it.',
-    '- NO outdated journalists (no bylines in 6+ months)',
+    '- NO outdated journalists (no bylines in 6+ months).',
     '- NO defunct publications. Verify the outlet is currently publishing before including it.',
-    '- If you can\'t find a named editor but the outlet has a published editorial inbox, include the inbox with contact="Editorial Team" and role describing the inbox purpose (e.g. "News Tips Inbox", "General Editorial").',
+    '- If you can\'t find a named editor but the outlet has a published editorial inbox, include the inbox with contact="Editorial Team", role describing the inbox purpose, and source=URL of the page where the inbox is listed.',
+    '- DO NOT pad the output to hit the quantity target. 20 verified contacts is FAR better than 40 with guesses mixed in.',
     '',
     'OUTPUT FORMAT — return ONLY a JSON array, no prose before or after the array:',
     '',
@@ -6559,8 +6553,356 @@ function pr2_buildPressReleasePrompt(primary, secondary, countries, prefText) {
     '  }',
     ']',
     '',
-    'BEGIN RESEARCH NOW. Use web_search tool calls extensively across at least 8-12 different publications. Return MINIMUM 20 contacts with verified source URLs. Filter to "' + prefText + '". DO NOT pad the list with low-confidence guesses — the floor is 60% confidence.'
+    'BEGIN RESEARCH NOW. Use web_search tool calls extensively across at least 12-15 different publications. Return MINIMUM 25 contacts (preferably 40+), every one with a real source URL pasted into the source field. Filter to "' + prefText + '". Confidence floor is 60% — anything below is a hard reject. If you cannot find an email\'s source URL, omit the contact entirely. Quality only.'
   ].join('\n');
+}
+
+// ─────────────────────────────────────────────────────────────────
+// PASS 3 — STORY PITCH PROMPT BUILDER (Path B)
+// ─────────────────────────────────────────────────────────────────
+// Different goal from press release: user wants to pitch a SPECIFIC STORY
+// ANGLE to a specific NAMED reporter who writes features. So we prioritise
+// named contributors over editorial inboxes, and we focus on outlets that
+// publish features rather than wire copy.
+function pr2_buildStoryPitchPrompt(primary, secondary, countries, prefText) {
+  var industryGuidance = pr2_getIndustryGuidance(primary);
+  var territoryGuidance = pr2_getTerritoryGuidance(countries);
+  var countryStr = countries.join(', ');
+  var subFocus = secondary ? ' with sub-focus on ' + secondary : '';
+
+  return [
+    'You are conducting RESEARCH-GRADE journalist discovery for a STORY PITCH on the PressReachOut platform.',
+    'This is NOT a creative writing task. Every journalist you return must be backed by a real source URL you found via web search RIGHT NOW.',
+    '',
+    'ABSOLUTE RULE: If you cannot point to the EXACT URL where you read a journalist\'s email or contact info on the live web during this research, DO NOT include that contact. The "source" field must contain the actual URL. If the source field would be empty or fabricated, omit the entire contact from your output.',
+    '',
+    'THE USER\'S REQUEST:',
+    '- Industry: ' + primary + subFocus,
+    '- Territory: ' + countryStr,
+    '- Filter: ' + prefText,
+    '- Pathway: Story Pitch (pitching a specific story idea to NAMED feature writers and section editors)',
+    '',
+    'YOUR TASK:',
+    'Return a MINIMUM of 20 verified NAMED journalists (ideally 35+) who write features in this industry and territory. Generic editorial inboxes are LOW priority — this pathway is about reaching a real human reporter who covers this beat.',
+    '',
+    'INDUSTRY CONTEXT FOR ' + primary.toUpperCase() + ':',
+    industryGuidance,
+    '',
+    'TERRITORY CONTEXT:',
+    territoryGuidance,
+    '',
+    'RESEARCH METHODOLOGY — YOU MUST USE THE web_search TOOL EXTENSIVELY:',
+    '',
+    'For each publication you identify, perform this sequence:',
+    '',
+    '1. SEARCH for the publication\'s section editor or staff writer covering this beat:',
+    '   - "[outlet name] [beat] editor" (e.g. "SMH technology editor", "Vogue fashion features editor")',
+    '   - "[outlet name] staff writers OR contributors OR masthead"',
+    '   - "[outlet name] [beat] writer 2025 OR 2026"',
+    '',
+    '2. CONFIRM they currently write features in this beat by checking recent bylines (within last 90 days).',
+    '',
+    '3. FIND THEIR CONTACT — in order of preference:',
+    '   - Email on their author/profile page on the publication',
+    '   - Email in their byline footer or article tagline',
+    '   - Email in their public Twitter/X or LinkedIn bio',
+    '   - Email pattern verified against another named journalist at same domain',
+    '',
+    '4. SOURCE-AUTHORITY CONFIDENCE SCORING — assign 0-100 based on WHERE you found the email:',
+    '   - 95-100 (Verified): Email on publication\'s own current staff/contributor page',
+    '   - 80-94 (Strong): Email on journalist\'s own author page, byline footer, or verified social bio naming current employer',
+    '   - 60-79 (Moderate): Pattern-verified email at same domain with confirmed-current named journalist',
+    '   - Below 60: DO NOT INCLUDE',
+    '',
+    'CRITICAL RULES (violations = unusable output):',
+    '- The "source" field MUST contain the EXACT URL where the email appears on the live web.',
+    '- NAMED reporters are the goal. Generic editorial@/news@ inboxes should be the LAST resort.',
+    '- Multiple journalists at one outlet covering different angles = multiple separate entries.',
+    '- NO journalists who have not published in this beat within the last 90 days.',
+    '- NO inferring or guessing emails without a verifiable pattern source.',
+    '- NO defunct publications.',
+    '- DO NOT pad. 15 named verified journalists > 40 generic inboxes for a story pitch.',
+    '',
+    'OUTPUT FORMAT — return ONLY a JSON array, no prose before or after:',
+    '',
+    '[',
+    '  {',
+    '    "n": "Publication Name",',
+    '    "u": "domain.com",',
+    '    "e": "journalist.name@domain.com",',
+    '    "t": "Trade Publication" | "Consumer Media" | "Digital" | "Newspaper" | "Magazine",',
+    '    "r": "AU" | "UK" | "US" | "CA" | "NZ" | other 2-letter code,',
+    '    "paid": false,',
+    '    "s": 5,',
+    '    "desc": "One sentence on what beat this journalist covers and why relevant for a ' + primary + ' story pitch",',
+    '    "contact": "Jane Smith",',
+    '    "role": "Senior Features Writer, Technology",',
+    '    "source": "https://publication.com/staff/jane-smith",',
+    '    "confidence": 92,',
+    '    "confLabel": "Verified" | "Strong" | "Moderate"',
+    '  }',
+    ']',
+    '',
+    'BEGIN RESEARCH NOW. Use web_search extensively across at least 10-15 publications. Return MINIMUM 20 NAMED journalists with real source URLs. Filter: "' + prefText + '". Quality only — no padding with guesses.'
+  ].join('\n');
+}
+
+// ─────────────────────────────────────────────────────────────────
+// PASS 3 — PODCAST PROMPT BUILDER (Path C)
+// ─────────────────────────────────────────────────────────────────
+// Goal: find podcasts that interview people in this industry, with booking
+// or pitch contact info. Named hosts and booking emails preferred.
+function pr2_buildPodcastPrompt(primary, secondary, countries, pitchType, audPref) {
+  var industryGuidance = pr2_getIndustryGuidance(primary);
+  var territoryGuidance = pr2_getTerritoryGuidance(countries);
+  var countryStr = (countries && countries.length) ? countries.join(', ') : 'Global';
+  var subFocus = secondary ? ' (sub-focus: ' + secondary + ')' : '';
+  var audText = audPref === 'niche' ? 'niche highly-engaged audiences' : audPref === 'large' ? 'large audiences 50k+ listeners' : 'any audience size';
+  var pitchLabel = pitchType === 'collab' ? 'collaboration' : pitchType === 'sponsor' ? 'sponsorship' : 'guest appearance';
+
+  return [
+    'You are conducting RESEARCH-GRADE podcast discovery for the PressReachOut platform.',
+    'This is NOT a creative writing task. Every podcast you return must be backed by a real source URL you found via web search RIGHT NOW.',
+    '',
+    'ABSOLUTE RULE: If you cannot point to the EXACT URL where you read the booking/pitch email on the live web during this research, DO NOT include that podcast. The "source" field must contain the actual URL.',
+    '',
+    'THE USER\'S REQUEST:',
+    '- Industry / topic: ' + primary + subFocus,
+    '- Territory: ' + countryStr,
+    '- Pitch type: ' + pitchLabel,
+    '- Audience preference: ' + audText,
+    '- Pathway: Podcast (pitching to podcast hosts for guest spots, collaborations, or sponsorships)',
+    '',
+    'YOUR TASK:',
+    'Return a MINIMUM of 20 verified podcasts (ideally 30+) that cover topics relevant to ' + primary + ' and accept ' + pitchLabel + ' pitches.',
+    '',
+    'INDUSTRY CONTEXT — what kind of podcasts to look for:',
+    industryGuidance,
+    '',
+    'TERRITORY CONTEXT:',
+    territoryGuidance,
+    '',
+    'RESEARCH METHODOLOGY — YOU MUST USE THE web_search TOOL EXTENSIVELY:',
+    '',
+    'For each podcast:',
+    '',
+    '1. SEARCH for the podcast\'s official site, host info, and contact:',
+    '   - "[podcast name] contact OR pitch OR be a guest"',
+    '   - "[podcast name] host"',
+    '   - "[podcast name] booking email"',
+    '   - Check their official site, Apple Podcasts page, Spotify page, host\'s personal site',
+    '',
+    '2. CONFIRM the podcast is currently active — check it has released an episode within the last 60 days.',
+    '',
+    '3. FIND THE BOOKING/PITCH CONTACT — in order of preference:',
+    '   - Booking email or "be a guest" form on official site',
+    '   - Host\'s direct contact email',
+    '   - General podcast contact email',
+    '   - Producer or production company email',
+    '',
+    '4. SOURCE-AUTHORITY CONFIDENCE SCORING:',
+    '   - 95-100 (Verified): Email on podcast\'s OWN current contact/booking page',
+    '   - 80-94 (Strong): Email in host\'s public bio page or "about" section of the podcast',
+    '   - 60-79 (Moderate): Email pattern from production company verified on another show',
+    '   - Below 60: DO NOT INCLUDE',
+    '',
+    'CRITICAL RULES (violations = unusable output):',
+    '- The "source" field MUST contain the EXACT URL where you read the email.',
+    '- NO dead podcasts (no episode in last 60 days).',
+    '- NO podcasts that explicitly say "we don\'t accept guest pitches" — exclude these.',
+    '- Prefer podcasts where the host is named and reachable.',
+    '- Include both interview shows AND solo-host shows that accept pitches.',
+    '',
+    'OUTPUT FORMAT — return ONLY a JSON array:',
+    '',
+    '[',
+    '  {',
+    '    "n": "Podcast Name",',
+    '    "u": "podcasturl.com",',
+    '    "e": "booking@podcast.com",',
+    '    "host": "Host Name",',
+    '    "platform": "Spotify, Apple Podcasts",',
+    '    "t": "niche" | "mid" | "large",',
+    '    "r": "AU" | "UK" | "US" | "CA" | "NZ" | "Global",',
+    '    "s": 4,',
+    '    "desc": "What this podcast covers and why relevant for a ' + primary + ' ' + pitchLabel + ' pitch",',
+    '    "accepts_guests": true,',
+    '    "contact": "Host Name",',
+    '    "role": "Host" | "Producer" | "Booking",',
+    '    "source": "https://podcasturl.com/contact",',
+    '    "confidence": 90,',
+    '    "confLabel": "Verified" | "Strong" | "Moderate"',
+    '  }',
+    ']',
+    '',
+    'BEGIN RESEARCH NOW. Use web_search extensively across at least 10-15 podcasts. Return MINIMUM 20 podcasts with real source URLs. Quality over quantity — no guesses.'
+  ].join('\n');
+}
+
+// ─────────────────────────────────────────────────────────────────
+// PASS 3 — LOCAL MEDIA PROMPT BUILDER (Path E)
+// ─────────────────────────────────────────────────────────────────
+// Goal: find genuinely local/hyperlocal outlets covering a specific area.
+// Different from national press — needs newspaper-of-record level granularity.
+function pr2_buildLocalPrompt(country, stateName, city, hyper, lga, angles) {
+  var locFull = [hyper, lga, city, stateName, country].filter(function(p) { return p; }).join(', ');
+  var locCore = [hyper || city, stateName, country].filter(function(p) { return p; }).join(', ');
+  var anglesStr = (angles && angles.length) ? angles.join(', ') : 'local business news';
+  var territoryHint = '';
+  if (country && country.toLowerCase().indexOf('australia') > -1) {
+    territoryHint = 'For Australia: include Australian Community Media (ACM) titles, News Corp regional, Star Weekly, regional ABC, suburban newspapers, council newsletters.';
+  } else if (country && (country.toLowerCase().indexOf('united kingdom') > -1 || country.toLowerCase() === 'uk')) {
+    territoryHint = 'For UK: include Reach plc regional titles, Newsquest titles, regional BBC, hyperlocal blogs, council newsletters.';
+  } else if (country && (country.toLowerCase().indexOf('united states') > -1 || country.toLowerCase() === 'us')) {
+    territoryHint = 'For US: include local newspapers (often Gannett or McClatchy-owned), local TV affiliates (ABC/NBC/CBS/Fox local), Patch, neighbourhood newsletters.';
+  }
+
+  return [
+    'You are conducting RESEARCH-GRADE local media discovery for the PressReachOut platform.',
+    'This is NOT a creative writing task. Every outlet you return must be backed by a real source URL you found via web search RIGHT NOW.',
+    '',
+    'ABSOLUTE RULE: If you cannot point to the EXACT URL where you read the email on the live web during this research, DO NOT include that outlet. The "source" field must contain the actual URL.',
+    '',
+    'THE USER\'S REQUEST:',
+    '- Exact target area: ' + locFull,
+    '- Story angles relevant to area: ' + anglesStr,
+    '- Pathway: Local Media (genuinely LOCAL outlets covering this specific area, NOT national press)',
+    '',
+    'YOUR TASK:',
+    'Return a MINIMUM of 15 verified local/hyperlocal media outlets (ideally 25+) that genuinely serve ' + locCore + '.',
+    '',
+    'WHAT COUNTS AS LOCAL:',
+    '- Local newspapers (print/digital) covering ' + (hyper || city) + ' and surrounding areas',
+    '- Suburb/district-specific news sites',
+    '- Local council and community news portals',
+    '- Regional radio with news coverage',
+    '- Local TV news affiliates',
+    '- Community newsletters and hyperlocal blogs with editorial standards',
+    '- Local business journals, chamber of commerce publications',
+    '',
+    'WHAT DOES NOT COUNT:',
+    '- National newspapers (unless they have a genuine dedicated local section for this area)',
+    '- National broadcasters (unless local affiliate)',
+    '- Trade publications without local angle',
+    '',
+    territoryHint,
+    '',
+    'RESEARCH METHODOLOGY — YOU MUST USE THE web_search TOOL EXTENSIVELY:',
+    '',
+    'For each outlet:',
+    '',
+    '1. SEARCH for outlets covering this exact area:',
+    '   - "' + (hyper || city) + ' local news"',
+    '   - "' + (hyper || city) + ' newspaper"',
+    '   - "' + (hyper || city) + ' community news"',
+    '   - "[suburb name] news editor"',
+    '',
+    '2. CONFIRM the outlet specifically covers ' + (hyper || city) + ' — visit their site and check recent stories mention the area.',
+    '',
+    '3. FIND CONTACT EMAIL on their contact/about/submit page.',
+    '',
+    '4. SOURCE-AUTHORITY CONFIDENCE SCORING:',
+    '   - 95-100 (Verified): Email on outlet\'s OWN current contact/news-tips page',
+    '   - 80-94 (Strong): Email on staff/editor page on the outlet',
+    '   - 60-79 (Moderate): Email pattern verified at same domain',
+    '   - Below 60: DO NOT INCLUDE',
+    '',
+    'CRITICAL RULES:',
+    '- The "source" field MUST contain the EXACT URL where the email appears.',
+    '- ONLY genuinely local outlets — not national outlets pretending to have local coverage.',
+    '- Outlets must currently publish (check for stories within last 30 days).',
+    '- Prefer NAMED local editors over generic news tip inboxes when both exist.',
+    '',
+    'OUTPUT FORMAT — return ONLY a JSON array:',
+    '',
+    '[',
+    '  {',
+    '    "n": "Outlet Name",',
+    '    "u": "website.com",',
+    '    "e": "news@outlet.com",',
+    '    "coverage": "Specific suburbs or areas this outlet covers",',
+    '    "type": "newspaper" | "online" | "radio" | "tv" | "community" | "council",',
+    '    "accepts_pr": true,',
+    '    "s": 5,',
+    '    "desc": "What they cover and why relevant for stories about ' + (hyper || city) + '",',
+    '    "contact": "Editor Name" | "News Desk",',
+    '    "role": "Local News Editor" | "News Tips Inbox",',
+    '    "source": "https://outlet.com/contact",',
+    '    "confidence": 88,',
+    '    "confLabel": "Verified" | "Strong" | "Moderate"',
+    '  }',
+    ']',
+    '',
+    'BEGIN RESEARCH NOW. Use web_search extensively. Return MINIMUM 15 outlets with real source URLs. Quality only — local-only — no national press unless dedicated local section exists.'
+  ].join('\n');
+}
+
+// ─────────────────────────────────────────────────────────────────
+// PASS 3 — RESULT CACHING (Item 7)
+// ─────────────────────────────────────────────────────────────────
+// Saves successful deep-search results to Supabase keyed by a deterministic
+// hash of (pathway, industry, secondary, countries, filter). Future searches
+// for the same combination in the next 7 days return the cached results
+// instantly — no AI cost, no waiting.
+//
+// As a side effect, your Supabase database grows naturally over time with
+// real verified contacts that all users benefit from. Exactly the org-wide
+// database growth the original product vision called for.
+
+function pr2_cacheKey(pathway, primary, secondary, countries, prefText) {
+  var parts = [
+    pathway || 'A',
+    (primary || '').toLowerCase().trim(),
+    (secondary || '').toLowerCase().trim(),
+    (countries || []).slice().sort().join('|').toLowerCase(),
+    (prefText || 'both').toLowerCase()
+  ];
+  return parts.join('::');
+}
+
+function pr2_getCached(key, cb) {
+  // Try cache via /api/data getCachedResearch action.
+  // If it errors or returns nothing, we fall through and run the AI search.
+  if (typeof getClerkToken !== 'function') { cb(null); return; }
+  getClerkToken().then(function(token) {
+    if (!token) { cb(null); return; }
+    fetch('/api/data', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+      body: JSON.stringify({ action: 'getCachedResearch', data: { key: key } })
+    }).then(function(r) { return r.ok ? r.json() : null; })
+      .then(function(row) {
+        if (!row || !row.results) { cb(null); return; }
+        // Parse results JSON if it came back as string
+        var items = (typeof row.results === 'string') ? JSON.parse(row.results) : row.results;
+        if (!Array.isArray(items) || !items.length) { cb(null); return; }
+        cb(items);
+      }).catch(function() { cb(null); });
+  }).catch(function() { cb(null); });
+}
+
+function pr2_saveCache(key, items, meta) {
+  // Fire-and-forget save to Supabase. Don't block the UI on this.
+  if (typeof getClerkToken !== 'function') return;
+  if (!items || !items.length) return;
+  getClerkToken().then(function(token) {
+    if (!token) return;
+    fetch('/api/data', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+      body: JSON.stringify({
+        action: 'saveCachedResearch',
+        data: {
+          key: key,
+          pathway: meta.pathway || 'A',
+          industry: meta.industry || '',
+          countries: (meta.countries || []).join(','),
+          results: JSON.stringify(items),
+          count: items.length
+        }
+      })
+    }).catch(function() { /* silent */ });
+  }).catch(function() { /* silent */ });
 }
 
 function searchIndustryPlatforms() {
@@ -6597,49 +6939,35 @@ function searchIndustryPlatforms() {
   if (statusEl) statusEl.textContent = 'Finding the best ' + primary + ' outlets in ' + countryStr + '...';
 
   var isStoryPitch = state.path === 'B';
-  var primaryLower = primary.toLowerCase();
-  var isAuto = ['automotive','aftermarket','car care','motorsport','new cars','detailing','tuning','4wd','fleet','classic car','performance','ev','electric vehicle','motoring','vehicle','parts','accessories','dealer'].some(function(t){ return primaryLower.indexOf(t) > -1; });
 
+  // PASS 3 — All industries (including automotive) and both pathways
+  // (Press Release + Story Pitch) now use the deep research methodology.
+  // Automotive industry guidance is handled inside pr2_getIndustryGuidance.
   var prompt;
-  if (isAuto) {
-    // ── AUTOMOTIVE DEEP SEARCH — highly specific ──
-    var autoSubFocus = secondary || primary;
-    prompt = 'You are a specialist automotive PR researcher with deep knowledge of global motoring media. ' +
-      'Generate up to 60 real, currently active automotive media outlets, trade publications, consumer magazines, digital publications, and PR channels specifically covering: ' + autoSubFocus +
-      (secondary ? ' within the broader ' + primary + ' sector' : '') +
-      ' in ' + countryStr + '.\n\n' +
-      'You MUST include a comprehensive mix across ALL of these categories where relevant to the sub-focus:\n' +
-      '1. CONSUMER AUTOMOTIVE MEDIA: car review sites, motoring magazines, new car guides, road test publications\n' +
-      '2. AFTERMARKET & PARTS TRADE PRESS: parts suppliers, accessories retailers, workshop trade publications\n' +
-      '3. CAR CARE & DETAILING: detailing products, polishes, coatings, car wash, valeting trade and consumer press\n' +
-      '4. MOTORSPORT & PERFORMANCE: racing, track days, performance modifications, tuning publications\n' +
-      '5. ELECTRIC VEHICLE MEDIA: EV news sites, charging infrastructure, clean transport publications\n' +
-      '6. 4WD, OFFROAD & ADVENTURE: four-wheel drive, overlanding, camping with vehicles\n' +
-      '7. CLASSIC & COLLECTOR CARS: restoration, concours, auction, heritage vehicle publications\n' +
-      '8. AUTOMOTIVE RETAIL & DEALERSHIPS: dealer news, remarketing, automotive retail trade press\n' +
-      '9. FLEET & COMMERCIAL: fleet management, commercial vehicles, logistics, work utes\n' +
-      '10. DIGITAL & SOCIAL AUTOMOTIVE: YouTube channels with press inquiry emails, automotive blogs, enthusiast communities\n\n' +
-      'For AUSTRALIA specifically include: state-based motoring clubs (NRMA, RACV, RAA, RACQ, RAC), Motoring journalists association contacts, regional automotive media\n' +
-      'For UK specifically include: regional motoring press, dealer group publications, Fleet News, AM Online, Motor Trader\n' +
-      'For US specifically include: SEMA-affiliated publications, regional auto press, powersports media, aftermarket trade titles\n\n' +
-      'Type: ' + prefText + '. Be exhaustive — this user needs maximum reach in the automotive sector.\n\n' +
-      'Return ONLY a valid JSON array. No text before or after the array:\n' +
-      '[{"n":"Publication Name","u":"domain.com","e":"editorial@domain.com","t":"Trade/Consumer/Digital","r":"AU","paid":false,"s":5,"desc":"Specific description of what automotive content they cover and why relevant"}]';
-  } else if (isStoryPitch) {
-    prompt = 'You are a specialist PR researcher. Generate up to 40 real, currently active editorial publications, trade magazines, and news sites that would cover a story pitch in the ' + primary + ' sector' +
-      (secondary ? ' with ' + secondary + ' crossover' : '') + ' in ' + countryStr + '.' +
-      ' Focus on: editorial publications with named journalists, trade magazines, industry news sites, and consumer media that run feature stories. Exclude basic PR wires.' +
-      ' Return ONLY a valid JSON array starting with [' +
-      '\n[{"n":"Publication Name","u":"domain.com","e":"editorial@domain.com","t":"Trade Publication","r":"AU","paid":false,"s":5,"desc":"One sentence about editorial focus and why relevant for a ' + primary + ' story pitch"}]';
+  var pathwayCode = isStoryPitch ? 'B' : 'A';
+  if (isStoryPitch) {
+    prompt = pr2_buildStoryPitchPrompt(primary, secondary, countries, prefText);
   } else {
-    // PASS 2 — Press Release (path A) deep research prompt
-    // Replaces the previous shallow 3-sentence prompt with a research-grade
-    // methodology that forces Claude to use web_search across publication
-    // contact/pitch/team pages, capture source URLs, and confidence-score
-    // every contact. See pr2_buildPressReleasePrompt for the full template.
     prompt = pr2_buildPressReleasePrompt(primary, secondary, countries, prefText);
   }
 
+  // PASS 3 — Cache check before firing the AI search
+  var cacheKey = pr2_cacheKey(pathwayCode, primary, secondary, countries, prefText);
+  pr2_getCached(cacheKey, function(cachedItems) {
+    if (cachedItems) {
+      // CACHE HIT — show results instantly with a small banner
+      if (banner) banner.style.display = 'none';
+      if (statusEl) statusEl.textContent = 'Showing recent verified research for ' + primary + ' in ' + countryStr + ' (cached, refreshed weekly)';
+      outletSessionCache[cacheKey] = cachedItems;
+      showOutletResults(cachedItems, pref, primary, countries, false, true);
+      return;
+    }
+    // CACHE MISS — fall through to AI search
+    _pr2_runIndustrySearch(prompt, pathwayCode, primary, secondary, countries, prefText, pref, banner, statusEl, countryStr, cacheKey);
+  });
+}
+
+function _pr2_runIndustrySearch(prompt, pathwayCode, primary, secondary, countries, prefText, pref, banner, statusEl, countryStr, cacheKey) {
   callAPIWithSearch(prompt, function(text) {
     if (banner) banner.style.display = 'none';
     try {
@@ -6665,10 +6993,18 @@ function searchIndustryPlatforms() {
         p.confidence = (typeof p.confidence === 'number') ? p.confidence : null;
         p.confLabel = p.confLabel || '';
       });
-      // PASS 2 — confidence floor. Exclude anything below 60% by default.
+      // PASS 2 — confidence floor + source URL enforcement.
       // Contacts with no confidence score (legacy / older cache) are kept.
+      // Contacts WITH new fields but missing source URL get rejected — this is
+      // the hard rule that stops Claude from sneaking in guessed emails.
       found = found.filter(function(p){
-        return (p.confidence === null) || (p.confidence >= 60);
+        if (p.confidence !== null && p.confidence < 60) return false;
+        // If Claude returned the new schema fields (contact/role/confidence)
+        // then source URL is mandatory. Legacy entries without ANY new fields
+        // are kept as-is so old caches still work.
+        var hasNewFields = (p.contact || p.role || p.confidence !== null || p.confLabel);
+        if (hasNewFields && !p.source) return false;
+        return true;
       });
       if (pref === 'free') found = found.filter(function(p){ return !p.paid; });
       if (pref === 'paid') found = found.filter(function(p){ return p.paid; });
@@ -6676,6 +7012,8 @@ function searchIndustryPlatforms() {
       // Cache it
       outletSessionCache[cacheKey] = found;
       saveOutletCache(cacheKey, found);
+      // PASS 3 — also save to Supabase shared cache for future users
+      pr2_saveCache(cacheKey, found, { pathway: pathwayCode, industry: primary, countries: countries });
       showOutletResults(found, pref, primary, countries, false, false);
     } catch(e) {
       // ── LAYER 4: Curated fallback if AI fails ──
@@ -7205,12 +7543,44 @@ function renderPlatforms() {
     for (var i = 0; i < p.s; i++) stars += '&#9733;';
     for (var i = p.s; i < 5; i++) stars += '&#9734;';
     var safeName = p.n.replace(/'/g, "\\'");
+
+    // PASS 3 — confidence badge colour coding
+    var confColour = '';
+    var confBg = '';
+    if (p.confLabel === 'Verified') { confColour = '#0a7d2e'; confBg = '#d4f4dd'; }
+    else if (p.confLabel === 'Strong') { confColour = '#7a6500'; confBg = '#fdf3c0'; }
+    else if (p.confLabel === 'Moderate') { confColour = '#8a4500'; confBg = '#ffe5cc'; }
+
     html += '<div class="plat-item' + (sel ? ' sel' : '') + '" onclick="selectPlatform(\'' + safeName + '\')">';
-    html += '<div style="flex:1;">';
+    html += '<div style="flex:1;min-width:0;">';
     html += '<div class="plat-name">' + p.n + (badge ? '<span class="tag-match">' + badge + '</span>' : '') + '</div>';
+
+    // PASS 3 — named contact + role line (when present)
+    if (p.contact && p.contact !== 'Editorial Team') {
+      html += '<div style="font-size:12px;color:var(--text);margin-top:2px;font-weight:500;">' + p.contact + (p.role ? '<span style="color:var(--muted);font-weight:400;"> — ' + p.role + '</span>' : '') + '</div>';
+    } else if (p.role) {
+      html += '<div style="font-size:11px;color:var(--muted);margin-top:2px;font-style:italic;">' + p.role + '</div>';
+    }
+
     html += '<div class="plat-url">' + p.u + '</div>';
     if (p.desc) html += '<div style="font-size:11px;color:var(--muted);margin-top:2px;font-style:italic;">' + p.desc + '</div>';
     if (p.e) html += '<div class="plat-email">&#9993; ' + p.e + '</div>';
+
+    // PASS 3 — confidence badge + source URL link row
+    if (p.confLabel || p.source) {
+      html += '<div style="margin-top:5px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;">';
+      if (p.confLabel) {
+        html += '<span style="background:' + confBg + ';color:' + confColour + ';font-size:10px;font-weight:600;padding:2px 7px;border-radius:10px;letter-spacing:0.3px;">' + p.confLabel.toUpperCase();
+        if (typeof p.confidence === 'number') html += ' &middot; ' + p.confidence + '%';
+        html += '</span>';
+      }
+      if (p.source) {
+        var sourceLabel = p.source.replace(/^https?:\/\//, '').split('/')[0];
+        html += '<a href="' + p.source + '" target="_blank" rel="noopener" onclick="event.stopPropagation();" style="font-size:10px;color:var(--accent);text-decoration:none;border-bottom:1px dotted var(--accent);">Verify source &#8599; ' + sourceLabel + '</a>';
+      }
+      html += '</div>';
+    }
+
     html += '</div>';
     html += '<div style="text-align:right;flex-shrink:0;">';
     html += '<div class="stars">' + stars + '</div>';
@@ -9027,9 +9397,11 @@ function searchLocalMedia(country, state, city, hyper, lga) {
   var locCore = [hyper || city, state, country].filter(function(p) { return p; }).join(', ');
   var anglesStr = locState.angles && locState.angles.length ? locState.angles.join(', ') : 'local business news';
 
-  var prompt = 'You are a local media research expert. Find up to 25 real, currently active local and hyperlocal media outlets that cover this exact area: ' + locFull + '.\n\nThe business has these local story angles: ' + anglesStr + '. Prioritise outlets that specifically cover these types of stories.\n\nThis must be genuinely LOCAL media -- not national outlets. Focus on:\n- Local newspapers (print and digital) covering ' + (hyper || city) + ' and surrounding areas\n- Suburb or district-specific news websites\n- Local council and community news portals\n- Regional radio stations covering this area\n- Local TV news covering ' + city + ' or ' + (state || country) + '\n- Community newsletters and hyperlocal blogs with editorial standards\n- Local business journals or chamber of commerce publications\n\nFor each outlet:\n- Exact outlet name\n- Website URL\n- Best contact email for news tips or press releases\n- Exact coverage area (which suburbs/neighbourhoods/districts they cover)\n- Type: newspaper / online / radio / tv / community / council\n- Whether they accept community press releases (yes/no/maybe)\n- Relevance rating 1-5 for a business in ' + (hyper || city) + ' with story angles: ' + anglesStr + '\n- One sentence on what they cover\n\nOnly include outlets that genuinely serve ' + locCore + '. Do not include national outlets unless they have a dedicated local section for this area.\n\nReturn ONLY a raw JSON array starting with [:\n[{"n":"Outlet Name","u":"website.com","e":"news@outlet.com","coverage":"Suburbs or areas covered","type":"newspaper","accepts_pr":true,"s":5,"desc":"What they cover"}]';
+  // PASS 3 — Deep research methodology for local media
+  // Uses callAPIWithSearch (web search enabled) instead of callAPIHighTokens
+  var prompt = pr2_buildLocalPrompt(country, state, city, hyper, lga, locState.angles);
 
-  callAPIHighTokens(prompt, function(text) {
+  callAPIWithSearch(prompt, function(text) {
     document.getElementById('loc-search-banner').style.display = 'none';
     try {
       var clean = text.trim().replace(/^```json\s*/i,'').replace(/^```\s*/i,'').replace(/```\s*$/,'').trim();
@@ -9046,6 +9418,19 @@ function searchLocalMedia(country, state, city, hyper, lga) {
         p.desc = p.desc || '';
         p.coverage = p.coverage || (hyper || city);
         p.type = p.type || 'online';
+        // PASS 3 — preserve new fields for trust UI
+        p.contact = p.contact || '';
+        p.role = p.role || '';
+        p.source = p.source || '';
+        p.confidence = (typeof p.confidence === 'number') ? p.confidence : null;
+        p.confLabel = p.confLabel || '';
+      });
+      // PASS 3 — confidence floor + source URL enforcement for local
+      found = found.filter(function(p) {
+        if (p.confidence !== null && p.confidence < 60) return false;
+        var hasNewFields = (p.contact || p.role || p.confidence !== null || p.confLabel);
+        if (hasNewFields && !p.source) return false;
+        return true;
       });
       found.sort(function(a,b) { return b.s - a.s; });
       locState.outlets = found;
