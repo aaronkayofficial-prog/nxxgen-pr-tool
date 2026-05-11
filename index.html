@@ -8096,11 +8096,15 @@ function callAPI(prompt, onSuccess, onError) {
 }
 
 function callAPIWithSearch(prompt, onSuccess, onError, statusCallback) {
-  // PressReachOut Pass 1+2 — real web search enabled.
-  // Claude searches publication websites at runtime instead of answering from training data.
-  // 30-60 seconds for thorough results. ~$0.20/call in search fees on top of token costs.
-  // max_uses: 8 = Claude can make up to 20 internal web searches per request.
-  if (statusCallback) statusCallback('Searching publication websites for verified contacts — this takes 20-40 seconds...');
+  // PressReachOut STREAMING version — backend keeps connection open via SSE.
+  // This bypasses Vercel's 60s serverless timeout because data flows continuously
+  // instead of waiting for a single big response at the end.
+  //
+  // We bump max_uses back up to 20 (the production target) and ask for 40+
+  // contacts in the prompt, because streaming lets the request run as long as
+  // it needs.
+  if (statusCallback) statusCallback('Searching publication websites — Claude is researching live, this takes 60-120 seconds for thorough results...');
+
   fetch('/api/chat', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -8108,27 +8112,110 @@ function callAPIWithSearch(prompt, onSuccess, onError, statusCallback) {
       model: 'claude-sonnet-4-5',
       max_tokens: 16000,
       messages: [{ role: 'user', content: prompt }],
+      stream: true, // Signal to backend (backend forces this anyway)
       tools: [{
         type: 'web_search_20260209',
         name: 'web_search',
         max_uses: 20
       }]
     })
-  }).then(function(resp) { return resp.json(); })
-  .then(function(data) {
-    if (data.error) { onError(data.error.message); return; }
-    // Web search responses contain mixed content blocks:
-    //   - 'text' blocks (Claude's answer to extract)
-    //   - 'server_tool_use' blocks (Claude calling the search tool)
-    //   - 'web_search_tool_result' blocks (search results themselves)
-    // We only want the final text Claude wrote, so filter to type === 'text'.
-    var text = (data.content || [])
-      .filter(function(c) { return c.type === 'text'; })
-      .map(function(c) { return c.text || ''; })
-      .join('');
-    if (statusCallback) statusCallback('Processing results...');
-    onSuccess(text);
-  }).catch(function(e) { onError(e.message); });
+  }).then(function(resp) {
+    if (!resp.ok) {
+      // Non-streaming JSON error response (e.g. 401, 500 from backend before stream starts)
+      return resp.json().then(function(j) {
+        throw new Error((j && j.error) || ('HTTP ' + resp.status));
+      });
+    }
+    if (!resp.body) {
+      throw new Error('No response body — streaming not supported in this browser');
+    }
+
+    // Read the SSE stream
+    var reader = resp.body.getReader();
+    var decoder = new TextDecoder();
+    var buffer = '';
+    var accumulatedText = '';
+    var searchCount = 0;
+    var lastStatusUpdate = Date.now();
+
+    function pump() {
+      return reader.read().then(function(result) {
+        if (result.done) {
+          // Stream finished. Pass accumulated text to caller.
+          if (statusCallback) statusCallback('Processing results...');
+          onSuccess(accumulatedText);
+          return;
+        }
+
+        // Decode the bytes and add to our buffer
+        buffer += decoder.decode(result.value, { stream: true });
+
+        // SSE messages are separated by double-newlines: "\n\n"
+        var messages = buffer.split('\n\n');
+        // The last item may be incomplete — put it back in the buffer
+        buffer = messages.pop() || '';
+
+        for (var i = 0; i < messages.length; i++) {
+          var msg = messages[i].trim();
+          if (!msg) continue;
+
+          // Each SSE message has lines like "event: ..." and "data: {...}"
+          var lines = msg.split('\n');
+          var eventType = '';
+          var dataStr = '';
+          for (var j = 0; j < lines.length; j++) {
+            var line = lines[j];
+            if (line.indexOf('event:') === 0) {
+              eventType = line.slice(6).trim();
+            } else if (line.indexOf('data:') === 0) {
+              dataStr += line.slice(5).trim();
+            }
+          }
+
+          if (!dataStr) continue;
+          if (dataStr === '[DONE]') continue;
+
+          var data;
+          try {
+            data = JSON.parse(dataStr);
+          } catch (e) {
+            // Not valid JSON — skip this event
+            continue;
+          }
+
+          // Handle different event types from Anthropic's SSE stream
+          if (data.type === 'content_block_delta' && data.delta) {
+            if (data.delta.type === 'text_delta' && typeof data.delta.text === 'string') {
+              accumulatedText += data.delta.text;
+            }
+            // Note: other delta types (input_json_delta for tool use) are ignored —
+            // we only want the final text Claude writes.
+          } else if (data.type === 'content_block_start' && data.content_block) {
+            // Detect when Claude starts using the search tool — update spinner
+            if (data.content_block.type === 'server_tool_use' &&
+                data.content_block.name === 'web_search') {
+              searchCount++;
+              if (statusCallback && (Date.now() - lastStatusUpdate > 2000)) {
+                statusCallback('Searching the web... (' + searchCount + ' searches so far)');
+                lastStatusUpdate = Date.now();
+              }
+            }
+          } else if (data.type === 'message_stop') {
+            // Final message_stop event — we'll handle completion in result.done above
+          } else if (data.type === 'error') {
+            throw new Error((data.error && data.error.message) || 'Stream error');
+          }
+        }
+
+        // Keep reading
+        return pump();
+      });
+    }
+
+    return pump();
+  }).catch(function(e) {
+    onError(e.message || String(e));
+  });
 }
 
 // ---- TEST MODE ----
