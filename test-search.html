@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PressReachOut Search Architecture Test</title>
+<style>
+  :root {
+    --bg: #fafaf7;
+    --text: #1a1a1a;
+    --muted: #6b6b6b;
+    --border: #e5e5e0;
+    --accent: #d4145a;
+    --green: #0a7d2e;
+    --red: #c41e3a;
+    --orange: #c75500;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    margin: 0;
+    padding: 24px;
+    line-height: 1.5;
+  }
+  .wrap { max-width: 1200px; margin: 0 auto; }
+  h1 { font-size: 28px; margin: 0 0 8px; font-weight: 700; }
+  .sub { color: var(--muted); font-size: 14px; margin-bottom: 24px; }
+  .config {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 24px;
+  }
+  .config label { display: block; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); margin-bottom: 6px; }
+  .config select, .config input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: inherit;
+    background: white;
+    margin-bottom: 12px;
+  }
+  .config-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+  .buttons { display: flex; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; }
+  button {
+    padding: 12px 20px;
+    border: 1.5px solid var(--text);
+    background: var(--text);
+    color: white;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  button:hover { opacity: 0.85; }
+  button:disabled { opacity: 0.4; cursor: wait; }
+  button.both {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+  .results { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .panel {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    min-height: 200px;
+  }
+  .panel h2 { font-size: 16px; margin: 0 0 12px; font-weight: 700; }
+  .stat-row { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 12px; }
+  .stat { background: #f5f5f0; padding: 8px 12px; border-radius: 6px; font-size: 13px; }
+  .stat-label { color: var(--muted); }
+  .stat-value { font-weight: 600; }
+  .stat-value.green { color: var(--green); }
+  .stat-value.red { color: var(--red); }
+  .stat-value.orange { color: var(--orange); }
+  .contact {
+    border-top: 1px solid var(--border);
+    padding: 10px 0;
+    font-size: 13px;
+  }
+  .contact-name { font-weight: 600; }
+  .contact-email { color: var(--accent); font-family: monospace; }
+  .contact-source a { color: var(--muted); font-size: 11px; text-decoration: none; border-bottom: 1px dotted var(--muted); }
+  .contact-conf { display: inline-block; font-size: 10px; padding: 2px 6px; border-radius: 8px; font-weight: 600; letter-spacing: 0.3px; }
+  .conf-verified { background: #d4f4dd; color: var(--green); }
+  .conf-strong { background: #fdf3c0; color: #7a6500; }
+  .conf-moderate { background: #ffe5cc; color: var(--orange); }
+  .debug {
+    background: #f5f5f0;
+    padding: 12px;
+    border-radius: 6px;
+    margin-top: 12px;
+    font-family: monospace;
+    font-size: 11px;
+    white-space: pre-wrap;
+    max-height: 300px;
+    overflow-y: auto;
+    color: var(--muted);
+  }
+  .status { font-size: 13px; color: var(--muted); padding: 8px 0; }
+  .status.running { color: var(--accent); }
+  .status.success { color: var(--green); }
+  .status.error { color: var(--red); }
+  .empty { color: var(--muted); font-size: 13px; padding: 20px 0; text-align: center; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Search Architecture Test</h1>
+  <p class="sub">Compare AI search candidates side-by-side. Run both, see what wins.</p>
+
+  <div class="config">
+    <div class="config-grid">
+      <div>
+        <label>Industry</label>
+        <input type="text" id="industry" value="Technology &amp; Software">
+      </div>
+      <div>
+        <label>Country</label>
+        <select id="country">
+          <option>Australia</option>
+          <option>United Kingdom</option>
+          <option>United States</option>
+          <option>Canada</option>
+          <option>New Zealand</option>
+        </select>
+      </div>
+      <div>
+        <label>Pathway</label>
+        <select id="pathway">
+          <option value="podcast">Podcast</option>
+          <option value="press-release">Press Release</option>
+          <option value="story-pitch">Story Pitch</option>
+          <option value="local">Local Media</option>
+        </select>
+      </div>
+    </div>
+    <div class="buttons" style="margin-top: 8px; margin-bottom: 0;">
+      <button onclick="runOne('A')" id="btn-A">▶ Run Candidate A (Exa + Claude)</button>
+      <button onclick="runOne('C')" id="btn-C">▶ Run Candidate C (Chained Claude)</button>
+      <button onclick="runBoth()" id="btn-both" class="both">⚡ Run Both</button>
+    </div>
+  </div>
+
+  <div class="results">
+    <div class="panel" id="panel-A">
+      <h2>Candidate A — Exa + Claude</h2>
+      <div class="empty">Click "Run Candidate A" to test.</div>
+    </div>
+    <div class="panel" id="panel-C">
+      <h2>Candidate C — Chained Claude</h2>
+      <div class="empty">Click "Run Candidate C" to test.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+function $(id) { return document.getElementById(id); }
+
+function getQuery() {
+  return {
+    industry: $('industry').value.trim(),
+    country: $('country').value,
+    pathway: $('pathway').value
+  };
+}
+
+async function runOne(candidate) {
+  const panel = $('panel-' + candidate);
+  const btn = $('btn-' + candidate);
+  const query = getQuery();
+
+  btn.disabled = true;
+  panel.innerHTML = '<h2>Candidate ' + candidate + ' — ' + (candidate === 'A' ? 'Exa + Claude' : 'Chained Claude') + '</h2>' +
+    '<div class="status running">⟳ Running... (this may take 30-180 seconds)</div>';
+
+  const startTime = Date.now();
+
+  try {
+    const resp = await fetch('/api/search-test', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ candidate, query })
+    });
+    const data = await resp.json();
+    if (!resp.ok || data.error) {
+      throw new Error(data.error || ('HTTP ' + resp.status));
+    }
+    renderResult(candidate, data);
+  } catch (err) {
+    const elapsedMs = Date.now() - startTime;
+    panel.innerHTML = '<h2>Candidate ' + candidate + '</h2>' +
+      '<div class="status error">✗ Failed after ' + (elapsedMs / 1000).toFixed(1) + 's: ' + err.message + '</div>';
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+async function runBoth() {
+  $('btn-both').disabled = true;
+  await Promise.all([runOne('A'), runOne('C')]);
+  $('btn-both').disabled = false;
+}
+
+function renderResult(candidate, data) {
+  const panel = $('panel-' + candidate);
+  const label = candidate === 'A' ? 'Exa + Claude' : 'Chained Claude';
+  const seconds = (data.timeMs / 1000).toFixed(1);
+  const count = data.contactsFound || 0;
+  const countClass = count >= 10 ? 'green' : count >= 5 ? 'orange' : 'red';
+
+  let html = '<h2>Candidate ' + candidate + ' — ' + label + '</h2>';
+  html += '<div class="status success">✓ Complete</div>';
+  html += '<div class="stat-row">';
+  html += '<div class="stat"><span class="stat-label">Time: </span><span class="stat-value">' + seconds + 's</span></div>';
+  html += '<div class="stat"><span class="stat-label">Contacts: </span><span class="stat-value ' + countClass + '">' + count + '</span></div>';
+
+  // Add candidate-specific stats from debug data
+  if (candidate === 'A' && data.debug) {
+    if (data.debug.exaTimeMs) html += '<div class="stat"><span class="stat-label">Exa: </span><span class="stat-value">' + (data.debug.exaTimeMs / 1000).toFixed(1) + 's</span></div>';
+    if (data.debug.claudeTimeMs) html += '<div class="stat"><span class="stat-label">Claude: </span><span class="stat-value">' + (data.debug.claudeTimeMs / 1000).toFixed(1) + 's</span></div>';
+    if (data.debug.exaResultCount !== undefined) html += '<div class="stat"><span class="stat-label">Pages found: </span><span class="stat-value">' + data.debug.exaResultCount + '</span></div>';
+  }
+  if (candidate === 'C' && data.debug) {
+    if (data.debug.listed !== undefined) html += '<div class="stat"><span class="stat-label">Listed: </span><span class="stat-value">' + data.debug.listed + '</span></div>';
+    if (data.debug.successful !== undefined) html += '<div class="stat"><span class="stat-label">Fetched OK: </span><span class="stat-value">' + data.debug.successful + '/' + data.debug.fetched + '</span></div>';
+  }
+  html += '</div>';
+
+  // Contacts
+  if (count === 0) {
+    html += '<div class="empty">No contacts extracted.</div>';
+  } else {
+    html += '<div>';
+    data.contacts.slice(0, 20).forEach(function(c) {
+      html += '<div class="contact">';
+      html += '<div class="contact-name">' + escapeHtml(c.n || c.name || 'Unnamed') + '</div>';
+      if (c.contact) html += '<div style="font-size:12px;color:var(--muted);">' + escapeHtml(c.contact) + (c.role ? ' — ' + escapeHtml(c.role) : '') + '</div>';
+      if (c.e || c.email) html += '<div class="contact-email">✉ ' + escapeHtml(c.e || c.email) + '</div>';
+      if (c.confLabel) {
+        const klass = 'conf-' + c.confLabel.toLowerCase();
+        html += '<span class="contact-conf ' + klass + '">' + c.confLabel.toUpperCase() + (c.confidence ? ' · ' + c.confidence + '%' : '') + '</span> ';
+      }
+      if (c.source) html += '<span class="contact-source"><a href="' + c.source + '" target="_blank">↗ source</a></span>';
+      html += '</div>';
+    });
+    html += '</div>';
+  }
+
+  // Debug
+  html += '<details style="margin-top:16px;"><summary style="font-size:12px;color:var(--muted);cursor:pointer;">Show debug data</summary>';
+  html += '<div class="debug">' + escapeHtml(JSON.stringify(data.debug || {}, null, 2)) + '</div>';
+  html += '</details>';
+
+  panel.innerHTML = html;
+}
+
+function escapeHtml(s) {
+  if (s === null || s === undefined) return '';
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+</script>
+</body>
+</html>
